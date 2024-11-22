@@ -1,3 +1,4 @@
+import Footer from "@/components/landing/Footer";
 import HeroSection from "@/components/landing/HeroSection";
 import Navbar from "@/components/landing/Navbar";
 import { Button } from "antd";
@@ -156,6 +157,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+        <Footer />
       </div>
     </>
   );
