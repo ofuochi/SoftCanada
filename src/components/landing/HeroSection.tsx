@@ -5,6 +5,7 @@ export default function HeroSection() {
     <section
       className="relative w-full mx-auto mt-8 sm:mt-12 rounded-xl overflow-hidden shadow-lg bg-white"
       style={{ height: "80vh" }}
+      id="hero-section"
     >
       {/* Background Image */}
       <div

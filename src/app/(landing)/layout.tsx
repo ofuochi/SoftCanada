@@ -20,8 +20,11 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Soft Canada",
+  applicationName: "Soft Canada",
+  keywords: ["immigration", "grants", "canada", "real-estate", "career"],
   description: "Easily navigate your Canadian journey with Soft Canada.",
 };
+
 export default function LandingLayout({ children }: React.PropsWithChildren) {
   return (
     <html lang="en">

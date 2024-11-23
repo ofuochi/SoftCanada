@@ -1,94 +1,195 @@
 "use client";
 
-import type {MenuProps} from "antd";
-import {Button, Menu} from "antd";
+import { Button, Drawer, Menu } from "antd";
+import type { MenuProps } from "antd";
+import { useEffect, useState } from "react";
+import { FaCanadianMapleLeaf } from "react-icons/fa";
+import { MenuOutlined, DownOutlined } from "@ant-design/icons";
 import classNames from "classnames";
-import React, {useState} from "react";
-import {FaCanadianMapleLeaf, FaChevronDown} from "react-icons/fa";
 
 export default function Navbar() {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [navbarStyle, setNavbarStyle] = useState("bg-transparent");
+  const [isNavbarDark, setIsNavbarDark] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Define the dropdown menu items
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroSectionHeight =
+        document.querySelector("#hero-section")?.clientHeight || 0;
+
+      if (window.scrollY > heroSectionHeight) {
+        setNavbarStyle("bg-gray-900 shadow-lg");
+        setIsNavbarDark(true);
+      } else if (window.scrollY > 0) {
+        setNavbarStyle("bg-white bg-opacity-70 backdrop-blur-md");
+        setIsNavbarDark(false);
+      } else {
+        setNavbarStyle("bg-transparent");
+        setIsNavbarDark(false);
+      }
+    };
+
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Menu items with conditional rendering of DownOutlined
   const menuItems: MenuProps["items"] = [
     {
       key: "services",
       label: (
-        <div
-          className="flex items-center cursor-pointer"
-          onMouseEnter={() => setActiveDropdown("services")}
-          onMouseLeave={() => setActiveDropdown(null)}
-        >
-          Services
-          <FaChevronDown
-            className={classNames(
-              "ml-2 transition-transform",
-              activeDropdown === "services" ? "rotate-180" : "rotate-0"
-            )}
-          />
-        </div>
+        <>
+          Services{" "}
+          <span className="hidden md:inline">
+            <DownOutlined />
+          </span>
+        </>
       ),
       children: [
-        {key: "service-1", label: "Service 1"},
-        {key: "service-2", label: "Service 2"},
+        { key: "service-1", label: "Service 1" },
+        { key: "service-2", label: "Service 2" },
       ],
     },
     {
       key: "resources",
       label: (
-        <div
-          className="flex items-center cursor-pointer"
-          onMouseEnter={() => setActiveDropdown("resources")}
-          onMouseLeave={() => setActiveDropdown(null)}
-        >
-          Resources
-          <FaChevronDown
-            className={classNames(
-              "ml-2 transition-transform",
-              activeDropdown === "resources" ? "rotate-180" : "rotate-0"
-            )}
-          />
-        </div>
+        <>
+          Resources{" "}
+          <span className="hidden md:inline">
+            <DownOutlined />
+          </span>
+        </>
       ),
       children: [
-        {key: "resource-1", label: "Resource 1"},
-        {key: "resource-2", label: "Resource 2"},
+        { key: "resource-1", label: "Resource 1" },
+        { key: "resource-2", label: "Resource 2" },
       ],
     },
-    {key: "mortgage", label: "Mortgage Calculator"},
-    {key: "co-builder", label: "Co Builder"},
-    {key: "faq", label: "FAQ"},
-    {key: "contact", label: "Contact"},
+    { key: "mortgage", label: "Mortgage Calculator" },
+    { key: "co-builder", label: "Co Builder" },
+    { key: "faq", label: "FAQ" },
+    { key: "contact", label: "Contact" },
   ];
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const menuTheme = isNavbarDark ? "dark" : "light";
+
   return (
-    <div className="sticky top-0 z-50 flex justify-between items-center p-4 shadow-md bg-white">
-      {/* Logo */}
-      <div className="flex items-center space-x-2">
-        <h1 className="text-xl font-bold">Soft</h1>
-        <FaCanadianMapleLeaf className="text-red-600 text-lg"/>
-      </div>
+    <>
+      <style>
+        {`
+          .transparent-menu {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+          }
 
-      {/* Navigation Menu */}
-      <Menu
-        mode="horizontal"
-        items={menuItems}
-        className="flex-1 justify-center border-none"
-        style={{
-          border: "none", // Removes the border
-          boxShadow: "none", // Removes any shadow applied
-        }}
-      />
+          .navbar-menu-container .ant-menu {
+            justify-content: center;
+            width: 100%;
+          }
+        `}
+      </style>
 
-      {/* Buttons */}
-      <div className="flex items-center space-x-4">
-        <Button color="default" className="font-semibold" variant="outlined">
-          Sign In
-        </Button>
-        <Button color="default" className="font-bold" variant="solid">
-          Register Now!
-        </Button>
-      </div>
-    </div>
+      <nav
+        className={classNames(
+          "fixed top-0 left-0 right-0 z-50 transition-colors duration-300",
+          navbarStyle
+        )}
+      >
+        <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
+          {/* Logo */}
+          <div className="flex items-center space-x-2">
+            <h1
+              className={classNames(
+                "text-xl font-bold",
+                isNavbarDark ? "text-white" : "text-primary"
+              )}
+            >
+              Soft
+            </h1>
+            <FaCanadianMapleLeaf className="text-red-600 text-lg" />
+          </div>
+
+          {/* Desktop Menu */}
+          <div
+            className={classNames(
+              "hidden md:flex flex-grow items-center justify-center",
+              "navbar-menu-container"
+            )}
+          >
+            <Menu
+              mode="horizontal"
+              items={menuItems}
+              className="transparent-menu"
+              theme={menuTheme}
+              selectable={false}
+            />
+          </div>
+
+          {/* Buttons */}
+          <div className="hidden md:flex items-center space-x-4">
+            <Button
+              type="link"
+              className={classNames(
+                "font-semibold",
+                isNavbarDark ? "text-white" : "text-black"
+              )}
+            >
+              Sign In
+            </Button>
+            <Button type="primary" className="font-bold">
+              Register Now!
+            </Button>
+          </div>
+
+          {/* Mobile Menu Icon */}
+          <div className="flex md:hidden">
+            <Button
+              type="text"
+              icon={
+                <MenuOutlined
+                  className={classNames(
+                    "text-xl",
+                    isNavbarDark ? "text-white" : "text-black"
+                  )}
+                />
+              }
+              onClick={toggleMobileMenu}
+            />
+          </div>
+        </div>
+
+        {/* Mobile Drawer */}
+        <Drawer
+          title="Menu"
+          placement="right"
+          closable={true}
+          onClose={toggleMobileMenu}
+          open={isMobileMenuOpen}
+          styles={{body:{ padding: 0 }}}
+        >
+          <Menu
+            mode="vertical"
+            items={menuItems}
+            theme="light" // Maintain default theme
+            selectable={false}
+          />
+          <div className="flex flex-col items-start p-4">
+            <Button className="w-full mb-2" type="link">
+              Sign In
+            </Button>
+            <Button className="w-full" type="primary">
+              Register Now!
+            </Button>
+          </div>
+        </Drawer>
+      </nav>
+    </>
   );
-};
+}
