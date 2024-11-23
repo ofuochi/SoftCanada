@@ -169,7 +169,7 @@ export default function Navbar() {
             selectable={false}
           />
           <div className="flex flex-col items-start p-4">
-            <Button className="w-full mb-2" type="link">
+            <Button className="w-full mb-2">
               Sign In
             </Button>
             <Button className="w-full" type="primary">
