@@ -4,11 +4,11 @@ import Logo from "@/components/Logo";
 
 export default function Footer() {
   return (
-    <footer className="bg-white w-full py-12 px-8 lg:px-28">
-      <div className="flex flex-col md:flex-row justify-between gap-8">
+    <footer className="bg-white w-full py-10 lg:px-28">
+      <div className="flex flex-col md:flex-row justify-between gap-8 md:items-start items-center text-center md:text-left">
         {/* Logo Section */}
-        <div className="flex flex-col items-start">
-          <Logo size="large"/>
+        <div className="flex flex-col items-center md:items-start">
+          <Logo size="large" />
         </div>
 
         {/* Services Column */}
@@ -30,7 +30,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                href="/grant-study"
+                href="/grants"
                 className="text-gray-400 hover:text-gray-700"
               >
                 Grant & Study
@@ -172,7 +172,7 @@ export default function Footer() {
         </div>
 
         {/* Get in Touch Section */}
-        <div className="flex flex-col">
+        <div className="flex flex-col items-center md:items-start">
           <h3 className="font-semibold text-lg mb-4">Get in touch</h3>
           <p className="mb-4">Reach us on our socials for swift response!</p>
           <div className="flex space-x-4 text-lg text-gray-600">

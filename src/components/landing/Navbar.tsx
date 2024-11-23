@@ -6,6 +6,7 @@ import React, {useEffect, useState} from "react";
 import {DownOutlined, MenuOutlined} from "@ant-design/icons";
 import classNames from "classnames";
 import Logo from "@/components/Logo";
+import Link from "next/link";
 
 export default function Navbar() {
   const [navbarStyle, setNavbarStyle] = useState("bg-transparent");
@@ -35,7 +36,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Menu items with conditional rendering of DownOutlined
   const menuItems: MenuProps["items"] = [
     {
       key: "services",
@@ -48,8 +48,8 @@ export default function Navbar() {
         </>
       ),
       children: [
-        { key: "service-1", label: "Service 1" },
-        { key: "service-2", label: "Service 2" },
+        { key: "career", label: <Link href="/career">Career</Link> },
+        { key: "real-estate", label: <Link href="/real-estate">Real Estate</Link> },
       ],
     },
     {
@@ -63,14 +63,16 @@ export default function Navbar() {
         </>
       ),
       children: [
-        { key: "resource-1", label: "Resource 1" },
-        { key: "resource-2", label: "Resource 2" },
+        { key: "deals", label: <Link href="/deals">Deals</Link> },
+        { key: "finance", label: <Link href="/finance">Finance</Link> },
+        { key: "immigration", label: <Link href="/immigration">Immigration</Link> },
+        { key: "grants", label: <Link href="/grants">Grants & Studies</Link> },
       ],
     },
-    { key: "mortgage", label: "Mortgage Calculator" },
-    { key: "co-builder", label: "Co Builder" },
-    { key: "faq", label: "FAQ" },
-    { key: "contact", label: "Contact" },
+    { key: "mortgage", label: <Link href="/mortgage-calculator">Mortgage Calculator</Link> },
+    { key: "cv-builder", label: <Link href="/cv-builder">CV Builder</Link> },
+    { key: "faq", label: <Link href="/faq">FAQ</Link> },
+    { key: "contact", label: <Link href="/contact">Contact</Link> },
   ];
 
   const toggleMobileMenu = () => {
@@ -165,7 +167,7 @@ export default function Navbar() {
           <Menu
             mode="vertical"
             items={menuItems}
-            theme="light" // Maintain default theme
+            theme="light"
             selectable={false}
           />
           <div className="flex flex-col items-start p-4">

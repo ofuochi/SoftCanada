@@ -1,5 +1,6 @@
 ﻿import Image from "next/image";
 import classNames from "classnames";
+import Link from "next/link";
 
 interface LogoProps {
   theme?: "dark" | "light";
@@ -17,14 +18,16 @@ export default function Logo({ theme = "dark", size = "medium" }: LogoProps) {
   });
 
   return (
-    <Image
-      src={logoSrc}
-      alt={`${theme} theme logo`}
-      layout="intrinsic"
-      width={96}
-      height={96}
-      priority
-      className={`object-contain ${sizeClasses}`}
-    />
+    <Link href="/" aria-label="Home">
+      <Image
+        src={logoSrc}
+        alt={`${theme} theme logo`}
+        layout="intrinsic"
+        width={96}
+        height={96}
+        priority
+        className={`object-contain ${sizeClasses}`}
+      />
+    </Link>
   );
 }
