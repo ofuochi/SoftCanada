@@ -1,11 +1,10 @@
 "use client";
 
+import type {MenuProps} from "antd";
 import {Button, Menu} from "antd";
 import classNames from "classnames";
 import React, {useState} from "react";
 import {FaCanadianMapleLeaf, FaChevronDown} from "react-icons/fa";
-
-import type {MenuProps} from "antd";
 
 export default function Navbar() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);

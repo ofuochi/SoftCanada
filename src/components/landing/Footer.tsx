@@ -1,15 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
+import {FaRegCompass} from "react-icons/fa";
 
 export default function Footer() {
   return (
     <footer className="bg-white w-full py-12 px-8 lg:px-28">
       <div className="flex flex-col md:flex-row justify-between gap-8">
         {/* Logo Section */}
-        <div className="flex flex-col">
-          <h1 className="text-2xl font-semibold">
-            S<span className="text-red-600">o</span>ft
-            <span className="text-red-600">🍁</span>
+        <div className="flex flex-col items-start">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold flex items-center">
+            <span>S</span>
+            <FaRegCompass className="text-red-600 w-6 md:w-8 lg:w-10 h-6 md:h-8 lg:h-10" />
+            <span>ft</span>
+            <span className="text-red-600 text-2xl md:text-3xl lg:text-4xl">
+              🍁
+            </span>
           </h1>
         </div>
 
