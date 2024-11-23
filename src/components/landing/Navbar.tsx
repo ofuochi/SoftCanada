@@ -1,11 +1,11 @@
 "use client";
 
-import { Button, Drawer, Menu } from "antd";
-import type { MenuProps } from "antd";
-import { useEffect, useState } from "react";
-import { FaCanadianMapleLeaf } from "react-icons/fa";
-import { MenuOutlined, DownOutlined } from "@ant-design/icons";
+import type {MenuProps} from "antd";
+import {Button, Drawer, Menu} from "antd";
+import React, {useEffect, useState} from "react";
+import {DownOutlined, MenuOutlined} from "@ant-design/icons";
 import classNames from "classnames";
+import Logo from "@/components/Logo";
 
 export default function Navbar() {
   const [navbarStyle, setNavbarStyle] = useState("bg-transparent");
@@ -105,15 +105,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <h1
-              className={classNames(
-                "text-xl font-bold",
-                isNavbarDark ? "text-white" : "text-primary"
-              )}
-            >
-              Soft
-            </h1>
-            <FaCanadianMapleLeaf className="text-red-600 text-lg" />
+            <Logo theme={isNavbarDark ? "light" : "dark"} />
           </div>
 
           {/* Desktop Menu */}
@@ -135,15 +127,11 @@ export default function Navbar() {
           {/* Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <Button
-              type="link"
-              className={classNames(
-                "font-semibold",
-                isNavbarDark ? "text-white" : "text-black"
-              )}
+              className="font-semibold"
             >
               Sign In
             </Button>
-            <Button type="primary" className="font-bold">
+            <Button type="primary" className="font-bold" danger={isNavbarDark}>
               Register Now!
             </Button>
           </div>
