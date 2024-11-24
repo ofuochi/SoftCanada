@@ -103,7 +103,7 @@ export default function RealEstatePage() {
                     }}
                   />
                 }
-                bodyStyle={{ padding: "16px" }}
+                styles={{ body: { padding: 16 } }}
                 className="shadow-md rounded-xl"
               >
                 <Title level={5}>{listing.title}</Title>
@@ -125,7 +125,7 @@ export default function RealEstatePage() {
                     shape="circle"
                     icon={<ArrowIcon />}
                     size="large"
-                    color="danger" 
+                    color="danger"
                     variant="filled"
                   />
                 </div>
