@@ -2,7 +2,7 @@
 
 import HeroSection from "@/components/landing/HeroSection";
 import { EnvironmentOutlined, HomeOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Row, Typography } from "antd";
+import { Button, Card, Col, Row, Typography, Image as AntdImage } from "antd";
 import Image from "next/image";
 
 const ArrowIcon = () => (
@@ -20,56 +20,72 @@ const listings = [
     location: "Toronto, ON",
     price: "$1,800/month",
     bedrooms: "1 bedroom",
-    image: "/images/listings/maple_haven.jpg",
+    images: ['https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',],
   },
   {
     title: "The Aurora Lofts",
     location: "Calgary, AB",
     price: "$1,400/month",
     bedrooms: "1 bedroom",
-    image: "/images/listings/aurora_lofts.jpg",
+    images: ['https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',]
   },
   {
     title: "Pacific Breeze Residences",
     location: "Vancouver, BC",
     price: "$2,000/month",
     bedrooms: "1 bedroom",
-    image: "/images/listings/pacific_breeze.jpg",
+    images: ['https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',]
   },
   {
     title: "Prairie Sunrise Apartments",
     location: "Winnipeg, MB",
     price: "$1,100/month",
     bedrooms: "2 bedroom",
-    image: "/images/listings/prairie_sunrise.jpg",
+    images: ['https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',]
   },
   {
     title: "Northern Lights Flats",
     location: "Edmonton, AB",
     price: "$1,250/month",
     bedrooms: "1 bedroom",
-    image: "/images/listings/northern_lights.jpg",
+    images: ['https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',]
   },
   {
     title: "The St. Lawrence Suites",
     location: "Montreal, QC",
     price: "$1,300/month",
     bedrooms: "Studio",
-    image: "/images/listings/st_lawrence.jpg",
+    images: ['https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',]
   },
   {
     title: "Riverfront Heights",
     location: "Ottawa, ON",
     price: "$1,600/month",
     bedrooms: "2 bedroom",
-    image: "/images/listings/riverfront_heights.jpg",
+    images: ['https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',]
   },
   {
     title: "Wellesley St East Parliament",
     location: "Toronto, ON",
     price: "$1,800/month",
     bedrooms: "1 bedroom",
-    image: "/images/listings/wellesley_st.jpg",
+    images: ['https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp',
+      'https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp',]
   },
 ];
 
@@ -87,23 +103,37 @@ export default function RealEstatePage() {
       />
 
       <section className="mt-10 px-4 md:px-16">
+        <div className="text-center">
+          <p className="text-sm md:text-base text-gray-600 mb-5">
+            Featured Listings
+          </p>
+          <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-8">
+            Find Your Dream Home
+          </h3>
+        </div>
         <Row gutter={[16, 16]} justify="center">
           {listings.map((listing, index) => (
             <Col key={index} xs={24} sm={12} md={8} lg={6}>
               <Card
-                hoverable
+                hoverable={false}
                 cover={
-                  <div
-                    style={{
-                      height: "180px",
-                      backgroundImage: `url(${listing.image})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      borderRadius: "8px 8px 0 0",
-                    }}
-                  />
+                  <AntdImage.PreviewGroup>
+                    {listing.images.map((imageSrc, idx) => (
+                      <AntdImage
+                        key={idx}
+                        src={imageSrc}
+                        alt={`${listing.title} image ${idx + 1}`}
+                        style={{
+                          borderRadius: idx === 0 ? "8px 8px 0 0" : 0,
+                          objectFit: "cover",
+                          width: "100%",
+                          height: 180,
+                          display: idx === 0 ? "block" : "none",
+                        }}
+                      />
+                    ))}
+                  </AntdImage.PreviewGroup>
                 }
-                styles={{ body: { padding: 16 } }}
                 className="shadow-md rounded-xl"
               >
                 <Title level={5}>{listing.title}</Title>
