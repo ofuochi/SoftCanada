@@ -1,13 +1,13 @@
 "use client";
 
-import type {MenuProps} from "antd";
-import {Button, Drawer, Menu} from "antd";
-import React, {useEffect, useState} from "react";
-import {DownOutlined, MenuOutlined} from "@ant-design/icons";
-import classNames from "classnames";
 import Logo from "@/components/Logo";
+import { DownOutlined, MenuOutlined } from "@ant-design/icons";
+import { Button, Drawer, Menu } from "antd";
+import classNames from "classnames";
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
+import type { MenuProps } from "antd";
 export default function Navbar() {
   const [navbarStyle, setNavbarStyle] = useState("bg-transparent");
   const [isNavbarDark, setIsNavbarDark] = useState(false);
@@ -16,7 +16,9 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const heroSectionHeight =
-        document.querySelector("#hero-section")?.clientHeight || 0;
+        document.querySelector("#hero-section")?.clientHeight ||
+        document.querySelector(".dark")?.clientHeight ||
+        0;
 
       if (window.scrollY > heroSectionHeight) {
         setNavbarStyle("bg-gray-900 shadow-lg");
@@ -49,7 +51,10 @@ export default function Navbar() {
       ),
       children: [
         { key: "career", label: <Link href="/career">Career</Link> },
-        { key: "real-estate", label: <Link href="/real-estate">Real Estate</Link> },
+        {
+          key: "real-estate",
+          label: <Link href="/real-estate">Real Estate</Link>,
+        },
       ],
     },
     {
@@ -65,11 +70,17 @@ export default function Navbar() {
       children: [
         { key: "deals", label: <Link href="/deals">Deals</Link> },
         { key: "finance", label: <Link href="/finance">Finance</Link> },
-        { key: "immigration", label: <Link href="/immigration">Immigration</Link> },
+        {
+          key: "immigration",
+          label: <Link href="/immigration">Immigration</Link>,
+        },
         { key: "grants", label: <Link href="/grants">Grants & Studies</Link> },
       ],
     },
-    { key: "mortgage", label: <Link href="/mortgage-calculator">Mortgage Calculator</Link> },
+    {
+      key: "mortgage",
+      label: <Link href="/mortgage-calculator">Mortgage Calculator</Link>,
+    },
     { key: "cv-builder", label: <Link href="/cv-builder">CV Builder</Link> },
     { key: "faq", label: <Link href="/faq">FAQ</Link> },
     { key: "contact", label: <Link href="/contact">Contact</Link> },
@@ -128,11 +139,7 @@ export default function Navbar() {
 
           {/* Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button
-              className="font-semibold"
-            >
-              Sign In
-            </Button>
+            <Button className="font-semibold">Sign In</Button>
             <Button type="primary" className="font-bold" danger={isNavbarDark}>
               Register Now!
             </Button>
@@ -162,7 +169,7 @@ export default function Navbar() {
           closable={true}
           onClose={toggleMobileMenu}
           open={isMobileMenuOpen}
-          styles={{body:{ padding: 0 }}}
+          styles={{ body: { padding: 0 } }}
         >
           <Menu
             mode="vertical"
@@ -171,9 +178,7 @@ export default function Navbar() {
             selectable={false}
           />
           <div className="flex flex-col items-start p-4">
-            <Button className="w-full mb-2">
-              Sign In
-            </Button>
+            <Button className="w-full mb-2">Sign In</Button>
             <Button className="w-full" type="primary">
               Register Now!
             </Button>
