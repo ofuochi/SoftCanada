@@ -1,46 +1,33 @@
-name: Deploy Next.js to Azure
+name: Deploy SoftCanada
 
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
-  pull_request:
-    branches:
-      - main  # Trigger on pull request to the main branch
+      - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
-      - name: Checkout repository
+      - name: "Checkout Code"
         uses: actions/checkout@v3
 
-      # Set up Node.js
-      - name: Set up Node.js
+      - name: "Set up Node.js"
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Use the desired Node.js version
+          node-version: "18.x"
+          cache: "npm"
 
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
+      - name: "Install Dependencies"
+        run: npm ci
 
-      # Build the Next.js app
-      - name: Build Next.js app
+      - name: "Build Next.js App"
         run: npm run build
 
-      # Set up Azure deployment credentials
-      - name: Set up Azure deployment credentials
+      - name: "Deploy to Azure Web App"
         uses: azure/webapps-deploy@v2
         with:
-          app-name: softcanada  # Replace with your Azure App Service name
-          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}  # Set up Azure publish profile as GitHub secret
-
-      # Deploy to Azure App Service
-      - name: Deploy to Azure
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: softcanada  # Replace with your Azure App Service name
-          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}  # Set up Azure publish profile as GitHub secret
+          app-name: "softcanada" # Your Azure Web App name
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: "."
