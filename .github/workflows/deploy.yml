@@ -1,4 +1,4 @@
-name: Build and Deploy SoftCanada App to Azure App Service
+name: Build and Deploy SoftCan App to Azure App Service
 
 on:
   push:
@@ -21,11 +21,27 @@ jobs:
         with:
           node-version: "18.x"
 
+      - name: Cache node_modules
+        id: node-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            **/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Next.js app
+      - name: Build app
         run: npm run build
+
+      - name: Cache .next build folder
+        uses: actions/cache@v3
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-next-${{ hashFiles('package-lock.json') }}
 
       - name: Prepare deployment package
         run: |
@@ -38,7 +54,7 @@ jobs:
           # cp .env.production deploy/.env
           # Copy any other necessary files
 
-      - name: Deploy to Azure Web App
+      - name: Deploy app to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
