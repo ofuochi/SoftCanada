@@ -1,33 +1,33 @@
-name: Deploy SoftCanada
+# name: Deploy SoftCanada
 
-on:
-  push:
-    branches:
-      - main
+# on:
+#   push:
+#     branches:
+#       - main
 
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: "Checkout Code"
-        uses: actions/checkout@v3
+#     steps:
+#       - name: "Checkout Code"
+#         uses: actions/checkout@v3
 
-      - name: "Set up Node.js"
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.x"
-          cache: "npm"
+#       - name: "Set up Node.js"
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: "18.x"
+#           cache: "npm"
 
-      - name: "Install Dependencies"
-        run: npm ci
+#       - name: "Install Dependencies"
+#         run: npm ci
 
-      - name: "Build Next.js App"
-        run: npm run build
+#       - name: "Build Next.js App"
+#         run: npm run build
 
-      - name: "Deploy to Azure Web App"
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: "softcanada" # Your Azure Web App name
-          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-          package: "."
+#       - name: "Deploy to Azure Web App"
+#         uses: azure/webapps-deploy@v2
+#         with:
+#           app-name: "softcanada" # Your Azure Web App name
+#           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+#           package: "."
