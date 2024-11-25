@@ -1,47 +1,47 @@
-name: Build and deploy Node.js app to Azure Web App - softcanada
+# name: Build and deploy Node.js app to Azure Web App - softcanada
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+# on:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
 
-jobs:
-  build_and_deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
+# jobs:
+#   build_and_deploy:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       id-token: write
+#       contents: read
 
-    steps:
-      - uses: actions/checkout@v4
+#     steps:
+#       - uses: actions/checkout@v4
 
-      - name: Set up Node.js version and cache dependencies
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.x"
-          cache: "npm"
+#       - name: Set up Node.js version and cache dependencies
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: "18.x"
+#           cache: "npm"
 
-      - name: Install dependencies
-        run: npm ci
+#       - name: Install dependencies
+#         run: npm ci
 
-      - name: Build app
-        run: npm run build --if-present
+#       - name: Build app
+#         run: npm run build --if-present
 
-      - name: Archive built app
-        run: |
-          zip -r release.zip . -x "node_modules/*" -x ".git/*" -x ".github/*"
+#       - name: Archive built app
+#         run: |
+#           zip -r release.zip . -x "node_modules/*" -x ".git/*" -x ".github/*"
 
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F688B667FE964E69BC5A334716F4F70C }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_9596A505FC3944CA969D9C027D5BA7AA }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_51AA9D5E784447A48A03B1496BE8FE59 }}
+#       - name: Login to Azure
+#         uses: azure/login@v2
+#         with:
+#           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F688B667FE964E69BC5A334716F4F70C }}
+#           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_9596A505FC3944CA969D9C027D5BA7AA }}
+#           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_51AA9D5E784447A48A03B1496BE8FE59 }}
 
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: "softcanada"
-          slot-name: "Production"
-          package: release.zip
+#       - name: Deploy to Azure Web App
+#         uses: azure/webapps-deploy@v3
+#         with:
+#           app-name: "softcanada"
+#           slot-name: "Production"
+#           package: release.zip

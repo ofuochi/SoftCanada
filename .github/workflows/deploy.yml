@@ -1,33 +1,46 @@
-# name: Deploy SoftCanada
+name: Build and Deploy SoftCanada App to Azure App Service
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   build-and-deploy:
-#     runs-on: ubuntu-latest
+env:
+  AZURE_WEBAPP_NAME: softcanada
 
-#     steps:
-#       - name: "Checkout Code"
-#         uses: actions/checkout@v3
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-#       - name: "Set up Node.js"
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: "18.x"
-#           cache: "npm"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-#       - name: "Install Dependencies"
-#         run: npm ci
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
 
-#       - name: "Build Next.js App"
-#         run: npm run build
+      - name: Install dependencies
+        run: npm ci
 
-#       - name: "Deploy to Azure Web App"
-#         uses: azure/webapps-deploy@v2
-#         with:
-#           app-name: "softcanada" # Your Azure Web App name
-#           publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
-#           package: "."
+      - name: Build Next.js app
+        run: npm run build
+
+      - name: Prepare deployment package
+        run: |
+          mkdir deploy
+          cp -R .next deploy/.next
+          cp -R public deploy/public
+          cp package*.json deploy/
+          cp next.config.js deploy/
+          # If you have environment variables, copy them
+          # cp .env.production deploy/.env
+          # Copy any other necessary files
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: "./deploy"
