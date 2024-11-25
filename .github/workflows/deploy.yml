@@ -7,6 +7,7 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: softcanada
+  ACTIONS_RUNNER_DEBUG: true
 
 jobs:
   build-and-deploy:
@@ -35,7 +36,7 @@ jobs:
 
       # Step 4: Install dependencies with npm ci
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --only=production
 
       # Step 5: Build the application
       - name: Build the Next.js app
