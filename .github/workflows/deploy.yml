@@ -7,6 +7,7 @@ on:
 
 env:
   ACTIONS_RUNNER_DEBUG: true
+  SCM_DO_BUILD_DURING_DEPLOYMENT: true
 
 jobs:
   build-and-deploy:
@@ -49,9 +50,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-cache-
 
-      # Build the Next.js app
+      # Build the app
       - name: Build the app
         run: npm run build
+
+        # Create a ZIP file of the build artifacts
+      - name: Create deployment package
+        run: |
+          mkdir -p deployment
+          cp -r .next public package.json deployment/
+          cd deployment
+          zip -r ../deployment.zip .
+        shell: bash
 
       # Deploy to Azure Web App
       - name: Deploy to Azure Web App
