@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  ACTIONS_RUNNER_DEBUG: true
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
