@@ -1,13 +1,18 @@
-﻿import Image from "next/image";
-import classNames from "classnames";
+﻿import classNames from "classnames";
+import Image from "next/image";
 import Link from "next/link";
 
 interface LogoProps {
   theme?: "dark" | "light";
   size?: "small" | "medium" | "large";
+  path?: string;
 }
 
-export default function Logo({ theme = "dark", size = "medium" }: LogoProps) {
+export default function Logo({
+  theme = "dark",
+  size = "medium",
+  path = "/",
+}: LogoProps) {
   const logoSrc = theme === "dark" ? "/dark_logo.svg" : "/light_logo.svg";
 
   // Tailwind CSS classes for scaling based on size prop
@@ -18,7 +23,7 @@ export default function Logo({ theme = "dark", size = "medium" }: LogoProps) {
   });
 
   return (
-    <Link href="/" aria-label="Home">
+    <Link href={path} aria-label="Home">
       <Image
         src={logoSrc}
         alt={`${theme} theme logo`}
