@@ -1,32 +1,16 @@
-﻿.cv-builder {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-}
-
-.cv-form {
-  flex: 1;
-  background: #fff;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.cv-preview {
-  flex: 1;
-  background: #f9f9f9;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.cv-content {
+﻿.cv-preview {
   font-family: Arial, sans-serif;
   line-height: 1.6;
 }
 
-h2, h3, h4 {
-  margin: 0 0 10px;
+.cv-preview h1,
+.cv-preview h2,
+.cv-preview h3,
+.cv-preview h4,
+.cv-preview h5 {
+  margin: 0;
+}
+
+.cv-preview p {
+  margin: 0 0 10px 0;
 }
