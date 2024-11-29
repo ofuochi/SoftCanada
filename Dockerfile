@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy package files
 COPY package.json package-lock.json ./
 
-# Install dependencies
-RUN npm ci --production
+# Install all dependencies (including dev dependencies)
+RUN npm ci
 
 # Copy the rest of the application files
 COPY . .
@@ -25,9 +25,11 @@ ENV NODE_ENV=production
 # Set working directory
 WORKDIR /app
 
-# Copy build output and production dependencies
-COPY --from=base /app/.next ./.next
+# Copy only production dependencies
 COPY --from=base /app/node_modules ./node_modules
+# Copy the build output
+COPY --from=base /app/.next ./.next
+# Copy other required files
 COPY --from=base /app/package.json ./package.json
 COPY --from=base /app/public ./public
 
