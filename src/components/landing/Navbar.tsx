@@ -2,20 +2,20 @@
 
 import Logo from "@/components/Logo";
 import { DownOutlined, MenuOutlined } from "@ant-design/icons";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { Button, Drawer, Menu, Space } from "antd";
 import classNames from "classnames";
-import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import type { MenuProps } from "antd";
-import { ProfileAvatar } from "../ProfileAvatar";
 import { LuLayoutDashboard } from "react-icons/lu";
+import { ProfileAvatar } from "../ProfileAvatar";
 export default function Navbar() {
   const [navbarStyle, setNavbarStyle] = useState("bg-transparent");
   const [isNavbarDark, setIsNavbarDark] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { data: session } = useSession();
+  const { user } = useUser();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -146,7 +146,7 @@ export default function Navbar() {
 
           {/* Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            {session ? (
+            {user ? (
               <Space size="middle">
                 <Link href="/dashboard">
                   <Button
@@ -159,20 +159,18 @@ export default function Navbar() {
               </Space>
             ) : (
               <>
-                <Button
-                  className="font-semibold"
-                  onClick={() => signIn("auth0", { redirectTo: "/dashboard" })}
-                >
-                  Sign In
-                </Button>
-                <Button
-                  type="primary"
-                  className="font-bold"
-                  danger={isNavbarDark}
-                  onClick={() => signIn("auth0")}
-                >
-                  Register Now!
-                </Button>
+                <Link href="/api/auth/login">
+                  <Button className="font-semibold">Sign In</Button>
+                </Link>
+                <Link href="/api/auth/login">
+                  <Button
+                    type="primary"
+                    className="font-bold"
+                    danger={isNavbarDark}
+                  >
+                    Register Now!
+                  </Button>
+                </Link>
               </>
             )}
           </div>

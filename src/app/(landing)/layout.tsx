@@ -1,15 +1,15 @@
 import "../globals.css";
 
+import Footer from "@/components/landing/Footer";
+import Navbar from "@/components/landing/Navbar";
 import theme from "@/theme/theme.config";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ConfigProvider } from "antd";
 import { Metadata } from "next";
+import { getSession } from "@auth0/nextjs-auth0";
 import localFont from "next/font/local";
 import React from "react";
-import Navbar from "@/components/landing/Navbar";
-import Footer from "@/components/landing/Footer";
-import { SessionProvider } from "next-auth/react";
-import { auth } from "@/auth";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -32,14 +32,14 @@ export const metadata: Metadata = {
 export default async function LandingLayout({
   children,
 }: React.PropsWithChildren) {
-  const session = await auth();
+  const session = await getSession();
 
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessionProvider session={session}>
+        <UserProvider user={session?.user}>
           <AntdRegistry>
             <ConfigProvider theme={theme}>
               <>
@@ -51,7 +51,7 @@ export default async function LandingLayout({
               </>
             </ConfigProvider>
           </AntdRegistry>
-        </SessionProvider>
+        </UserProvider>
       </body>
     </html>
   );

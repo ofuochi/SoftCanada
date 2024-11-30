@@ -1,16 +1,16 @@
 import { UserOutlined } from "@ant-design/icons";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { Avatar, Dropdown, MenuProps } from "antd";
 import type { AvatarSize } from "antd/es/avatar/AvatarContext";
-import { useSession, signOut } from "next-auth/react";
 import React from "react";
 
 type Props = {
   size?: AvatarSize;
 };
 export const ProfileAvatar: React.FC<Props> = ({ size = "large" }) => {
-  const { data: session } = useSession();
+  const { user } = useUser();
 
-  if (!session) {
+  if (!user) {
     return null;
   }
   const profileMenu: MenuProps = {
@@ -20,8 +20,7 @@ export const ProfileAvatar: React.FC<Props> = ({ size = "large" }) => {
       { key: "divider", type: "divider" },
       {
         key: "3",
-        label: "Logout",
-        onClick: () => signOut({ redirectTo: "/" }),
+        label: <a href="/api/auth/logout">Logout</a>,
       },
     ],
   };
@@ -36,8 +35,8 @@ export const ProfileAvatar: React.FC<Props> = ({ size = "large" }) => {
       <Avatar
         size={size}
         icon={<UserOutlined />}
-        src={session.user?.image}
-        alt={session.user?.name || "User"}
+        src={user?.picture}
+        alt={user?.name || "User"}
         className="cursor-pointer"
       />
     </Dropdown>

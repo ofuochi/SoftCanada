@@ -1,10 +1,10 @@
 import "../globals.css";
 
-import { auth } from "@/auth";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { getSession } from "@auth0/nextjs-auth0";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { Metadata } from "next";
-import { SessionProvider } from "next-auth/react";
 import localFont from "next/font/local";
 
 const geistSans = localFont({
@@ -28,18 +28,18 @@ export const metadata: Metadata = {
 export default async function LandingLayout({
   children,
 }: React.PropsWithChildren) {
-  const session = await auth();
+  const session = await getSession();
 
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessionProvider session={session}>
+        <UserProvider user={session?.user}>
           <AntdRegistry>
             <DashboardLayout>{children}</DashboardLayout>
           </AntdRegistry>
-        </SessionProvider>
+        </UserProvider>
       </body>
     </html>
   );
