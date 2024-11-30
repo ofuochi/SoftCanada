@@ -1,13 +1,15 @@
 import "../globals.css";
 
 import theme from "@/theme/theme.config";
-import {AntdRegistry} from "@ant-design/nextjs-registry";
-import {ConfigProvider} from "antd";
-import {Metadata} from "next";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { ConfigProvider } from "antd";
+import { Metadata } from "next";
 import localFont from "next/font/local";
 import React from "react";
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -27,24 +29,30 @@ export const metadata: Metadata = {
   description: "Easily navigate your Canadian journey with Soft Canada.",
 };
 
-export default function LandingLayout({children}: React.PropsWithChildren) {
+export default async function LandingLayout({
+  children,
+}: React.PropsWithChildren) {
+  const session = await auth();
+
   return (
     <html lang="en">
-    <body
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-    >
-    <AntdRegistry>
-      <ConfigProvider theme={theme}>
-        <>
-          <Navbar/>
-          <main className="relative min-h-screen bg-white px-28 pt-16">
-            {children}
-            <Footer/>
-          </main>
-        </>
-      </ConfigProvider>
-    </AntdRegistry>
-    </body>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <SessionProvider session={session}>
+          <AntdRegistry>
+            <ConfigProvider theme={theme}>
+              <>
+                <Navbar />
+                <main className="relative min-h-screen bg-white px-28 pt-16">
+                  {children}
+                  <Footer />
+                </main>
+              </>
+            </ConfigProvider>
+          </AntdRegistry>
+        </SessionProvider>
+      </body>
     </html>
   );
 }

@@ -2,17 +2,20 @@
 
 import Logo from "@/components/Logo";
 import { DownOutlined, MenuOutlined } from "@ant-design/icons";
-import { Button, Drawer, Menu } from "antd";
+import { Button, Drawer, Menu, Space } from "antd";
 import classNames from "classnames";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { signIn } from "@/auth";
+import { useEffect, useState } from "react";
 
 import type { MenuProps } from "antd";
+import { ProfileAvatar } from "../ProfileAvatar";
+import { LuLayoutDashboard } from "react-icons/lu";
 export default function Navbar() {
   const [navbarStyle, setNavbarStyle] = useState("bg-transparent");
   const [isNavbarDark, setIsNavbarDark] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,7 +85,10 @@ export default function Navbar() {
       key: "mortgage",
       label: <Link href="/mortgage-calculator">Mortgage Calculator</Link>,
     },
-    { key: "cv-builder", label: <Link href="/cv-builder">CV Builder</Link> },
+    {
+      key: "cv-builder",
+      label: <Link href="/dashboard/career/cv-builder">CV Builder</Link>,
+    },
     { key: "faq", label: <Link href="/faq">FAQ</Link> },
     { key: "contact", label: <Link href="/contact">Contact</Link> },
   ];
@@ -140,15 +146,35 @@ export default function Navbar() {
 
           {/* Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button
-              className="font-semibold"
-              onClick={async () => signIn("auth0")}
-            >
-              Sign In
-            </Button>
-            <Button type="primary" className="font-bold" danger={isNavbarDark}>
-              Register Now!
-            </Button>
+            {session ? (
+              <Space size="middle">
+                <Link href="/dashboard">
+                  <Button
+                    size="small"
+                    icon={<LuLayoutDashboard />}
+                    title="Dashboard"
+                  />
+                </Link>
+                <ProfileAvatar />
+              </Space>
+            ) : (
+              <>
+                <Button
+                  className="font-semibold"
+                  onClick={() => signIn("auth0", { redirectTo: "/dashboard" })}
+                >
+                  Sign In
+                </Button>
+                <Button
+                  type="primary"
+                  className="font-bold"
+                  danger={isNavbarDark}
+                  onClick={() => signIn("auth0")}
+                >
+                  Register Now!
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Icon */}
