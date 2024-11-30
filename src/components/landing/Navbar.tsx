@@ -6,6 +6,7 @@ import { Button, Drawer, Menu } from "antd";
 import classNames from "classnames";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { signIn } from "@/auth";
 
 import type { MenuProps } from "antd";
 export default function Navbar() {
@@ -139,7 +140,12 @@ export default function Navbar() {
 
           {/* Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button className="font-semibold">Sign In</Button>
+            <Button
+              className="font-semibold"
+              onClick={async () => signIn("auth0")}
+            >
+              Sign In
+            </Button>
             <Button type="primary" className="font-bold" danger={isNavbarDark}>
               Register Now!
             </Button>
