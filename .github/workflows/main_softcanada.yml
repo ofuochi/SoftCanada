@@ -1,3 +1,6 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
 name: Build and deploy container app to Azure Web App - softcanada
 
 on:
@@ -27,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: softcanada.azurecr.io/softcanada/nextjs-app:${{ github.sha }}
+          tags: softcanada.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_ff7f876c9d18464e9012fe878663c7ed }}/nextjs-app:${{ github.sha }}
           file: ./Dockerfile
 
   deploy:
@@ -45,4 +48,4 @@ jobs:
           app-name: "softcanada"
           slot-name: "production"
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_8b3e7d51ff7d46bc8a220a8774acea88 }}
-          images: "softcanada.azurecr.io/softcanada/nextjs-app:${{ github.sha }}"
+          images: "softcanada.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_ff7f876c9d18464e9012fe878663c7ed }}/nextjs-app:${{ github.sha }}"
