@@ -6,6 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "install:clean": "rm -rf node_modules && npm install --omit=dev",
+    "build:prod": "npm install && npm run build && npm run install:clean",
     "lint": "next lint"
   },
   "dependencies": {
