@@ -8,7 +8,8 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches:
       - main
-env: WEBSITE_RUN_FROM_PACKAGE=1
+env:
+  - WEBSITE_RUN_FROM_PACKAGE: 1
 
 jobs:
   build_and_deploy_job:
@@ -31,7 +32,7 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
-          output_location: "" # Built app content directory - optional
+          output_location: "." # Built app content directory - optional
           # app_build_command: "npm run build:prod" # Build command for the app
           ###### End of Repository/Build Configurations ######
 
