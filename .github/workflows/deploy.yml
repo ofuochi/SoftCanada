@@ -1,41 +1,39 @@
-name: Build and Deploy Next.js App to Azure Web App
+name: Deploy Next.js to Azure Static Web Apps
 
 on:
   push:
     branches:
-      - main # Change this if your default branch is different
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository code
-      - name: Checkout code
+      # Step 1: Checkout repository code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js environment
-      - name: Set up Node.js
+      # Step 2: Setup Node.js environment
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18.x" # Use the Node.js version compatible with your project
+          node-version: "18.x"
 
       # Step 3: Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # Step 4: Build the Next.js application
+      # Step 4: Build Next.js application
       - name: Build Next.js app
         run: npm run build
 
-      # Step 5: Remove development dependencies to reduce package size
-      - name: Prune dev dependencies
-        run: npm prune --production
-
-      # Step 6: Deploy to Azure Web App
-      - name: Deploy to Azure Web App
-        uses: Azure/webapps-deploy@v2
+      # Step 5: Deploy to Azure Static Web App
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          app-name: "softcanada" # Replace with your Azure App Service name
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: "."
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "upload" # Specify the action
+          app_location: "/" # The root directory of your app
+          output_location: ".next" # The location of the build output
+          api_location: "" # Leave empty for no API
