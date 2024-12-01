@@ -1,45 +1,41 @@
-name: Deploy App to Azure
+name: Build and Deploy Next.js App to Azure Web App
 
 on:
   push:
     branches:
-      - main
+      - main # Change this if your default branch is different
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout Code
+      # Step 1: Check out the repository code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Log in to Azure
-      - name: Log in to Azure
-        uses: azure/login@v1
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          node-version: "18.x" # Use the Node.js version compatible with your project
 
-      # Step 3: Build Docker Image
-      - name: Build Docker Image
-        run: |
-          docker build -t ${{ secrets.ACR_NAME }}.azurecr.io/nextjs-app:${{ github.sha }} .
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci
 
-      # Step 4: Log in to Azure Container Registry
-      - name: Log in to ACR
-        run: |
-          echo ${{ secrets.ACR_PASSWORD }} | docker login ${{ secrets.ACR_NAME }}.azurecr.io -u ${{ secrets.ACR_USERNAME }} --password-stdin
+      # Step 4: Build the Next.js application
+      - name: Build Next.js app
+        run: npm run build
 
-      # Step 5: Push Docker Image to ACR
-      - name: Push Docker Image to ACR
-        run: |
-          docker push ${{ secrets.ACR_NAME }}.azurecr.io/nextjs-app:${{ github.sha }}
+      # Step 5: Remove development dependencies to reduce package size
+      - name: Prune dev dependencies
+        run: npm prune --production
 
-      # Step 6: Deploy Docker Image to Azure App Service
+      # Step 6: Deploy to Azure Web App
       - name: Deploy to Azure Web App
-        run: |
-          az webapp config container set \
-            --name ${{ secrets.WEBAPP_NAME }} \
-            --resource-group ${{ secrets.RESOURCE_GROUP }} \
-            --docker-custom-image-name ${{ secrets.ACR_NAME }}.azurecr.io/nextjs-app:${{ github.sha }} \
-            --docker-registry-server-url https://${{ secrets.ACR_NAME }}.azurecr.io
+        uses: Azure/webapps-deploy@v2
+        with:
+          app-name: "softcanada" # Replace with your Azure App Service name
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: "."
