@@ -54,7 +54,10 @@ export default function Navbar() {
         </>
       ),
       children: [
-        { key: "career", label: <Link href="/career">Career</Link> },
+        {
+          key: "career",
+          label: <Link href="/dashboard/career/jobs">Career</Link>,
+        },
         {
           key: "real-estate",
           label: <Link href="/real-estate">Real Estate</Link>,
