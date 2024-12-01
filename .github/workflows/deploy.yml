@@ -40,4 +40,4 @@ jobs:
           action: "upload"
           app_location: "/" # The root directory of your app
           output_location: ".next" # The location of the build output
-          api_location: "" # Leave empty for no API
+          api_location: "." # Leave empty for no API
