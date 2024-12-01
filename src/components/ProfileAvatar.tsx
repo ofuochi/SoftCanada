@@ -2,6 +2,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { Avatar, Dropdown, MenuProps } from "antd";
 import type { AvatarSize } from "antd/es/avatar/AvatarContext";
+import Link from "next/link";
 import React from "react";
 
 type Props = {
@@ -20,7 +21,7 @@ export const ProfileAvatar: React.FC<Props> = ({ size = "large" }) => {
       { key: "divider", type: "divider" },
       {
         key: "3",
-        label: <a href="/api/auth/logout">Logout</a>,
+        label: <Link href="/api/auth/logout">Logout</Link>,
       },
     ],
   };
