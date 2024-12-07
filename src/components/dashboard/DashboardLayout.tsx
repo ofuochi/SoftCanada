@@ -19,13 +19,19 @@ import {
   MenuProps,
 } from "antd";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { useState } from "react";
-import { FaSuitcase } from "react-icons/fa";
+import { PiSuitcaseSimple } from "react-icons/pi";
+import { breadcrumbConfig } from "./BreadcrumbConfig";
 
 const { Header, Footer, Sider, Content } = Layout;
 
 export default function DashboardLayout({ children }: React.PropsWithChildren) {
   const [collapsed, setCollapsed] = useState(false);
+  const pathname = usePathname();
+  const breadcrumbs = breadcrumbConfig[pathname] || [
+    { title: "Home", path: "/" },
+  ];
 
   const toggleCollapsed = () => {
     setCollapsed(!collapsed);
@@ -33,35 +39,36 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
 
   const menuItems: MenuProps["items"] = [
     {
-      key: "1",
+      key: "/dashboard",
       icon: <DashboardOutlined />,
       label: <Link href="/dashboard">Dashboard</Link>,
     },
     {
-      key: "2",
-      icon: <FaSuitcase />,
+      key: "career",
+      icon: <PiSuitcaseSimple />,
       label: "Career",
       children: [
         {
-          key: "career/cv-builder",
+          key: "/dashboard/career/cv-builder",
           label: <Link href="/dashboard/career/cv-builder">CV Builder</Link>,
         },
         {
-          key: "career/jobs",
+          key: "/dashboard/career/jobs",
           label: <Link href="/dashboard/career/jobs">Job Listings</Link>,
         },
         {
-          key: "career/career-advisor",
+          key: "/dashboard/career/career-advisor",
           label: <Link href="/dashboard/career/career-advisor">Advisor</Link>,
         },
       ],
     },
     {
-      key: "3",
+      key: "/dashboard/settings",
       icon: <SettingOutlined />,
-      label: "Settings",
+      label: <Link href="/dashboard/settings">Settings</Link>,
     },
   ];
+
   const notificationMenu: MenuProps = {
     items: [
       { key: "1", label: "Notification 1" },
@@ -94,7 +101,12 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
         <div className="h-16 m-4 text-center align-middle">
           <Logo size={collapsed ? "small" : "medium"} path="/dashboard" />
         </div>
-        <Menu mode="inline" items={menuItems} />
+        <Menu
+          mode="inline"
+          items={menuItems}
+          selectedKeys={[pathname]}
+          defaultOpenKeys={[pathname.split("/").slice(0, 3).join("/")]}
+        />
       </Sider>
       <Layout
         style={{
@@ -136,7 +148,7 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
 
         {/* Breadcrumb */}
         <div className="px-6 py-4">
-          <Breadcrumb items={[{ title: "Home" }, { title: "Dashboard" }]} />
+          <Breadcrumb items={breadcrumbs} />
         </div>
 
         {/* Content */}
