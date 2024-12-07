@@ -4,10 +4,11 @@ import Logo from "@/components/Logo";
 import { ProfileAvatar } from "@/components/ProfileAvatar";
 import {
   BellOutlined,
-  DashboardOutlined,
+  HomeOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   SettingOutlined,
+  CalendarOutlined,
 } from "@ant-design/icons";
 import {
   Badge,
@@ -21,6 +22,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
+import { MdDashboard } from "react-icons/md";
 import { PiSuitcaseSimple } from "react-icons/pi";
 import { breadcrumbConfig } from "./BreadcrumbConfig";
 
@@ -40,7 +42,7 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
   const menuItems: MenuProps["items"] = [
     {
       key: "/dashboard",
-      icon: <DashboardOutlined />,
+      icon: <MdDashboard />,
       label: <Link href="/dashboard">Dashboard</Link>,
     },
     {
@@ -61,6 +63,38 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
           label: <Link href="/dashboard/career/career-advisor">Advisor</Link>,
         },
       ],
+    },
+    {
+      key: "/dashboard/real-estate",
+      icon: <HomeOutlined />,
+      label: <Link href="/dashboard/real-estate">Real Estate</Link>,
+      children: [
+        {
+          key: "/dashboard/real-estate/properties",
+          label: (
+            <Link href="/dashboard/real-estate/properties">Properties</Link>
+          ),
+        },
+        {
+          key: "/dashboard/real-estate/agents",
+          label: <Link href="/dashboard/real-estate/agents">Agents</Link>,
+        },
+        {
+          key: "/dashboard/real-estate/transactions",
+          label: (
+            <Link href="/dashboard/real-estate/transactions">Transactions</Link>
+          ),
+        },
+      ],
+    },
+    {
+      key: "/dashboard/calendar",
+      icon: <CalendarOutlined />,
+      label: (
+        <Badge dot>
+          <Link href="/dashboard/calendar">Calendar</Link>
+        </Badge>
+      ),
     },
     {
       key: "/dashboard/settings",
