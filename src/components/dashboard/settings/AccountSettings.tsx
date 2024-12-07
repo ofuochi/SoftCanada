@@ -6,10 +6,10 @@ import {
   Button,
   Card,
   Form,
+  FormProps,
   GetProp,
   Input,
   message,
-  Select,
   Typography,
   Upload,
   UploadProps,
@@ -17,14 +17,29 @@ import {
 import Image from "next/image";
 import { useState } from "react";
 
-const { Option } = Select;
 const { Paragraph, Title } = Typography;
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+
+type FieldType = {
+  name: string;
+  email: string;
+};
 
 export default function AccountSettings() {
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>(user?.picture || "");
+
+  const handleUpdatePersonalDetails: FormProps<FieldType>["onFinish"] = (
+    values
+  ) => {
+    console.log("Success:", values);
+  };
+
+  const handleUpdatePersonalDetailError: FormProps<FieldType>["onFinishFailed"] =
+    (errorInfo) => {
+      console.log("Failed:", errorInfo);
+    };
 
   const getBase64 = (file: FileType): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -128,27 +143,26 @@ export default function AccountSettings() {
         <Paragraph>
           To change your personal details, edit and save your details
         </Paragraph>
-        <Form layout="vertical">
-          <Form.Item label="Your Name" name="name">
-            <Input placeholder="Mathew Anderson" />
+        <Form
+          layout="vertical"
+          onFinish={handleUpdatePersonalDetails}
+          onFinishFailed={handleUpdatePersonalDetailError}
+          initialValues={{
+            name: user?.name,
+            email: user?.email,
+          }}
+        >
+          <Form.Item label="Name" name="name" rules={[{ required: true }]}>
+            <Input />
           </Form.Item>
-          <Form.Item label="Location" name="location">
-            <Select defaultValue="India">
-              <Option value="India">India</Option>
-              <Option value="USA">USA</Option>
-              <Option value="UK">UK</Option>
-            </Select>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, type: "email" }]}
+          >
+            <Input />
           </Form.Item>
-          <Form.Item label="Store Name" name="storeName">
-            <Input placeholder="Maxima Studio" />
-          </Form.Item>
-          <Form.Item label="Currency" name="currency">
-            <Select defaultValue="India (INR)">
-              <Option value="India (INR)">India (INR)</Option>
-              <Option value="USA (USD)">USA (USD)</Option>
-              <Option value="UK (GBP)">UK (GBP)</Option>
-            </Select>
-          </Form.Item>
+
           <Button type="primary">Save</Button>
         </Form>
       </Card>
