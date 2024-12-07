@@ -26,11 +26,13 @@ export default function AccountSettings() {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>(user?.picture || "");
 
-  const getBase64 = (img: FileType, callback: (url: string) => void) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => callback(reader.result as string));
-    reader.readAsDataURL(img);
-  };
+  const getBase64 = (file: FileType): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
 
   const beforeUpload = (file: FileType) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
@@ -44,16 +46,16 @@ export default function AccountSettings() {
     return isJpgOrPng && isLt2M;
   };
 
-  const handleChange: UploadProps["onChange"] = (info) => {
-    if (info.file.status === "uploading") {
+  const handleChange: UploadProps["onChange"] = ({ file }) => {
+    if (file.status === "uploading") {
       setLoading(true);
       return;
     }
-    if (info.file.status === "done") {
+    if (file.status === "done") {
       // Get this url from response in real world.
-      getBase64(info.file.originFileObj as FileType, (url) => {
+      getBase64(file.originFileObj as FileType).then((imageUrl) => {
+        setImageUrl(imageUrl);
         setLoading(false);
-        setImageUrl(url);
       });
     }
   };
