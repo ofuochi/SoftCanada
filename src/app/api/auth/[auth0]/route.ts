@@ -7,6 +7,9 @@ const logoutUrl = [
 ];
 
 export const GET = handleAuth({
-  login: handleLogin({ returnTo: "/dashboard" }),
+  login: handleLogin({
+    returnTo: "/dashboard",
+    authorizationParams: { audience: process.env.AUTH0_AUDIENCE },
+  }),
   logout: handleLogout({ returnTo: logoutUrl.join("") }),
 });
