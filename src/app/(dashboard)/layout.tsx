@@ -1,6 +1,7 @@
 import "../globals.css";
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { SessionProvider } from "@/contexts/SessionContext";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { getSession } from "@auth0/nextjs-auth0";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
@@ -36,9 +37,11 @@ export default async function LandingLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <UserProvider user={session?.user}>
-          <AntdRegistry>
-            <DashboardLayout>{children}</DashboardLayout>
-          </AntdRegistry>
+          <SessionProvider session={{ ...session }}>
+            <AntdRegistry>
+              <DashboardLayout>{children}</DashboardLayout>
+            </AntdRegistry>
+          </SessionProvider>
         </UserProvider>
       </body>
     </html>
