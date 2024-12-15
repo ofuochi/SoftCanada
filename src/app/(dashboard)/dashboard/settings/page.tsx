@@ -37,5 +37,9 @@ export default function SettingsPage() {
     },
   ];
 
-  return <Tabs defaultActiveKey="1" items={tabItems} />;
+  return (
+    <div className="p-6 bg-white min-h-[360px]">
+      <Tabs defaultActiveKey="1" items={tabItems} />
+    </div>
+  );
 }

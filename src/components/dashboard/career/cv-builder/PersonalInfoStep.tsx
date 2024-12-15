@@ -1,4 +1,4 @@
-import { CvStepProps, FileType, FormValues } from "@/app/types/career";
+import { CvStepProps, FileType, ResumeData } from "@/app/types/career";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Card,
@@ -17,7 +17,7 @@ import { Controller, UseFormSetValue } from "react-hook-form";
 
 const { Title, Text } = Typography;
 
-type Props = CvStepProps & { setValue: UseFormSetValue<FormValues> };
+type Props = CvStepProps & { setValue: UseFormSetValue<ResumeData> };
 export const PersonalInfoStep: React.FC<Props> = ({
   control,
   errors,

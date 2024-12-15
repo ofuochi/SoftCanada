@@ -67,7 +67,7 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
     {
       key: "/dashboard/real-estate",
       icon: <HomeOutlined />,
-      label: <Link href="/dashboard/real-estate">Real Estate</Link>,
+      label: "Real Estate",
       children: [
         {
           key: "/dashboard/real-estate/properties",
@@ -186,9 +186,7 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
         </div>
 
         {/* Content */}
-        <Content className="m-5 overflow-initial">
-          <div className="p-6 bg-white min-h-[360px]">{children}</div>
-        </Content>
+        <Content className="m-5 overflow-initial">{children}</Content>
 
         {/* Footer */}
         <Footer className="text-center">
