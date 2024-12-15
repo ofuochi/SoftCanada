@@ -7,7 +7,7 @@ const { Title, Text } = Typography;
 
 const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   return (
-    <div className="px-10 py-8 bg-white text-gray-800 min-h-screen font-sans">
+    <div className="text-gray-800 min-h-screen font-sans">
       {/* HEADER */}
       <header className="mb-5">
         {data.basics?.name && (
@@ -391,14 +391,14 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
 
       {/* REFERENCES */}
       {data.references && data.references.length > 0 && (
-        <section className="mb-8">
+        <section>
           <Divider orientation="left" style={{ borderColor: "#333" }}>
             <Title level={4} className="font-bold uppercase tracking-wide">
               References
             </Title>
           </Divider>
           {data.references.map((ref, i) => (
-            <div key={i} className="mb-4 text-base">
+            <div key={i} className="text-base">
               <Text className="font-semibold">{ref.name}:</Text>
               <div className="mt-1">{ref.reference}</div>
             </div>

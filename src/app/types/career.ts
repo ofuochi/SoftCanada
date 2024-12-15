@@ -43,87 +43,87 @@ export type CvStepProps = {
 };
 
 export type ResumeLocationType = {
-  address: string;
-  postalCode: string;
-  city: string;
-  countryCode: string;
-  region: string;
+  address?: string;
+  postalCode?: string;
+  city?: string;
+  countryCode?: string;
+  region?: string;
 };
 
 export type ResumeProfileType = {
-  network: string;
-  username: string;
-  url: string;
+  network?: string;
+  username?: string;
+  url?: string;
 };
 
 export type ResumeBasicsType = {
   name: string;
-  label: string;
-  image: string;
+  label?: string;
+  image?: string;
   email: string;
   phone: string;
-  url: string;
+  url?: string;
   summary: string;
-  location: ResumeLocationType;
-  profiles: ResumeProfileType[];
+  location?: ResumeLocationType;
+  profiles?: ResumeProfileType[];
 };
 
 export type ResumeWorkType = {
   name: string;
   position: string;
-  url: string;
+  url?: string;
   startDate: string;
   endDate: string;
-  summary: string;
+  summary?: string;
   highlights: string[];
 };
 
 export type ResumeVolunteerType = {
   organization: string;
   position: string;
-  url: string;
+  url?: string;
   startDate: string;
   endDate: string;
-  summary: string;
+  summary?: string;
   highlights: string[];
 };
 
 export type ResumeEducationType = {
   institution: string;
-  url: string;
+  url?: string;
   area: string;
   studyType: string;
   startDate: string;
   endDate: string;
-  score: string;
-  courses: string[];
+  score?: string;
+  courses?: string[];
 };
 
 export type ResumeAwardType = {
   title: string;
   date: string;
   awarder: string;
-  summary: string;
+  summary?: string;
 };
 
 export type ResumeCertificateType = {
   name: string;
   date: string;
   issuer: string;
-  url: string;
+  url?: string;
 };
 
 export type ResumePublicationType = {
   name: string;
   publisher: string;
   releaseDate: string;
-  url: string;
-  summary: string;
+  url?: string;
+  summary?: string;
 };
 
 export type ResumeSkillType = {
   name: string;
-  level: string;
+  level?: string;
   keywords: string[];
 };
 
@@ -146,22 +146,22 @@ export type ResumeProjectType = {
   name: string;
   startDate: string;
   endDate: string;
-  description: string;
+  description?: string;
   highlights: string[];
-  url: string;
+  url?: string;
 };
 
 export type ResumeType = {
   basics: ResumeBasicsType;
   work: ResumeWorkType[];
-  volunteer: ResumeVolunteerType[];
+  volunteer?: ResumeVolunteerType[];
   education: ResumeEducationType[];
-  awards: ResumeAwardType[];
-  certificates: ResumeCertificateType[];
-  publications: ResumePublicationType[];
+  awards?: ResumeAwardType[];
+  certificates?: ResumeCertificateType[];
+  publications?: ResumePublicationType[];
   skills: ResumeSkillType[];
-  languages: ResumeLanguageType[];
-  interests: ResumeInterestType[];
-  references: ResumeReferenceType[];
-  projects: ResumeProjectType[];
+  languages?: ResumeLanguageType[];
+  interests?: ResumeInterestType[];
+  references?: ResumeReferenceType[];
+  projects?: ResumeProjectType[];
 };

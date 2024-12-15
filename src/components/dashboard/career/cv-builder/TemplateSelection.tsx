@@ -14,7 +14,7 @@ import {
 import { useState } from "react";
 import StandardTemplate from "../templates/StandardTemplate";
 import { RiProfileLine } from "react-icons/ri";
-import { PiSuitcaseSimpleThin } from "react-icons/pi";
+import { PiGraduationCap, PiSuitcaseSimpleThin } from "react-icons/pi";
 import PersonalInfoForm from "./PersonalInfoForm";
 
 interface Template {
@@ -333,7 +333,12 @@ const items: CollapseProps["items"] = [
   },
   {
     key: "3",
-    label: "Education",
+    label: (
+      <Space size={20}>
+        <PiGraduationCap size={20} />
+        <span>Education</span>
+      </Space>
+    ),
     children: <p>{text}</p>,
   },
 ];
@@ -342,24 +347,15 @@ export default function TemplateSelection() {
   return (
     <div className="flex flex-col lg:flex-row gap-5">
       <div className="flex-grow min-w-[300px]">
-        <Affix offsetTop={0}>
-          <Card className="shadow-sm">
-            <Collapse
-              ghost
-              items={items}
-              expandIcon={({ isActive }) =>
-                isActive ? <MinusOutlined /> : <PlusOutlined />
-              }
-              expandIconPosition="right"
-            />
-          </Card>
-        </Affix>
+        <div className=" bg-white p-5 sticky top-0 max-h-[calc(100vh-4rem)] overflow-y-auto">
+          <Collapse ghost items={items} expandIconPosition="right" />
+        </div>
       </div>
 
-      <div className="w-full lg:w-[210mm] flex-shrink-0 overflow-auto">
-        <Card>
+      <div className="w-full lg:w-[210mm] flex-shrink-0 overflow-aut bg-white">
+        <div className="p-10">
           <StandardTemplate data={resumeData} />
-        </Card>
+        </div>
       </div>
 
       <FloatButton
