@@ -348,7 +348,7 @@ export default function TemplateSelection() {
     <div className="flex flex-col lg:flex-row gap-5">
       <div className="flex-grow min-w-[300px]">
         <div className=" bg-white p-5 sticky top-0 max-h-[calc(100vh-4rem)] overflow-y-auto">
-          <Collapse ghost items={items} expandIconPosition="right" />
+          <Collapse ghost items={items} expandIconPosition="end" />
         </div>
       </div>
 

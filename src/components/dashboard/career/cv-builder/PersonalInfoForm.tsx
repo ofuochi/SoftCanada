@@ -1,14 +1,10 @@
 import { ResumeBasicsType } from "@/app/types/career";
-import { Form, Input, Button, Row, Col, Space, Card } from "antd";
-import { useState } from "react";
-import { PlusOutlined, CloseCircleOutlined } from "@ant-design/icons";
-import useSWR from "swr";
 
-const fetcher = async (url: string) => {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error("Failed to fetch data");
-  return response.json();
-};
+import { swrFetcher } from "@/utils/swr-util";
+import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Form, Input, Row, Space } from "antd";
+import { useState } from "react";
+import useSWR from "swr";
 
 const optionalFields = {
   label: "Job Title",
@@ -19,10 +15,11 @@ const optionalFields = {
 };
 
 const PersonalInfoForm = () => {
-  // const { data, error, isLoading } = useSWR<ResumeBasicsType>(
-  //   "/api/resume-basics",
-  //   fetcher
-  // );
+  const { data, error, isLoading } = useSWR<ResumeBasicsType>(
+    "/api/resumes",
+    swrFetcher,
+    { shouldRetryOnError: false }
+  );
 
   const [form] = Form.useForm<ResumeBasicsType>();
   const [formData, setFormData] = useState(form.getFieldsValue());
@@ -35,7 +32,6 @@ const PersonalInfoForm = () => {
     location: false,
     profiles: false,
   });
-  const [profiles, setProfiles] = useState<number[]>([]); // Tracks dynamically added profiles
 
   const toggleOptionalField = (field: keyof ResumeBasicsType) => {
     setOptionalVisible((prev) => ({
@@ -44,36 +40,17 @@ const PersonalInfoForm = () => {
     }));
   };
 
-  const addProfile = () => setProfiles((prev) => [...prev, Date.now()]); // Unique key for profiles
-  const removeProfile = (key: number) =>
-    setProfiles((prev) => prev.filter((id) => id !== key));
-
-  // if (isLoading) return <div>Loading...</div>;
-  // if (error) return <div>Error loading data: {error.message}</div>;
+  if (isLoading) return <div>Loading...</div>;
+  console.log(data);
+  const handleSubmit = (values: ResumeBasicsType): void => console.log(values);
 
   return (
     <>
       <Form
         layout="vertical"
         form={form}
-        initialValues={{
-          name: "John Doe",
-          label: "Software Engineer",
-          image: "https://via.placeholder.com/150",
-          email: "johndoe@example.com",
-          phone: "+1234567890",
-          url: "https://johndoe.dev",
-          summary:
-            "A passionate software engineer with expertise in building scalable applications, cloud computing, and DevOps.",
-          location: {
-            address: "123 Main St",
-            postalCode: "12345",
-            city: "San Francisco",
-            countryCode: "US",
-            region: "California",
-          },
-          profiles: [],
-        }}
+        onFinish={handleSubmit}
+        initialValues={data}
         onValuesChange={(_, values) => setFormData(values)}
       >
         <Row gutter={16}>
@@ -188,42 +165,74 @@ const PersonalInfoForm = () => {
                     />
                   }
                 >
-                  {profiles.map((id) => (
-                    <Row gutter={16} key={id} align="middle">
-                      <Col xs={24} sm={8}>
-                        <Form.Item
-                          label="Network"
-                          name={["profiles", id, "network"]}
+                  <Form.List name="profiles">
+                    {(fields, { add, remove }) => (
+                      <>
+                        {fields.map(({ key, name }) => (
+                          <Row gutter={16} key={key} align="middle">
+                            <Col xs={24} sm={8}>
+                              <Form.Item
+                                label="Network"
+                                name={[name, "network"]}
+                                key={key}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please enter the network name!",
+                                  },
+                                ]}
+                              >
+                                <Input placeholder="e.g., LinkedIn" />
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} sm={8}>
+                              <Form.Item
+                                label="Username"
+                                name={[name, "username"]}
+                                key={key}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please enter the username!",
+                                  },
+                                ]}
+                              >
+                                <Input placeholder="Enter username" />
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} sm={8}>
+                              <Form.Item
+                                label="URL"
+                                name={[name, "url"]}
+                                key={key}
+                                rules={[
+                                  {
+                                    type: "url",
+                                    message: "Please enter a valid URL!",
+                                  },
+                                ]}
+                              >
+                                <Input placeholder="Enter profile URL" />
+                              </Form.Item>
+                            </Col>
+                            <Col>
+                              <CloseCircleOutlined
+                                onClick={() => remove(name)}
+                                style={{ color: "red", cursor: "pointer" }}
+                              />
+                            </Col>
+                          </Row>
+                        ))}
+                        <Button
+                          type="dashed"
+                          onClick={() => add()}
+                          icon={<PlusOutlined />}
                         >
-                          <Input placeholder="e.g., LinkedIn" />
-                        </Form.Item>
-                      </Col>
-                      <Col xs={24} sm={8}>
-                        <Form.Item
-                          label="Username"
-                          name={["profiles", id, "username"]}
-                        >
-                          <Input placeholder="Enter username" />
-                        </Form.Item>
-                      </Col>
-                      <Col xs={24} sm={8}>
-                        <Form.Item label="URL" name={["profiles", id, "url"]}>
-                          <Input placeholder="Enter profile URL" />
-                        </Form.Item>
-                      </Col>
-                      <CloseCircleOutlined
-                        onClick={() => removeProfile(id)}
-                        style={{ color: "red", cursor: "pointer" }}
-                      />
-                    </Row>
-                  ))}
-                  <Button
-                    type="dashed"
-                    onClick={addProfile}
-                    icon={<PlusOutlined />}
-                  >
-                    Add Profile
-                  </Button>
+                          Add Profile
+                        </Button>
+                      </>
+                    )}
+                  </Form.List>
                 </Card>
               )}
 
@@ -234,10 +243,12 @@ const PersonalInfoForm = () => {
                       <Input placeholder={`Enter ${label.toLowerCase()}`} />
                     </Form.Item>
                   </Col>
-                  <CloseCircleOutlined
-                    onClick={() => toggleOptionalField(key)}
-                    style={{ color: "red", cursor: "pointer" }}
-                  />
+                  <Col>
+                    <CloseCircleOutlined
+                      onClick={() => toggleOptionalField(key)}
+                      style={{ color: "red", cursor: "pointer" }}
+                    />
+                  </Col>
                 </Row>
               )}
             </div>
@@ -261,6 +272,10 @@ const PersonalInfoForm = () => {
           ) : null;
         })}
       </Space>
+
+      <Button className="mt-5" type="primary" htmlType="submit">
+        Save
+      </Button>
 
       <pre>{JSON.stringify(formData, null, 2)}</pre>
     </>
