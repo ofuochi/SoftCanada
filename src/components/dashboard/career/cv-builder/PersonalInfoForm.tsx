@@ -1,10 +1,55 @@
 import { ResumeBasicsType } from "@/app/types/career";
-import { Col, Form, Input, Row } from "antd";
+import { Form, Input, Button, Row, Col, Space, Card } from "antd";
 import { useState } from "react";
+import { PlusOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import useSWR from "swr";
+
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error("Failed to fetch data");
+  return response.json();
+};
+
+const optionalFields = {
+  label: "Job Title",
+  image: "Profile Image URL",
+  url: "Website URL",
+  location: "Address",
+  profiles: "Social Profiles",
+};
 
 const PersonalInfoForm = () => {
+  // const { data, error, isLoading } = useSWR<ResumeBasicsType>(
+  //   "/api/resume-basics",
+  //   fetcher
+  // );
+
   const [form] = Form.useForm<ResumeBasicsType>();
   const [formData, setFormData] = useState(form.getFieldsValue());
+  const [optionalVisible, setOptionalVisible] = useState<{
+    [key in keyof ResumeBasicsType]?: boolean;
+  }>({
+    label: false,
+    image: false,
+    url: false,
+    location: false,
+    profiles: false,
+  });
+  const [profiles, setProfiles] = useState<number[]>([]); // Tracks dynamically added profiles
+
+  const toggleOptionalField = (field: keyof ResumeBasicsType) => {
+    setOptionalVisible((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
+  const addProfile = () => setProfiles((prev) => [...prev, Date.now()]); // Unique key for profiles
+  const removeProfile = (key: number) =>
+    setProfiles((prev) => prev.filter((id) => id !== key));
+
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error loading data: {error.message}</div>;
 
   return (
     <>
@@ -43,32 +88,6 @@ const PersonalInfoForm = () => {
           </Col>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Job Title"
-              name="label"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter your professional label!",
-                },
-              ]}
-            >
-              <Input placeholder="e.g., Software Engineer" />
-            </Form.Item>
-          </Col>
-        </Row>
-
-        <Row gutter={16}>
-          <Col xs={24} sm={12}>
-            <Form.Item
-              label="Profile Image URL"
-              name="image"
-              rules={[{ type: "url", message: "Please enter a valid URL!" }]}
-            >
-              <Input placeholder="Enter image URL" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={12}>
-            <Form.Item
               label="Email"
               name="email"
               rules={[
@@ -93,15 +112,6 @@ const PersonalInfoForm = () => {
               <Input placeholder="Enter your phone number" />
             </Form.Item>
           </Col>
-          <Col xs={24} sm={12}>
-            <Form.Item
-              label="Website URL"
-              name="url"
-              rules={[{ type: "url", message: "Please enter a valid URL!" }]}
-            >
-              <Input placeholder="Enter your website URL" />
-            </Form.Item>
-          </Col>
         </Row>
 
         <Form.Item
@@ -115,63 +125,142 @@ const PersonalInfoForm = () => {
           />
         </Form.Item>
 
-        <Row gutter={16}>
-          <Col xs={24} sm={12}>
-            <Form.Item
-              label="Address"
-              name={["location", "address"]}
-              rules={[
-                { required: true, message: "Please enter your address!" },
-              ]}
-            >
-              <Input placeholder="Enter your address" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={12}>
-            <Form.Item
-              label="Postal Code"
-              name={["location", "postalCode"]}
-              rules={[
-                { required: true, message: "Please enter your postal code!" },
-              ]}
-            >
-              <Input placeholder="Enter your postal code" />
-            </Form.Item>
-          </Col>
-        </Row>
+        {/* Dynamically Added Optional Fields */}
+        {Object.entries(optionalFields).map(([field, label]) => {
+          const key = field as keyof ResumeBasicsType;
+          return optionalVisible[key] ? (
+            <div key={key}>
+              {key === "location" && (
+                <Card
+                  style={{ marginBottom: 16 }}
+                  title="Address"
+                  extra={
+                    <CloseCircleOutlined
+                      onClick={() => toggleOptionalField(key)}
+                      style={{ color: "red", cursor: "pointer" }}
+                    />
+                  }
+                >
+                  <Row gutter={16}>
+                    <Col xs={24} sm={12}>
+                      <Form.Item label="Address" name={["location", "address"]}>
+                        <Input placeholder="Enter your address" />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={12}>
+                      <Form.Item
+                        label="Postal Code"
+                        name={["location", "postalCode"]}
+                      >
+                        <Input placeholder="Enter your postal code" />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={8}>
+                      <Form.Item label="City" name={["location", "city"]}>
+                        <Input placeholder="Enter your city" />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={8}>
+                      <Form.Item
+                        label="Country Code"
+                        name={["location", "countryCode"]}
+                      >
+                        <Input placeholder="e.g., US" />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={8}>
+                      <Form.Item label="Region" name={["location", "region"]}>
+                        <Input placeholder="e.g., California" />
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Card>
+              )}
 
-        <Row gutter={16}>
-          <Col xs={24} sm={8}>
-            <Form.Item
-              label="City"
-              name={["location", "city"]}
-              rules={[{ required: true, message: "Please enter your city!" }]}
-            >
-              <Input placeholder="Enter your city" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={8}>
-            <Form.Item
-              label="Country Code"
-              name={["location", "countryCode"]}
-              rules={[
-                { required: true, message: "Please enter your country code!" },
-              ]}
-            >
-              <Input placeholder="e.g., US" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={8}>
-            <Form.Item
-              label="Region"
-              name={["location", "region"]}
-              rules={[{ required: true, message: "Please enter your region!" }]}
-            >
-              <Input placeholder="e.g., California" />
-            </Form.Item>
-          </Col>
-        </Row>
+              {key === "profiles" && (
+                <Card
+                  style={{ marginBottom: 16 }}
+                  title="Social Profiles"
+                  extra={
+                    <CloseCircleOutlined
+                      onClick={() => toggleOptionalField(key)}
+                      style={{ color: "red", cursor: "pointer" }}
+                    />
+                  }
+                >
+                  {profiles.map((id) => (
+                    <Row gutter={16} key={id} align="middle">
+                      <Col xs={24} sm={8}>
+                        <Form.Item
+                          label="Network"
+                          name={["profiles", id, "network"]}
+                        >
+                          <Input placeholder="e.g., LinkedIn" />
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} sm={8}>
+                        <Form.Item
+                          label="Username"
+                          name={["profiles", id, "username"]}
+                        >
+                          <Input placeholder="Enter username" />
+                        </Form.Item>
+                      </Col>
+                      <Col xs={24} sm={8}>
+                        <Form.Item label="URL" name={["profiles", id, "url"]}>
+                          <Input placeholder="Enter profile URL" />
+                        </Form.Item>
+                      </Col>
+                      <CloseCircleOutlined
+                        onClick={() => removeProfile(id)}
+                        style={{ color: "red", cursor: "pointer" }}
+                      />
+                    </Row>
+                  ))}
+                  <Button
+                    type="dashed"
+                    onClick={addProfile}
+                    icon={<PlusOutlined />}
+                  >
+                    Add Profile
+                  </Button>
+                </Card>
+              )}
+
+              {key !== "location" && key !== "profiles" && (
+                <Row gutter={16} align="middle">
+                  <Col xs={24} sm={12}>
+                    <Form.Item label={label} name={key}>
+                      <Input placeholder={`Enter ${label.toLowerCase()}`} />
+                    </Form.Item>
+                  </Col>
+                  <CloseCircleOutlined
+                    onClick={() => toggleOptionalField(key)}
+                    style={{ color: "red", cursor: "pointer" }}
+                  />
+                </Row>
+              )}
+            </div>
+          ) : null;
+        })}
       </Form>
+
+      {/* Add Buttons for Optional Fields */}
+      <Space wrap>
+        {Object.entries(optionalFields).map(([field, label]) => {
+          const key = field as keyof ResumeBasicsType;
+          return !optionalVisible[key] ? (
+            <Button
+              key={key}
+              type="dashed"
+              onClick={() => toggleOptionalField(key)}
+              icon={<PlusOutlined />}
+            >
+              Add {label}
+            </Button>
+          ) : null;
+        })}
+      </Space>
 
       <pre>{JSON.stringify(formData, null, 2)}</pre>
     </>
