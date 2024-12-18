@@ -1,8 +1,19 @@
 import { ResumeBasicsType } from "@/app/types/career";
+import { useApiClient } from "@/hooks/api-hook";
 
-import { swrFetcher } from "@/utils/swr-util";
 import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Form, Input, Row, Space } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  message,
+  Result,
+  Row,
+  Skeleton,
+  Space,
+} from "antd";
 import { useState } from "react";
 import useSWR from "swr";
 
@@ -15,10 +26,12 @@ const optionalFields = {
 };
 
 const PersonalInfoForm = () => {
-  const { data, error, isLoading } = useSWR<ResumeBasicsType>(
-    "/api/resumes",
-    swrFetcher,
-    { shouldRetryOnError: false }
+  const { get, post } = useApiClient();
+  const [messageApi, contextHolder] = message.useMessage();
+  const { data, error, isLoading, mutate } = useSWR<ResumeBasicsType>(
+    "/api/resumes/1",
+    get,
+    { shouldRetryOnError: false, revalidateOnFocus: false }
   );
 
   const [form] = Form.useForm<ResumeBasicsType>();
@@ -33,6 +46,30 @@ const PersonalInfoForm = () => {
     profiles: false,
   });
 
+  if (isLoading) return <Skeleton active />;
+  if (error && error.status >= 500) {
+    messageApi.error("Failed to load data");
+    return (
+      <Result
+        status="500"
+        title="500"
+        subTitle="Sorry, something went wrong."
+        extra={
+          <Button type="primary" key="console" onClick={() => mutate()}>
+            Retry
+          </Button>
+        }
+      />
+    );
+  }
+
+  const handleSubmit = async (values: ResumeBasicsType) => {
+    const resume = await post<ResumeBasicsType>("/api/resumes", values);
+    await mutate(resume, { revalidate: false });
+
+    messageApi.success("Information saved successfully!");
+  };
+
   const toggleOptionalField = (field: keyof ResumeBasicsType) => {
     setOptionalVisible((prev) => ({
       ...prev,
@@ -40,17 +77,14 @@ const PersonalInfoForm = () => {
     }));
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  console.log(data);
-  const handleSubmit = (values: ResumeBasicsType): void => console.log(values);
-
   return (
     <>
+      {contextHolder}
       <Form
         layout="vertical"
         form={form}
+        initialValues={data || {}}
         onFinish={handleSubmit}
-        initialValues={data}
         onValuesChange={(_, values) => setFormData(values)}
       >
         <Row gutter={16}>
@@ -254,29 +288,35 @@ const PersonalInfoForm = () => {
             </div>
           ) : null;
         })}
+
+        {/* Add Buttons for Optional Fields */}
+        <Space wrap>
+          {Object.entries(optionalFields).map(([field, label]) => {
+            const key = field as keyof ResumeBasicsType;
+            return !optionalVisible[key] ? (
+              <Button
+                key={key}
+                type="dashed"
+                onClick={() => toggleOptionalField(key)}
+                icon={<PlusOutlined />}
+              >
+                Add {label}
+              </Button>
+            ) : null;
+          })}
+        </Space>
+
+        <Form.Item label={null}>
+          <Button
+            type="primary"
+            loading={isLoading}
+            htmlType="submit"
+            className="mt-4"
+          >
+            Save
+          </Button>
+        </Form.Item>
       </Form>
-
-      {/* Add Buttons for Optional Fields */}
-      <Space wrap>
-        {Object.entries(optionalFields).map(([field, label]) => {
-          const key = field as keyof ResumeBasicsType;
-          return !optionalVisible[key] ? (
-            <Button
-              key={key}
-              type="dashed"
-              onClick={() => toggleOptionalField(key)}
-              icon={<PlusOutlined />}
-            >
-              Add {label}
-            </Button>
-          ) : null;
-        })}
-      </Space>
-
-      <Button className="mt-5" type="primary" htmlType="submit">
-        Save
-      </Button>
-
       <pre>{JSON.stringify(formData, null, 2)}</pre>
     </>
   );

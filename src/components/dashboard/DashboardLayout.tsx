@@ -2,13 +2,14 @@
 
 import Logo from "@/components/Logo";
 import { ProfileAvatar } from "@/components/ProfileAvatar";
+import { ErrorProvider } from "@/contexts/ErrorContext";
 import {
   BellOutlined,
+  CalendarOutlined,
   HomeOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   SettingOutlined,
-  CalendarOutlined,
 } from "@ant-design/icons";
 import {
   Badge,
@@ -186,7 +187,9 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
         </div>
 
         {/* Content */}
-        <Content className="m-5 overflow-initial">{children}</Content>
+        <ErrorProvider>
+          <Content className="m-5 overflow-initial">{children}</Content>
+        </ErrorProvider>
 
         {/* Footer */}
         <Footer className="text-center">
