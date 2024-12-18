@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import type { MenuProps } from "antd";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { ProfileAvatar } from "../ProfileAvatar";
+import { LOGIN_PATH } from "@/constants/paths";
 export default function Navbar() {
   const [navbarStyle, setNavbarStyle] = useState("bg-transparent");
   const [isNavbarDark, setIsNavbarDark] = useState(false);
@@ -162,10 +163,10 @@ export default function Navbar() {
               </Space>
             ) : (
               <>
-                <Link href="/api/auth/login">
+                <Link href={`${LOGIN_PATH}`}>
                   <Button className="font-semibold">Sign In</Button>
                 </Link>
-                <Link href="/api/auth/login">
+                <Link href={`${LOGIN_PATH}`}>
                   <Button
                     type="primary"
                     className="font-bold"

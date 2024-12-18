@@ -2,13 +2,14 @@
 
 import Logo from "@/components/Logo";
 import { ProfileAvatar } from "@/components/ProfileAvatar";
+import { ErrorProvider } from "@/contexts/ErrorContext";
 import {
   BellOutlined,
+  CalendarOutlined,
   HomeOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   SettingOutlined,
-  CalendarOutlined,
 } from "@ant-design/icons";
 import {
   Badge,
@@ -67,7 +68,7 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
     {
       key: "/dashboard/real-estate",
       icon: <HomeOutlined />,
-      label: <Link href="/dashboard/real-estate">Real Estate</Link>,
+      label: "Real Estate",
       children: [
         {
           key: "/dashboard/real-estate/properties",
@@ -186,9 +187,9 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
         </div>
 
         {/* Content */}
-        <Content className="m-5 overflow-initial">
-          <div className="p-6 bg-white min-h-[360px]">{children}</div>
-        </Content>
+        <ErrorProvider>
+          <Content className="m-5 overflow-initial">{children}</Content>
+        </ErrorProvider>
 
         {/* Footer */}
         <Footer className="text-center">
