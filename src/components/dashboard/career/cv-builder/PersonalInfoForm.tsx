@@ -1,4 +1,4 @@
-import { ResumeBasicsType } from "@/app/types/career";
+import { ResumeBasicsType, ResumeType } from "@/app/types/career";
 import { useApiClient } from "@/hooks/api-hook";
 
 import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
@@ -28,7 +28,7 @@ const optionalFields = {
 const PersonalInfoForm = () => {
   const { get, post } = useApiClient();
   const [messageApi, contextHolder] = message.useMessage();
-  const { data, error, isLoading, mutate } = useSWR<ResumeBasicsType>(
+  const { data, error, isLoading, mutate } = useSWR<ResumeType>(
     "/api/resumes/1",
     get,
     { shouldRetryOnError: false, revalidateOnFocus: false }
@@ -63,8 +63,15 @@ const PersonalInfoForm = () => {
     );
   }
 
-  const handleSubmit = async (values: ResumeBasicsType) => {
-    const resume = await post<ResumeBasicsType>("/api/resumes", values);
+  const handleSubmit = async (input: ResumeBasicsType) => {
+    const values: ResumeType = {
+      ...data,
+      basics: input,
+      work: data?.work || [],
+      education: data?.education || [],
+      skills: data?.skills || [],
+    };
+    const resume = await post<ResumeType, ResumeType>("/api/resumes", values);
     await mutate(resume, { revalidate: false });
 
     messageApi.success("Information saved successfully!");

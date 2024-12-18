@@ -48,7 +48,7 @@ export function useApiClient() {
       const unexpectedError: ApiError = {
         type: "error",
         title: "An unexpected error occurred.",
-        errors: { General: ["Please try again later."] },
+        errors: {},
         status: 500,
       };
       setApiError(unexpectedError);

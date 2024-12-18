@@ -58,12 +58,12 @@ export type ResumeProfileType = {
 
 export type ResumeBasicsType = {
   name: string;
-  label?: string;
-  image?: string;
   email: string;
   phone: string;
-  url?: string;
   summary: string;
+  url?: string;
+  label?: string;
+  image?: string;
   location?: ResumeLocationType;
   profiles?: ResumeProfileType[];
 };
@@ -154,12 +154,13 @@ export type ResumeProjectType = {
 export type ResumeType = {
   basics: ResumeBasicsType;
   work: ResumeWorkType[];
-  volunteer?: ResumeVolunteerType[];
   education: ResumeEducationType[];
+  skills: ResumeSkillType[];
+
+  volunteer?: ResumeVolunteerType[];
   awards?: ResumeAwardType[];
   certificates?: ResumeCertificateType[];
   publications?: ResumePublicationType[];
-  skills: ResumeSkillType[];
   languages?: ResumeLanguageType[];
   interests?: ResumeInterestType[];
   references?: ResumeReferenceType[];
