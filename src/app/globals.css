@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.miniature-wrapper {
+  transform: scale(0.3);
+  transform-origin: top left;
+  width: 400%;
+}

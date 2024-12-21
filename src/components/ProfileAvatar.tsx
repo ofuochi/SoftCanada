@@ -1,3 +1,4 @@
+import { LOGOUT_PATH } from "@/constants/paths";
 import { UserOutlined } from "@ant-design/icons";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { Avatar, Dropdown, MenuProps } from "antd";
@@ -21,7 +22,7 @@ export const ProfileAvatar: React.FC<Props> = ({ size = "large" }) => {
       { key: "divider", type: "divider" },
       {
         key: "3",
-        label: <Link href="/api/auth/logout">Logout</Link>,
+        label: <Link href={`${LOGOUT_PATH}`}>Logout</Link>,
       },
     ],
   };
