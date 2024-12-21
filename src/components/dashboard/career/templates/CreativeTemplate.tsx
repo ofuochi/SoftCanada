@@ -15,9 +15,11 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
         </Title>
         <Text style={{ color: "#ddd" }}>{basics.label}</Text>
         <br />
-        <Text style={{ color: "#ccc" }}>
-          {basics.location.city}, {basics.location.countryCode}
-        </Text>
+        {basics.location && (
+          <Text style={{ color: "#ccc" }}>
+            {basics.location.city}, {basics.location.countryCode}
+          </Text>
+        )}
         <br />
         <Text style={{ color: "#ccc" }}>{basics.email}</Text>
         <br />
@@ -27,7 +29,7 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             Interests
           </Title>
           <ul className="list-disc list-inside">
-            {interests.map((interest) => (
+            {interests?.map((interest) => (
               <li key={interest.name}>
                 {interest.name}: {interest.keywords.join(", ")}
               </li>
@@ -37,7 +39,7 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
       </aside>
       <main className="flex-1 bg-gray-50 p-10">
         <Title level={3}>Volunteer Experience</Title>
-        {volunteer.map((vol) => (
+        {volunteer?.map((vol) => (
           <div key={vol.organization} className="mb-6">
             <Text strong>
               {vol.position} at {vol.organization}
