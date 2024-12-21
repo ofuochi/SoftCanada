@@ -158,6 +158,7 @@ export type ResumeType = {
   education: ResumeEducationType[];
   skills: ResumeSkillType[];
 
+  resumeId?: number;
   volunteer?: ResumeVolunteerType[];
   awards?: ResumeAwardType[];
   certificates?: ResumeCertificateType[];

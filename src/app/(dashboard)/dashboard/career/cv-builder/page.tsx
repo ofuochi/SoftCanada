@@ -6,7 +6,7 @@ import { ResumeTemplate } from "@/components/dashboard/career/cv-builder/ResumeT
 import { sampleResumeDataMin } from "@/constants/sample-resume-data";
 import { useApiClient } from "@/hooks/api-hook";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Flex, Result, Skeleton } from "antd";
+import { Button, Card, Flex, Popconfirm, Result, Skeleton } from "antd";
 import { useState } from "react";
 import useSWR from "swr";
 
@@ -27,16 +27,19 @@ const emptyResumeData: ResumeType = {
 export default function CvBuilderPage() {
   const [showCvBuilder, setShowCvBuilder] = useState(false);
   const [resumeData, setResumeData] = useState<ResumeType>(emptyResumeData);
-  const { get } = useApiClient();
+  const { get, del } = useApiClient();
   const { data, error, isLoading, mutate } = useSWR<ResumeType[]>(
     `/api/resumes`,
     get,
-    { shouldRetryOnError: false, revalidateOnFocus: false }
+    {
+      shouldRetryOnError: false,
+      revalidateOnFocus: false,
+      dedupingInterval: 60000,
+    }
   );
 
   if (isLoading) return <Skeleton active />;
   if (error && error.status >= 500) {
-    console.log(error);
     return (
       <div className="flex justify-center items-center h-screen">
         <Result
@@ -56,6 +59,11 @@ export default function CvBuilderPage() {
   const handleResumeEditClick = (resume: ResumeType) => {
     setShowCvBuilder(true);
     setResumeData(resume);
+  };
+
+  const handleDeleteResume = async (resumeId: number) => {
+    await del(`/api/resumes/${resumeId}`);
+    data?.splice(data.indexOf(resumeData), 1);
   };
 
   return (
@@ -88,7 +96,16 @@ export default function CvBuilderPage() {
                       key="edit"
                       onClick={() => handleResumeEditClick(resume)}
                     />,
-                    <DeleteOutlined key="delete" />,
+                    <Popconfirm
+                      key={i}
+                      title="Delete the resume"
+                      description="Are you sure to delete this resume?"
+                      onConfirm={() => handleDeleteResume(resume.resumeId!)}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <DeleteOutlined key="delete" />
+                    </Popconfirm>,
                   ]}
                 >
                   <div className="overflow-hidden p-3 h-80 pointer-events-none">
@@ -107,7 +124,7 @@ export default function CvBuilderPage() {
                   hoverable
                   onClick={() =>
                     handleResumeEditClick({
-                      ...sampleResumeDataMin,
+                      ...emptyResumeData,
                       templateId: i,
                     })
                   }

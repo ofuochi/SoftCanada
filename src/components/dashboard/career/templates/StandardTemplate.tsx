@@ -15,6 +15,8 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             {data.basics.name}
           </Title>
         )}
+
+        {/* CONTACT INFO */}
         {((data.basics?.email && data.basics?.phone) ||
           data.basics?.email ||
           data.basics?.phone) && (
@@ -37,6 +39,7 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             )}
           </div>
         )}
+        {/* LOCATION */}
         {data.basics?.location && (
           <div className="text-base mt-1">
             {data.basics.location.address && (
@@ -52,21 +55,34 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           </div>
         )}
 
-        {data.basics?.profiles && data.basics.profiles.length > 0 && (
-          <div className="text-base mt-2 mb-10">
-            {data.basics.profiles.map((profile, i) => (
-              <div key={i}>
-                <Text strong>{profile.network}:</Text>{" "}
-                <a
-                  href={profile.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600"
-                >
-                  {profile.username}
-                </a>
-              </div>
-            ))}
+        {/* SOCIAL PROFILES */}
+        {data.basics?.profiles?.[0]?.network &&
+          data.basics.profiles[0]?.username && (
+            <div className="text-base mt-2 ">
+              {data.basics.profiles.map(
+                (profile, i) =>
+                  profile?.network &&
+                  profile?.username && (
+                    <div key={i}>
+                      <Text strong>{profile.network}:</Text>{" "}
+                      <a
+                        href={profile?.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600"
+                      >
+                        {profile.username}
+                      </a>
+                    </div>
+                  )
+              )}
+            </div>
+          )}
+
+        {/* CURRENT JOB TITLE */}
+        {data.basics?.label && (
+          <div className="text-base my-10 mt-3">
+            <Text strong>Current Job Title</Text> : {data.basics.label}
           </div>
         )}
       </header>

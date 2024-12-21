@@ -1,4 +1,3 @@
-// templates/CreativeTemplate.tsx
 import { ResumeType } from "@/app/types/career";
 import { Typography } from "antd";
 import React from "react";
@@ -60,7 +59,7 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
         <Title level={3} className="mt-10">
           Awards
         </Title>
-        {awards.map((award) => (
+        {awards?.map((award) => (
           <div key={award.title} className="mb-4">
             <Text strong>{award.title}</Text>
             <br />

@@ -1,27 +1,38 @@
 "use client";
 
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import { useState } from "react";
 import { useSession } from "@/contexts/SessionContext";
 import { ApiError, useErrorContext } from "@/contexts/ErrorContext";
 
 // Base URL for all API requests
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 
+type RequestType<TData> = {
+  method: "get" | "post" | "put" | "delete";
+  url: string;
+  data?: TData;
+  config?: AxiosRequestConfig;
+};
+
 /**
  * Centralized API client using functions.
- * Handles auth headers and error propagation via ErrorContext.
+ * Handles auth headers, error propagation via ErrorContext, and in-progress state tracking.
  */
 export function useApiClient() {
   const session = useSession();
   const { setApiError } = useErrorContext();
+  const [inProgress, setInProgress] = useState(false); // Track request progress
 
   // Helper function to make requests with error handling
-  const request = async <TResult, TData = unknown>(
-    method: "get" | "post" | "put",
-    url: string,
-    data?: TData,
-    config?: AxiosRequestConfig
-  ): Promise<TResult> => {
+  const request = async <TResult, TData = unknown>({
+    method,
+    url,
+    data,
+    config,
+  }: RequestType<TData>): Promise<TResult> => {
+    setInProgress(true); // Set in-progress state to true
+
     try {
       const headers = session?.accessToken
         ? { Authorization: `Bearer ${session.accessToken}` }
@@ -53,24 +64,29 @@ export function useApiClient() {
       };
       setApiError(unexpectedError);
       throw unexpectedError;
+    } finally {
+      setInProgress(false);
     }
   };
 
   // Expose API methods
   const get = <TResult>(url: string, config?: AxiosRequestConfig) =>
-    request<TResult>("get", url, undefined, config);
+    request<TResult>({ method: "get", url, data: undefined, config });
 
   const post = <TResult, TData = unknown>(
     url: string,
     data?: TData,
     config?: AxiosRequestConfig
-  ) => request<TResult, TData>("post", url, data, config);
+  ) => request<TResult, TData>({ method: "post", url, data, config });
 
-  const put = <TResult, TData = unknown>(
+  const put = <TData = unknown>(
     url: string,
     data?: TData,
     config?: AxiosRequestConfig
-  ) => request<TResult, TData>("put", url, data, config);
+  ) => request<void, TData>({ method: "put", url, data, config });
 
-  return { get, post, put };
+  const del = (url: string, config?: AxiosRequestConfig) =>
+    request<void>({ method: "delete", url, data: undefined, config });
+
+  return { get, post, put, del, inProgress };
 }

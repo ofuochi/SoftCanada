@@ -1,7 +1,6 @@
 import { ResumeBasicsType, ResumeType } from "@/app/types/career";
-import { useApiClient } from "@/hooks/api-hook";
-import { CloseCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Form, Input, message, Row, Space } from "antd";
+import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Form, Input, Row, Space } from "antd";
 import { Dispatch, SetStateAction, useState } from "react";
 
 const optionalFields = {
@@ -14,13 +13,17 @@ const optionalFields = {
 
 type Props = {
   setResumeData: Dispatch<SetStateAction<ResumeType>>;
-  data?: ResumeBasicsType;
+  data: ResumeBasicsType;
+  isSaving?: boolean;
+  onSubmit: (basics: ResumeBasicsType) => void;
 };
 
-const PersonalInfoForm: React.FC<Props> = ({ setResumeData, data }) => {
-  const { post } = useApiClient();
-  const [messageApi, contextHolder] = message.useMessage();
-
+const PersonalInfoForm: React.FC<Props> = ({
+  setResumeData,
+  data,
+  isSaving,
+  onSubmit,
+}) => {
   const [form] = Form.useForm<ResumeBasicsType>();
   const [optionalVisible, setOptionalVisible] = useState<{
     [key in keyof ResumeBasicsType]?: boolean;
@@ -31,14 +34,6 @@ const PersonalInfoForm: React.FC<Props> = ({ setResumeData, data }) => {
     location: false,
     profiles: false,
   });
-
-  const handleSubmit = async (basics: ResumeBasicsType) => {
-    await post<ResumeType, Partial<ResumeType>>("/api/resumes", {
-      basics,
-    });
-
-    messageApi.success("Information saved successfully!");
-  };
 
   const toggleOptionalField = (field: keyof ResumeBasicsType) => {
     setOptionalVisible((prev) => ({
@@ -51,13 +46,13 @@ const PersonalInfoForm: React.FC<Props> = ({ setResumeData, data }) => {
     <Form
       layout="vertical"
       form={form}
-      initialValues={data || {}}
-      onFinish={handleSubmit}
+      initialValues={data}
+      onFinish={onSubmit}
       onValuesChange={(_, values) =>
         setResumeData((prev) => ({ ...prev, basics: values }))
       }
     >
-      {contextHolder}
+      {" "}
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <Form.Item
@@ -81,7 +76,6 @@ const PersonalInfoForm: React.FC<Props> = ({ setResumeData, data }) => {
           </Form.Item>
         </Col>
       </Row>
-
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <Form.Item
@@ -95,7 +89,6 @@ const PersonalInfoForm: React.FC<Props> = ({ setResumeData, data }) => {
           </Form.Item>
         </Col>
       </Row>
-
       <Form.Item
         label="Summary"
         name="summary"
@@ -107,7 +100,6 @@ const PersonalInfoForm: React.FC<Props> = ({ setResumeData, data }) => {
           rows={6}
         />
       </Form.Item>
-
       {/* Dynamically Added Optional Fields */}
       {Object.entries(optionalFields).map(([field, label]) => {
         const key = field as keyof ResumeBasicsType;
@@ -116,11 +108,19 @@ const PersonalInfoForm: React.FC<Props> = ({ setResumeData, data }) => {
             {key === "location" && (
               <Card
                 style={{ marginBottom: 16 }}
-                title="Address"
+                title="Location"
                 extra={
-                  <CloseCircleOutlined
-                    onClick={() => toggleOptionalField(key)}
-                    style={{ color: "red", cursor: "pointer" }}
+                  <CloseOutlined
+                    onClick={() => {
+                      form.setFieldsValue({ location: {} });
+                      setResumeData((prev) => ({
+                        ...prev,
+                        basics: { ...prev.basics, location: {} },
+                      }));
+                      toggleOptionalField(key);
+                    }}
+                    style={{ color: "red" }}
+                    title="Remove section"
                   />
                 }
               >
@@ -140,20 +140,20 @@ const PersonalInfoForm: React.FC<Props> = ({ setResumeData, data }) => {
                   </Col>
                   <Col xs={24} sm={8}>
                     <Form.Item label="City" name={["location", "city"]}>
-                      <Input placeholder="Enter your city" />
+                      <Input placeholder="e.g Toronto" />
                     </Form.Item>
                   </Col>
                   <Col xs={24} sm={8}>
                     <Form.Item
-                      label="Country Code"
+                      label="Country"
                       name={["location", "countryCode"]}
                     >
-                      <Input placeholder="e.g., US" />
+                      <Input placeholder="e.g., Canada" />
                     </Form.Item>
                   </Col>
                   <Col xs={24} sm={8}>
                     <Form.Item label="Region" name={["location", "region"]}>
-                      <Input placeholder="e.g., California" />
+                      <Input placeholder="e.g., Ontario" />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -165,9 +165,17 @@ const PersonalInfoForm: React.FC<Props> = ({ setResumeData, data }) => {
                 style={{ marginBottom: 16 }}
                 title="Social Profiles"
                 extra={
-                  <CloseCircleOutlined
-                    onClick={() => toggleOptionalField(key)}
-                    style={{ color: "red", cursor: "pointer" }}
+                  <CloseOutlined
+                    onClick={() => {
+                      form.setFieldsValue({ profiles: [] });
+                      setResumeData((prev) => ({
+                        ...prev,
+                        basics: { ...prev.basics, profiles: [] },
+                      }));
+                      toggleOptionalField(key);
+                    }}
+                    title="Remove section"
+                    style={{ color: "red" }}
                   />
                 }
               >
@@ -175,59 +183,60 @@ const PersonalInfoForm: React.FC<Props> = ({ setResumeData, data }) => {
                   {(fields, { add, remove }) => (
                     <>
                       {fields.map(({ key, name }) => (
-                        <Row gutter={16} key={key} align="middle">
-                          <Col xs={24} sm={8}>
-                            <Form.Item
-                              label="Network"
-                              name={[name, "network"]}
-                              key={key}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please enter the network name!",
-                                },
-                              ]}
-                            >
-                              <Input placeholder="e.g., LinkedIn" />
-                            </Form.Item>
-                          </Col>
-                          <Col xs={24} sm={8}>
-                            <Form.Item
-                              label="Username"
-                              name={[name, "username"]}
-                              key={key}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please enter the username!",
-                                },
-                              ]}
-                            >
-                              <Input placeholder="Enter username" />
-                            </Form.Item>
-                          </Col>
-                          <Col xs={24} sm={8}>
-                            <Form.Item
-                              label="URL"
-                              name={[name, "url"]}
-                              key={key}
-                              rules={[
-                                {
-                                  type: "url",
-                                  message: "Please enter a valid URL!",
-                                },
-                              ]}
-                            >
-                              <Input placeholder="Enter profile URL" />
-                            </Form.Item>
-                          </Col>
-                          <Col>
-                            <CloseCircleOutlined
-                              onClick={() => remove(name)}
-                              style={{ color: "red", cursor: "pointer" }}
-                            />
-                          </Col>
-                        </Row>
+                        <Space key={key}>
+                          <Row gutter={16} key={key} align="middle">
+                            <Col xs={24} sm={8}>
+                              <Form.Item
+                                label="Network"
+                                name={[name, "network"]}
+                                key={key}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Required!",
+                                  },
+                                ]}
+                              >
+                                <Input placeholder="e.g., LinkedIn" />
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} sm={8}>
+                              <Form.Item
+                                label="Username"
+                                name={[name, "username"]}
+                                key={key}
+                                rules={[
+                                  {
+                                    required: true,
+                                    message: "Please enter the username!",
+                                  },
+                                ]}
+                              >
+                                <Input placeholder="Enter username" />
+                              </Form.Item>
+                            </Col>
+                            <Col xs={24} sm={8}>
+                              <Form.Item
+                                label="URL"
+                                name={[name, "url"]}
+                                key={key}
+                                rules={[
+                                  {
+                                    type: "url",
+                                    message: "Please enter a valid URL!",
+                                  },
+                                ]}
+                              >
+                                <Input placeholder="Enter profile URL" />
+                              </Form.Item>
+                            </Col>
+                          </Row>
+                          <CloseOutlined
+                            onClick={() => remove(name)}
+                            className="mt-2 text-red-500"
+                            title="Remove field"
+                          />
+                        </Space>
                       ))}
                       <Button
                         type="dashed"
@@ -243,24 +252,29 @@ const PersonalInfoForm: React.FC<Props> = ({ setResumeData, data }) => {
             )}
 
             {key !== "location" && key !== "profiles" && (
-              <Row gutter={16} align="middle">
-                <Col xs={24} sm={12}>
+              <div className="flex space-x-2">
+                <div className="flex-1">
                   <Form.Item label={label} name={key}>
                     <Input placeholder={`Enter ${label.toLowerCase()}`} />
                   </Form.Item>
-                </Col>
-                <Col>
-                  <CloseCircleOutlined
-                    onClick={() => toggleOptionalField(key)}
-                    style={{ color: "red", cursor: "pointer" }}
-                  />
-                </Col>
-              </Row>
+                </div>
+                <CloseOutlined
+                  onClick={() => {
+                    form.setFieldsValue({ [key]: undefined });
+                    setResumeData((prev) => ({
+                      ...prev,
+                      basics: { ...prev.basics, [key]: undefined },
+                    }));
+                    toggleOptionalField(key);
+                  }}
+                  className="mt-2 text-red-500"
+                  title="Remove field"
+                />
+              </div>
             )}
           </div>
         ) : null;
       })}
-
       {/* Add Buttons for Optional Fields */}
       <Space wrap>
         {Object.entries(optionalFields).map(([field, label]) => {
@@ -277,9 +291,13 @@ const PersonalInfoForm: React.FC<Props> = ({ setResumeData, data }) => {
           ) : null;
         })}
       </Space>
-
       <Form.Item label={null}>
-        <Button type="primary" htmlType="submit" className="mt-4">
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="mt-4"
+          loading={isSaving}
+        >
           Save
         </Button>
       </Form.Item>

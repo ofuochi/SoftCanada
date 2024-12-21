@@ -1,4 +1,3 @@
-// templates/ModernTemplate.tsx
 import { ResumeType } from "@/app/types/career";
 import { Divider, Space, Typography } from "antd";
 import React from "react";
@@ -21,7 +20,7 @@ const ModernTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   } = data;
 
   return (
-    <div className="p-10 bg-white text-gray-800 min-h-screen">
+    <div className="bg-white text-gray-800 min-h-screen">
       {/* BASICS SECTION */}
       <header className="mb-10">
         <Title level={1} style={{ marginBottom: 0 }}>
@@ -65,14 +64,14 @@ const ModernTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             <ul className="list-none pl-0">
               {basics.profiles.map((profile, i) => (
                 <li key={i} className="mb-2">
-                  <Text strong>{profile.network}:</Text>{" "}
+                  <Text strong>{profile?.network}:</Text>{" "}
                   <a
-                    href={profile.url}
+                    href={profile?.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
                   >
-                    {profile.username}
+                    {profile?.username}
                   </a>
                 </li>
               ))}
