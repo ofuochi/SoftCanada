@@ -52,8 +52,8 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
       label: "Career",
       children: [
         {
-          key: "/dashboard/career/cv-builder",
-          label: <Link href="/dashboard/career/cv-builder">CV Builder</Link>,
+          key: "/dashboard/career/resumes",
+          label: <Link href="/dashboard/career/resumes">Resumes</Link>,
         },
         {
           key: "/dashboard/career/jobs",

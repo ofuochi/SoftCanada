@@ -8,10 +8,10 @@ const baseBreadcrumb: BreadcrumbItemType[] = [
 export const breadcrumbConfig: Record<string, BreadcrumbItemType[]> = {
   "/dashboard": [...baseBreadcrumb, { title: "Dashboard" }],
   "/dashboard/settings": [...baseBreadcrumb, { title: "Settings" }],
-  "/dashboard/career/cv-builder": [
+  "/dashboard/career/resumes": [
     ...baseBreadcrumb,
     { title: "Career" },
-    { title: "CV Builder" },
+    { title: "Resumes" },
   ],
   "/dashboard/career/jobs": [
     ...baseBreadcrumb,

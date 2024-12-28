@@ -72,8 +72,8 @@ export type ResumeWorkType = {
   name: string;
   position: string;
   url?: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date | string;
+  endDate?: Date | string;
   summary?: string;
   highlights: string[];
 };
@@ -152,13 +152,12 @@ export type ResumeProjectType = {
 };
 
 export type ResumeType = {
+  id: string;
   templateId: number;
   basics: ResumeBasicsType;
   work: ResumeWorkType[];
   education: ResumeEducationType[];
   skills: ResumeSkillType[];
-
-  resumeId?: number;
   volunteer?: ResumeVolunteerType[];
   awards?: ResumeAwardType[];
   certificates?: ResumeCertificateType[];

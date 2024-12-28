@@ -24,7 +24,7 @@ const emptyResumeData: ResumeType = {
   skills: [],
 };
 
-export default function CvBuilderPage() {
+export default function ResumesPage() {
   const [showCvBuilder, setShowCvBuilder] = useState(false);
   const [resumeData, setResumeData] = useState<ResumeType>(emptyResumeData);
   const { get, del } = useApiClient();
@@ -69,7 +69,7 @@ export default function CvBuilderPage() {
   return (
     <>
       {showCvBuilder ? (
-        <ResumeBuilder data={resumeData} />
+        <ResumeBuilder data={resumeData} setShowCvBuilder={setShowCvBuilder} />
       ) : (
         <Flex wrap gap="large">
           <div className="w-72">
@@ -108,7 +108,7 @@ export default function CvBuilderPage() {
                     </Popconfirm>,
                   ]}
                 >
-                  <div className="overflow-hidden p-3 h-80 pointer-events-none">
+                  <div className="overflow-hidden h-80 pointer-events-none">
                     <div className="miniature-wrapper">
                       <ResumeTemplate data={resume} />
                     </div>
@@ -129,7 +129,7 @@ export default function CvBuilderPage() {
                     })
                   }
                 >
-                  <div className="overflow-hidden p-3 h-80 pointer-events-none">
+                  <div className="overflow-hidden h-80 pointer-events-none">
                     <div className="miniature-wrapper">
                       <ResumeTemplate
                         data={{ ...sampleResumeDataMin, templateId: i }}

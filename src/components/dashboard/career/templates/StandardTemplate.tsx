@@ -2,6 +2,10 @@ import { ResumeType } from "@/app/types/career";
 import { Divider, Typography } from "antd";
 import Link from "next/link";
 import React from "react";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
 
 const { Title, Text } = Typography;
 
@@ -116,7 +120,9 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
               <div className="flex justify-between items-center">
                 <Text className="font-semibold text-base">{job.name}</Text>
                 <Text type="secondary" className="text-base">
-                  {job.startDate} - {job.endDate || "Present"}
+                  {dayjs(job.startDate).format("MMM YYYY")} -{" "}
+                  {(job.endDate && dayjs(job.endDate).format("MMM YYYY")) ||
+                    "Present"}
                 </Text>
               </div>
               {job.position && (
