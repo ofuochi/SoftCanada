@@ -35,17 +35,37 @@ const WorkExperienceForm: React.FC<Props> = ({
     }));
   };
 
+  // Convert data to compatible format for the form
+  const processedData = data.map((item) => ({
+    ...item,
+    startDate: item.startDate ? dayjs(item.startDate) : undefined,
+    endDate: item.endDate ? dayjs(item.endDate) : undefined,
+  }));
+
   return (
     <Form
       layout="vertical"
       form={form}
-      initialValues={data[0] || {}}
-      onFinish={(values) => onSubmit([values])}
+      initialValues={processedData[0] || {}}
+      onFinish={(values) => {
+        const formattedValues = {
+          ...values,
+          startDate: values.startDate
+            ? dayjs(values.startDate).toISOString()
+            : undefined,
+          endDate: values.endDate
+            ? dayjs(values.endDate).toISOString()
+            : undefined,
+        };
+        onSubmit([formattedValues]);
+      }}
       onValuesChange={(_, values) => {
         const { startDate, endDate } = values;
-        values.startDate = startDate && dayjs(startDate).toISOString();
-        values.endDate = endDate && dayjs(endDate).toISOString();
-        return setResumeData((prev) => ({ ...prev, work: [values] }));
+        values.startDate = startDate
+          ? dayjs(startDate).toISOString()
+          : undefined;
+        values.endDate = endDate ? dayjs(endDate).toISOString() : undefined;
+        setResumeData((prev) => ({ ...prev, work: [values] }));
       }}
     >
       <Row gutter={16}>
@@ -91,7 +111,7 @@ const WorkExperienceForm: React.FC<Props> = ({
             <DatePicker
               style={{ width: "100%" }}
               format="YYYY-MM"
-              placeholder="Select end date or 'Present'"
+              placeholder="Select end date"
             />
           </Form.Item>
         </Col>
@@ -120,11 +140,7 @@ const WorkExperienceForm: React.FC<Props> = ({
                     label={`Highlight ${index + 1}`}
                     name={name}
                     rules={[
-                      {
-                        required: true,
-                        whitespace: true,
-                        message: "Please enter a highlight!",
-                      },
+                      { required: true, message: "Please enter a highlight!" },
                     ]}
                   >
                     <Input placeholder="Enter highlight" />

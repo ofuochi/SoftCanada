@@ -27,13 +27,14 @@ const PersonalInfoForm: React.FC<Props> = ({
   const [form] = Form.useForm<ResumeBasicsType>();
   const [optionalVisible, setOptionalVisible] = useState<{
     [key in keyof ResumeBasicsType]?: boolean;
-  }>({
-    label: false,
-    image: false,
-    url: false,
-    location: false,
-    profiles: false,
-  });
+  }>(
+    Object.fromEntries(
+      Object.keys(optionalFields).map((key) => [
+        key,
+        !!data[key as keyof ResumeBasicsType], // Show if value exists in `data`
+      ])
+    ) as { [key in keyof ResumeBasicsType]?: boolean }
+  );
 
   const toggleOptionalField = (field: keyof ResumeBasicsType) => {
     setOptionalVisible((prev) => ({
@@ -52,7 +53,6 @@ const PersonalInfoForm: React.FC<Props> = ({
         setResumeData((prev) => ({ ...prev, basics: values }))
       }
     >
-      {" "}
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <Form.Item
@@ -189,12 +189,8 @@ const PersonalInfoForm: React.FC<Props> = ({
                               <Form.Item
                                 label="Network"
                                 name={[name, "network"]}
-                                key={key}
                                 rules={[
-                                  {
-                                    required: true,
-                                    message: "Required!",
-                                  },
+                                  { required: true, message: "Required!" },
                                 ]}
                               >
                                 <Input placeholder="e.g., LinkedIn" />
@@ -204,7 +200,6 @@ const PersonalInfoForm: React.FC<Props> = ({
                               <Form.Item
                                 label="Username"
                                 name={[name, "username"]}
-                                key={key}
                                 rules={[
                                   {
                                     required: true,
@@ -219,7 +214,6 @@ const PersonalInfoForm: React.FC<Props> = ({
                               <Form.Item
                                 label="URL"
                                 name={[name, "url"]}
-                                key={key}
                                 rules={[
                                   {
                                     type: "url",

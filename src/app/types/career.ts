@@ -72,7 +72,7 @@ export type ResumeWorkType = {
   name: string;
   position: string;
   url?: string;
-  startDate: Date | string;
+  startDate?: Date | string;
   endDate?: Date | string;
   summary?: string;
   highlights: string[];
