@@ -79,7 +79,7 @@ const ResumeBuilder: React.FC<Props> = ({ data, setShowCvBuilder }) => {
       label: (
         <Space size={20}>
           <PiSuitcaseSimpleThin size={20} />
-          <span>Work Experience</span>
+          <span>Work Experiences</span>
         </Space>
       ),
       children: (

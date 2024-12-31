@@ -1,9 +1,20 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { ResumeWorkType, ResumeType } from "@/app/types/career";
-import { Button, Col, Form, Input, Row, DatePicker, Space } from "antd";
+import { ResumeType, ResumeWorkType } from "@/app/types/career";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Col,
+  Collapse,
+  CollapseProps,
+  DatePicker,
+  Flex,
+  Form,
+  Input,
+  Row,
+  Space,
+} from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import React, { Dispatch, SetStateAction, useState } from "react";
 
 dayjs.extend(customParseFormat);
 
@@ -24,9 +35,14 @@ const WorkExperienceForm: React.FC<Props> = ({
   const [optionalVisible, setOptionalVisible] = useState<{
     [key in keyof ResumeWorkType]?: boolean;
   }>({
-    url: false,
-    summary: false,
+    url: !!data[0]?.url,
+    summary: !!data[0]?.summary,
   });
+
+  const [hasMinHighlightError, setMinHasHighlightError] = useState(false);
+  const [hasHighlightValidationError, setHasHighlightValidationError] =
+    useState(false);
+  const [isAccordionCollapsed, setIsAccordionCollapsed] = useState(false);
 
   const toggleOptionalField = (field: keyof ResumeWorkType) => {
     setOptionalVisible((prev) => ({
@@ -35,27 +51,107 @@ const WorkExperienceForm: React.FC<Props> = ({
     }));
   };
 
-  // Convert data to compatible format for the form
   const processedData = data.map((item) => ({
     ...item,
     startDate: item.startDate ? dayjs(item.startDate) : undefined,
     endDate: item.endDate ? dayjs(item.endDate) : undefined,
   }));
 
+  const items: CollapseProps["items"] = [
+    {
+      key: 1,
+      label: "Responsibilities",
+      children: (
+        <Form.List
+          name="highlights"
+          rules={[
+            {
+              validator: async (_, names) => {
+                if (!names || names.length === 0) {
+                  return Promise.reject(
+                    new Error("Please add at least one responsibility!")
+                  );
+                }
+              },
+            },
+          ]}
+        >
+          {(fields, { add, remove }, { errors }) => {
+            setMinHasHighlightError(errors.length > 0);
+            return (
+              <>
+                {fields.map(({ key, name, ...restField }) => (
+                  <Flex key={key} className="space-x-2">
+                    <div className="flex-1">
+                      <Form.Item
+                        {...restField}
+                        layout="horizontal"
+                        name={name}
+                        rules={[
+                          {
+                            required: true,
+                            validator: async (_, value) => {
+                              if (!value) {
+                                setHasHighlightValidationError(true);
+                                return Promise.reject(new Error("Required!"));
+                              }
+                              setHasHighlightValidationError(false);
+                            },
+                          },
+                        ]}
+                      >
+                        <Input placeholder="Enter responsibility" />
+                      </Form.Item>
+                    </div>
+                    <div>
+                      <CloseOutlined
+                        onClick={() => {
+                          remove(name);
+                          setHasHighlightValidationError(false);
+                        }}
+                        className="mt-2 text-red-500"
+                        title="Remove"
+                      />
+                    </div>
+                  </Flex>
+                ))}
+
+                <Form.Item noStyle>
+                  <Form.ErrorList
+                    errors={errors}
+                    className="mb-5 text-red-500"
+                  />
+                  <Button
+                    type="dashed"
+                    onClick={() => add()}
+                    icon={<PlusOutlined />}
+                  >
+                    Add Responsibility
+                  </Button>
+                </Form.Item>
+              </>
+            );
+          }}
+        </Form.List>
+      ),
+    },
+  ];
+
   return (
     <Form
       layout="vertical"
       form={form}
       initialValues={processedData[0] || {}}
+      onFinishFailed={() => {
+        setIsAccordionCollapsed(
+          !(hasHighlightValidationError || hasMinHighlightError)
+        );
+      }}
       onFinish={(values) => {
         const formattedValues = {
           ...values,
-          startDate: values.startDate
-            ? dayjs(values.startDate).toISOString()
-            : undefined,
-          endDate: values.endDate
-            ? dayjs(values.endDate).toISOString()
-            : undefined,
+          startDate: values.startDate && dayjs(values.startDate).toISOString(),
+          endDate: values.endDate && dayjs(values.endDate).toISOString(),
         };
         onSubmit([formattedValues]);
       }}
@@ -116,58 +212,86 @@ const WorkExperienceForm: React.FC<Props> = ({
           </Form.Item>
         </Col>
       </Row>
+
+      <div className="mb-5">
+        <Collapse
+          items={items}
+          size="small"
+          ghost
+          defaultActiveKey={1}
+          activeKey={isAccordionCollapsed ? undefined : 1}
+          collapsible={
+            hasMinHighlightError || hasHighlightValidationError
+              ? "disabled"
+              : "header"
+          }
+          onChange={(key) => {
+            setIsAccordionCollapsed(key.length === 0);
+          }}
+        />
+      </div>
+
       {optionalVisible.url && (
-        <Form.Item label="Company URL" name="url">
-          <Input placeholder="Enter company website URL" />
-        </Form.Item>
-      )}
-      {optionalVisible.summary && (
-        <Form.Item label="Summary" name="summary">
-          <Input.TextArea
-            placeholder="Describe your role"
-            autoSize={{ minRows: 4 }}
+        <div className="flex space-x-2">
+          <div className="flex-1">
+            <Form.Item
+              label="Company URL"
+              name="url"
+              rules={[
+                {
+                  type: "url",
+                  message: "Please enter a valid URL!",
+                },
+              ]}
+            >
+              <Input placeholder="Enter company website URL" />
+            </Form.Item>
+          </div>
+          <CloseOutlined
+            onClick={() => {
+              form.setFieldsValue({ url: undefined });
+              setResumeData((prev) => ({
+                ...prev,
+                work: [{ ...prev.work[0], url: undefined }],
+              }));
+              toggleOptionalField("url");
+            }}
+            className="mt-2 text-red-500"
+            title="Remove field"
           />
-        </Form.Item>
+        </div>
       )}
-      <Form.Item>
-        <Form.List name="highlights">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map(({ key, name, ...restField }, index) => (
-                <Space key={key} style={{ display: "flex" }} align="baseline">
-                  <Form.Item
-                    {...restField}
-                    label={`Highlight ${index + 1}`}
-                    name={name}
-                    rules={[
-                      { required: true, message: "Please enter a highlight!" },
-                    ]}
-                  >
-                    <Input placeholder="Enter highlight" />
-                  </Form.Item>
-                  <CloseOutlined
-                    onClick={() => remove(name)}
-                    style={{ color: "red" }}
-                  />
-                </Space>
-              ))}
+
+      {optionalVisible.summary && (
+        <div className="flex space-x-2">
+          <div className="flex-1">
+            <Form.Item label="Summary" name="summary">
+              <Input.TextArea
+                placeholder="Describe your role"
+                autoSize={{ minRows: 4 }}
+              />
+            </Form.Item>
+          </div>
+          <CloseOutlined
+            onClick={() => {
+              form.setFieldsValue({ summary: undefined });
+              setResumeData((prev) => ({
+                ...prev,
+                work: [{ ...prev.work[0], summary: undefined }],
+              }));
+              toggleOptionalField("summary");
+            }}
+            className="mt-2 text-red-500"
+            title="Remove field"
+          />
+        </div>
+      )}
+
+      {Object.entries(optionalVisible).map(
+        ([field, visible]) =>
+          !visible && (
+            <Space key={field} wrap className="mb-5">
               <Button
-                type="dashed"
-                onClick={() => add()}
-                icon={<PlusOutlined />}
-              >
-                Add Highlight
-              </Button>
-            </>
-          )}
-        </Form.List>
-      </Form.Item>
-      <Space wrap>
-        {Object.entries(optionalVisible).map(
-          ([field, visible]) =>
-            !visible && (
-              <Button
-                key={field}
                 type="dashed"
                 onClick={() =>
                   toggleOptionalField(field as keyof ResumeWorkType)
@@ -176,17 +300,13 @@ const WorkExperienceForm: React.FC<Props> = ({
               >
                 Add {field.charAt(0).toUpperCase() + field.slice(1)}
               </Button>
-            )
-        )}
-      </Space>
+            </Space>
+          )
+      )}
+
       <Form.Item>
-        <Button
-          type="primary"
-          htmlType="submit"
-          loading={isSaving}
-          style={{ marginTop: 16 }}
-        >
-          Save Work Experience
+        <Button type="primary" htmlType="submit" loading={isSaving}>
+          Save
         </Button>
       </Form.Item>
     </Form>
