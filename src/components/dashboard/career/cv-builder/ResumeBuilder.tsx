@@ -12,6 +12,7 @@ import { RiProfileLine } from "react-icons/ri";
 import PersonalInfoForm from "./forms/PersonalInfoForm";
 import { ResumeTemplate } from "./ResumeTemplate";
 import WorkExperienceForm from "./forms/WorkExperienceForm";
+import WorkExperienceListForm from "./forms/WorkExperienceListForm";
 
 const text = `
   A dog is a type of domesticated animal.
@@ -83,7 +84,7 @@ const ResumeBuilder: React.FC<Props> = ({ data, setShowCvBuilder }) => {
         </Space>
       ),
       children: (
-        <WorkExperienceForm
+        <WorkExperienceListForm
           setResumeData={setResumeData}
           data={data.work}
           isSaving={inProgress}
