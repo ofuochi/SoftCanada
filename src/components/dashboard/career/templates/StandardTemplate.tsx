@@ -118,22 +118,24 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           {data.work.map((job, i) => (
             <div key={i} className="mb-6">
               <div className="flex justify-between items-center">
-                <Text className="font-semibold text-base">{job.name}</Text>
+                <Text className="font-semibold text-base">{job?.name}</Text>
                 <Text type="secondary" className="text-base">
-                  {dayjs(job.startDate).format("MMM YYYY")} -{" "}
-                  {(job.endDate && dayjs(job.endDate).format("MMM YYYY")) ||
+                  {dayjs(job?.startDate).format("MMM YYYY")} -{" "}
+                  {(job?.endDate && dayjs(job?.endDate).format("MMM YYYY")) ||
                     "Present"}
                 </Text>
               </div>
-              {job.position && (
-                <div className="mt-1 text-base font-medium">{job.position}</div>
+              {job?.position && (
+                <div className="mt-1 text-base font-medium">
+                  {job?.position}
+                </div>
               )}
-              {job.summary && (
-                <div className="mt-1 text-base">{job.summary}</div>
+              {job?.summary && (
+                <div className="mt-1 text-base">{job?.summary}</div>
               )}
-              {job.highlights && job.highlights.length > 0 && (
+              {job?.highlights && job?.highlights.length > 0 && (
                 <ul className="list-disc ml-5 mt-1 text-base">
-                  {job.highlights.map((hl, idx) => (
+                  {job?.highlights.map((hl, idx) => (
                     <li key={idx}>{hl}</li>
                   ))}
                 </ul>

@@ -1,4 +1,4 @@
-import { ResumeType, ResumeWorkType } from "@/app/types/career";
+import { ResumeWorkType } from "@/app/types/career";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -8,35 +8,34 @@ import {
   DatePicker,
   Flex,
   Form,
+  FormInstance,
+  FormListFieldData,
   Input,
   Row,
   Space,
 } from "antd";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 
-dayjs.extend(customParseFormat);
+interface WorkExperienceFormValues {
+  workExperienceList: ResumeWorkType[];
+}
 
-type Props = {
-  setResumeData: Dispatch<SetStateAction<ResumeType>>;
-  data: ResumeWorkType[];
-  isSaving?: boolean;
-  onSubmit: (work: ResumeWorkType[]) => void;
+type WorkExperienceProps = {
+  data: ResumeWorkType;
+  form: FormInstance<WorkExperienceFormValues>;
+  field: FormListFieldData;
 };
 
-const WorkExperienceForm: React.FC<Props> = ({
-  setResumeData,
+const WorkExperience: React.FC<WorkExperienceProps> = ({
   data,
-  isSaving,
-  onSubmit,
+  form,
+  field,
 }) => {
-  const [form] = Form.useForm<ResumeWorkType>();
   const [optionalVisible, setOptionalVisible] = useState<{
     [key in keyof ResumeWorkType]?: boolean;
   }>({
-    url: !!data[0]?.url,
-    summary: !!data[0]?.summary,
+    url: !!data?.url,
+    summary: !!data?.summary,
   });
 
   const [hasMinHighlightError, setMinHasHighlightError] = useState(false);
@@ -44,26 +43,34 @@ const WorkExperienceForm: React.FC<Props> = ({
     useState(false);
   const [isAccordionCollapsed, setIsAccordionCollapsed] = useState(false);
 
-  const toggleOptionalField = (field: keyof ResumeWorkType) => {
+  const toggleOptionalField = (fld: keyof ResumeWorkType) => {
     setOptionalVisible((prev) => ({
       ...prev,
-      [field]: !prev[field],
+      [fld]: !prev[fld],
     }));
   };
 
-  const processedData = data.map((item) => ({
-    ...item,
-    startDate: item.startDate ? dayjs(item.startDate) : undefined,
-    endDate: item.endDate ? dayjs(item.endDate) : undefined,
-  }));
+  const removeField = (fieldName: keyof ResumeWorkType) => {
+    const formValues = form.getFieldsValue();
 
-  const items: CollapseProps["items"] = [
+    const experience = formValues.workExperienceList[field.name];
+    if (!experience) return;
+
+    delete experience[fieldName];
+
+    formValues.workExperienceList[field.name] = experience;
+
+    form.setFieldsValue(formValues);
+    toggleOptionalField(fieldName);
+  };
+
+  const highlights: CollapseProps["items"] = [
     {
-      key: 1,
+      key: "1",
       label: "Responsibilities",
       children: (
         <Form.List
-          name="highlights"
+          name={[field.name, "highlights"]}
           rules={[
             {
               validator: async (_, names) => {
@@ -85,7 +92,6 @@ const WorkExperienceForm: React.FC<Props> = ({
                     <div className="flex-1">
                       <Form.Item
                         {...restField}
-                        layout="horizontal"
                         name={name}
                         rules={[
                           {
@@ -138,37 +144,12 @@ const WorkExperienceForm: React.FC<Props> = ({
   ];
 
   return (
-    <Form
-      layout="vertical"
-      form={form}
-      initialValues={processedData[0] || {}}
-      onFinishFailed={() => {
-        setIsAccordionCollapsed(
-          !(hasHighlightValidationError || hasMinHighlightError)
-        );
-      }}
-      onFinish={(values) => {
-        const formattedValues = {
-          ...values,
-          startDate: values.startDate && dayjs(values.startDate).toISOString(),
-          endDate: values.endDate && dayjs(values.endDate).toISOString(),
-        };
-        onSubmit([formattedValues]);
-      }}
-      onValuesChange={(_, values) => {
-        const { startDate, endDate } = values;
-        values.startDate = startDate
-          ? dayjs(startDate).toISOString()
-          : undefined;
-        values.endDate = endDate ? dayjs(endDate).toISOString() : undefined;
-        setResumeData((prev) => ({ ...prev, work: [values] }));
-      }}
-    >
+    <>
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <Form.Item
             label="Company Name"
-            name="name"
+            name={[field.name, "name"]}
             rules={[
               { required: true, message: "Please enter the company name!" },
             ]}
@@ -176,21 +157,23 @@ const WorkExperienceForm: React.FC<Props> = ({
             <Input placeholder="Enter company name" />
           </Form.Item>
         </Col>
+
         <Col xs={24} sm={12}>
           <Form.Item
             label="Position"
-            name="position"
+            name={[field.name, "position"]}
             rules={[{ required: true, message: "Please enter the position!" }]}
           >
             <Input placeholder="Enter position" />
           </Form.Item>
         </Col>
       </Row>
+
       <Row gutter={16}>
         <Col xs={24} sm={12}>
           <Form.Item
             label="Start Date"
-            name="startDate"
+            name={[field.name, "startDate"]}
             rules={[
               { required: true, message: "Please enter the start date!" },
             ]}
@@ -203,7 +186,7 @@ const WorkExperienceForm: React.FC<Props> = ({
           </Form.Item>
         </Col>
         <Col xs={24} sm={12}>
-          <Form.Item label="End Date" name="endDate">
+          <Form.Item label="End Date" name={[field.name, "endDate"]}>
             <DatePicker
               style={{ width: "100%" }}
               format="YYYY-MM"
@@ -213,30 +196,30 @@ const WorkExperienceForm: React.FC<Props> = ({
         </Col>
       </Row>
 
+      {/* Responsibilities (highlights) */}
       <div className="mb-5">
         <Collapse
-          items={items}
+          items={highlights}
           size="small"
           ghost
-          defaultActiveKey={1}
-          activeKey={isAccordionCollapsed ? undefined : 1}
+          defaultActiveKey="1"
+          activeKey={isAccordionCollapsed ? undefined : "1"}
           collapsible={
             hasMinHighlightError || hasHighlightValidationError
               ? "disabled"
               : "header"
           }
-          onChange={(key) => {
-            setIsAccordionCollapsed(key.length === 0);
-          }}
+          onChange={(key) => setIsAccordionCollapsed(key.length === 0)}
         />
       </div>
 
+      {/* Optional Fields */}
       {optionalVisible.url && (
         <div className="flex space-x-2">
           <div className="flex-1">
             <Form.Item
               label="Company URL"
-              name="url"
+              name={[field.name, "url"]}
               rules={[
                 {
                   type: "url",
@@ -248,14 +231,7 @@ const WorkExperienceForm: React.FC<Props> = ({
             </Form.Item>
           </div>
           <CloseOutlined
-            onClick={() => {
-              form.setFieldsValue({ url: undefined });
-              setResumeData((prev) => ({
-                ...prev,
-                work: [{ ...prev.work[0], url: undefined }],
-              }));
-              toggleOptionalField("url");
-            }}
+            onClick={() => removeField("url")}
             className="mt-2 text-red-500"
             title="Remove field"
           />
@@ -265,7 +241,7 @@ const WorkExperienceForm: React.FC<Props> = ({
       {optionalVisible.summary && (
         <div className="flex space-x-2">
           <div className="flex-1">
-            <Form.Item label="Summary" name="summary">
+            <Form.Item label="Summary" name={[field.name, "summary"]}>
               <Input.TextArea
                 placeholder="Describe your role"
                 autoSize={{ minRows: 4 }}
@@ -273,25 +249,20 @@ const WorkExperienceForm: React.FC<Props> = ({
             </Form.Item>
           </div>
           <CloseOutlined
-            onClick={() => {
-              form.setFieldsValue({ summary: undefined });
-              setResumeData((prev) => ({
-                ...prev,
-                work: [{ ...prev.work[0], summary: undefined }],
-              }));
-              toggleOptionalField("summary");
-            }}
+            onClick={() => removeField("summary")}
             className="mt-2 text-red-500"
             title="Remove field"
           />
         </div>
       )}
 
-      {Object.entries(optionalVisible).map(
-        ([field, visible]) =>
-          !visible && (
-            <Space key={field} wrap className="mb-5">
+      {/* Add any hidden optional fields */}
+      <Space wrap>
+        {Object.entries(optionalVisible).map(
+          ([field, visible]) =>
+            !visible && (
               <Button
+                key={field}
                 type="dashed"
                 onClick={() =>
                   toggleOptionalField(field as keyof ResumeWorkType)
@@ -300,17 +271,11 @@ const WorkExperienceForm: React.FC<Props> = ({
               >
                 Add {field.charAt(0).toUpperCase() + field.slice(1)}
               </Button>
-            </Space>
-          )
-      )}
-
-      <Form.Item>
-        <Button type="primary" htmlType="submit" loading={isSaving}>
-          Save
-        </Button>
-      </Form.Item>
-    </Form>
+            )
+        )}
+      </Space>
+    </>
   );
 };
 
-export default WorkExperienceForm;
+export default WorkExperience;

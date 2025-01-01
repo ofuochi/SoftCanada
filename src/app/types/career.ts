@@ -69,6 +69,7 @@ export type ResumeBasicsType = {
 };
 
 export type ResumeWorkType = {
+  id: string;
   name: string;
   position: string;
   url?: string;

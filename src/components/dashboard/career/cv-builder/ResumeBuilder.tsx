@@ -10,9 +10,8 @@ import React, { SetStateAction, useState } from "react";
 import { PiGraduationCap, PiSuitcaseSimpleThin } from "react-icons/pi";
 import { RiProfileLine } from "react-icons/ri";
 import PersonalInfoForm from "./forms/PersonalInfoForm";
-import { ResumeTemplate } from "./ResumeTemplate";
-import WorkExperienceForm from "./forms/WorkExperienceForm";
 import WorkExperienceListForm from "./forms/WorkExperienceListForm";
+import { ResumeTemplate } from "./ResumeTemplate";
 
 const text = `
   A dog is a type of domesticated animal.
