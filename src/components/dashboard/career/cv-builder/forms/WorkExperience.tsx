@@ -1,3 +1,7 @@
+import dayjs, { Dayjs } from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+dayjs.extend(customParseFormat);
+
 import { ResumeWorkType } from "@/app/types/career";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import {
@@ -46,9 +50,7 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({ data, field }) => {
 
   const removeField = (fieldName: keyof ResumeWorkType) => {
     const formValues = form.getFieldsValue();
-
     delete formValues.workExperienceList[field.name][fieldName];
-
     form.setFieldsValue(formValues);
     setResumeData((prev) => ({
       ...prev,
@@ -136,6 +138,29 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({ data, field }) => {
     },
   ];
 
+  const isDateWithinRange = (currentDate: Dayjs) => {
+    if (!currentDate) return false;
+
+    // Get the current month
+    const currentMonth = dayjs().endOf("month");
+
+    // Grab the entire list, then pick the startDate for this item
+    const listValues = form.getFieldValue("workExperienceList");
+    const startVal = listValues?.[field.name]?.startDate;
+    if (!startVal) return currentDate.isAfter(currentMonth);
+
+    // Compare month-to-month. We disable if:
+    // 1. The date is strictly before the start date.
+    // 2. The date is after the current month.
+    const startMonth = dayjs(startVal).startOf("month");
+    const currentMonthBoundary = dayjs(currentDate).startOf("month");
+
+    return (
+      currentMonthBoundary.isBefore(startMonth) || // Date is strictly before start date
+      currentDate.isAfter(currentMonth)
+    );
+  };
+
   return (
     <>
       <Row gutter={16}>
@@ -176,16 +201,58 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({ data, field }) => {
               format="YYYY-MM"
               picker="month"
               placeholder="Select start date"
+              disabledDate={(currentDate) => {
+                // Disable dates that are after the current month
+                return (
+                  currentDate && currentDate.isAfter(dayjs().endOf("month"))
+                );
+              }}
             />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12}>
-          <Form.Item label="End Date" name={[field.name, "endDate"]}>
+          <Form.Item
+            label="End Date"
+            name={[field.name, "endDate"]}
+            rules={[
+              ({ getFieldValue }) => ({
+                validator(_, endValue) {
+                  if (!endValue) {
+                    return Promise.resolve();
+                  }
+                  const startValue = getFieldValue([
+                    "workExperienceList",
+                    field.name,
+                    "startDate",
+                  ]);
+                  if (!startValue) {
+                    // No start date => no check
+                    return Promise.resolve();
+                  }
+
+                  // Compare by month. We want endValue to be the same as or after startValue.
+                  const startMonth = dayjs(startValue).startOf("month");
+                  const endMonth = dayjs(endValue).startOf("month");
+
+                  if (endMonth.isBefore(startMonth)) {
+                    return Promise.reject(
+                      new Error(
+                        "End date must be the same as or after the start date!"
+                      )
+                    );
+                  }
+
+                  return Promise.resolve();
+                },
+              }),
+            ]}
+          >
             <DatePicker
               style={{ width: "100%" }}
               format="YYYY-MM"
               picker="month"
               placeholder="Till Now"
+              disabledDate={isDateWithinRange}
             />
           </Form.Item>
         </Col>
@@ -254,17 +321,15 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({ data, field }) => {
       {/* Add any hidden optional fields */}
       <Space wrap>
         {Object.entries(optionalVisible).map(
-          ([field, visible]) =>
+          ([fld, visible]) =>
             !visible && (
               <Button
-                key={field}
+                key={fld}
                 type="dashed"
-                onClick={() =>
-                  toggleOptionalField(field as keyof ResumeWorkType)
-                }
+                onClick={() => toggleOptionalField(fld as keyof ResumeWorkType)}
                 icon={<PlusOutlined />}
               >
-                Add {field.charAt(0).toUpperCase() + field.slice(1)}
+                Add {fld.charAt(0).toUpperCase() + fld.slice(1)}
               </Button>
             )
         )}
