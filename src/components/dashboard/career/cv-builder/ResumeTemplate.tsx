@@ -5,6 +5,7 @@ import CreativeTemplate from "../templates/CreativeTemplate";
 import ElegantTemplate from "../templates/ElegantTemplate";
 import ClassicTemplate from "../templates/ClassicTemplate";
 import VisionTemplate from "../templates/VisionTemplate";
+import { JSX } from "react";
 
 type Props = {
   data: ResumeType;

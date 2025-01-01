@@ -174,6 +174,7 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({ data, field }) => {
             <DatePicker
               style={{ width: "100%" }}
               format="YYYY-MM"
+              picker="month"
               placeholder="Select start date"
             />
           </Form.Item>
@@ -183,7 +184,8 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({ data, field }) => {
             <DatePicker
               style={{ width: "100%" }}
               format="YYYY-MM"
-              placeholder="Select end date"
+              picker="month"
+              placeholder="Till Now"
             />
           </Form.Item>
         </Col>

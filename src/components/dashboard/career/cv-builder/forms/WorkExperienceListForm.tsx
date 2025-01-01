@@ -29,8 +29,8 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
 
   const workExperienceList = work.map((item) => ({
     ...item,
-    startDate: item.startDate ? dayjs(item.startDate) : undefined,
-    endDate: item.endDate ? dayjs(item.endDate) : undefined,
+    startDate: dayjs(item?.startDate),
+    endDate: item.endDate ? dayjs(item.endDate) : "",
   }));
 
   return (
@@ -39,13 +39,14 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
       layout="vertical"
       disabled={isSaving}
       initialValues={{ workExperienceList }}
-      onValuesChange={(_, allValues) => {
+      onValuesChange={(_, { workExperienceList }) => {
         setResumeData((prev) => ({
           ...prev,
-          work: allValues.workExperienceList,
+          work: workExperienceList,
         }));
+        setShowSaveBtn(workExperienceList.length > 0);
       }}
-      onFinish={(values) => onSubmit(values.workExperienceList)}
+      onFinish={({ workExperienceList }) => onSubmit(workExperienceList)}
     >
       <Form.List name="workExperienceList">
         {(fields, { add, remove }) => {
@@ -73,9 +74,6 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
               />
             ),
           }));
-
-          setShowSaveBtn(items.length > 0);
-
           return (
             <div className="flex flex-col gap-4">
               {items.length ? (
@@ -101,13 +99,17 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
           );
         }}
       </Form.List>
-      {showSaveBtn && (
-        <Form.Item style={{ marginTop: 24 }}>
-          <Button type="primary" htmlType="submit" loading={isSaving}>
-            Save
-          </Button>
-        </Form.Item>
-      )}
+      <Form.Item>
+        <Button
+          className="mt-5"
+          type="primary"
+          htmlType="submit"
+          loading={isSaving}
+          disabled={!showSaveBtn}
+        >
+          Save
+        </Button>
+      </Form.Item>
     </Form>
   );
 };
