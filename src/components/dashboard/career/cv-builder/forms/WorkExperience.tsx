@@ -36,10 +36,10 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({ data, field }) => {
     summary: !!data?.summary,
   });
 
+  const [isAccordionCollapsed, setIsAccordionCollapsed] = useState(false);
   const [hasMinHighlightError, setMinHasHighlightError] = useState(false);
   const [hasHighlightValidationError, setHasHighlightValidationError] =
     useState(false);
-  const [isAccordionCollapsed, setIsAccordionCollapsed] = useState(false);
 
   const toggleOptionalField = (fld: keyof ResumeWorkType) => {
     setOptionalVisible((prev) => ({

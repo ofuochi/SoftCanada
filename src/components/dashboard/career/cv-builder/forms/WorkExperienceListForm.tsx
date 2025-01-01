@@ -30,13 +30,14 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
   const workExperienceList = work.map((item) => ({
     ...item,
     startDate: dayjs(item?.startDate),
-    endDate: item.endDate ? dayjs(item.endDate) : "",
+    endDate: item?.endDate ? dayjs(item.endDate) : "",
   }));
 
   return (
     <Form
       form={form}
       layout="vertical"
+      scrollToFirstError={{ behavior: "smooth", block: "end", focus: true }}
       disabled={isSaving}
       initialValues={{ workExperienceList }}
       onValuesChange={(_, { workExperienceList }) => {
