@@ -1,7 +1,8 @@
-import { ResumeBasicsType, ResumeType } from "@/app/types/career";
+import { ResumeBasicsType } from "@/app/types/career";
+import { useResume } from "@/contexts/ResumeContext";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Card, Col, Form, Input, Row, Space } from "antd";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 
 const optionalFields = {
   label: "Job Title",
@@ -12,18 +13,15 @@ const optionalFields = {
 };
 
 type Props = {
-  setResumeData: Dispatch<SetStateAction<ResumeType>>;
-  data: ResumeBasicsType;
   isSaving?: boolean;
   onSubmit: (basics: ResumeBasicsType) => void;
 };
 
-const PersonalInfoForm: React.FC<Props> = ({
-  setResumeData,
-  data,
-  isSaving,
-  onSubmit,
-}) => {
+const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
+  const {
+    resumeData: { basics },
+    setResumeData,
+  } = useResume();
   const [form] = Form.useForm<ResumeBasicsType>();
   const [optionalVisible, setOptionalVisible] = useState<{
     [key in keyof ResumeBasicsType]?: boolean;
@@ -31,7 +29,7 @@ const PersonalInfoForm: React.FC<Props> = ({
     Object.fromEntries(
       Object.keys(optionalFields).map((key) => [
         key,
-        !!data[key as keyof ResumeBasicsType], // Show if value exists in `data`
+        !!basics[key as keyof ResumeBasicsType], // Show if value exists in `basics`
       ])
     ) as { [key in keyof ResumeBasicsType]?: boolean }
   );
@@ -47,7 +45,7 @@ const PersonalInfoForm: React.FC<Props> = ({
     <Form
       layout="vertical"
       form={form}
-      initialValues={data}
+      initialValues={basics}
       onFinish={onSubmit}
       onValuesChange={(_, values) =>
         setResumeData((prev) => ({ ...prev, basics: values }))
@@ -300,3 +298,4 @@ const PersonalInfoForm: React.FC<Props> = ({
 };
 
 export default PersonalInfoForm;
+

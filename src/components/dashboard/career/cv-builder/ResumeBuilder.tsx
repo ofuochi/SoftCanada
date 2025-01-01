@@ -12,6 +12,7 @@ import { RiProfileLine } from "react-icons/ri";
 import PersonalInfoForm from "./forms/PersonalInfoForm";
 import WorkExperienceListForm from "./forms/WorkExperienceListForm";
 import { ResumeTemplate } from "./ResumeTemplate";
+import { useResume } from "@/contexts/ResumeContext";
 
 const text = `
   A dog is a type of domesticated animal.
@@ -20,21 +21,20 @@ const text = `
 `;
 
 type Props = {
-  data: ResumeType;
   setShowCvBuilder: (value: SetStateAction<boolean>) => void;
 };
 
-const ResumeBuilder: React.FC<Props> = ({ data, setShowCvBuilder }) => {
-  const [resumeData, setResumeData] = useState<ResumeType>(data);
+const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
+  const { resumeData } = useResume();
   const { post, put } = useApiClient();
   const [inProgress, setInProgress] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
   const handlePersonalInfoSubmit = async (basics: ResumeBasicsType) => {
     setInProgress(true);
-    const reqData: ResumeType = { ...data, basics };
+    const reqData: ResumeType = { ...resumeData, basics };
     try {
-      if (data.id) await put(`/api/resumes/${data.id}`, reqData);
+      if (resumeData.id) await put(`/api/resumes/${resumeData.id}`, reqData);
       else await post<ResumeType, ResumeType>(`/api/resumes`, reqData);
 
       messageApi.success("Personal information saved successfully!");
@@ -45,9 +45,9 @@ const ResumeBuilder: React.FC<Props> = ({ data, setShowCvBuilder }) => {
 
   const handleWorkExperienceSubmit = async (work: ResumeWorkType[]) => {
     setInProgress(true);
-    const reqData: ResumeType = { ...data, work };
+    const reqData: ResumeType = { ...resumeData, work };
     try {
-      if (data.id) await put(`/api/resumes/${data.id}`, reqData);
+      if (resumeData.id) await put(`/api/resumes/${resumeData.id}`, reqData);
       else await post<ResumeType, ResumeType>(`/api/resumes`, reqData);
 
       messageApi.success("Work experience saved successfully!");
@@ -67,8 +67,6 @@ const ResumeBuilder: React.FC<Props> = ({ data, setShowCvBuilder }) => {
       ),
       children: (
         <PersonalInfoForm
-          setResumeData={setResumeData}
-          data={data.basics}
           isSaving={inProgress}
           onSubmit={handlePersonalInfoSubmit}
         />
@@ -84,8 +82,6 @@ const ResumeBuilder: React.FC<Props> = ({ data, setShowCvBuilder }) => {
       ),
       children: (
         <WorkExperienceListForm
-          setResumeData={setResumeData}
-          data={data.work}
           isSaving={inProgress}
           onSubmit={handleWorkExperienceSubmit}
         />

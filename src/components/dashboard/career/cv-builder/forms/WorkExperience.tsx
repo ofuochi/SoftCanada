@@ -8,29 +8,23 @@ import {
   DatePicker,
   Flex,
   Form,
-  FormInstance,
   FormListFieldData,
   Input,
   Row,
   Space,
 } from "antd";
 import React, { useState } from "react";
-
-interface WorkExperienceFormValues {
-  workExperienceList: ResumeWorkType[];
-}
+import { WorkExperienceFormValues } from "./WorkExperienceListForm";
+import { useResume } from "@/contexts/ResumeContext";
 
 type WorkExperienceProps = {
   data: ResumeWorkType;
-  form: FormInstance<WorkExperienceFormValues>;
   field: FormListFieldData;
 };
 
-const WorkExperience: React.FC<WorkExperienceProps> = ({
-  data,
-  form,
-  field,
-}) => {
+const WorkExperience: React.FC<WorkExperienceProps> = ({ data, field }) => {
+  const { setResumeData } = useResume();
+  const form = Form.useFormInstance<WorkExperienceFormValues>();
   const [optionalVisible, setOptionalVisible] = useState<{
     [key in keyof ResumeWorkType]?: boolean;
   }>({
@@ -53,14 +47,13 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({
   const removeField = (fieldName: keyof ResumeWorkType) => {
     const formValues = form.getFieldsValue();
 
-    const experience = formValues.workExperienceList[field.name];
-    if (!experience) return;
-
-    delete experience[fieldName];
-
-    formValues.workExperienceList[field.name] = experience;
+    delete formValues.workExperienceList[field.name][fieldName];
 
     form.setFieldsValue(formValues);
+    setResumeData((prev) => ({
+      ...prev,
+      work: formValues.workExperienceList,
+    }));
     toggleOptionalField(fieldName);
   };
 

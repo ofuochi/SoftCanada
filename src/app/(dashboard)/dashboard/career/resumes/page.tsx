@@ -4,6 +4,7 @@ import { ResumeType } from "@/app/types/career";
 import ResumeBuilder from "@/components/dashboard/career/cv-builder/ResumeBuilder";
 import { ResumeTemplate } from "@/components/dashboard/career/cv-builder/ResumeTemplate";
 import { sampleResumeDataMin } from "@/constants/sample-resume-data";
+import { ResumeProvider } from "@/contexts/ResumeContext";
 import { useApiClient } from "@/hooks/api-hook";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Card, Flex, Popconfirm, Result, Skeleton } from "antd";
@@ -61,7 +62,7 @@ export default function ResumesPage() {
     setResumeData(resume);
   };
 
-  const handleDeleteResume = async (resumeId: number) => {
+  const handleDeleteResume = async (resumeId: string) => {
     await del(`/api/resumes/${resumeId}`);
     data?.splice(data.indexOf(resumeData), 1);
   };
@@ -69,7 +70,9 @@ export default function ResumesPage() {
   return (
     <>
       {showCvBuilder ? (
-        <ResumeBuilder data={resumeData} setShowCvBuilder={setShowCvBuilder} />
+        <ResumeProvider initialData={resumeData}>
+          <ResumeBuilder setShowCvBuilder={setShowCvBuilder} />
+        </ResumeProvider>
       ) : (
         <Flex wrap gap="large">
           <div className="w-72">
@@ -100,7 +103,7 @@ export default function ResumesPage() {
                       key={i}
                       title="Delete the resume"
                       description="Are you sure to delete this resume?"
-                      onConfirm={() => handleDeleteResume(resume.resumeId!)}
+                      onConfirm={() => handleDeleteResume(resume.id!)}
                       okText="Yes"
                       cancelText="No"
                     >

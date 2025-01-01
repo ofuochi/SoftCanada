@@ -69,7 +69,7 @@ export type ResumeBasicsType = {
 };
 
 export type ResumeWorkType = {
-  id: string;
+  id?: string;
   name: string;
   position: string;
   url?: string;
@@ -153,7 +153,7 @@ export type ResumeProjectType = {
 };
 
 export type ResumeType = {
-  id: string;
+  id?: string;
   templateId: number;
   basics: ResumeBasicsType;
   work: ResumeWorkType[];

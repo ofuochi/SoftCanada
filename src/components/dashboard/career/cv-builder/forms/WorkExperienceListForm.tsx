@@ -1,31 +1,33 @@
-import { ResumeType, ResumeWorkType } from "@/app/types/career";
+import { ResumeWorkType } from "@/app/types/career";
+import { useResume } from "@/contexts/ResumeContext";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Collapse, CollapseProps, Empty, Form } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import WorkExperience from "./WorkExperience";
 
 dayjs.extend(customParseFormat);
 
+export type WorkExperienceFormValues = {
+  workExperienceList: ResumeWorkType[];
+};
+
 type Props = {
-  setResumeData: Dispatch<SetStateAction<ResumeType>>;
-  data: ResumeWorkType[];
   isSaving?: boolean;
   onSubmit: (work: ResumeWorkType[]) => void;
 };
 
-const WorkExperienceListForm: React.FC<Props> = ({
-  setResumeData,
-  data,
-  isSaving,
-  onSubmit,
-}) => {
-  const [form] = Form.useForm<{ workExperienceList: ResumeWorkType[] }>();
+const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
+  const {
+    resumeData: { work },
+    setResumeData,
+  } = useResume();
+  const [form] = Form.useForm<WorkExperienceFormValues>();
   const [activeKey, setActiveKey] = useState<string[]>([]);
   const [showSaveBtn, setShowSaveBtn] = useState(false);
 
-  const workExperienceList = data.map((item) => ({
+  const workExperienceList = work.map((item) => ({
     ...item,
     startDate: item.startDate ? dayjs(item.startDate) : undefined,
     endDate: item.endDate ? dayjs(item.endDate) : undefined,
@@ -66,8 +68,7 @@ const WorkExperienceListForm: React.FC<Props> = ({
             children: (
               <WorkExperience
                 key={field.key}
-                form={form}
-                data={data[field.name]}
+                data={work[field.name]}
                 field={field}
               />
             ),
@@ -90,7 +91,6 @@ const WorkExperienceListForm: React.FC<Props> = ({
 
               <Button
                 type="dashed"
-                size="small"
                 onClick={handleAdd}
                 icon={<PlusOutlined />}
                 block
