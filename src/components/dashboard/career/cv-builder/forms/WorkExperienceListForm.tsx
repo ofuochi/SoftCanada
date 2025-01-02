@@ -24,7 +24,7 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
     setResumeData,
   } = useResume();
   const [form] = Form.useForm<WorkExperienceFormValues>();
-  const [activeKey, setActiveKey] = useState<string[]>([]);
+  const [activeKey, setActiveKey] = useState<(string | number)[]>([]);
   const [showSaveBtn, setShowSaveBtn] = useState(false);
 
   const workExperienceList = work.map((item) => ({
@@ -39,6 +39,10 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
       layout="vertical"
       scrollToFirstError={{ behavior: "smooth", block: "end", focus: true }}
       disabled={isSaving}
+      onFinishFailed={({ errorFields }) => {
+        const activeKeys = errorFields.map(({ name }) => name[1]);
+        setActiveKey(activeKeys);
+      }}
       initialValues={{ workExperienceList }}
       onValuesChange={(_, { workExperienceList }) => {
         setResumeData((prev) => ({
@@ -53,7 +57,7 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
         {(fields, { add, remove }) => {
           const handleAdd = () => {
             add();
-            setActiveKey([String(fields.length)]);
+            setActiveKey([fields.length]);
           };
           const items: CollapseProps["items"] = fields.map((field) => ({
             key: field.name,
