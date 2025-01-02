@@ -3,9 +3,6 @@ import { Divider, Typography } from "antd";
 import Link from "next/link";
 import React from "react";
 import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-
-dayjs.extend(customParseFormat);
 
 const { Title, Text } = Typography;
 
@@ -157,19 +154,21 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             <div key={i} className="mb-6">
               <div className="flex justify-between items-center">
                 <Text className="font-semibold text-base">
-                  {edu.institution}
+                  {edu?.institution}
                 </Text>
                 <Text type="secondary" className="text-base">
-                  {edu.endDate}
+                  {dayjs(edu?.startDate).format("MMM YYYY")} -{" "}
+                  {(edu?.endDate && dayjs(edu?.endDate).format("MMM YYYY")) ||
+                    "Present"}
                 </Text>
               </div>
-              {edu.studyType && edu.area && (
+              {edu?.studyType && edu?.area && (
                 <div className="mt-1 text-base">
                   {edu.studyType}, {edu.area}
                 </div>
               )}
-              {edu.score && <div className="text-base mt-1">{edu.score}</div>}
-              {edu.courses && edu.courses.length > 0 && (
+              {edu?.score && <div className="text-base mt-1">{edu.score}</div>}
+              {edu?.courses && edu.courses.length > 0 && (
                 <ul className="list-disc ml-5 mt-1 text-base">
                   {edu.courses.map((course, idx) => (
                     <li key={idx}>{course}</li>
@@ -195,11 +194,8 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
               <div key={index} className="flex items-start space-x-2">
                 <Text className="leading-tight">•</Text>
                 <Text>
-                  {skill.name}
-                  {skill.level ? ` (${skill.level})` : ""}
-                  {skill.keywords && skill.keywords.length > 0
-                    ? `: ${skill.keywords.join(", ")}`
-                    : ""}
+                  {skill?.name}
+                  {skill?.level && ` (${skill.level})`}
                 </Text>
               </div>
             ))}

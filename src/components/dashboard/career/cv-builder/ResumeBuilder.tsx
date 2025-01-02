@@ -1,5 +1,6 @@
 import {
   ResumeBasicsType,
+  ResumeEducationType,
   ResumeType,
   ResumeWorkType,
 } from "@/app/types/career";
@@ -11,14 +12,11 @@ import { PiGraduationCap, PiSuitcaseSimpleThin } from "react-icons/pi";
 import { RiProfileLine } from "react-icons/ri";
 import PersonalInfoForm from "./forms/PersonalInfoForm";
 import WorkExperienceListForm from "./forms/WorkExperienceListForm";
+import EducationListForm from "./forms/EducationListForm";
 import { ResumeTemplate } from "./ResumeTemplate";
 import { useResume } from "@/contexts/ResumeContext";
-
-const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
-`;
+import { VscTools } from "react-icons/vsc";
+import SkillsForm from "./forms/SkillsForm";
 
 type Props = {
   setShowCvBuilder: (value: SetStateAction<boolean>) => void;
@@ -30,27 +28,17 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
   const [inProgress, setInProgress] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
-  const handlePersonalInfoSubmit = async (basics: ResumeBasicsType) => {
+  const handleSubmit = async <T extends keyof ResumeType>(
+    field: T,
+    value: ResumeType[T]
+  ) => {
     setInProgress(true);
-    const reqData: ResumeType = { ...resumeData, basics };
+    const reqData: ResumeType = { ...resumeData, [field]: value };
     try {
       if (resumeData.id) await put(`/api/resumes/${resumeData.id}`, reqData);
       else await post<ResumeType, ResumeType>(`/api/resumes`, reqData);
 
-      messageApi.success("Personal information saved successfully!");
-    } finally {
-      setInProgress(false);
-    }
-  };
-
-  const handleWorkExperienceSubmit = async (work: ResumeWorkType[]) => {
-    setInProgress(true);
-    const reqData: ResumeType = { ...resumeData, work };
-    try {
-      if (resumeData.id) await put(`/api/resumes/${resumeData.id}`, reqData);
-      else await post<ResumeType, ResumeType>(`/api/resumes`, reqData);
-
-      messageApi.success("Work experience saved successfully!");
+      messageApi.success("Saved successfully!");
     } finally {
       setInProgress(false);
     }
@@ -68,7 +56,7 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
       children: (
         <PersonalInfoForm
           isSaving={inProgress}
-          onSubmit={handlePersonalInfoSubmit}
+          onSubmit={(data) => handleSubmit("basics", data)}
         />
       ),
     },
@@ -83,7 +71,7 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
       children: (
         <WorkExperienceListForm
           isSaving={inProgress}
-          onSubmit={handleWorkExperienceSubmit}
+          onSubmit={(data) => handleSubmit("work", data)}
         />
       ),
     },
@@ -95,7 +83,27 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
           <span>Education</span>
         </Space>
       ),
-      children: <p>{text}</p>,
+      children: (
+        <EducationListForm
+          isSaving={inProgress}
+          onSubmit={(data) => handleSubmit("education", data)}
+        />
+      ),
+    },
+    {
+      key: "4",
+      label: (
+        <Space size={20}>
+          <VscTools size={20} />
+          <span>Skills</span>
+        </Space>
+      ),
+      children: (
+        <SkillsForm
+          isSaving={inProgress}
+          onSubmit={(data) => handleSubmit("skills", data)}
+        />
+      ),
     },
   ];
 

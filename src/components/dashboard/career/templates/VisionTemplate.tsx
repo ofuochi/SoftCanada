@@ -1,6 +1,7 @@
 // templates/VisionTemplate.tsx
 import { ResumeType } from "@/app/types/career";
 import { Col, Divider, Image, Row, Space, Typography } from "antd";
+import dayjs from "dayjs";
 import React from "react";
 
 const { Title, Text } = Typography;
@@ -188,7 +189,9 @@ const VisionTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
                   at <Text strong>{edu.institution}</Text>
                   <br />
                   <Text type="secondary">
-                    {edu.startDate} - {edu.endDate || "Present"}
+                    {dayjs(edu?.startDate).format("MMM YYYY")} -{" "}
+                    {(edu?.endDate && dayjs(edu?.endDate).format("MMM YYYY")) ||
+                      "Present"}
                   </Text>
                   {edu.url && (
                     <>

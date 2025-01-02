@@ -94,8 +94,8 @@ export type ResumeEducationType = {
   url?: string;
   area: string;
   studyType: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date | string;
+  endDate?: Date | string;
   score?: string;
   courses?: string[];
 };

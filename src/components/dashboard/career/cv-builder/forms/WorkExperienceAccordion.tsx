@@ -26,7 +26,10 @@ type WorkExperienceProps = {
   field: FormListFieldData;
 };
 
-const WorkExperience: React.FC<WorkExperienceProps> = ({ data, field }) => {
+const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
+  data,
+  field,
+}) => {
   const { setResumeData } = useResume();
   const form = Form.useFormInstance<WorkExperienceFormValues>();
   const [optionalVisible, setOptionalVisible] = useState<{
@@ -338,4 +341,4 @@ const WorkExperience: React.FC<WorkExperienceProps> = ({ data, field }) => {
   );
 };
 
-export default WorkExperience;
+export default WorkExperienceAccordion;

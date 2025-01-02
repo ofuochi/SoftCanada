@@ -1,33 +1,33 @@
-import { ResumeWorkType } from "@/app/types/career";
+import { ResumeEducationType } from "@/app/types/career";
 import { useResume } from "@/contexts/ResumeContext";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Collapse, CollapseProps, Empty, Form } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import React, { useState } from "react";
-import WorkExperienceAccordion from "./WorkExperienceAccordion";
+import EducationAccordion from "./EducationAccordion";
 
 dayjs.extend(customParseFormat);
 
-export type WorkExperienceFormValues = {
-  workExperienceList: ResumeWorkType[];
+export type EducationFormValues = {
+  educationList: ResumeEducationType[];
 };
 
 type Props = {
   isSaving?: boolean;
-  onSubmit: (work: ResumeWorkType[]) => void;
+  onSubmit: (education: ResumeEducationType[]) => void;
 };
 
-const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
+const EducationListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
   const {
-    resumeData: { work },
+    resumeData: { education },
     setResumeData,
   } = useResume();
-  const [form] = Form.useForm<WorkExperienceFormValues>();
+  const [form] = Form.useForm<EducationFormValues>();
   const [activeKey, setActiveKey] = useState<(string | number)[]>([]);
   const [showSaveBtn, setShowSaveBtn] = useState(false);
 
-  const workExperienceList = work.map((item) => ({
+  const educationList = education.map((item) => ({
     ...item,
     startDate: dayjs(item?.startDate),
     endDate: item?.endDate ? dayjs(item.endDate) : "",
@@ -43,17 +43,17 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
         const activeKeys = errorFields.map(({ name }) => name[1]);
         setActiveKey(activeKeys);
       }}
-      initialValues={{ workExperienceList }}
-      onValuesChange={(_, { workExperienceList }) => {
+      initialValues={{ educationList }}
+      onValuesChange={(_, { educationList }) => {
         setResumeData((prev) => ({
           ...prev,
-          work: workExperienceList,
+          education: educationList,
         }));
-        setShowSaveBtn(workExperienceList.length > 0);
+        setShowSaveBtn(educationList.length > 0);
       }}
-      onFinish={({ workExperienceList }) => onSubmit(workExperienceList)}
+      onFinish={({ educationList }) => onSubmit(educationList)}
     >
-      <Form.List name="workExperienceList">
+      <Form.List name="educationList">
         {(fields, { add, remove }) => {
           const handleAdd = () => {
             add();
@@ -61,7 +61,7 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
           };
           const items: CollapseProps["items"] = fields.map((field) => ({
             key: field.name,
-            label: `Work Experience ${field.name + 1}`,
+            label: `Education ${field.name + 1}`,
             extra: (
               <CloseOutlined
                 className="text-red-500"
@@ -72,9 +72,9 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
               />
             ),
             children: (
-              <WorkExperienceAccordion
+              <EducationAccordion
                 key={field.key}
-                data={work[field.name]}
+                data={education[field.name]}
                 field={field}
               />
             ),
@@ -98,7 +98,7 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                 icon={<PlusOutlined />}
                 block
               >
-                Add Work Experience
+                Add Education
               </Button>
             </div>
           );
@@ -119,4 +119,4 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
   );
 };
 
-export default WorkExperienceListForm;
+export default EducationListForm;
