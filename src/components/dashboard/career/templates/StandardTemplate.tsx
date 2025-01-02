@@ -1,5 +1,5 @@
 import { ResumeType } from "@/app/types/career";
-import { Divider, Typography } from "antd";
+import { Divider, Flex, Space, Typography } from "antd";
 import Link from "next/link";
 import React from "react";
 import dayjs from "dayjs";
@@ -418,9 +418,17 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             </Title>
           </Divider>
           {data.references.map((ref, i) => (
-            <div key={i} className="text-base">
-              <Text className="font-semibold">{ref.name}:</Text>
-              <div className="mt-1">{ref.reference}</div>
+            <div key={i} className="text-base mb-5">
+              {ref?.name && ref?.reference && (
+                <div className="mt-1">
+                  {ref.reference} : {ref.name}
+                </div>
+              )}
+              {ref?.email && (
+                <div className="mt-1 text-sm text-gray-600">
+                  Email: <a href={`mailto:${ref.email}`}>{ref.email}</a>
+                </div>
+              )}
             </div>
           ))}
         </section>

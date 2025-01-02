@@ -141,6 +141,7 @@ export type ResumeInterestType = {
 export type ResumeReferenceType = {
   name: string;
   reference: string;
+  email: string;
 };
 
 export type ResumeProjectType = {

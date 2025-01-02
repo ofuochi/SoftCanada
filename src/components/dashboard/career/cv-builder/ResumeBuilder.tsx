@@ -17,9 +17,16 @@ import { ResumeTemplate } from "./ResumeTemplate";
 import { useResume } from "@/contexts/ResumeContext";
 import { VscTools } from "react-icons/vsc";
 import SkillsForm from "./forms/SkillsForm";
+import { GrUserManager } from "react-icons/gr";
+import ReferencesForm from "./forms/ReferencesForm";
 
 type Props = {
   setShowCvBuilder: (value: SetStateAction<boolean>) => void;
+};
+
+export type ResumeFormProp = {
+  isSaving?: boolean;
+  onSubmit: <K extends keyof ResumeType>(data: ResumeType[K]) => void;
 };
 
 const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
@@ -102,6 +109,21 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
         <SkillsForm
           isSaving={inProgress}
           onSubmit={(data) => handleSubmit("skills", data)}
+        />
+      ),
+    },
+    {
+      key: "5",
+      label: (
+        <Space size={20}>
+          <GrUserManager size={20} />
+          <span>References</span>
+        </Space>
+      ),
+      children: (
+        <ReferencesForm
+          isSaving={inProgress}
+          onSubmit={(data) => handleSubmit("references", data)}
         />
       ),
     },

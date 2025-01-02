@@ -1,7 +1,7 @@
 import { ResumeSkillType } from "@/app/types/career";
 import { useResume } from "@/contexts/ResumeContext";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Col, Flex, Form, Input, Row, Select, Space } from "antd";
+import { Button, Col, Form, Input, Row, Select } from "antd";
 import React, { useState } from "react";
 
 const { Option } = Select;
@@ -20,21 +20,16 @@ const SkillsForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
   const [form] = Form.useForm<{ skills: ResumeSkillType[] }>();
   const [showSaveBtn, setShowSaveBtn] = useState(false);
 
-  const handleValuesChange = (
-    _: any,
-    { skills }: { skills: ResumeSkillType[] }
-  ) => {
-    setResumeData((prev) => ({ ...prev, skills }));
-    setShowSaveBtn(skills.length > 0);
-  };
-
   return (
     <Form
       form={form}
       layout="vertical"
       initialValues={{ skills }}
       onFinish={({ skills }) => onSubmit(skills)}
-      onValuesChange={handleValuesChange}
+      onValuesChange={(_, { skills }) => {
+        setResumeData((prev) => ({ ...prev, skills }));
+        setShowSaveBtn(skills.length > 0);
+      }}
     >
       <Form.List name="skills">
         {(fields, { add, remove }) => (
@@ -62,12 +57,10 @@ const SkillsForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                   <Col flex="1">
                     <Form.Item label="Level" name={[name, "level"]}>
                       <Select placeholder="Select skill level">
-                        <Select.Option value="Beginner">Beginner</Select.Option>
-                        <Select.Option value="Intermediate">
-                          Intermediate
-                        </Select.Option>
-                        <Select.Option value="Advanced">Advanced</Select.Option>
-                        <Select.Option value="Expert">Expert</Select.Option>
+                        <Option value="Beginner">Beginner</Option>
+                        <Option value="Intermediate">Intermediate</Option>
+                        <Option value="Advanced">Advanced</Option>
+                        <Option value="Expert">Expert</Option>
                       </Select>
                     </Form.Item>
                   </Col>
