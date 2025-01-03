@@ -3,7 +3,11 @@
 import { ResumeType } from "@/app/types/career";
 import ResumeBuilder from "@/components/dashboard/career/cv-builder/ResumeBuilder";
 import { ResumeTemplate } from "@/components/dashboard/career/cv-builder/ResumeTemplate";
-import { sampleResumeDataMin } from "@/constants/sample-resume-data";
+import SelectResumeTemplateModal from "@/components/dashboard/career/cv-builder/SelectResumeTemplateModal";
+import {
+  emptyResumeData,
+  sampleResumeDataMin,
+} from "@/constants/sample-resume-data";
 import { ResumeProvider } from "@/contexts/ResumeContext";
 import { useApiClient } from "@/hooks/api-hook";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
@@ -11,21 +15,8 @@ import { Button, Card, Flex, Popconfirm, Result, Skeleton } from "antd";
 import { useState } from "react";
 import useSWR from "swr";
 
-const emptyResumeData: ResumeType = {
-  templateId: 0,
-  basics: {
-    name: "",
-    label: "",
-    email: "",
-    phone: "",
-    summary: "",
-  },
-  work: [],
-  education: [],
-  skills: [],
-};
-
 export default function ResumesPage() {
+  const [open, setOpen] = useState(false);
   const [showCvBuilder, setShowCvBuilder] = useState(false);
   const [resumeData, setResumeData] = useState<ResumeType>(emptyResumeData);
   const { get, del } = useApiClient();
@@ -58,6 +49,7 @@ export default function ResumesPage() {
   }
 
   const handleResumeEditClick = (resume: ResumeType) => {
+    setOpen(false);
     setShowCvBuilder(true);
     setResumeData(resume);
   };
@@ -82,9 +74,13 @@ export default function ResumesPage() {
               icon={<PlusOutlined />}
               size="large"
               style={{ height: "100%", background: "#f0f0f0" }}
-              onClick={() => handleResumeEditClick(emptyResumeData)}
+              onClick={() =>
+                data && data.length > 0
+                  ? setOpen(true)
+                  : handleResumeEditClick(emptyResumeData)
+              }
             >
-              Blank Resume
+              {data && data.length > 0 ? "New" : "Blank"} Resume
             </Button>
           </div>
           {data && data.length > 0
@@ -143,6 +139,11 @@ export default function ResumesPage() {
               ))}
         </Flex>
       )}
+      <SelectResumeTemplateModal
+        open={open}
+        onCancel={() => setOpen(false)}
+        onResumeSelected={handleResumeEditClick}
+      />
     </>
   );
 }

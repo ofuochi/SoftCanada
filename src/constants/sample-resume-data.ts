@@ -220,6 +220,7 @@ export const sampleResumeData: ResumeType = {
   ],
   references: [
     {
+      email: "manager@gmail.com",
       name: "Jane Smith",
       reference:
         "Jane was my manager at TechCorp and can attest to my technical and leadership skills.",
@@ -251,6 +252,20 @@ export const sampleResumeData: ResumeType = {
       url: "https://johndoe.dev/portfolio",
     },
   ],
+} as const;
+
+export const emptyResumeData: ResumeType = {
+  templateId: 0,
+  basics: {
+    name: "",
+    label: "",
+    email: "",
+    phone: "",
+    summary: "",
+  },
+  work: [],
+  education: [],
+  skills: [],
 } as const;
 
 export const sampleResumeDataMin: ResumeType = {
@@ -396,6 +411,7 @@ export const sampleResumeDataMin: ResumeType = {
   ],
   references: [
     {
+      email: "manager@gmail.com",
       name: "Jane Smith",
       reference:
         "Jane was my manager at TechCorp and can attest to my technical and leadership skills.",
