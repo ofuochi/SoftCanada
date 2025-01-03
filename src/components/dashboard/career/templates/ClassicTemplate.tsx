@@ -1,5 +1,7 @@
+"use strict";
 import { ResumeType } from "@/app/types/career";
 import { Col, Divider, Row, Space, Typography } from "antd";
+import dayjs from "dayjs";
 import React from "react";
 const { Title, Text } = Typography;
 
@@ -9,7 +11,7 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
       {/* HEADER / BASICS SECTION */}
       <header className="mb-10">
         <Title level={1} style={{ marginBottom: 0 }}>
-          {data.basics?.name}
+          {data?.basics?.name}
         </Title>
         {data.basics?.label && (
           <Text type="secondary">{data.basics.label}</Text>
@@ -54,14 +56,14 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             <ul className="list-none pl-0">
               {data.basics.profiles.map((profile, i) => (
                 <li key={i} className="mb-2">
-                  <Text strong>{profile.network}:</Text>{" "}
+                  <Text strong>{profile?.network}:</Text>{" "}
                   <a
-                    href={profile.url}
+                    href={profile?.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
                   >
-                    {profile.username}
+                    {profile?.username}
                   </a>
                 </li>
               ))}
@@ -79,12 +81,15 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
               <Divider />
               {data.work.map((job, i) => (
                 <div key={i} className="mb-6">
-                  <Text strong>{job.position}</Text> <Text>at {job.name}</Text>
+                  <Text strong>{job?.position}</Text>{" "}
+                  <Text>at {job?.name}</Text>
                   <br />
                   <Text type="secondary">
-                    {job.startDate} - {job.endDate || "Present"}
+                    {dayjs(job?.startDate).format("MMM YYYY")} -{" "}
+                    {(job?.endDate && dayjs(job?.endDate).format("MMM YYYY")) ||
+                      "Present"}
                   </Text>
-                  {job.url && (
+                  {job?.url && (
                     <>
                       <br />
                       <a
@@ -123,9 +128,11 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
                   at <Text strong>{edu.institution}</Text>
                   <br />
                   <Text type="secondary">
-                    {edu.startDate} - {edu.endDate || "Present"}
+                    {dayjs(edu?.startDate).format("MMM YYYY")} -{" "}
+                    {(edu?.endDate && dayjs(edu?.endDate).format("MMM YYYY")) ||
+                      "Present"}
                   </Text>
-                  {edu.url && (
+                  {edu?.url && (
                     <>
                       <br />
                       <a

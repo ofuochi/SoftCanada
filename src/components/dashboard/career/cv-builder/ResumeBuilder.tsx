@@ -32,6 +32,7 @@ export type ResumeFormProp = {
 const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
   const { resumeData } = useResume();
   const { post, put } = useApiClient();
+  const [resumeDataId, setResumeDataId] = useState<string>();
   const [inProgress, setInProgress] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -42,8 +43,14 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
     setInProgress(true);
     const reqData: ResumeType = { ...resumeData, [field]: value };
     try {
-      if (resumeData.id) await put(`/api/resumes/${resumeData.id}`, reqData);
-      else await post<ResumeType, ResumeType>(`/api/resumes`, reqData);
+      if (resumeDataId) await put(`/api/resumes/${resumeDataId}`, reqData);
+      else {
+        const { id } = await post<ResumeType, ResumeType>(
+          `/api/resumes`,
+          reqData
+        );
+        setResumeDataId(id);
+      }
 
       messageApi.success("Saved successfully!");
     } finally {

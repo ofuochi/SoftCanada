@@ -1,46 +1,6 @@
 import { GetProp, UploadProps } from "antd";
-import { Control, FieldErrors } from "react-hook-form";
 
 export type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
-
-export type PersonalInfo = {
-  avatar?: string;
-  fullName: string;
-  email: string;
-  phone: string;
-  address: string;
-};
-
-export type Experience = {
-  company: string;
-  position: string;
-  startDate: string;
-  endDate: string;
-  description: string;
-};
-
-export type Education = {
-  institution: string;
-  degree: string;
-  startDate: string;
-  endDate: string;
-  description: string;
-};
-
-export type Skill = { name: string };
-
-export type ResumeData = {
-  personalInfo: PersonalInfo;
-  summary: string;
-  skills: Skill[];
-  experience: Experience[];
-  education: Education[];
-};
-
-export type CvStepProps = {
-  control: Control<ResumeData, unknown>;
-  errors: FieldErrors<ResumeData>;
-};
 
 export type ResumeLocationType = {
   address?: string;
@@ -51,12 +11,14 @@ export type ResumeLocationType = {
 };
 
 export type ResumeProfileType = {
+  id?: string;
   network?: string;
   username?: string;
   url?: string;
 };
 
 export type ResumeBasicsType = {
+  id: string;
   name: string;
   email: string;
   phone: string;
@@ -70,16 +32,17 @@ export type ResumeBasicsType = {
 
 export type ResumeWorkType = {
   id?: string;
-  name: string;
-  position: string;
+  name?: string;
+  position?: string;
   url?: string;
   startDate?: Date | string;
   endDate?: Date | string;
   summary?: string;
-  highlights: string[];
+  highlights?: string[];
 };
 
 export type ResumeVolunteerType = {
+  id?: string;
   organization: string;
   position: string;
   url?: string;
@@ -90,6 +53,7 @@ export type ResumeVolunteerType = {
 };
 
 export type ResumeEducationType = {
+  id?: string;
   institution: string;
   url?: string;
   area: string;
@@ -101,6 +65,7 @@ export type ResumeEducationType = {
 };
 
 export type ResumeAwardType = {
+  id?: string;
   title: string;
   date: string;
   awarder: string;
@@ -108,6 +73,7 @@ export type ResumeAwardType = {
 };
 
 export type ResumeCertificateType = {
+  id?: string;
   name: string;
   date: string;
   issuer: string;
@@ -115,6 +81,7 @@ export type ResumeCertificateType = {
 };
 
 export type ResumePublicationType = {
+  id?: string;
   name: string;
   publisher: string;
   releaseDate: string;
@@ -123,28 +90,33 @@ export type ResumePublicationType = {
 };
 
 export type ResumeSkillType = {
+  id?: string;
   name: string;
   level?: string;
   keywords: string[];
 };
 
 export type ResumeLanguageType = {
+  id?: string;
   language: string;
   fluency: string;
 };
 
 export type ResumeInterestType = {
+  id?: string;
   name: string;
   keywords: string[];
 };
 
 export type ResumeReferenceType = {
+  id?: string;
   name: string;
   reference: string;
   email: string;
 };
 
 export type ResumeProjectType = {
+  id?: string;
   name: string;
   startDate: string;
   endDate: string;

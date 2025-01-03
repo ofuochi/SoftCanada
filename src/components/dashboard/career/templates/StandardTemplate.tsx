@@ -1,8 +1,8 @@
 import { ResumeType } from "@/app/types/career";
-import { Divider, Flex, Space, Typography } from "antd";
+import { Divider, Typography } from "antd";
+import dayjs from "dayjs";
 import Link from "next/link";
 import React from "react";
-import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
 
