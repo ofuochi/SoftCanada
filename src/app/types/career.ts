@@ -128,7 +128,7 @@ export type ResumeProjectType = {
 export type ResumeType = {
   id?: string;
   templateId: number;
-  basics: ResumeBasicsType;
+  basics?: ResumeBasicsType;
   work: ResumeWorkType[];
   education: ResumeEducationType[];
   skills: ResumeSkillType[];

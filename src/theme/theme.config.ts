@@ -4,6 +4,7 @@ const theme: ThemeConfig = {
   token: {
     fontSize: 16,
     colorPrimary: 'black',
+    fontFamily: "Roboto, sans-serif",
   },
   components: {
     Button: {

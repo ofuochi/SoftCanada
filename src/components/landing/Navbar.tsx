@@ -8,10 +8,11 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { LOGIN_PATH } from "@/constants/paths";
 import type { MenuProps } from "antd";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { ProfileAvatar } from "../ProfileAvatar";
-import { LOGIN_PATH } from "@/constants/paths";
+
 export default function Navbar() {
   const [navbarStyle, setNavbarStyle] = useState("bg-transparent");
   const [isNavbarDark, setIsNavbarDark] = useState(false);
