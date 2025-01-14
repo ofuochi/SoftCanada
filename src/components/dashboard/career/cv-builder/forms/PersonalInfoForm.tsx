@@ -29,7 +29,7 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
     Object.fromEntries(
       Object.keys(optionalFields).map((key) => [
         key,
-        !!basics[key as keyof ResumeBasicsType], // Show if value exists in `basics`
+        !!basics?.[key as keyof ResumeBasicsType], // Show if value exists in `basics`
       ])
     ) as { [key in keyof ResumeBasicsType]?: boolean }
   );

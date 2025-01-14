@@ -1,24 +1,19 @@
-import {
-  ResumeBasicsType,
-  ResumeEducationType,
-  ResumeType,
-  ResumeWorkType,
-} from "@/app/types/career";
+import {  ResumeType } from "@/app/types/career";
+import { useResume } from "@/contexts/ResumeContext";
 import { useApiClient } from "@/hooks/api-hook";
 import { LeftOutlined } from "@ant-design/icons";
 import { Collapse, CollapseProps, FloatButton, message, Space } from "antd";
 import React, { SetStateAction, useState } from "react";
+import { GrUserManager } from "react-icons/gr";
 import { PiGraduationCap, PiSuitcaseSimpleThin } from "react-icons/pi";
 import { RiProfileLine } from "react-icons/ri";
-import PersonalInfoForm from "./forms/PersonalInfoForm";
-import WorkExperienceListForm from "./forms/WorkExperienceListForm";
-import EducationListForm from "./forms/EducationListForm";
-import { ResumeTemplate } from "./ResumeTemplate";
-import { useResume } from "@/contexts/ResumeContext";
 import { VscTools } from "react-icons/vsc";
-import SkillsForm from "./forms/SkillsForm";
-import { GrUserManager } from "react-icons/gr";
+import EducationListForm from "./forms/EducationListForm";
+import PersonalInfoForm from "./forms/PersonalInfoForm";
 import ReferencesForm from "./forms/ReferencesForm";
+import SkillsForm from "./forms/SkillsForm";
+import WorkExperienceListForm from "./forms/WorkExperienceListForm";
+import { ResumeTemplate } from "./ResumeTemplate";
 
 type Props = {
   setShowCvBuilder: (value: SetStateAction<boolean>) => void;

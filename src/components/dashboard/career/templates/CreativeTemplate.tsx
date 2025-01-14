@@ -10,7 +10,7 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
     <div className="flex min-h-screen -m-10">
       <aside className="w-1/4 bg-blue-900 text-white p-8">
         <Title level={2} style={{ color: "white" }}>
-          {basics.name}
+          {basics?.name}
         </Title>
         <Text style={{ color: "#ddd" }}>{basics.label}</Text>
         <br />

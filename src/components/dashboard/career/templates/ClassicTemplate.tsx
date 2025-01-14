@@ -1,4 +1,3 @@
-"use strict";
 import { ResumeType } from "@/app/types/career";
 import { Col, Divider, Row, Space, Typography } from "antd";
 import dayjs from "dayjs";
