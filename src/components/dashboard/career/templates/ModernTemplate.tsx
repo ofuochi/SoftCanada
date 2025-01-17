@@ -24,14 +24,14 @@ const ModernTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
       {/* BASICS SECTION */}
       <header className="mb-10">
         <Title level={1} style={{ marginBottom: 0 }}>
-          {basics.name}
+          {basics?.name ?? ""}
         </Title>
-        {basics.label && <Text type="secondary">{basics.label}</Text>}
+        {basics?.label ?? <Text type="secondary"></Text>}
         <br />
         <Space direction="horizontal" className="mt-2">
-          {basics.email && <Text>{basics.email}</Text>}
-          {basics.phone && <Text>{basics.phone}</Text>}
-          {basics.url && (
+          {basics?.email && <Text>{basics.email}</Text>}
+          {basics?.phone && <Text>{basics.phone}</Text>}
+          {basics?.url && (
             <a
               href={basics.url}
               target="_blank"
@@ -43,7 +43,7 @@ const ModernTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           )}
         </Space>
         <div className="mt-2">
-          {basics.location && (
+          {basics?.location && (
             <Text>
               {basics.location.address && `${basics.location.address}, `}
               {basics.location.city && `${basics.location.city}, `}
@@ -52,12 +52,12 @@ const ModernTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             </Text>
           )}
         </div>
-        {basics.summary && (
+        {basics?.summary && (
           <div className="mt-4">
             <Text>{basics.summary}</Text>
           </div>
         )}
-        {basics.profiles && basics.profiles.length > 0 && (
+        {basics?.profiles && basics.profiles.length > 0 && (
           <div className="mt-4">
             <Title level={4}>Profiles</Title>
             <Divider />
@@ -90,7 +90,7 @@ const ModernTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
               <Text strong>{job.position}</Text> <Text>at {job.name}</Text>
               <br />
               <Text type="secondary">
-                {job.startDate} - {job.endDate || "Present"}
+                {String(job.startDate)} - {String(job.endDate) || "Present"}
               </Text>
               {job.url && (
                 <>
@@ -170,7 +170,7 @@ const ModernTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
               at <Text strong>{edu.institution}</Text>
               <br />
               <Text type="secondary">
-                {edu.startDate} - {edu.endDate || "Present"}
+                {String(edu.startDate)} - {String(edu.endDate) || "Present"}
               </Text>
               {edu.url && (
                 <>
@@ -391,3 +391,4 @@ const ModernTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
 };
 
 export default ModernTemplate;
+

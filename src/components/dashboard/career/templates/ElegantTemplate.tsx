@@ -10,13 +10,13 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
     <div className="bg-gray-50 text-gray-900 p-6 min-h-screen">
       <div className="bg-white p-4 mb-6 shadow">
         <Title level={2} style={{ marginBottom: 0 }}>
-          {basics.name}
+          {basics?.name ?? ""}
         </Title>
-        <Text type="secondary">{basics.label}</Text>
+        <Text type="secondary">{basics?.label}</Text>
         <div className="mt-2">
           <Text>
-            {basics.email} | {basics.phone} | {basics.location.city},{" "}
-            {basics.location.countryCode}
+            {basics?.email} | {basics?.phone} | {basics?.location?.city},{" "}
+            {basics?.location?.countryCode}
           </Text>
         </div>
       </div>
@@ -33,13 +33,11 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
                 </Text>
                 <br />
                 <Text type="secondary">
-                  {job.startDate} - {job.endDate || "Present"}
+                  {String(job.startDate)} - {String(job.endDate) || "Present"}
                 </Text>
                 <p className="mt-2">{job.summary}</p>
                 <ul className="list-disc list-inside">
-                  {job.highlights.map((hl, i) => (
-                    <li key={i}>{hl}</li>
-                  ))}
+                  {job.highlights?.map((hl, i) => <li key={i}>{hl}</li>) ?? []}
                 </ul>
               </div>
             ))}
@@ -51,8 +49,8 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
                 <Text strong>{edu.institution}</Text>
                 <br />
                 <Text>
-                  {edu.studyType} in {edu.area} ({edu.startDate} -{" "}
-                  {edu.endDate || "Present"})
+                  {edu.studyType} in {edu.area} ({edu.startDate.toString()} -{" "}
+                  {edu.endDate?.toString() || "Present"})
                 </Text>
                 {edu.score && <Text> - GPA: {edu.score}</Text>}
               </div>
@@ -78,7 +76,7 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           </Title>
           <Divider />
           <ul className="list-none pl-0">
-            {languages.map((lang) => (
+            {languages?.map((lang) => (
               <li key={lang.language} className="mb-2">
                 <Text strong>{lang.language}</Text> -{" "}
                 <Text>{lang.fluency}</Text>
@@ -92,3 +90,4 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
 };
 
 export default ElegantTemplate;
+
