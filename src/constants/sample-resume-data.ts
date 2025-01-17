@@ -3,6 +3,7 @@ import { ResumeType } from "@/app/types/career";
 export const sampleResumeData: ResumeType = {
   templateId: 0,
   basics: {
+    id: "1",
     name: "John Doe",
     label: "Software Engineer",
     image: "https://i.pravatar.cc/150?img=12",
@@ -257,6 +258,7 @@ export const sampleResumeData: ResumeType = {
 export const emptyResumeData: ResumeType = {
   templateId: 0,
   basics: {
+    id: "",
     name: "",
     label: "",
     email: "",
@@ -271,6 +273,7 @@ export const emptyResumeData: ResumeType = {
 export const sampleResumeDataMin: ResumeType = {
   templateId: 0,
   basics: {
+    id: "2",
     name: "John Doe",
     label: "Software Engineer",
     image: "https://i.pravatar.cc/150?img=12",
@@ -444,3 +447,4 @@ export const sampleResumeDataMin: ResumeType = {
     },
   ],
 } as const;
+
