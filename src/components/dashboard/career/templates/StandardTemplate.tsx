@@ -8,11 +8,11 @@ const { Title, Text } = Typography;
 
 const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   return (
-    <div className="text-gray-800 min-h-screen font-sans">
+    <div className="text-gray-800 min-h-screen font-dm_sans">
       {/* HEADER */}
-      <header className="mb-5">
+      <header className="mb-2.5">
         {data.basics?.name && (
-          <Title level={1} className="mb-0 text-black font-bold">
+          <Title level={1} className="text-black font-bold">
             {data.basics.name}
           </Title>
         )}
@@ -21,7 +21,7 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
         {((data.basics?.email && data.basics?.phone) ||
           data.basics?.email ||
           data.basics?.phone) && (
-          <div className="flex items-center space-x-2 text-base mt-1">
+          <div className="flex items-center space-x-2 text-base -mt-2.5">
             {data.basics.email && <Text>{data.basics.email}</Text>}
             {data.basics.email && data.basics.phone && (
               <Text type="secondary">•</Text>
@@ -438,3 +438,4 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
 };
 
 export default StandardTemplate;
+

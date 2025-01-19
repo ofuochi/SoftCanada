@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        dm_sans: ["DM Sans"],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
@@ -16,3 +19,4 @@ export default {
   },
   plugins: [],
 } satisfies Config;
+

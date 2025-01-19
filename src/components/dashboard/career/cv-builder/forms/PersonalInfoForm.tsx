@@ -75,7 +75,7 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
         </Col>
       </Row>
       <Row gutter={16}>
-        <Col xs={24} sm={12}>
+        <Col xs={24} sm={24}>
           <Form.Item
             label="Phone"
             name="phone"
@@ -111,7 +111,7 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                   <CloseOutlined
                     onClick={() => {
                       form.setFieldsValue({ location: {} });
-                      setResumeData((prev) => ({
+                      setResumeData((prev: any) => ({
                         ...prev,
                         basics: { ...prev.basics, location: {} },
                       }));
@@ -166,7 +166,7 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                   <CloseOutlined
                     onClick={() => {
                       form.setFieldsValue({ profiles: [] });
-                      setResumeData((prev) => ({
+                      setResumeData((prev: any) => ({
                         ...prev,
                         basics: { ...prev.basics, profiles: [] },
                       }));
@@ -253,7 +253,7 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                 <CloseOutlined
                   onClick={() => {
                     form.setFieldsValue({ [key]: undefined });
-                    setResumeData((prev) => ({
+                    setResumeData((prev: any) => ({
                       ...prev,
                       basics: { ...prev.basics, [key]: undefined },
                     }));
@@ -285,10 +285,11 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
       </Space>
       <Form.Item label={null}>
         <Button
-          type="primary"
+          type={undefined}
           htmlType="submit"
-          className="mt-4"
+          className="mt-4 bg-[#72FA3266] border border-[#72FA3266] font-dm_sans font-semibold text-xl text-[#010309] h-[400px] py-[18px] px-6"
           loading={isSaving}
+          style={{}}
         >
           Save
         </Button>
