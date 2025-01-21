@@ -11,6 +11,7 @@ export default {
       fontFamily: {
         dm_sans: ["DM Sans"],
         lato: ["Lato"],
+        poppins: ["Poppins"],
       },
       colors: {
         background: "var(--background)",

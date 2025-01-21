@@ -64,17 +64,6 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
     }
   };
 
-  const handleMultipleSubmissions = async (data: Partial<ResumeType>) => {
-    for (const [field, value] of Object.entries(data)) {
-      if (value !== null && value !== undefined && value !== "") {
-        await handleSubmit(
-          field as keyof ResumeType,
-          value as ResumeType[keyof ResumeType]
-        );
-      }
-    }
-  };
-
   const items: CollapseProps["items"] = [
     {
       key: "1",
@@ -166,6 +155,18 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
       {contextHolder}
       <div className="flex flex-col lg:flex-row gap-5">
         <div className="flex-grow lg:max-w-[400px]">
+          <div
+            onMouseDown={() => {
+              setShowCvBuilder(false);
+              mutate(`/api/resumes`);
+            }}
+            className="my-4 bg-white w-full max-w-[200px] border border-[#CBCBCB] min-h-12 rounded flex items-center justify-center gap-[7px] cursor-pointer"
+          >
+            <LeftOutlined size={24} color="#010309" />
+            <span className="text-[#010309] font-medium text-[13px] font-poppins">
+              Back to Template
+            </span>
+          </div>
           <div className=" bg-white p-5 sticky top-0 max-h-[calc(100vh-4rem)] overflow-y-auto">
             <Collapse
               ghost
@@ -208,7 +209,7 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
         <FloatButton
           tooltip="Back to templates"
           icon={<LeftOutlined />}
-          onClick={() => {
+          onMouseDown={() => {
             setShowCvBuilder(false);
             mutate(`/api/resumes`);
           }}
