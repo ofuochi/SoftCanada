@@ -97,6 +97,7 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                 onClick={handleAdd}
                 icon={<PlusOutlined />}
                 block
+                className="!font-dm_sans"
               >
                 Add Work Experience
               </Button>
@@ -106,11 +107,22 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
       </Form.List>
       <Form.Item>
         <Button
-          className="mt-5"
-          type="primary"
-          htmlType="submit"
           loading={isSaving}
           disabled={!showSaveBtn}
+          htmlType="submit"
+          className="!font-dm_sans mt-5"
+          style={{
+            width: "100%",
+            maxWidth: "400px",
+            borderRadius: "12px",
+            padding: "18px 24px",
+            height: "50px",
+            fontWeight: "600",
+            fontSize: "16px",
+            color: "#010309",
+            border: "none",
+            backgroundColor: "#72FA3266",
+          }}
         >
           Save
         </Button>
@@ -120,3 +132,4 @@ const WorkExperienceListForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
 };
 
 export default WorkExperienceListForm;
+

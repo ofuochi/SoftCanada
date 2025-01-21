@@ -32,6 +32,7 @@ const { Header, Footer, Sider, Content } = Layout;
 export default function DashboardLayout({ children }: React.PropsWithChildren) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
+
   const breadcrumbs = breadcrumbConfig[pathname] || [
     { title: "Home", path: "/" },
   ];
@@ -43,64 +44,214 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
   const menuItems: MenuProps["items"] = [
     {
       key: "/dashboard",
-      icon: <MdDashboard />,
-      label: <Link href="/dashboard">Dashboard</Link>,
+      icon: (
+        <MdDashboard
+          className={`${
+            pathname === "/dashboard" ? "!text-[#010309]" : "!text-[#808080]"
+          }`}
+          size={pathname === "/dashboard" ? "24px" : "18px"}
+        />
+      ),
+      label: (
+        <Link
+          href="/dashboard"
+          className={`font-dm_sans ${
+            pathname === "/dashboard"
+              ? "!text-[#010309] text-xl"
+              : "!text-[#808080] text-sm"
+          }`}
+        >
+          Dashboard
+        </Link>
+      ),
     },
     {
       key: "career",
-      icon: <PiSuitcaseSimple />,
-      label: "Career",
+      icon: (
+        <PiSuitcaseSimple
+          className={`${
+            pathname.includes("career") ? "!text-[#010309]" : "!text-[#808080]"
+          }`}
+          size={pathname.includes("career") ? "24px" : "18px"}
+        />
+      ),
+      label: (
+        <span
+          className={`font-dm_sans ${
+            pathname.includes("career")
+              ? "text-[#010309] text-xl"
+              : "!text-[#808080] text-sm"
+          }`}
+        >
+          Career
+        </span>
+      ),
       children: [
         {
           key: "/dashboard/career/resumes",
-          label: <Link href="/dashboard/career/resumes">Resumes</Link>,
+          label: (
+            <Link
+              href="/dashboard/career/resumes"
+              className={`font-dm_sans bg-transparent text-sm ${
+                pathname === "/dashboard/career/resumes"
+                  ? "!text-[#010309]"
+                  : "!text-[#808080]"
+              }`}
+            >
+              Resumes
+            </Link>
+          ),
         },
         {
           key: "/dashboard/career/jobs",
-          label: <Link href="/dashboard/career/jobs">Job Listings</Link>,
+          label: (
+            <Link
+              href="/dashboard/career/jobs"
+              className={`font-dm_sans bg-transparent text-sm ${
+                pathname === "/dashboard/career/jobs"
+                  ? "!text-[#010309]"
+                  : "!text-[#808080]"
+              }`}
+            >
+              Job Listings
+            </Link>
+          ),
         },
         {
           key: "/dashboard/career/career-advisor",
-          label: <Link href="/dashboard/career/career-advisor">Advisor</Link>,
+          label: (
+            <Link
+              href="/dashboard/career/career-advisor"
+              className={`font-dm_sans text-sm ${
+                pathname === "/dashboard/career/career-advisor"
+                  ? "!text-[#010309]"
+                  : "!text-[#808080]"
+              }`}
+            >
+              Advisor
+            </Link>
+          ),
         },
       ],
     },
     {
       key: "/dashboard/real-estate",
-      icon: <HomeOutlined />,
-      label: "Real Estate",
+      icon: (
+        <HomeOutlined
+          className={`${
+            pathname.includes("estate") ? "!text-[#010309]" : "!text-[#808080]"
+          }`}
+          size={pathname.includes("estate") ? 24 : 18}
+        />
+      ),
+      label: (
+        <span
+          className={`font-dm_sans ${
+            pathname.includes("estate")
+              ? "text-[#010309] text-xl"
+              : "!text-[#808080] text-sm"
+          }`}
+        >
+          Real Estate
+        </span>
+      ),
       children: [
         {
           key: "/dashboard/real-estate/properties",
           label: (
-            <Link href="/dashboard/real-estate/properties">Properties</Link>
+            <Link
+              href="/dashboard/real-estate/properties"
+              className={`font-dm_sans text-sm ${
+                pathname === "/dashboard/real-estate/properties"
+                  ? "!text-[#010309]"
+                  : "!text-[#808080]"
+              }`}
+            >
+              Properties
+            </Link>
           ),
         },
         {
           key: "/dashboard/real-estate/agents",
-          label: <Link href="/dashboard/real-estate/agents">Agents</Link>,
+          label: (
+            <Link
+              href="/dashboard/real-estate/agents"
+              className={`font-dm_sans text-sm ${
+                pathname === "/dashboard/real-estate/agents"
+                  ? "!text-[#010309]"
+                  : "!text-[#808080]"
+              }`}
+            >
+              Agents
+            </Link>
+          ),
         },
         {
           key: "/dashboard/real-estate/transactions",
           label: (
-            <Link href="/dashboard/real-estate/transactions">Transactions</Link>
+            <Link
+              href="/dashboard/real-estate/transactions"
+              className={`font-dm_sans text-sm ${
+                pathname === "/dashboard/real-estate/transactions"
+                  ? "!text-[#010309]"
+                  : "!text-[#808080]"
+              }`}
+            >
+              Transactions
+            </Link>
           ),
         },
       ],
     },
     {
       key: "/dashboard/calendar",
-      icon: <CalendarOutlined />,
+      icon: (
+        <CalendarOutlined
+          className={`${
+            pathname === "/dashboard/calendar"
+              ? "!text-[#010309]"
+              : "!text-[#808080]"
+          }`}
+          size={pathname === "/dashboard/calendar" ? 24 : 18}
+        />
+      ),
       label: (
-        <Badge dot>
-          <Link href="/dashboard/calendar">Calendar</Link>
-        </Badge>
+        <Link
+          href="/dashboard/calendar"
+          className={`font-dm_sans text-sm ${
+            pathname === "/dashboard/calendar"
+              ? "!text-[#010309] text-xl"
+              : "!text-[#808080] text-sm"
+          }`}
+        >
+          Calendar
+        </Link>
       ),
     },
     {
       key: "/dashboard/settings",
-      icon: <SettingOutlined />,
-      label: <Link href="/dashboard/settings">Settings</Link>,
+      icon: (
+        <SettingOutlined
+          className={`${
+            pathname === "/dashboard/settings"
+              ? "!text-[#010309]"
+              : "!text-[#808080]"
+          }`}
+          size={pathname === "/dashboard/settings" ? 24 : 18}
+        />
+      ),
+      label: (
+        <Link
+          href="/dashboard/settings"
+          className={`font-dm_sans text-sm ${
+            pathname === "/dashboard/settings"
+              ? "!text-[#010309] text-xl"
+              : "!text-[#808080] text-sm"
+          }`}
+        >
+          Settings
+        </Link>
+      ),
     },
   ];
 
@@ -121,7 +272,7 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
         onCollapse={setCollapsed}
         breakpoint="lg"
         theme="light"
-        width={200}
+        width={250}
         collapsedWidth="80"
         style={{
           position: "fixed",
@@ -141,11 +292,12 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
           items={menuItems}
           selectedKeys={[pathname]}
           defaultOpenKeys={[pathname.split("/").slice(0, 3).join("/")]}
+          className="space-y-5"
         />
       </Sider>
       <Layout
         style={{
-          marginLeft: collapsed ? 80 : 200,
+          marginLeft: collapsed ? 80 : 250,
           transition: "margin-left 0.2s ease",
         }}
       >
@@ -182,20 +334,23 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
         </Header>
 
         {/* Breadcrumb */}
-        <div className="px-6 py-4">
-          <Breadcrumb items={breadcrumbs} />
+        <div className="px-5 lg:px-8 xl:px-10 2xl:px-12 mt-5">
+          <Breadcrumb items={breadcrumbs} className="!font-dm_sans" />
         </div>
 
         {/* Content */}
         <ErrorProvider>
-          <Content className="m-5 overflow-initial">{children}</Content>
+          <Content className="px-5 lg:px-8 xl:px-10 2xl:px-12 mt-5">
+            {children}
+          </Content>
         </ErrorProvider>
 
         {/* Footer */}
-        <Footer className="text-center">
+        <Footer className="text-center font-dm_sans">
           SoftCanada ©{new Date().getFullYear()} Created by Your Company
         </Footer>
       </Layout>
     </Layout>
   );
 }
+

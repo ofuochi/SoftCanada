@@ -50,8 +50,12 @@ const ReferencesForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                           message: "Required!",
                         },
                       ]}
+                      className="!font-dm_sans"
                     >
-                      <Input placeholder="Name of reference" />
+                      <Input
+                        placeholder="Name of reference"
+                        className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                      />
                     </Form.Item>
                   </Col>
                   <Col flex="1">
@@ -64,8 +68,12 @@ const ReferencesForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                           message: "Required!",
                         },
                       ]}
+                      className="!font-dm_sans"
                     >
-                      <Input placeholder="E.g. Manager" />
+                      <Input
+                        placeholder="E.g. Manager"
+                        className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                      />
                     </Form.Item>
                   </Col>
                   <Col flex="1">
@@ -79,8 +87,12 @@ const ReferencesForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                           message: "Required!",
                         },
                       ]}
+                      className="!font-dm_sans"
                     >
-                      <Input placeholder="Reference contact email" />
+                      <Input
+                        placeholder="Reference contact email"
+                        className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                      />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -98,6 +110,7 @@ const ReferencesForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
               onClick={() => add()}
               icon={<PlusOutlined />}
               block
+              className="!font-dm_sans"
             >
               Add Skill
             </Button>
@@ -107,11 +120,22 @@ const ReferencesForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
 
       <Form.Item>
         <Button
-          type="primary"
-          htmlType="submit"
           loading={isSaving}
           disabled={!showSaveBtn}
-          className="mt-4"
+          htmlType="submit"
+          className="!font-dm_sans mt-5"
+          style={{
+            width: "100%",
+            maxWidth: "400px",
+            borderRadius: "12px",
+            padding: "18px 24px",
+            height: "50px",
+            fontWeight: "600",
+            fontSize: "16px",
+            color: "#010309",
+            border: "none",
+            backgroundColor: "#72FA3266",
+          }}
         >
           Save
         </Button>
@@ -121,3 +145,4 @@ const ReferencesForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
 };
 
 export default ReferencesForm;
+

@@ -50,13 +50,24 @@ const SkillsForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                       rules={[
                         { required: true, message: "Please enter skill name!" },
                       ]}
+                      className="!font-dm_sans"
                     >
-                      <Input placeholder="E.g. JavaScript" />
+                      <Input
+                        placeholder="E.g. JavaScript"
+                        className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                      />
                     </Form.Item>
                   </Col>
                   <Col flex="1">
-                    <Form.Item label="Level" name={[name, "level"]}>
-                      <Select placeholder="Select skill level">
+                    <Form.Item
+                      label="Level"
+                      name={[name, "level"]}
+                      className="!font-dm_sans"
+                    >
+                      <Select
+                        placeholder="Select skill level"
+                        className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                      >
                         <Option value="Beginner">Beginner</Option>
                         <Option value="Intermediate">Intermediate</Option>
                         <Option value="Advanced">Advanced</Option>
@@ -79,6 +90,7 @@ const SkillsForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
               onClick={() => add()}
               icon={<PlusOutlined />}
               block
+              className="!font-dm_sans"
             >
               Add Skill
             </Button>
@@ -88,11 +100,22 @@ const SkillsForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
 
       <Form.Item>
         <Button
-          type="primary"
-          htmlType="submit"
           loading={isSaving}
           disabled={!showSaveBtn}
-          className="mt-4"
+          htmlType="submit"
+          className="!font-dm_sans mt-5"
+          style={{
+            width: "100%",
+            maxWidth: "400px",
+            borderRadius: "12px",
+            padding: "18px 24px",
+            height: "50px",
+            fontWeight: "600",
+            fontSize: "16px",
+            color: "#010309",
+            border: "none",
+            backgroundColor: "#72FA3266",
+          }}
         >
           Save
         </Button>
@@ -102,3 +125,4 @@ const SkillsForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
 };
 
 export default SkillsForm;
+
