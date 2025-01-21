@@ -103,8 +103,12 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
                             },
                           },
                         ]}
+                        className="!font-dm_sans"
                       >
-                        <Input placeholder="Enter responsibility" />
+                        <Input
+                          placeholder="Enter responsibility"
+                          className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                        />
                       </Form.Item>
                     </div>
                     <div>
@@ -129,6 +133,7 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
                     type="dashed"
                     onClick={() => add()}
                     icon={<PlusOutlined />}
+                    className="!font-dm_sans"
                   >
                     Add Responsibility
                   </Button>
@@ -174,8 +179,12 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
             rules={[
               { required: true, message: "Please enter the company name!" },
             ]}
+            className="!font-dm_sans"
           >
-            <Input placeholder="Enter company name" />
+            <Input
+              placeholder="Enter company name"
+              className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+            />
           </Form.Item>
         </Col>
 
@@ -184,8 +193,12 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
             label="Position"
             name={[field.name, "position"]}
             rules={[{ required: true, message: "Please enter the position!" }]}
+            className="!font-dm_sans"
           >
-            <Input placeholder="Enter position" />
+            <Input
+              placeholder="Enter position"
+              className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+            />
           </Form.Item>
         </Col>
       </Row>
@@ -198,6 +211,7 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
             rules={[
               { required: true, message: "Please enter the start date!" },
             ]}
+            className="!font-dm_sans"
           >
             <DatePicker
               style={{ width: "100%" }}
@@ -210,6 +224,7 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
                   currentDate && currentDate.isAfter(dayjs().endOf("month"))
                 );
               }}
+              className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
             />
           </Form.Item>
         </Col>
@@ -249,6 +264,7 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
                 },
               }),
             ]}
+            className="!font-dm_sans"
           >
             <DatePicker
               style={{ width: "100%" }}
@@ -256,6 +272,7 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
               picker="month"
               placeholder="Till Now"
               disabledDate={isDateWithinRange}
+              className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
             />
           </Form.Item>
         </Col>
@@ -291,8 +308,12 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
                   message: "Please enter a valid URL!",
                 },
               ]}
+              className="!font-dm_sans"
             >
-              <Input placeholder="Enter company website URL" />
+              <Input
+                placeholder="Enter company website URL"
+                className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+              />
             </Form.Item>
           </div>
           <CloseOutlined
@@ -306,7 +327,11 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
       {optionalVisible.summary && (
         <div className="flex space-x-2">
           <div className="flex-1">
-            <Form.Item label="Summary" name={[field.name, "summary"]}>
+            <Form.Item
+              label="Summary"
+              name={[field.name, "summary"]}
+              className="!font-dm_sans"
+            >
               <Input.TextArea
                 placeholder="Describe your role"
                 autoSize={{ minRows: 4 }}
@@ -315,8 +340,8 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
           </div>
           <CloseOutlined
             onClick={() => removeField("summary")}
-            className="mt-2 text-red-500"
             title="Remove field"
+            className="mt-2 text-red-500"
           />
         </div>
       )}
@@ -331,6 +356,7 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
                 type="dashed"
                 onClick={() => toggleOptionalField(fld as keyof ResumeWorkType)}
                 icon={<PlusOutlined />}
+                className="!font-dm_sans"
               >
                 Add {fld.charAt(0).toUpperCase() + fld.slice(1)}
               </Button>
@@ -342,3 +368,4 @@ const WorkExperienceAccordion: React.FC<WorkExperienceProps> = ({
 };
 
 export default WorkExperienceAccordion;
+

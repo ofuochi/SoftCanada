@@ -57,8 +57,12 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
             label="Name"
             name="name"
             rules={[{ required: true, message: "Please enter your name!" }]}
+            className="!font-dm_sans"
           >
-            <Input placeholder="Enter your full name" />
+            <Input
+              placeholder="Enter your full name"
+              className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+            />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12}>
@@ -69,8 +73,12 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
               { required: true, message: "Please enter your email!" },
               { type: "email", message: "Please enter a valid email!" },
             ]}
+            className="!font-dm_sans"
           >
-            <Input placeholder="Enter your email" />
+            <Input
+              placeholder="Enter your email"
+              className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+            />
           </Form.Item>
         </Col>
       </Row>
@@ -82,8 +90,12 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
             rules={[
               { required: true, message: "Please enter your phone number!" },
             ]}
+            className="!font-dm_sans"
           >
-            <Input placeholder="Enter your phone number" />
+            <Input
+              placeholder="Enter your phone number"
+              className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+            />
           </Form.Item>
         </Col>
       </Row>
@@ -91,18 +103,20 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
         label="Summary"
         name="summary"
         rules={[{ required: true, message: "Please enter a brief summary!" }]}
+        className="!font-dm_sans"
       >
         <Input.TextArea
           placeholder="Write a short summary about yourself"
           autoSize={{ minRows: 6 }}
           rows={6}
+          className="!font-dm_sans"
         />
       </Form.Item>
       {/* Dynamically Added Optional Fields */}
       {Object.entries(optionalFields).map(([field, label]) => {
         const key = field as keyof ResumeBasicsType;
         return optionalVisible[key] ? (
-          <div key={key}>
+          <div key={key} className="!font-dm_sans">
             {key === "location" && (
               <Card
                 style={{ marginBottom: 16 }}
@@ -119,26 +133,45 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                     }}
                     style={{ color: "red" }}
                     title="Remove section"
+                    className="!font-dm_sans"
                   />
                 }
               >
                 <Row gutter={16}>
                   <Col xs={24} sm={12}>
-                    <Form.Item label="Address" name={["location", "address"]}>
-                      <Input placeholder="Enter your address" />
+                    <Form.Item
+                      label="Address"
+                      name={["location", "address"]}
+                      className="!font-dm_sans"
+                    >
+                      <Input
+                        placeholder="Enter your address"
+                        className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                      />
                     </Form.Item>
                   </Col>
                   <Col xs={24} sm={12}>
                     <Form.Item
                       label="Postal Code"
                       name={["location", "postalCode"]}
+                      className="!font-dm_sans"
                     >
-                      <Input placeholder="Enter your postal code" />
+                      <Input
+                        placeholder="Enter your postal code"
+                        className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                      />
                     </Form.Item>
                   </Col>
                   <Col xs={24} sm={8}>
-                    <Form.Item label="City" name={["location", "city"]}>
-                      <Input placeholder="e.g Toronto" />
+                    <Form.Item
+                      label="City"
+                      name={["location", "city"]}
+                      className="!font-dm_sans"
+                    >
+                      <Input
+                        placeholder="e.g Toronto"
+                        className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                      />
                     </Form.Item>
                   </Col>
                   <Col xs={24} sm={8}>
@@ -146,12 +179,22 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                       label="Country"
                       name={["location", "countryCode"]}
                     >
-                      <Input placeholder="e.g., Canada" />
+                      <Input
+                        placeholder="e.g., Canada"
+                        className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                      />
                     </Form.Item>
                   </Col>
                   <Col xs={24} sm={8}>
-                    <Form.Item label="Region" name={["location", "region"]}>
-                      <Input placeholder="e.g., Ontario" />
+                    <Form.Item
+                      label="Region"
+                      name={["location", "region"]}
+                      className="!font-dm_sans"
+                    >
+                      <Input
+                        placeholder="e.g., Ontario"
+                        className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                      />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -181,20 +224,29 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                   {(fields, { add, remove }) => (
                     <>
                       {fields.map(({ key, name }) => (
-                        <Space key={key}>
-                          <Row gutter={16} key={key} align="middle">
-                            <Col xs={24} sm={8}>
+                        <Space className="border border-black" key={key}>
+                          <CloseOutlined
+                            onClick={() => remove(name)}
+                            className="mt-2 text-red-500"
+                            title="Remove field"
+                          />
+                          <Row key={key} align="middle">
+                            <Col xs={24} sm={24}>
                               <Form.Item
                                 label="Network"
                                 name={[name, "network"]}
                                 rules={[
                                   { required: true, message: "Required!" },
                                 ]}
+                                className="!font-dm_sans"
                               >
-                                <Input placeholder="e.g., LinkedIn" />
+                                <Input
+                                  placeholder="e.g., LinkedIn"
+                                  className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                                />
                               </Form.Item>
                             </Col>
-                            <Col xs={24} sm={8}>
+                            <Col xs={24} sm={24}>
                               <Form.Item
                                 label="Username"
                                 name={[name, "username"]}
@@ -204,11 +256,15 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                                     message: "Please enter the username!",
                                   },
                                 ]}
+                                className="!font-dm_sans"
                               >
-                                <Input placeholder="Enter username" />
+                                <Input
+                                  placeholder="Enter username"
+                                  className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                                />
                               </Form.Item>
                             </Col>
-                            <Col xs={24} sm={8}>
+                            <Col xs={24} sm={24}>
                               <Form.Item
                                 label="URL"
                                 name={[name, "url"]}
@@ -218,16 +274,15 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                                     message: "Please enter a valid URL!",
                                   },
                                 ]}
+                                className="!font-dm_sans"
                               >
-                                <Input placeholder="Enter profile URL" />
+                                <Input
+                                  placeholder="Enter profile URL"
+                                  className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                                />
                               </Form.Item>
                             </Col>
                           </Row>
-                          <CloseOutlined
-                            onClick={() => remove(name)}
-                            className="mt-2 text-red-500"
-                            title="Remove field"
-                          />
                         </Space>
                       ))}
                       <Button
@@ -246,8 +301,11 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
             {key !== "location" && key !== "profiles" && (
               <div className="flex space-x-2">
                 <div className="flex-1">
-                  <Form.Item label={label} name={key}>
-                    <Input placeholder={`Enter ${label.toLowerCase()}`} />
+                  <Form.Item label={label} name={key} className="!font-dm_sans">
+                    <Input
+                      placeholder={`Enter ${label.toLowerCase()}`}
+                      className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                    />
                   </Form.Item>
                 </div>
                 <CloseOutlined
@@ -285,11 +343,21 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
       </Space>
       <Form.Item label={null}>
         <Button
-          type={undefined}
-          htmlType="submit"
-          className="mt-4 bg-[#72FA3266] border border-[#72FA3266] font-dm_sans font-semibold text-xl text-[#010309] h-[400px] py-[18px] px-6"
           loading={isSaving}
-          style={{}}
+          htmlType="submit"
+          className="!font-dm_sans mt-5"
+          style={{
+            width: "100%",
+            maxWidth: "400px",
+            borderRadius: "12px",
+            padding: "18px 24px",
+            height: "50px",
+            fontWeight: "600",
+            fontSize: "16px",
+            color: "#010309",
+            border: "none",
+            backgroundColor: "#72FA3266",
+          }}
         >
           Save
         </Button>

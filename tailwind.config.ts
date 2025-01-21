@@ -10,6 +10,7 @@ export default {
     extend: {
       fontFamily: {
         dm_sans: ["DM Sans"],
+        lato: ["Lato"],
       },
       colors: {
         background: "var(--background)",

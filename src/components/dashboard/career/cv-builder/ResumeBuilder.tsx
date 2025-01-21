@@ -1,8 +1,15 @@
-import {  ResumeType } from "@/app/types/career";
+import { ResumeType } from "@/app/types/career";
 import { useResume } from "@/contexts/ResumeContext";
 import { useApiClient } from "@/hooks/api-hook";
-import { LeftOutlined } from "@ant-design/icons";
-import { Collapse, CollapseProps, FloatButton, message, Space } from "antd";
+import { LeftOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Collapse,
+  CollapseProps,
+  FloatButton,
+  message,
+  Space,
+} from "antd";
 import React, { SetStateAction, useState } from "react";
 import { GrUserManager } from "react-icons/gr";
 import { PiGraduationCap, PiSuitcaseSimpleThin } from "react-icons/pi";
@@ -26,6 +33,8 @@ export type ResumeFormProp = {
 
 const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
   const { resumeData } = useResume();
+
+  console.log(resumeData, "resumeData");
   const { post, put } = useApiClient();
   const [resumeDataId, setResumeDataId] = useState<string>();
   const [inProgress, setInProgress] = useState(false);
@@ -37,6 +46,7 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
   ) => {
     setInProgress(true);
     const reqData: ResumeType = { ...resumeData, [field]: value };
+
     try {
       if (resumeDataId) await put(`/api/resumes/${resumeDataId}`, reqData);
       else {
@@ -53,13 +63,26 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
     }
   };
 
+  const handleMultipleSubmissions = async (data: Partial<ResumeType>) => {
+    for (const [field, value] of Object.entries(data)) {
+      if (value !== null && value !== undefined && value !== "") {
+        await handleSubmit(
+          field as keyof ResumeType,
+          value as ResumeType[keyof ResumeType]
+        );
+      }
+    }
+  };
+
   const items: CollapseProps["items"] = [
     {
       key: "1",
       label: (
         <Space size={20}>
           <RiProfileLine size={20} />
-          <span>Personal Information</span>
+          <span className="!font-lato text-[#4F4F4F] text-[15px]">
+            Personal Information
+          </span>
         </Space>
       ),
       children: (
@@ -74,7 +97,9 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
       label: (
         <Space size={20}>
           <PiSuitcaseSimpleThin size={20} />
-          <span>Work Experiences</span>
+          <span className="!font-lato text-[#4F4F4F] text-[15px]">
+            Work Experiences
+          </span>
         </Space>
       ),
       children: (
@@ -89,7 +114,9 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
       label: (
         <Space size={20}>
           <PiGraduationCap size={20} />
-          <span>Education</span>
+          <span className="!font-lato text-[#4F4F4F] text-[15px]">
+            Education
+          </span>
         </Space>
       ),
       children: (
@@ -104,7 +131,7 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
       label: (
         <Space size={20}>
           <VscTools size={20} />
-          <span>Skills</span>
+          <span className="!font-lato text-[#4F4F4F] text-[15px]">Skills</span>
         </Space>
       ),
       children: (
@@ -119,7 +146,9 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
       label: (
         <Space size={20}>
           <GrUserManager size={20} />
-          <span>References</span>
+          <span className="!font-lato text-[#4F4F4F] text-[15px]">
+            References
+          </span>
         </Space>
       ),
       children: (
@@ -135,13 +164,41 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
     <>
       {contextHolder}
       <div className="flex flex-col lg:flex-row gap-5">
-        <div className="flex-grow min-w-[300px] max-w-[1000px]">
+        <div className="flex-grow lg:max-w-[400px]">
           <div className=" bg-white p-5 sticky top-0 max-h-[calc(100vh-4rem)] overflow-y-auto">
-            <Collapse ghost items={items} expandIconPosition="end" />
+            <Collapse
+              ghost
+              items={items}
+              expandIcon={(panelProps) => (
+                <PlusOutlined color="#000000" size={14} />
+              )}
+              expandIconPosition="end"
+            />
+
+            {/* <div className="mt-10">
+              <Button
+                loading={inProgress}
+                className="!font-dm_sans"
+                style={{
+                  width: "100%",
+                  maxWidth: "407px",
+                  borderRadius: "12px",
+                  padding: "18px 24px",
+                  height: "50px",
+                  fontWeight: "600",
+                  fontSize: "18px",
+                  color: "#010309",
+                  border: "none",
+                  backgroundColor: "#72FA3266",
+                }}
+              >
+                Save Progress
+              </Button>
+            </div> */}
           </div>
         </div>
 
-        <div className="w-full lg:w-[210mm] flex-shrink-0 overflow-aut bg-white">
+        <div className="w-full flex-1 bg-white">
           <div className="p-10">
             <ResumeTemplate data={resumeData} />
           </div>
@@ -163,3 +220,4 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
 };
 
 export default ResumeBuilder;
+

@@ -73,7 +73,7 @@ export default function ResumesPage() {
           <ResumeBuilder setShowCvBuilder={setShowCvBuilder} />
         </ResumeProvider>
       ) : (
-        <Flex wrap gap="large">
+        <Flex wrap gap="large" className="">
           <div className="w-72">
             <Button
               type="dashed"
@@ -86,6 +86,7 @@ export default function ResumesPage() {
                   ? setOpen(true)
                   : handleResumeEditClick(emptyResumeData)
               }
+              className="!font-dm_sans"
             >
               {data && data.length > 0 ? "New" : "Blank"} Resume
             </Button>
