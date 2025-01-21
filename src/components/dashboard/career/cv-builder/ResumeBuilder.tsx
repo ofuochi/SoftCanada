@@ -21,6 +21,7 @@ import ReferencesForm from "./forms/ReferencesForm";
 import SkillsForm from "./forms/SkillsForm";
 import WorkExperienceListForm from "./forms/WorkExperienceListForm";
 import { ResumeTemplate } from "./ResumeTemplate";
+import { mutate } from "swr";
 
 type Props = {
   setShowCvBuilder: (value: SetStateAction<boolean>) => void;
@@ -207,7 +208,10 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
         <FloatButton
           tooltip="Back to templates"
           icon={<LeftOutlined />}
-          onClick={() => setShowCvBuilder(false)}
+          onClick={() => {
+            setShowCvBuilder(false);
+            mutate(`/api/resumes`);
+          }}
           style={{
             position: "fixed",
             bottom: 20,
