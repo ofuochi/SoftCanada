@@ -38,6 +38,8 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
   console.log(resumeData, "resumeData");
   const { post, put } = useApiClient();
   const [resumeDataId, setResumeDataId] = useState<string>();
+  console.log(resumeDataId, "resume data id");
+
   const [inProgress, setInProgress] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -49,8 +51,9 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
     const reqData: ResumeType = { ...resumeData, [field]: value };
 
     try {
-      if (resumeDataId) await put(`/api/resumes/${resumeDataId}`, reqData);
-      else {
+      if (resumeDataId) {
+        await put(`/api/resumes/${resumeDataId}`, reqData);
+      } else {
         const { id } = await post<ResumeType, ResumeType>(
           `/api/resumes`,
           reqData
@@ -201,7 +204,7 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
         </div>
 
         <div className="w-full flex-1 bg-white">
-          <div className="p-10">
+          <div className="">
             <ResumeTemplate data={resumeData} />
           </div>
         </div>

@@ -8,7 +8,7 @@ const { Title, Text } = Typography;
 
 const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   return (
-    <div className="text-gray-800 min-h-screen !font-dm_sans">
+    <div className="text-gray-800 min-h-screen !font-dm_sans p-8">
       {/* HEADER */}
       <header className="mb-2.5">
         {data.basics?.name && (
@@ -75,7 +75,7 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
         {/* SOCIAL PROFILES */}
         {data.basics?.profiles?.[0]?.network &&
           data.basics.profiles[0]?.username && (
-            <div className="text-base mt-2 !font-dm_sans">
+            <div className="text-base !font-dm_sans mt-2.5">
               {data.basics.profiles.map(
                 (profile, i) =>
                   profile?.network &&
@@ -88,7 +88,7 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
                         href={profile?.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 !font-dm_sans"
+                        className="!underline text-black hover:text-black text-sm !font-dm_sans"
                       >
                         {profile.username}
                       </a>
