@@ -2,14 +2,7 @@ import { ResumeType } from "@/app/types/career";
 import { useResume } from "@/contexts/ResumeContext";
 import { useApiClient } from "@/hooks/api-hook";
 import { LeftOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Collapse,
-  CollapseProps,
-  FloatButton,
-  message,
-  Space,
-} from "antd";
+import { Collapse, CollapseProps, FloatButton, message, Space } from "antd";
 import React, { SetStateAction, useState } from "react";
 import { GrUserManager } from "react-icons/gr";
 import { PiGraduationCap, PiSuitcaseSimpleThin } from "react-icons/pi";
@@ -33,12 +26,9 @@ export type ResumeFormProp = {
 };
 
 const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
-  const { resumeData } = useResume();
+  const { resumeData, resumeDataId, setResumeDataId } = useResume();
 
-  console.log(resumeData, "resumeData");
   const { post, put } = useApiClient();
-  const [resumeDataId, setResumeDataId] = useState<string>();
-  console.log(resumeDataId, "resume data id");
 
   const [inProgress, setInProgress] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -179,27 +169,6 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
               )}
               expandIconPosition="end"
             />
-
-            {/* <div className="mt-10">
-              <Button
-                loading={inProgress}
-                className="!font-dm_sans"
-                style={{
-                  width: "100%",
-                  maxWidth: "407px",
-                  borderRadius: "12px",
-                  padding: "18px 24px",
-                  height: "50px",
-                  fontWeight: "600",
-                  fontSize: "18px",
-                  color: "#010309",
-                  border: "none",
-                  backgroundColor: "#72FA3266",
-                }}
-              >
-                Save Progress
-              </Button>
-            </div> */}
           </div>
         </div>
 

@@ -12,12 +12,9 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
     <div className="flex min-h-screen w-full">
       <aside className="w-full max-w-[220px] bg-blue-900 text-white p-5">
         {basics?.name && (
-          <Title
-            style={{ color: "white" }}
-            className="!font-dm_sans mt-2.5 block"
-          >
+          <h1 className="!font-dm_sans mt-2.5 block text-white font-semibold text-[33px]">
             {basics.name}
-          </Title>
+          </h1>
         )}
         {basics?.label && (
           <Text
@@ -28,15 +25,19 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           </Text>
         )}
         {basics?.location && (
-          <div className="flex items-center gap-2 mt-2.5">
-            <MapPin color="#fff" size={14} />
-            <Text className="!font-dm_sans block" style={{ color: "#fff" }}>
+          <div className="flex items-center gap-2 mt-5">
+            <MapPin color="#fff" size={20} />
+            <Text
+              className="!font-dm_sans block text-white"
+              style={{ color: "#fffffF" }}
+            >
+              {basics.location.address}, {basics.location.postalCode}{" "}
               {basics.location.city}, {basics.location.countryCode}
             </Text>
           </div>
         )}
         {basics?.email && (
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center mt-5">
             <MailOutlined size={8} color="#fff" />
             <Text
               className="!font-dm_sans font-medium"
@@ -57,18 +58,57 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             </Text>
           </div>
         )}
-        <div className="mt-4">
-          <Title className="!font-dm_sans" level={4} style={{ color: "white" }}>
-            Interests
-          </Title>
-          <ul className="list-disc list-inside !font-dm_sans">
-            {interests?.map((interest) => (
-              <li key={interest.name}>
-                {interest.name}: {interest.keywords.join(", ")}
-              </li>
-            ))}
-          </ul>
-        </div>
+
+        {/* SOCIAL PROFILES */}
+        {data.basics?.profiles?.[0]?.network &&
+          data.basics.profiles[0]?.username && (
+            <>
+              <p className="!font-dm_sans mt-5 text-white font-semibold text-xl">
+                Social Profile
+              </p>
+              <div className="text-base !font-dm_sans">
+                {data.basics.profiles.map(
+                  (profile, i) =>
+                    profile?.network &&
+                    profile?.username && (
+                      <div key={i}>
+                        <Text strong className="!font-dm_sans !text-white">
+                          {profile.network}:
+                        </Text>{" "}
+                        <a
+                          href={profile?.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="!underline text-white hover:text-white text-sm !font-dm_sans"
+                        >
+                          {profile.username}
+                        </a>
+                      </div>
+                    )
+                )}
+              </div>
+            </>
+          )}
+
+        {/* INTERESTS */}
+        {interests && interests.length > 0 && (
+          <div className="mt-4">
+            <Title
+              className="!font-dm_sans"
+              level={4}
+              style={{ color: "white" }}
+            >
+              Interests
+            </Title>
+            <ul className="list-disc list-inside !font-dm_sans">
+              {interests.map((interest) => (
+                <li key={interest.name}>
+                  {interest.name}: {interest.keywords.join(", ")}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </aside>
       <main className="flex-1 bg-gray-50 p-10">
         {/* SUMMARY */}

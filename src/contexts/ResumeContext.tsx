@@ -8,6 +8,8 @@ import React, {
 
 type ResumeContextType = {
   resumeData: ResumeType;
+  resumeDataId: string | undefined;
+  setResumeDataId: React.Dispatch<React.SetStateAction<string | undefined>>;
   setResumeData: React.Dispatch<React.SetStateAction<ResumeType>>;
 };
 
@@ -27,10 +29,16 @@ export const ResumeProvider: React.FC<
   }>
 > = ({ children, initialData }) => {
   const [resumeData, setResumeData] = useState<ResumeType>(initialData);
+  const [resumeDataId, setResumeDataId] = useState<string | undefined>(
+    initialData.id
+  );
 
   return (
-    <ResumeContext.Provider value={{ resumeData, setResumeData }}>
+    <ResumeContext.Provider
+      value={{ resumeData, setResumeData, resumeDataId, setResumeDataId }}
+    >
       {children}
     </ResumeContext.Provider>
   );
 };
+
