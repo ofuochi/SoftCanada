@@ -4,20 +4,18 @@ FROM node:20-alpine AS base
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package.json package-lpine*.json ./
+# Copy package files (corrected file pattern)
+COPY package.json package-lock*.json ./
 
-# Install dependencies with caching
+# Install dependencies with caching (removed node_modules cache mount)
 RUN --mount=type=cache,target=/root/.npm \
-  --mount=type=cache,target=/app/node_modules,id=node_modules \
-  npm ci --prefer-offline
+  npm ci
 
 # Copy the rest of the application files
 COPY . .
 
-# Build the application with cache
-RUN --mount=type=cache,target=/app/.next,id=next_cache \
-  npm run build
+# Build the application
+RUN npm run build
 
 # Step 2: Serve the application
 FROM node:20-alpine AS runner
@@ -36,7 +34,7 @@ COPY --from=base /app/.next ./.next
 COPY --from=base /app/package.json ./package.json
 COPY --from=base /app/public ./public
 
-# Expose the port the app runs on
+# Expose the port
 EXPOSE 3000
 
 # Start the application
