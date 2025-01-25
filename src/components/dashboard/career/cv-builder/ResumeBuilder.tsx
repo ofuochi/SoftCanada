@@ -2,14 +2,7 @@ import { ResumeType } from "@/app/types/career";
 import { useResume } from "@/contexts/ResumeContext";
 import { useApiClient } from "@/hooks/api-hook";
 import { LeftOutlined, PlusOutlined } from "@ant-design/icons";
-import {
-  Button,
-  Collapse,
-  CollapseProps,
-  FloatButton,
-  message,
-  Space,
-} from "antd";
+import { Collapse, CollapseProps, FloatButton, message, Space } from "antd";
 import React, { SetStateAction, useState } from "react";
 import { GrUserManager } from "react-icons/gr";
 import { PiGraduationCap, PiSuitcaseSimpleThin } from "react-icons/pi";
@@ -171,9 +164,7 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
             <Collapse
               ghost
               items={items}
-              expandIcon={(panelProps) => (
-                <PlusOutlined color="#000000" size={14} />
-              )}
+              expandIcon={() => <PlusOutlined color="#000000" size={14} />}
               expandIconPosition="end"
             />
 
