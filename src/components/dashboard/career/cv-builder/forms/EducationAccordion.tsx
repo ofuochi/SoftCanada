@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
 
@@ -319,4 +319,3 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
 };
 
 export default EducationAccordion;
-
