@@ -367,4 +367,3 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
 };
 
 export default PersonalInfoForm;
-
