@@ -1,5 +1,6 @@
 import { ResumeType } from "@/app/types/career";
 import { Col, Divider, Row, Space, Typography } from "antd";
+import Link from "next/link";
 import React from "react";
 const { Title, Text } = Typography;
 
@@ -7,7 +8,7 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   const { basics, work, education, skills, languages } = data;
 
   return (
-    <div className="bg-gray-50 text-gray-900 p-6 min-h-screen">
+    <div className="bg-gray-50 text-gray-900 p-6 min-h-screen !font-dm_sans">
       <div className="bg-white p-4 mb-6 shadow">
         <Title level={2} style={{ marginBottom: 0 }}>
           {basics?.name ?? ""}
@@ -29,7 +30,8 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             {work.map((job) => (
               <div key={job.name} className="mb-4">
                 <Text strong>
-                  {job.position} at {job.name}
+                  {job.position} at
+                  <Link href={job.url ?? "#"}>{job.name}</Link>
                 </Text>
                 <br />
                 <Text type="secondary">

@@ -8,7 +8,7 @@ const { Title, Text } = Typography;
 
 const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   return (
-    <div className="text-gray-800 min-h-screen !font-dm_sans p-8">
+    <div className="text-gray-800 min-h-[150vh] !font-dm_sans p-8">
       {/* HEADER */}
       <header className="mb-2.5">
         {data.basics?.name && (
@@ -142,9 +142,11 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           {data.work.map((job, i) => (
             <div key={i} className="mb-6">
               <div className="flex justify-between items-center">
-                <Text className="font-semibold text-base !font-dm_sans">
-                  {job?.name}
-                </Text>
+                <Link href={job.url ?? "#"}>
+                  <Text className="font-semibold text-base !font-dm_sans">
+                    {job?.name}
+                  </Text>
+                </Link>
                 <Text type="secondary" className="text-base !font-dm_sans">
                   {dayjs(job?.startDate).format("MMM YYYY")} -{" "}
                   {(job?.endDate && dayjs(job?.endDate).format("MMM YYYY")) ||
@@ -162,7 +164,7 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
                 </div>
               )}
               {job?.highlights && job?.highlights.length > 0 && (
-                <ul className="list-disc ml-5 mt-1 text-base !font-dm_sans">
+                <ul className="list-disc ml-5 mt-1 text-[15px] !font-dm_sans">
                   {job?.highlights.map((hl, idx) => (
                     <li key={idx}>{hl}</li>
                   ))}
@@ -187,9 +189,15 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           {data.education.map((edu, i) => (
             <div key={i} className="mb-6">
               <div className="flex justify-between items-center">
-                <Text className="font-semibold text-base !font-dm_sans">
-                  {edu?.institution}
-                </Text>
+                <Link
+                  target="_blank"
+                  href={edu?.url ?? "#"}
+                  rel="noopener noreferrer"
+                >
+                  <Text className="font-semibold text-base !font-dm_sans">
+                    {edu?.institution}
+                  </Text>
+                </Link>
                 <Text type="secondary" className="text-base !font-dm_sans">
                   {dayjs(edu?.startDate).format("MMM YYYY")} -{" "}
                   {(edu?.endDate && dayjs(edu?.endDate).format("MMM YYYY")) ||
@@ -228,7 +236,7 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             </Title>
           </Divider>
           {/* Display skills in multiple columns similar to the image */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-1 gap-x-4 text-base mt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-1 gap-x-4 text-base mt-2">
             {data.skills.map((skill, index) => (
               <div key={index} className="flex items-start space-x-2">
                 <Text className="leading-tight">•</Text>
