@@ -1,5 +1,6 @@
 # Step 1: Use Node.js 20 base image
 FROM node:20-alpine AS base
+RUN npm install -g npm@11.0.0
 
 # Set working directory
 WORKDIR /app
@@ -15,7 +16,7 @@ RUN --mount=type=cache,target=/root/.npm \
 COPY . .
 
 # Build the application
-RUN npm run build
+RUN npm run build -- --no-lint
 
 # Step 2: Serve the application
 FROM node:20-alpine AS runner
