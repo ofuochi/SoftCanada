@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
 
@@ -92,8 +92,12 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
                       {...restField}
                       name={name}
                       rules={[{ required: true }]}
+                      className="!font-dm_sans"
                     >
-                      <Input placeholder="Enter course" />
+                      <Input
+                        placeholder="Enter course"
+                        className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                      />
                     </Form.Item>
                   </Col>
                   <Col>
@@ -111,6 +115,7 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
                   type="dashed"
                   onClick={() => add()}
                   icon={<PlusOutlined />}
+                  className="!font-dm_sans"
                 >
                   Add Course
                 </Button>
@@ -132,8 +137,12 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
             rules={[
               { required: true, message: "Please enter the institution!" },
             ]}
+            className="!font-dm_sans"
           >
-            <Input placeholder="Enter institution" />
+            <Input
+              placeholder="Enter institution"
+              className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+            />
           </Form.Item>
         </div>
       </div>
@@ -145,8 +154,12 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
             rules={[
               { required: true, message: "Please enter the study type!" },
             ]}
+            className="!font-dm_sans"
           >
-            <Input placeholder="e.g. Bachelor's, Diploma" />
+            <Input
+              placeholder="e.g. Bachelor's, Diploma"
+              className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+            />
           </Form.Item>
         </Col>
         <Col xs={24} sm={12}>
@@ -156,8 +169,12 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
             rules={[
               { required: true, message: "Please enter the area of study!" },
             ]}
+            className="!font-dm_sans"
           >
-            <Input placeholder="e.g. Computer Science" />
+            <Input
+              placeholder="e.g. Computer Science"
+              className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+            />
           </Form.Item>
         </Col>
       </Row>
@@ -168,6 +185,7 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
             label="Start Date"
             name={[field.name, "startDate"]}
             rules={[{ required: true, message: "Please select start date!" }]}
+            className="!font-dm_sans"
           >
             <DatePicker
               style={{ width: "100%" }}
@@ -177,6 +195,7 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
               disabledDate={(currentDate) =>
                 currentDate && currentDate.isAfter(dayjs().endOf("month"))
               }
+              className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
             />
           </Form.Item>
         </Col>
@@ -205,6 +224,7 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
                 },
               }),
             ]}
+            className="!font-dm_sans"
           >
             <DatePicker
               style={{ width: "100%" }}
@@ -214,6 +234,7 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
               disabledDate={(currentDate) =>
                 !currentDate || currentDate.isAfter(dayjs().endOf("month"))
               }
+              className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
             />
           </Form.Item>
         </Col>
@@ -232,8 +253,12 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
                   message: "Please enter a valid URL!",
                 },
               ]}
+              className="!font-dm_sans"
             >
-              <Input placeholder="Enter institution website URL" />
+              <Input
+                placeholder="Enter institution website URL"
+                className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+              />
             </Form.Item>
           </div>
           <CloseOutlined
@@ -247,8 +272,15 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
       {optionalVisible.score && (
         <div className="flex space-x-2">
           <div className="flex-1">
-            <Form.Item label="Score" name={[field.name, "score"]}>
-              <Input placeholder="e.g. 4.0 GPA" />
+            <Form.Item
+              label="Score"
+              name={[field.name, "score"]}
+              className="!font-dm_sans"
+            >
+              <Input
+                placeholder="e.g. 4.0 GPA"
+                className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+              />
             </Form.Item>
           </div>
           <CloseOutlined
@@ -275,6 +307,7 @@ const EducationAccordion: React.FC<EducationProps> = ({ data, field }) => {
                   toggleOptionalField(fld as keyof ResumeEducationType)
                 }
                 icon={<PlusOutlined />}
+                className="!font-dm_sans"
               >
                 Add {fld.charAt(0).toUpperCase() + fld.slice(1)}
               </Button>

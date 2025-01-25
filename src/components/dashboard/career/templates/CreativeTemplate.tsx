@@ -12,17 +12,17 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
         <Title level={2} style={{ color: "white" }}>
           {basics?.name}
         </Title>
-        <Text style={{ color: "#ddd" }}>{basics.label}</Text>
+        <Text style={{ color: "#ddd" }}>{basics?.label}</Text>
         <br />
-        {basics.location && (
+        {basics?.location && (
           <Text style={{ color: "#ccc" }}>
             {basics.location.city}, {basics.location.countryCode}
           </Text>
         )}
         <br />
-        <Text style={{ color: "#ccc" }}>{basics.email}</Text>
+        <Text style={{ color: "#ccc" }}>{basics?.email ?? ""}</Text>
         <br />
-        <Text style={{ color: "#ccc" }}>{basics.phone}</Text>
+        <Text style={{ color: "#ccc" }}>{basics?.phone}</Text>
         <div className="mt-4">
           <Title level={4} style={{ color: "white" }}>
             Interests
@@ -75,3 +75,4 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
 };
 
 export default CreativeTemplate;
+

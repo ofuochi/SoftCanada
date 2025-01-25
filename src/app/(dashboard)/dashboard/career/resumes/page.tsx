@@ -24,13 +24,21 @@ export default function ResumesPage() {
     `/api/resumes`,
     get,
     {
-      shouldRetryOnError: false,
-      revalidateOnFocus: false,
+      shouldRetryOnError: true,
+      revalidateOnFocus: true,
+      refreshInterval: 30000,
       dedupingInterval: 60000,
     }
   );
 
-  if (isLoading) return <Skeleton active />;
+  if (isLoading)
+    return (
+      <div className="flex gap-6">
+        <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
+        <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
+        <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
+      </div>
+    );
   if (error && error.status >= 500) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -66,7 +74,7 @@ export default function ResumesPage() {
           <ResumeBuilder setShowCvBuilder={setShowCvBuilder} />
         </ResumeProvider>
       ) : (
-        <Flex wrap gap="large">
+        <Flex wrap gap="large" className="">
           <div className="w-72">
             <Button
               type="dashed"
@@ -79,6 +87,7 @@ export default function ResumesPage() {
                   ? setOpen(true)
                   : handleResumeEditClick(emptyResumeData)
               }
+              className="!font-dm_sans"
             >
               {data && data.length > 0 ? "New" : "Blank"} Resume
             </Button>
@@ -98,7 +107,7 @@ export default function ResumesPage() {
                     <Popconfirm
                       key={i}
                       title="Delete the resume"
-                      description="Are you sure to delete this resume?"
+                      description="Are you sure you want to delete this resume?"
                       onConfirm={() => handleDeleteResume(resume.id!)}
                       okText="Yes"
                       cancelText="No"
@@ -147,3 +156,4 @@ export default function ResumesPage() {
     </>
   );
 }
+

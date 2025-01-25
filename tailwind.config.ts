@@ -8,6 +8,11 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        dm_sans: ["DM Sans"],
+        lato: ["Lato"],
+        poppins: ["Poppins"],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
@@ -16,3 +21,4 @@ export default {
   },
   plugins: [],
 } satisfies Config;
+
