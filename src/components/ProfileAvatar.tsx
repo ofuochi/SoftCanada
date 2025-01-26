@@ -17,7 +17,7 @@ export const ProfileAvatar: React.FC<Props> = ({ size = "large" }) => {
   }
   const profileMenu: MenuProps = {
     items: [
-      { key: "1", label: "Profile" },
+      { key: "1", label: <Link href="/dashboard/settings">My Profile</Link>, },
       { key: "2", label: "Settings" },
       { key: "divider", type: "divider" },
       {
