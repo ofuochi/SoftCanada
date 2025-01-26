@@ -319,7 +319,7 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
             style={{ fontSize: "16px" }}
           />
           <div className="flex items-center gap-8">
-            <Dropdown
+            {/* <Dropdown
               menu={notificationMenu}
               placement="bottomRight"
               trigger={["click"]}
@@ -328,7 +328,7 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
               <Badge count={5}>
                 <BellOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
               </Badge>
-            </Dropdown>
+            </Dropdown> */}
             <ProfileAvatar />
           </div>
         </Header>
