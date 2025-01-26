@@ -6,7 +6,7 @@ import { useSession } from "@/contexts/SessionContext";
 import { ApiError, useErrorContext } from "@/contexts/ErrorContext";
 
 // Base URL for all API requests
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || process.env.API_BASE_URL || "";
 
 type RequestType<TData> = {
   method: "get" | "post" | "put" | "delete";
