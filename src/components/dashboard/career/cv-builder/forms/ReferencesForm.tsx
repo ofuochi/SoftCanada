@@ -112,7 +112,7 @@ const ReferencesForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
               block
               className="!font-dm_sans"
             >
-              Add Skill
+              Add Reference
             </Button>
           </>
         )}

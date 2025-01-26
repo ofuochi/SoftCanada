@@ -26,11 +26,10 @@ export type ResumeFormProp = {
 };
 
 const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
-  const { resumeData } = useResume();
+  const { resumeData, resumeDataId, setResumeDataId } = useResume();
 
-  console.log(resumeData, "resumeData");
   const { post, put } = useApiClient();
-  const [resumeDataId, setResumeDataId] = useState<string>();
+
   const [inProgress, setInProgress] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -42,8 +41,9 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
     const reqData: ResumeType = { ...resumeData, [field]: value };
 
     try {
-      if (resumeDataId) await put(`/api/resumes/${resumeDataId}`, reqData);
-      else {
+      if (resumeDataId) {
+        await put(`/api/resumes/${resumeDataId}`, reqData);
+      } else {
         const { id } = await post<ResumeType, ResumeType>(
           `/api/resumes`,
           reqData
@@ -167,32 +167,11 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
               expandIcon={() => <PlusOutlined color="#000000" size={14} />}
               expandIconPosition="end"
             />
-
-            {/* <div className="mt-10">
-              <Button
-                loading={inProgress}
-                className="!font-dm_sans"
-                style={{
-                  width: "100%",
-                  maxWidth: "407px",
-                  borderRadius: "12px",
-                  padding: "18px 24px",
-                  height: "50px",
-                  fontWeight: "600",
-                  fontSize: "18px",
-                  color: "#010309",
-                  border: "none",
-                  backgroundColor: "#72FA3266",
-                }}
-              >
-                Save Progress
-              </Button>
-            </div> */}
           </div>
         </div>
 
         <div className="w-full flex-1 bg-white">
-          <div className="p-10">
+          <div className="">
             <ResumeTemplate data={resumeData} />
           </div>
         </div>

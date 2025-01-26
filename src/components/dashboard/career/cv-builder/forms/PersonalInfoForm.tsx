@@ -1,8 +1,8 @@
 import { ResumeBasicsType } from "@/app/types/career";
 import { useResume } from "@/contexts/ResumeContext";
 import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Form, Input, Row, Space } from "antd";
-import { useState } from "react";
+import { Button, Card, Col, Divider, Form, Input, Row, Space } from "antd";
+import { Fragment, useState } from "react";
 
 const optionalFields = {
   label: "Job Title",
@@ -224,66 +224,69 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                   {(fields, { add, remove }) => (
                     <>
                       {fields.map(({ key, name }) => (
-                        <Space className="border border-black" key={key}>
-                          <CloseOutlined
-                            onClick={() => remove(name)}
-                            className="mt-2 text-red-500"
-                            title="Remove field"
-                          />
-                          <Row key={key} align="middle">
-                            <Col xs={24} sm={24}>
-                              <Form.Item
-                                label="Network"
-                                name={[name, "network"]}
-                                rules={[
-                                  { required: true, message: "Required!" },
-                                ]}
-                                className="!font-dm_sans"
-                              >
-                                <Input
-                                  placeholder="e.g., LinkedIn"
-                                  className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
-                                />
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={24}>
-                              <Form.Item
-                                label="Username"
-                                name={[name, "username"]}
-                                rules={[
-                                  {
-                                    required: true,
-                                    message: "Please enter the username!",
-                                  },
-                                ]}
-                                className="!font-dm_sans"
-                              >
-                                <Input
-                                  placeholder="Enter username"
-                                  className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
-                                />
-                              </Form.Item>
-                            </Col>
-                            <Col xs={24} sm={24}>
-                              <Form.Item
-                                label="URL"
-                                name={[name, "url"]}
-                                rules={[
-                                  {
-                                    type: "url",
-                                    message: "Please enter a valid URL!",
-                                  },
-                                ]}
-                                className="!font-dm_sans"
-                              >
-                                <Input
-                                  placeholder="Enter profile URL"
-                                  className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
-                                />
-                              </Form.Item>
-                            </Col>
-                          </Row>
-                        </Space>
+                        <Fragment key={key}>
+                          <Space className="">
+                            <CloseOutlined
+                              onClick={() => remove(name)}
+                              className="mt-2 text-red-500"
+                              title="Remove field"
+                            />
+                            <Row key={key} align="middle">
+                              <Col xs={24} sm={24}>
+                                <Form.Item
+                                  label="Network"
+                                  name={[name, "network"]}
+                                  rules={[
+                                    { required: true, message: "Required!" },
+                                  ]}
+                                  className="!font-dm_sans"
+                                >
+                                  <Input
+                                    placeholder="e.g., LinkedIn"
+                                    className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                                  />
+                                </Form.Item>
+                              </Col>
+                              <Col xs={24} sm={24}>
+                                <Form.Item
+                                  label="Username"
+                                  name={[name, "username"]}
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "Please enter the username!",
+                                    },
+                                  ]}
+                                  className="!font-dm_sans"
+                                >
+                                  <Input
+                                    placeholder="Enter username"
+                                    className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                                  />
+                                </Form.Item>
+                              </Col>
+                              <Col xs={24} sm={24}>
+                                <Form.Item
+                                  label="URL"
+                                  name={[name, "url"]}
+                                  rules={[
+                                    {
+                                      type: "url",
+                                      message: "Please enter a valid URL!",
+                                    },
+                                  ]}
+                                  className="!font-dm_sans"
+                                >
+                                  <Input
+                                    placeholder="Enter profile URL"
+                                    className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                                  />
+                                </Form.Item>
+                              </Col>
+                            </Row>
+                          </Space>
+                          <Divider />
+                        </Fragment>
                       ))}
                       <Button
                         type="dashed"
