@@ -7,6 +7,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* * {
+  border: thin solid red;
+} */
+
 body {
   font-optical-sizing: auto;
 }

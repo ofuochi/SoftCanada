@@ -255,13 +255,13 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
     },
   ];
 
-  const notificationMenu: MenuProps = {
-    items: [
-      { key: "1", label: "Notification 1" },
-      { key: "2", label: "Notification 2" },
-      { key: "3", label: "Notification 3" },
-    ],
-  };
+  // const notificationMenu: MenuProps = {
+  //   items: [
+  //     { key: "1", label: "Notification 1" },
+  //     { key: "2", label: "Notification 2" },
+  //     { key: "3", label: "Notification 3" },
+  //   ],
+  // };
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
