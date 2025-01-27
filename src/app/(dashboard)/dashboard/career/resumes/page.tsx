@@ -24,8 +24,7 @@ export default function ResumesPage() {
     `/api/resumes`,
     get,
     {
-      shouldRetryOnError: true,
-      revalidateOnFocus: true,
+      shouldRetryOnError: false,
       refreshInterval: 30000,
       dedupingInterval: 60000,
     }

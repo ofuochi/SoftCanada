@@ -18,8 +18,6 @@ export default function Navbar() {
   const [isNavbarDark, setIsNavbarDark] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useUser();
-  console.log(user, "user data");
-
   useEffect(() => {
     const handleScroll = () => {
       const heroSectionHeight =
