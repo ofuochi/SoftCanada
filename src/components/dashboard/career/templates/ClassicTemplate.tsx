@@ -10,7 +10,7 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
       {/* HEADER / BASICS SECTION */}
       <header className="mb-10">
         <Title level={1} style={{ marginBottom: 0 }}>
-          {data.basics?.name || "Name Not Provided"}
+          {data.basics?.name}
         </Title>
         {data.basics?.label && (
           <Text type="secondary">{data.basics.label}</Text>
@@ -83,8 +83,8 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
               <Divider />
               {data.work.map((job, i) => (
                 <div key={i} className="mb-6">
-                  <Text strong>{job?.position || "Position Not Provided"}</Text>{" "}
-                  <Text>at {job?.name || "Company Not Provided"}</Text>
+                  <Text strong>{job?.position}</Text>{" "}
+                  <Text>at {job?.name}</Text>
                   <br />
                   <Text type="secondary">
                     {job?.startDate
@@ -129,12 +129,12 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
               {data.education.map((edu, i) => (
                 <div key={i} className="mb-6">
                   <Text strong>
-                    {edu?.studyType || "Study Type Not Provided"} in{" "}
-                    {edu?.area || "Area Not Provided"}
+                    {edu?.studyType} in{" "}
+                    {edu?.area}
                   </Text>{" "}
                   at{" "}
                   <Text strong>
-                    {edu?.institution || "Institution Not Provided"}
+                    {edu?.institution}
                   </Text>
                   <br />
                   <Text type="secondary">
