@@ -1,4 +1,4 @@
-import {Button} from "antd";
+import { Button } from "antd";
 import React from "react";
 
 export default function CallToActionSection() {
@@ -16,10 +16,15 @@ export default function CallToActionSection() {
           Take the first step toward a successful settlement in Canada with all
           the resources you need.
         </p>
-        <Button size="large" style={{ fontWeight: 600 }}>
+        <Button
+          size="large"
+          className="!shadow-none !font-dm_sans"
+          style={{ fontWeight: 600 }}
+        >
           Join SoftCanada Today
         </Button>
       </div>
     </section>
   );
 }
+

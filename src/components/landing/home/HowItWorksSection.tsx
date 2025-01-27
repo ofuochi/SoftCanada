@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import {motion} from "framer-motion";
-import {FaCompass, FaHandshake, FaRocket} from "react-icons/fa";
+import { motion } from "framer-motion";
+import { FaCompass, FaHandshake, FaRocket } from "react-icons/fa";
 
 const HowItWorks = () => {
   // Framer Motion Variants
@@ -55,15 +55,15 @@ const HowItWorks = () => {
 
       {/* Title and Description */}
       <motion.div
-        className="text-center px-6"
+        className="text-center px-4 sm:px-8 md:px-14"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5 }}
       >
-        <h2 className="text-5xl font-bold text-gray-800 mb-8 tracking-wide leading-tight">
+        <h2 className="text-4xl xl:text-5xl font-bold text-gray-800 tracking-wide leading-tight max-lg:text-center">
           Embark on Your Adventure
         </h2>
-        <p className="text-gray-600 text-lg max-w-3xl mx-auto mb-16">
+        <p className="text-gray-600 text-base sm:text-lg max-lg:text-center md:max-w-3xl mx-auto mt-5 mb-16">
           Follow our easy steps to seamlessly start your journey. Let SoftCanada
           be your guide through the complex maze of opportunity — we make your
           transition effortless and exciting.
@@ -76,7 +76,7 @@ const HowItWorks = () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="flex flex-col md:flex-row items-center gap-12 mb-32 px-10 md:px-28"
+        className="flex flex-col md:flex-row items-center gap-12 mb-32 px-3 sm:px-8 md:px-14 lg:px-20 xl:px-28"
       >
         <motion.div
           className="flex-shrink-0"
@@ -91,11 +91,11 @@ const HowItWorks = () => {
             <FaRocket className="text-red-500 text-7xl" />
           </motion.div>
         </motion.div>
-        <motion.div className="md:w-2/3" variants={textVariants}>
-          <h3 className="text-4xl font-semibold text-gray-800 mb-6">
+        <motion.div className="lg:w-2/3" variants={textVariants}>
+          <h3 className="text-3xl lg:text-4xl font-semibold text-gray-800 mb-6 max-lg:text-center">
             Lift Off: Sign Up
           </h3>
-          <p className="text-xl text-gray-600 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-lg:text-center">
             Begin your adventure by signing up for a SoftCanada account.
             Registration takes just a moment, but it opens the doors to all of
             our comprehensive tools and insights, ready to help you navigate
@@ -110,7 +110,7 @@ const HowItWorks = () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="flex flex-col md:flex-row-reverse items-center gap-12 mb-32 px-10 md:px-28"
+        className="flex flex-col md:flex-row-reverse items-center gap-12 mb-32 px-3 sm:px-8 md:px-14 lg:px-20 xl:px-28"
       >
         <motion.div
           className="flex-shrink-0"
@@ -125,11 +125,11 @@ const HowItWorks = () => {
             <FaCompass className="text-blue-500 text-7xl" />
           </motion.div>
         </motion.div>
-        <motion.div className="md:w-2/3" variants={textVariants}>
-          <h3 className="text-4xl font-semibold text-gray-800 mb-6">
+        <motion.div className="lg:w-2/3 space-y-5" variants={textVariants}>
+          <h3 className="text-3xl lg:text-4xl max-lg:text-center font-semibold text-gray-800">
             Explore the Possibilities
           </h3>
-          <p className="text-xl text-gray-600 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-lg:text-center">
             Explore our exclusive tools, ranging from job recommendations, real
             estate guidance, financial planning tools, to immigration pathways.
             We offer the best features that help you navigate everything
@@ -144,7 +144,7 @@ const HowItWorks = () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="flex flex-col md:flex-row items-center gap-12 px-10 md:px-28"
+        className="flex flex-col md:flex-row items-center gap-12 px-3 sm:px-8 md:px-14 lg:px-20 xl:px-28"
       >
         <motion.div
           className="flex-shrink-0"
@@ -159,11 +159,11 @@ const HowItWorks = () => {
             <FaHandshake className="text-yellow-500 text-7xl" />
           </motion.div>
         </motion.div>
-        <motion.div className="md:w-2/3" variants={textVariants}>
-          <h3 className="text-4xl font-semibold text-gray-800 mb-6">
+        <motion.div className="lg:w-2/3 space-y-5" variants={textVariants}>
+          <h3 className="text-3xl lg:text-4xl font-semibold max-lg:text-center text-gray-800">
             Save & Celebrate
           </h3>
-          <p className="text-xl text-gray-600 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-lg:text-center">
             Save your progress, bookmark important milestones, and take full
             control of your journey. Once completed, celebrate your achievements
             knowing that we are here for every step of the way.
@@ -175,3 +175,4 @@ const HowItWorks = () => {
 };
 
 export default HowItWorks;
+

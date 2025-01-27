@@ -18,6 +18,7 @@ export default function Navbar() {
   const [isNavbarDark, setIsNavbarDark] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useUser();
+
   useEffect(() => {
     const handleScroll = () => {
       const heroSectionHeight =
@@ -48,20 +49,38 @@ export default function Navbar() {
       key: "services",
       label: (
         <>
-          Services{" "}
+          <span
+            className={`font-dm_sans ${
+              isNavbarDark ? "text-black md:!text-white" : "!text-black"
+            }`}
+          >
+            Services{" "}
+          </span>
           <span className="hidden md:inline">
-            <DownOutlined />
+            <DownOutlined
+              className={`${
+                isNavbarDark ? "text-black md:!text-white" : "!text-black"
+              }`}
+            />
           </span>
         </>
       ),
       children: [
         {
           key: "career",
-          label: <Link href="/dashboard/career/jobs">Career</Link>,
+          label: (
+            <Link href="/dashboard/career/jobs" className={`font-dm_sans`}>
+              Career
+            </Link>
+          ),
         },
         {
           key: "real-estate",
-          label: <Link href="/real-estate">Real Estate</Link>,
+          label: (
+            <Link href="/real-estate" className={`font-dm_sans`}>
+              Real Estate
+            </Link>
+          ),
         },
       ],
     },
@@ -69,32 +88,109 @@ export default function Navbar() {
       key: "resources",
       label: (
         <>
-          Resources{" "}
+          <span
+            className={`font-dm_sans ${
+              isNavbarDark ? "text-black md:!text-white" : "text-black"
+            }`}
+          >
+            Resources{" "}
+          </span>
           <span className="hidden md:inline">
-            <DownOutlined />
+            <DownOutlined
+              className={`${
+                isNavbarDark ? "text-black md:!text-white" : "!text-black"
+              }`}
+            />
           </span>
         </>
       ),
       children: [
-        { key: "deals", label: <Link href="/deals">Deals</Link> },
-        { key: "finance", label: <Link href="/finance">Finance</Link> },
+        {
+          key: "deals",
+          label: (
+            <Link href="/deals" className={`font-dm_sans`}>
+              Deals
+            </Link>
+          ),
+        },
+        {
+          key: "finance",
+          label: (
+            <Link href="/finance" className={`font-dm_sans`}>
+              Finance
+            </Link>
+          ),
+        },
         {
           key: "immigration",
-          label: <Link href="/immigration">Immigration</Link>,
+          label: (
+            <Link href="/immigration" className={`font-dm_sans`}>
+              Immigration
+            </Link>
+          ),
         },
-        { key: "grants", label: <Link href="/grants">Grants & Studies</Link> },
+        {
+          key: "grants",
+          label: (
+            <Link href="/grants" className={`font-dm_sans`}>
+              Grants & Studies
+            </Link>
+          ),
+        },
       ],
     },
     {
       key: "mortgage",
-      label: <Link href="/mortgage-calculator">Mortgage Calculator</Link>,
+      label: (
+        <Link
+          href="/mortgage-calculator"
+          className={`font-dm_sans ${
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+          }`}
+        >
+          Mortgage Calculator
+        </Link>
+      ),
     },
     {
       key: "cv-builder",
-      label: <Link href="/dashboard/career/cv-builder">CV Builder</Link>,
+      label: (
+        <Link
+          href="/dashboard/career/cv-builder"
+          className={`font-dm_sans ${
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+          }`}
+        >
+          CV Builder
+        </Link>
+      ),
     },
-    { key: "faq", label: <Link href="/faq">FAQ</Link> },
-    { key: "contact", label: <Link href="/contact">Contact</Link> },
+    {
+      key: "faq",
+      label: (
+        <Link
+          href="/faq"
+          className={`font-dm_sans ${
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+          }`}
+        >
+          FAQ
+        </Link>
+      ),
+    },
+    {
+      key: "contact",
+      label: (
+        <Link
+          href="/contact"
+          className={`font-dm_sans ${
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+          }`}
+        >
+          Contact
+        </Link>
+      ),
+    },
   ];
 
   const toggleMobileMenu = () => {
@@ -122,7 +218,7 @@ export default function Navbar() {
 
       <nav
         className={classNames(
-          "fixed top-0 left-0 right-0 z-50 transition-colors duration-300",
+          "fixed top-0 left-0 right-0 z-50 transition-colors duration-300 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20",
           navbarStyle
         )}
       >
@@ -142,7 +238,7 @@ export default function Navbar() {
             <Menu
               mode="horizontal"
               items={menuItems}
-              className="transparent-menu"
+              className="transparent-menu flex-wrap"
               theme={menuTheme}
               selectable={false}
             />
@@ -164,12 +260,14 @@ export default function Navbar() {
             ) : (
               <>
                 <Link href={`${LOGIN_PATH}`}>
-                  <Button className="font-semibold">Sign In</Button>
+                  <Button className="font-semibold !border-none !font-dm_sans !bg-white !shadow-none">
+                    Sign In
+                  </Button>
                 </Link>
                 <Link href={`${LOGIN_PATH}`}>
                   <Button
                     type="primary"
-                    className="font-bold"
+                    className="font-bold !border-none !font-dm_sans !shadow-none"
                     danger={isNavbarDark}
                   >
                     Register Now!
@@ -211,9 +309,14 @@ export default function Navbar() {
             theme="light"
             selectable={false}
           />
-          <div className="flex flex-col items-start p-4">
-            <Button className="w-full mb-2">Sign In</Button>
-            <Button className="w-full" type="primary">
+          <div className="flex flex-col items-start p-4 gap-2.5">
+            <Button className="w-full !shadow-none !border-black !font-dm_sans !py-5">
+              Sign In
+            </Button>
+            <Button
+              className="w-full !shadow-none !font-dm_sans !py-5"
+              type="primary"
+            >
               Register Now!
             </Button>
           </div>
