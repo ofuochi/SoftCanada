@@ -142,7 +142,7 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           {data.work.map((job, i) => (
             <div key={i} className="mb-6">
               <div className="flex justify-between items-center">
-                <Link href={job.url ?? "#"}>
+                <Link href={job?.url ?? "#"}>
                   <Text className="font-semibold text-base !font-dm_sans">
                     {job?.name}
                   </Text>
