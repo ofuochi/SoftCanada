@@ -42,7 +42,7 @@ export default async function LandingLayout({
             <ConfigProvider theme={theme}>
               <>
                 <Navbar />
-                <main className="relative min-h-screen bg-white px-28 pt-16 font-dm_sans">
+                <main className="relative min-h-screen bg-white pt-16 font-dm_sans">
                   {children}
                   <Footer />
                 </main>

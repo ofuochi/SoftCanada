@@ -51,14 +51,16 @@ export default function Navbar() {
         <>
           <span
             className={`font-dm_sans ${
-              isNavbarDark ? "text-white" : "text-black"
+              isNavbarDark ? "text-black md:!text-white" : "!text-black"
             }`}
           >
             Services{" "}
           </span>
           <span className="hidden md:inline">
             <DownOutlined
-              className={`${isNavbarDark ? "!text-white" : "!text-black"}`}
+              className={`${
+                isNavbarDark ? "text-black md:!text-white" : "!text-black"
+              }`}
             />
           </span>
         </>
@@ -88,14 +90,16 @@ export default function Navbar() {
         <>
           <span
             className={`font-dm_sans ${
-              isNavbarDark ? "text-white" : "text-black"
+              isNavbarDark ? "text-black md:!text-white" : "text-black"
             }`}
           >
             Resources{" "}
           </span>
           <span className="hidden md:inline">
             <DownOutlined
-              className={`${isNavbarDark ? "!text-white" : "!text-black"}`}
+              className={`${
+                isNavbarDark ? "text-black md:!text-white" : "!text-black"
+              }`}
             />
           </span>
         </>
@@ -141,7 +145,7 @@ export default function Navbar() {
         <Link
           href="/mortgage-calculator"
           className={`font-dm_sans ${
-            isNavbarDark ? "!text-white" : "!text-black"
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
           }`}
         >
           Mortgage Calculator
@@ -154,7 +158,7 @@ export default function Navbar() {
         <Link
           href="/dashboard/career/cv-builder"
           className={`font-dm_sans ${
-            isNavbarDark ? "!text-white" : "!text-black"
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
           }`}
         >
           CV Builder
@@ -167,7 +171,7 @@ export default function Navbar() {
         <Link
           href="/faq"
           className={`font-dm_sans ${
-            isNavbarDark ? "!text-white" : "!text-black"
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
           }`}
         >
           FAQ
@@ -180,7 +184,7 @@ export default function Navbar() {
         <Link
           href="/contact"
           className={`font-dm_sans ${
-            isNavbarDark ? "!text-white" : "!text-black"
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
           }`}
         >
           Contact
@@ -214,7 +218,7 @@ export default function Navbar() {
 
       <nav
         className={classNames(
-          "fixed top-0 left-0 right-0 z-50 transition-colors duration-300",
+          "fixed top-0 left-0 right-0 z-50 transition-colors duration-300 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20",
           navbarStyle
         )}
       >

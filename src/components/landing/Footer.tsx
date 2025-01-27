@@ -4,8 +4,8 @@ import Logo from "@/components/Logo";
 
 export default function Footer() {
   return (
-    <footer className="bg-white w-full py-10 lg:px-28">
-      <div className="flex flex-col md:flex-row justify-between gap-8 md:items-start items-center text-center md:text-left">
+    <footer className="bg-white w-full py-10 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20">
+      <div className="flex max-md:flex-col flex-wrap justify-between gap-8 md:items-start items-center text-center md:text-left">
         {/* Logo Section */}
         <div className="flex flex-col items-center md:items-start">
           <Logo size="large" />
@@ -234,3 +234,4 @@ export default function Footer() {
     </footer>
   );
 }
+
