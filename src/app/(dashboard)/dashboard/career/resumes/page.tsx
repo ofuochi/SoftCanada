@@ -10,7 +10,12 @@ import {
 } from "@/constants/sample-resume-data";
 import { ResumeProvider } from "@/contexts/ResumeContext";
 import { useApiClient } from "@/hooks/api-hook";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  DownloadOutlined,
+  EditOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { Button, Card, Flex, Popconfirm, Result, Skeleton } from "antd";
 import { useState } from "react";
 import useSWR from "swr";
@@ -113,6 +118,8 @@ export default function ResumesPage() {
                     >
                       <DeleteOutlined key="delete" />
                     </Popconfirm>,
+
+                    <DownloadOutlined key={"download"} />,
                   ]}
                 >
                   <div className="overflow-hidden h-80 pointer-events-none">

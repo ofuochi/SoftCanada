@@ -74,7 +74,8 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
 
         {/* SOCIAL PROFILES */}
         {data.basics?.profiles?.[0]?.network &&
-          data.basics.profiles[0]?.username && (
+          data.basics?.profiles[0]?.username &&
+          data.basics?.profiles[0]?.url && (
             <div className="text-base !font-dm_sans mt-2.5">
               {data.basics.profiles.map(
                 (profile, i) =>
@@ -237,7 +238,7 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             </Title>
           </Divider>
           {/* Display skills in multiple columns similar to the image */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-1 gap-x-4 text-base mt-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-y-1 gap-x-4 text-base mt-2">
             {data.skills.map((skill, index) => (
               <div key={index} className="flex items-start space-x-2">
                 <Text className="leading-tight">•</Text>
