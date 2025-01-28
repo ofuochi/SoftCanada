@@ -1,7 +1,7 @@
 import { ResumeType } from "@/app/types/career";
 import { useResume } from "@/contexts/ResumeContext";
 import { useApiClient } from "@/hooks/api-hook";
-import { LeftOutlined, PlusOutlined } from "@ant-design/icons";
+import { LeftOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { Collapse, CollapseProps, FloatButton, message, Space } from "antd";
 import React, { SetStateAction, useState } from "react";
 import { GrUserManager } from "react-icons/gr";
@@ -173,7 +173,13 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
             <Collapse
               ghost
               items={items}
-              expandIcon={() => <PlusOutlined color="#000000" size={14} />}
+              expandIcon={({ isActive }) =>
+                isActive ? (
+                  <MinusOutlined color="#000000" size={14} />
+                ) : (
+                  <PlusOutlined color="#000000" size={14} />
+                )
+              }
               expandIconPosition="end"
             />
           </div>
