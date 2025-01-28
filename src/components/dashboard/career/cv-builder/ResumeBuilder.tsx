@@ -159,7 +159,7 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
             >
               <LeftOutlined size={24} color="#010309" />
               <span className="text-[#010309] font-medium text-[13px] font-poppins">
-                Back to Template
+                Back to Templates
               </span>
             </button>
             <button className="my-4 bg-[#010B18] w-full max-w-[200px] border border-[#010B18] min-h-12 rounded flex items-center justify-center gap-[7px] cursor-pointer">
