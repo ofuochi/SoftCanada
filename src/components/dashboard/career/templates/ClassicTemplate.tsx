@@ -6,7 +6,7 @@ const { Title, Text } = Typography;
 
 const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   return (
-    <div className="p-10 bg-white text-gray-800 min-h-screen">
+    <div className="p-10 bg-white text-gray-800 min-h-[1123px]">
       {/* HEADER / BASICS SECTION */}
       <header className="mb-10">
         <Title level={1} style={{ marginBottom: 0 }}>

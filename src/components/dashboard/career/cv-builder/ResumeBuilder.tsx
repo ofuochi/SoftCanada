@@ -146,8 +146,8 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
   return (
     <>
       {contextHolder}
-      <div className="flex flex-col lg:flex-row gap-5">
-        <div className="flex-grow lg:max-w-[400px]">
+      <div className="flex flex-col xl:flex-row gap-5 justify-center">
+        <div className="flex-grow xl:max-w-[460px] 2xl:max-w-[500px]">
           <div
             onMouseDown={() => {
               setShowCvBuilder(false);

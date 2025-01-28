@@ -20,7 +20,7 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   } = data;
 
   return (
-    <div className="flex min-h-[150vh] w-full">
+    <div className="flex min-h-[1123px] w-full">
       <aside className="w-full max-w-[220px] bg-blue-900 text-white p-5">
         {basics?.name && (
           <h1 className="!font-dm_sans mt-2.5 block text-white font-semibold text-[33px]">

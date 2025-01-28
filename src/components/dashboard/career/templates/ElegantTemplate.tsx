@@ -8,7 +8,7 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   const { basics, work, education, skills, languages } = data;
 
   return (
-    <div className="bg-gray-50 text-gray-900 p-6 min-h-screen !font-dm_sans">
+    <div className="bg-gray-50 text-gray-900 p-6 min-h-[1123px] !font-dm_sans">
       <div className="bg-white p-4 mb-6 shadow">
         <Title level={2} style={{ marginBottom: 0 }}>
           {basics?.name ?? ""}
