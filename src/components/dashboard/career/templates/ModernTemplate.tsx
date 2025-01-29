@@ -20,7 +20,7 @@ const ModernTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   } = data;
 
   return (
-    <div className="bg-white text-gray-800 min-h-screen">
+    <div className="bg-white text-gray-800 min-h-[1123px]">
       {/* BASICS SECTION */}
       <header className="mb-10">
         <Title level={1} style={{ marginBottom: 0 }}>

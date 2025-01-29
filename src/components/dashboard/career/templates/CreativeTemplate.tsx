@@ -20,7 +20,7 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   } = data;
 
   return (
-    <div className="flex min-h-[150vh] w-full">
+    <div className="flex min-h-[1123px] w-full">
       <aside className="w-full max-w-[220px] bg-blue-900 text-white p-5">
         {basics?.name && (
           <h1 className="!font-dm_sans mt-2.5 block text-white font-semibold text-[33px]">
@@ -71,34 +71,37 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
         )}
 
         {/* SOCIAL PROFILES */}
-        {basics?.profiles?.[0]?.network && basics.profiles[0]?.username && (
-          <>
-            <p className="!font-dm_sans uppercase mt-5 text-white font-semibold text-xl">
-              Social Profile
-            </p>
-            <div className="text-base !font-dm_sans">
-              {basics.profiles.map(
-                (profile, i) =>
-                  profile?.network &&
-                  profile?.username && (
-                    <div key={i}>
-                      <Text className="!font-dm_sans !text-white font-semibold">
-                        {profile.network}:
-                      </Text>{" "}
-                      <a
-                        href={profile?.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="!underline text-white hover:text-white text-sm !font-dm_sans"
-                      >
-                        {profile.username}
-                      </a>
-                    </div>
-                  )
-              )}
-            </div>
-          </>
-        )}
+        {basics?.profiles?.[0]?.network &&
+          basics.profiles[0]?.username &&
+          basics.profiles[0]?.url && (
+            <>
+              <p className="!font-dm_sans uppercase mt-5 text-white font-semibold text-xl">
+                Social Profile
+              </p>
+              <div className="text-base !font-dm_sans">
+                {basics.profiles.map(
+                  (profile, i) =>
+                    profile?.network &&
+                    profile?.username &&
+                    profile?.url && (
+                      <div key={i}>
+                        <Text className="!font-dm_sans !text-white font-semibold">
+                          {profile.network}:
+                        </Text>{" "}
+                        <a
+                          href={profile?.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="!underline text-white text-sm !font-dm_sans"
+                        >
+                          {profile.url}
+                        </a>
+                      </div>
+                    )
+                )}
+              </div>
+            </>
+          )}
 
         {/* INTERESTS */}
         {interests && interests.length > 0 && (
@@ -281,7 +284,7 @@ const CreativeTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
               </Title>
             </Divider>
             {/* Display skills in multiple columns similar to the image */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-1 gap-x-4 text-base mt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-y-1 gap-x-4 text-base mt-2">
               {skills.map((skill, index) => (
                 <div key={index} className="flex items-start space-x-2">
                   <Text className="leading-tight">•</Text>
