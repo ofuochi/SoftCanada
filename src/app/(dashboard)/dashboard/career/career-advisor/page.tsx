@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { Form, Input, Select } from "antd";
+import { Button, Form, Input, Select } from "antd";
 import Image from "next/image";
 
 const { Option } = Select;
@@ -17,19 +17,35 @@ type CareerAdvisorApplicationInfo = {
 };
 
 export default function CareerAdvisorPage() {
+  const [form] = Form.useForm<CareerAdvisorApplicationInfo>();
+
+  const availabilityTime = [
+    "05:00 PM",
+    "11:00 AM",
+    "12:00 PM",
+    "9:00 AM",
+    "02:00 AM",
+  ];
+
+  const handleAvailabitityClick = (time: string) => () => {
+    const currentAvailability = form.getFieldValue("availability") || [];
+    const newAvailability = [...new Set([...currentAvailability, time])];
+    form.setFieldValue("availability", newAvailability);
+  };
+
   return (
-    <section className="w-full bg-white pb-[30px] px-5">
-      <div className="flex max-md:flex-col-reverse items-center md:justify-between border border-black">
+    <section className="w-full bg-white pb-[30px] px-5 rounded-xl">
+      <div className="flex max-md:flex-col-reverse items-center md:justify-between">
         <div className="flex flex-col gap-2">
-          <h1 className="font-dm_sans font-semibold text-[38px] leading-[49.8px] text-black">
+          <h1 className="font-dm_sans font-semibold text-[38px] leading-[49.8px] text-black max-md:text-center">
             Career Advisor Application
           </h1>
-          <span className="font-lato text-[#4F4F4F] font-normal text-lg">
+          <span className="font-lato text-[#4F4F4F] font-normal text-lg max-md:text-center">
             {" "}
             Complete the form below to start your journey as a Career Advisor.{" "}
           </span>
         </div>
-        <div className="border border-black">
+        <div className="">
           <Image
             width={228}
             height={228}
@@ -40,6 +56,7 @@ export default function CareerAdvisorPage() {
       </div>
 
       <Form
+        form={form}
         name="CareerAdvisorApplicationInfo"
         initialValues={{ remember: true }}
         // onFinish={onFinish}
@@ -47,7 +64,7 @@ export default function CareerAdvisorPage() {
         autoComplete="off"
         layout="vertical"
       >
-        <section className="flex flex-col xl:flex-row border border-black w-full mt-8 gap-8 font-poppins">
+        <section className="flex flex-col xl:flex-row w-full mt-8 gap-8 font-poppins">
           <div className="flex flex-col gap-6 w-full xl:max-w-[500px]">
             {/* Personal Information */}
             <div className="flex flex-col gap-5">
@@ -55,11 +72,11 @@ export default function CareerAdvisorPage() {
                 {" "}
                 Personal Information{" "}
               </h6>
-              <div className="grid grid-cols-2 gap-6 border border-black">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <Form.Item<CareerAdvisorApplicationInfo>
                   label="Full name"
                   name="fullName"
-                  className="border border-black w-full"
+                  className="w-full"
                   rules={[
                     { required: true, message: "Please input your full name" },
                   ]}
@@ -92,12 +109,6 @@ export default function CareerAdvisorPage() {
                 >
                   <Input className="h-9 !font-poppins border !border-[#CBCBCB]" />
                 </Form.Item>
-
-                {/* <Form.Item label={null}>
-      <Button type="primary" htmlType="submit">
-        Submit
-      </Button>
-    </Form.Item> */}
               </div>
             </div>
 
@@ -106,32 +117,48 @@ export default function CareerAdvisorPage() {
               <h6 className="font-medium text-black text-xl">
                 Expertise Details
               </h6>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <Form.Item<CareerAdvisorApplicationInfo>
                   name="expertise"
                   label="Select Areas of Expertise"
-                  rules={[{ required: true }]}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your areas of expertise",
+                    },
+                  ]}
                 >
                   <Select
                     placeholder="Select option"
-                    className="!h-9 !font-poppins"
+                    className="!min-h-9 !font-poppins"
                     allowClear
                   >
-                    <Option value="example"> example </Option>
+                    <Option value="Tech"> Tech </Option>
+                    <Option value="Finance"> Finance </Option>
+                    <Option value="Engineering"> Engineering </Option>
                   </Select>
                 </Form.Item>
 
                 <Form.Item<CareerAdvisorApplicationInfo>
-                  name="expertise"
+                  name="experience"
                   label="Years of Experience"
-                  rules={[{ required: true }]}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your years of experience",
+                    },
+                  ]}
                 >
                   <Select
                     placeholder="Select option"
                     className="!h-9 !font-poppins"
                     allowClear
                   >
-                    <Option value="example"> example </Option>
+                    <Option value="1"> 1 </Option>
+                    <Option value="2"> 2 </Option>
+                    <Option value="3"> 3 </Option>
+                    <Option value="4"> 4 </Option>
+                    <Option value="5"> 5 </Option>
                   </Select>
                 </Form.Item>
               </div>
@@ -145,7 +172,12 @@ export default function CareerAdvisorPage() {
                   name="qualtifications"
                   label="List any certifications or relevant experience."
                   className="w-full"
-                  rules={[{ required: true }]}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your qualifications",
+                    },
+                  ]}
                 >
                   <Input.TextArea
                     className="h-9 !font-poppins resize-none py-4 px-2.5 border !border-[#CBCBCB]"
@@ -159,26 +191,49 @@ export default function CareerAdvisorPage() {
             </div>
           </div>
 
-          <div className="flex flex-col flex-1 gap-6 w-full xl:max-w-[500px] border border-black">
+          <div className="flex flex-col flex-1 gap-6 w-full xl:max-w-[500px]">
             {/* Availability */}
             <div className="flex flex-col gap-5">
               <h6 className="font-medium text-black text-xl">Availability</h6>
-              <div className="flex">
+              <div className="flex flex-col gap-4">
                 <Form.Item<CareerAdvisorApplicationInfo>
                   name="availability"
                   className="w-full"
                   label="Select preferred days and times for sessions."
-                  rules={[{ required: true }]}
+                  rules={[
+                    {
+                      required: true,
+                      message:
+                        "Please input your preferred session days and times",
+                    },
+                  ]}
                 >
                   <Select
                     mode="multiple"
                     placeholder="Select option"
-                    className="!h-9 !font-poppins"
+                    className="!min-h-9 !font-poppins"
                     allowClear
                   >
-                    <Option value="example"> example </Option>
+                    {availabilityTime.map((time, i) => (
+                      <Option value={time} key={i}>
+                        {" "}
+                        {time}{" "}
+                      </Option>
+                    ))}
                   </Select>
                 </Form.Item>
+
+                <div className="flex gap-3 min-[590px]:justify-between flex-wrap">
+                  {availabilityTime.map((time, i) => (
+                    <span
+                      key={i}
+                      onMouseDown={handleAvailabitityClick(time)}
+                      className="border-[0.6px] border-[#808080] h-[30px] w-[74.5px] rounded text-black font-semibold text-[10px] flex justify-center items-center md:cursor-pointer"
+                    >
+                      {time}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -191,7 +246,7 @@ export default function CareerAdvisorPage() {
                 <Form.Item<CareerAdvisorApplicationInfo>
                   name="motivationStatement"
                   className="w-full py-4 px-2.5"
-                  rules={[{ required: true }]}
+                  rules={[{ required: false }]}
                 >
                   <Input.TextArea
                     className="h-9 !font-poppins resize-none border !border-[#CBCBCB]"
@@ -203,6 +258,15 @@ export default function CareerAdvisorPage() {
                 </Form.Item>
               </div>
             </div>
+
+            <Form.Item label={null}>
+              <Button
+                htmlType="submit"
+                className="w-full !bg-[#4441F8] !border-[#4441F8] !py-1 !px-3 !text-white !h-12 !rounded-md !font-semibold !text-[13px] leading-[15.6px] !font-poppins"
+              >
+                Submit Application
+              </Button>
+            </Form.Item>
           </div>
         </section>
       </Form>
