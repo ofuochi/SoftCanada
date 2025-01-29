@@ -1,7 +1,7 @@
 import { ResumeType } from "@/app/types/career";
 import { useResume } from "@/contexts/ResumeContext";
 import { useApiClient } from "@/hooks/api-hook";
-import { LeftOutlined, PlusOutlined } from "@ant-design/icons";
+import { LeftOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { Collapse, CollapseProps, FloatButton, message, Space } from "antd";
 import React, { SetStateAction, useState } from "react";
 import { GrUserManager } from "react-icons/gr";
@@ -15,6 +15,7 @@ import SkillsForm from "./forms/SkillsForm";
 import WorkExperienceListForm from "./forms/WorkExperienceListForm";
 import { ResumeTemplate } from "./ResumeTemplate";
 import { mutate } from "swr";
+import { FileDown } from "lucide-react";
 
 type Props = {
   setShowCvBuilder: (value: SetStateAction<boolean>) => void;
@@ -146,25 +147,39 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
   return (
     <>
       {contextHolder}
-      <div className="flex flex-col lg:flex-row gap-5">
-        <div className="flex-grow lg:max-w-[400px]">
-          <div
-            onMouseDown={() => {
-              setShowCvBuilder(false);
-              mutate(`/api/resumes`);
-            }}
-            className="my-4 bg-white w-full max-w-[200px] border border-[#CBCBCB] min-h-12 rounded flex items-center justify-center gap-[7px] cursor-pointer"
-          >
-            <LeftOutlined size={24} color="#010309" />
-            <span className="text-[#010309] font-medium text-[13px] font-poppins">
-              Back to Template
-            </span>
+      <div className="flex flex-col xl:flex-row gap-5 justify-center">
+        <div className="flex-grow xl:max-w-[460px] 2xl:max-w-[500px]">
+          <div className="flex items-center justify-between">
+            <button
+              onMouseDown={() => {
+                setShowCvBuilder(false);
+                mutate(`/api/resumes`);
+              }}
+              className="my-4 bg-white w-full max-w-[200px] border border-[#CBCBCB] min-h-12 rounded flex items-center justify-center gap-[7px] cursor-pointer"
+            >
+              <LeftOutlined size={24} color="#010309" />
+              <span className="text-[#010309] font-medium text-[13px] font-poppins">
+                Back to Templates
+              </span>
+            </button>
+            <button className="my-4 bg-[#010B18] w-full max-w-[200px] border border-[#010B18] min-h-12 rounded flex items-center justify-center gap-[7px] cursor-pointer">
+              <span className="text-white font-medium text-[13px] font-poppins">
+                Download
+              </span>
+              <FileDown size={18} color="#ffffff" />
+            </button>
           </div>
           <div className=" bg-white p-5 sticky top-0 max-h-[calc(100vh-4rem)] overflow-y-auto">
             <Collapse
               ghost
               items={items}
-              expandIcon={() => <PlusOutlined color="#000000" size={14} />}
+              expandIcon={({ isActive }) =>
+                isActive ? (
+                  <MinusOutlined color="#000000" size={14} />
+                ) : (
+                  <PlusOutlined color="#000000" size={14} />
+                )
+              }
               expandIconPosition="end"
             />
           </div>

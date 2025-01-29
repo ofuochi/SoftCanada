@@ -8,7 +8,7 @@ const { Title, Text } = Typography;
 
 const VisionTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-[1123px] bg-white text-gray-900">
       {/* Header Section */}
       <div className="p-10 bg-gray-100">
         <Row gutter={24} align="middle">
