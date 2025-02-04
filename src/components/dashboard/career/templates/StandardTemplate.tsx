@@ -110,7 +110,6 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           </div>
         )}
       </header>
-
       {/* SUMMARY */}
       {data.basics?.summary && (
         <section className="mb-8">
@@ -129,7 +128,6 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           <Text className="text-base !font-dm_sans">{data.basics.summary}</Text>
         </section>
       )}
-
       {/* WORK EXPERIENCE */}
       {data.work && data.work.length > 0 && (
         <section className="mb-8">
@@ -176,7 +174,6 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           ))}
         </section>
       )}
-
       {/* EDUCATION */}
       {data.education && data.education.length > 0 && (
         <section className="mb-8">
@@ -225,7 +222,6 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           ))}
         </section>
       )}
-
       {/* SKILLS */}
       {data.skills && data.skills.length > 0 && (
         <section className="mb-8">
@@ -251,7 +247,6 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           </div>
         </section>
       )}
-
       {/* VOLUNTEER */}
       {data.volunteer && data.volunteer.length > 0 && (
         <section className="mb-8">
@@ -294,7 +289,6 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           ))}
         </section>
       )}
-
       {/* PROJECTS */}
       {data.projects && data.projects.length > 0 && (
         <section className="mb-8">
@@ -344,7 +338,6 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           ))}
         </section>
       )}
-
       {/* AWARDS */}
       {data.awards && data.awards.length > 0 && (
         <section className="mb-8">
@@ -373,7 +366,6 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           ))}
         </section>
       )}
-
       {/* CERTIFICATES */}
       {data.certificates && data.certificates.length > 0 && (
         <section className="mb-8">
@@ -409,7 +401,6 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           ))}
         </section>
       )}
-
       {/* PUBLICATIONS */}
       {data.publications && data.publications.length > 0 && (
         <section className="mb-8">
@@ -450,7 +441,6 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           ))}
         </section>
       )}
-
       {/* LANGUAGES */}
       {data.languages && data.languages.length > 0 && (
         <section className="mb-8">
@@ -474,7 +464,6 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           </ul>
         </section>
       )}
-
       {/* INTERESTS */}
       {data.interests && data.interests.length > 0 && (
         <section className="mb-8">
@@ -500,7 +489,6 @@ const StandardTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           </ul>
         </section>
       )}
-
       {/* REFERENCES */}
       {data.references && data.references.length > 0 && (
         <section>

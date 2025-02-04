@@ -85,13 +85,13 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
             </Header>
 
             {/* Breadcrumb */}
-            <div className="px-5 lg:px-8 xl:px-10 2xl:px-12 mt-5">
+            <div className="px-5 md:px-10 lg:px-[60px] xl:px-[80px] 2xl:px-[105px] mt-5">
               <Breadcrumb items={breadcrumbs} className="!font-dm_sans" />
             </div>
 
             {/* Content */}
             <ErrorProvider>
-              <Content className="px-5 lg:px-8 xl:px-10 2xl:px-12 mt-5">
+              <Content className="px-5 md:px-10 lg:px-[60px] xl:px-[80px] 2xl:px-[105px] mt-5">
                 <div className="w-full max-w-[1320px]">{children}</div>
               </Content>
             </ErrorProvider>

@@ -36,8 +36,8 @@ export default function AdvisorApplicationPage() {
   };
 
   return (
-    <section className="w-full bg-white pb-[30px] px-5 rounded-xl">
-      <div className="flex max-md:flex-col-reverse items-center md:justify-between">
+    <section className="w-full bg-white pb-[30px] px-5 pt-3 rounded-xl">
+      <div className="flex max-md:flex-col-reverse items-center h-fit md:justify-between">
         <div className="flex flex-col gap-2">
           <h1 className="font-dm_sans font-semibold text-[38px] leading-[49.8px] text-black max-md:text-center">
             {advisorType} Advisor Application
@@ -52,8 +52,8 @@ export default function AdvisorApplicationPage() {
         </div>
         <div className="">
           <Image
-            width={228}
-            height={228}
+            width={150}
+            height={150}
             alt="facetime"
             src={"/images/career-advisor/facetime.svg"}
           />
@@ -69,7 +69,7 @@ export default function AdvisorApplicationPage() {
         autoComplete="off"
         layout="vertical"
       >
-        <section className="flex flex-col xl:flex-row w-full mt-8 gap-8 font-poppins">
+        <section className="flex flex-col xl:flex-row w-full mt-8 gap-8 px-4 font-poppins">
           <div className="flex flex-col gap-6 w-full xl:max-w-[500px]">
             {/* Personal Information */}
             <div className="flex flex-col gap-5">

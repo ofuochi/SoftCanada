@@ -1,5 +1,6 @@
 import { ResumeType } from "@/app/types/career";
 import { Col, Divider, Row, Space, Typography } from "antd";
+import dayjs from "dayjs";
 import Link from "next/link";
 import React from "react";
 const { Title, Text } = Typography;
@@ -35,7 +36,8 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
                 </Text>
                 <br />
                 <Text type="secondary">
-                  {String(job.startDate)} - {String(job.endDate) || "Present"}
+                  {dayjs(job.startDate).format("MMM YYYY")} -{" "}
+                  {dayjs(job.endDate).format("MMM YYYY") || "Present"}
                 </Text>
                 <p className="mt-2">{job.summary}</p>
                 <ul className="list-disc list-inside">
