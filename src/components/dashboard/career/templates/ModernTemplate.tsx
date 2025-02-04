@@ -245,17 +245,18 @@ const ModernTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
                 {dayjs(edu?.endDate).format("MMM YYYY") || "Present"}
               </Text>
               {edu?.url && (
-                <>
+                <div className="flex items-center gap-0.5">
+                  <LucideLink size={14} color="#000000" />
                   <br />
-                  <a
+                  <Link
                     href={edu?.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600"
                   >
                     {edu?.url}
-                  </a>
-                </>
+                  </Link>
+                </div>
               )}
               {edu?.score && <p className="mt-2">Score: {edu.score}</p>}
               {edu?.courses && edu.courses.length > 0 && (
