@@ -59,4 +59,3 @@ const SelectResumeTemplateModal: React.FC<Props> = ({
 };
 
 export default SelectResumeTemplateModal;
-

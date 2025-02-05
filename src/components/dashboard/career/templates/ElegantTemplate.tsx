@@ -1,8 +1,5 @@
 import { ResumeType } from "@/app/types/career";
 import { Col, Divider, Row, Space, Typography } from "antd";
-import dayjs from "dayjs";
-import { Mail, MapPin, Phone, Link as LucideLink, Globe } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 const { Title, Text } = Typography;
@@ -11,187 +8,57 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   const { basics, work, education, skills, languages } = data;
 
   return (
-    <section className="bg-white text-gray-900 p-5 min-h-[1123px] !font-dm_sans">
-      {basics?.image && (
-        <div className="flex justify-center">
-          <Image
-            src={basics.image}
-            width={80}
-            height={80}
-            className="rounded-full h-[80px] w-[80px]"
-            alt="profileImageUrl"
-          />
+    <div className="bg-gray-50 text-gray-900 p-6 min-h-[1123px] !font-dm_sans">
+      <div className="bg-white p-4 mb-6 shadow">
+        <Title level={2} style={{ marginBottom: 0 }}>
+          {basics?.name ?? ""}
+        </Title>
+        <Text type="secondary">{basics?.label}</Text>
+        <div className="mt-2">
+          <Text>
+            {basics?.email} | {basics?.phone} | {basics?.location?.city},{" "}
+            {basics?.location?.countryCode}
+          </Text>
         </div>
-      )}
-      <section className="bg-white p-4 mb-6">
-        {basics?.url && (
-          <span className="flex justify-center sm:items-center gap-1">
-            <Globe size={14} color="#000000" />
-            <Link
-              href={basics.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600"
-            >
-              {basics.url}
-            </Link>
-          </span>
-        )}
-        {basics?.label && (
-          <span className="!font-dm_sans text-center block text-lg">
-            {basics.label}
-          </span>
-        )}
+      </div>
 
-        {basics?.name && (
-          <Title
-            className="!font-dm_sans text-center"
-            level={2}
-            style={{ marginBottom: 0 }}
-          >
-            {basics.name}
-          </Title>
-        )}
-        <section className="flex items-center max-2xl:flex-col-reverse 2xl:flex-wrap justify-center gap-x-2.5 gap-y-1 !font-dm_sans mt-2.5">
-          {basics?.location && (
-            <div className="flex items-center gap-0.5">
-              <MapPin stroke="#ffffff" size={18} fill="#000000" />
-              <Text>
-                {basics.location.address && `${basics.location.address}, `}
-                {basics.location.city && `${basics.location.city}, `}
-                {basics.location.region && `${basics.location.region}, `}
-                {basics.location.countryCode && basics.location.countryCode}
-              </Text>
-            </div>
-          )}
-          {basics?.email && (
-            <span className="text-sm flex items-center gap-0.5">
-              {" "}
-              <Mail
-                stroke="#ffffff"
-                size={14}
-                fill="#000000"
-                className="mt-0.5"
-              />{" "}
-              {basics.email}
-            </span>
-          )}
-          {basics?.phone && (
-            <span className="text-sm flex items-center gap-1">
-              {" "}
-              <Phone stroke="#ffffff" size={14} fill="#000000" /> {basics.phone}
-            </span>
-          )}
-        </section>
-
-        {basics?.summary && (
-          <p className="!font-dm_sans mt-5 text-justify">{basics.summary}</p>
-        )}
-      </section>
-
-      <section className="flex flex-col gap-5 font-dm_sans">
-        <section>
-          <div>
-            <div className="h-0.5 w-full border-b-2 border-b-black" />
-            <h3 className="text-2xl text-black font-medium font-dm_sans my-1 text-center">
-              Professional Experience
-            </h3>
-            <div className="h-0.5 w-full border-b-2 border-b-black" />
-          </div>
-          <div className="mt-2.5">
-            {work.map((job, i) => (
-              <div key={i} className="mb-6">
-                <Text className="!font-dm_sans" type="secondary">
-                  {job?.startDate
-                    ? dayjs(job.startDate).format("MMM YYYY")
-                    : "Start date not specified"}{" "}
-                  -{" "}
-                  {job?.endDate
-                    ? dayjs(job.endDate).format("MMM YYYY")
-                    : "Present"}
+      <Row gutter={24}>
+        <Col span={16}>
+          <Space direction="vertical" style={{ width: "100%" }}>
+            <Title level={3}>Professional Experience</Title>
+            <Divider />
+            {work.map((job) => (
+              <div key={job.name} className="mb-4">
+                <Text strong>
+                  {job.position} at
+                  <Link href={job.url ?? "#"}>{job.name}</Link>
                 </Text>
                 <br />
-                <Text className="!font-dm_sans" strong>
-                  {job?.position || "Position not specified"}
+                <Text type="secondary">
+                  {String(job.startDate)} - {String(job.endDate) || "Present"}
                 </Text>
-                <Text className="!font-dm_sans">
-                  , {job?.name || "Company not specified"}
-                </Text>
-                {job?.url && (
-                  <>
-                    <span className="flex sm:items-center gap-1">
-                      <LucideLink size={14} color="#000000" />
-                      <Link
-                        href={job.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600"
-                      >
-                        {job.url}
-                      </Link>
-                    </span>
-                  </>
-                )}
-                {job?.summary && (
-                  <p className="mt-2 font-dm_sans">{job.summary}</p>
-                )}
-                {job?.highlights && job.highlights.length > 0 && (
-                  <ul className="list-disc list-inside mt-2 font-dm_sans">
-                    {job.highlights.map((hl, idx) => (
-                      <li key={idx}>{hl}</li>
-                    ))}
-                  </ul>
-                )}
+                <p className="mt-2">{job.summary}</p>
+                <ul className="list-disc list-inside">
+                  {job.highlights?.map((hl, i) => <li key={i}>{hl}</li>) ?? []}
+                </ul>
               </div>
             ))}
-          </div>
-        </section>
 
-        <section>
-          <div>
-            <div className="h-0.5 w-full border-b-2 border-b-black" />
-            <h3 className="text-2xl text-black font-medium font-dm_sans my-1 text-center">
-              Education
-            </h3>
-            <div className="h-0.5 w-full border-b-2 border-b-black" />
-          </div>
-          <div className="mt-2.5">
+            <Title level={3}>Education</Title>
+            <Divider />
             {education.map((edu) => (
-              <div key={edu?.institution} className="mb-4">
-                {edu?.url && (
-                  <div className="flex items-center gap-0.5">
-                    <LucideLink size={14} color="#000000" />
-                    <br />
-                    <Link
-                      href={edu?.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600"
-                    >
-                      {edu?.url}
-                    </Link>
-                  </div>
-                )}
-                <Text className="!font-dm_sans" strong>
-                  {edu?.institution}
-                </Text>
+              <div key={edu.institution} className="mb-4">
+                <Text strong>{edu.institution}</Text>
                 <br />
-                <Text className="!font-dm_sans">
-                  {edu?.studyType}, {edu?.area} (
-                  {edu?.startDate && dayjs(edu.startDate).format("MMM YYYY")} -{" "}
-                  {(edu?.endDate && dayjs(edu.endDate).format("MMM YYYY")) ||
-                    "Present"}
-                  )
+                <Text>
+                  {edu.studyType} in {edu.area} ({edu.startDate.toString()} -{" "}
+                  {edu.endDate?.toString() || "Present"})
                 </Text>
-                <br />
-                {edu?.score && (
-                  <Text className="!font-dm_sans"> GPA: {edu.score}</Text>
-                )}
+                {edu.score && <Text> - GPA: {edu.score}</Text>}
               </div>
             ))}
-          </div>
-        </section>
-
+          </Space>
+        </Col>
         <Col span={8}>
           <Title level={3}>Skills</Title>
           <Divider />
@@ -219,8 +86,8 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             ))}
           </ul>
         </Col>
-      </section>
-    </section>
+      </Row>
+    </div>
   );
 };
 
