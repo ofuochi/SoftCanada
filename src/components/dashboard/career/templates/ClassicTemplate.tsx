@@ -73,6 +73,7 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           </div>
         )}
       </header>
+
       <Row gutter={[48, 48]}>
         <Col xs={24} md={12}>
           {/* WORK EXPERIENCE */}
@@ -128,9 +129,13 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
               {data.education.map((edu, i) => (
                 <div key={i} className="mb-6">
                   <Text strong>
-                    {edu?.studyType} in {edu?.area}
+                    {edu?.studyType} in{" "}
+                    {edu?.area}
                   </Text>{" "}
-                  at <Text strong>{edu?.institution}</Text>
+                  at{" "}
+                  <Text strong>
+                    {edu?.institution}
+                  </Text>
                   <br />
                   <Text type="secondary">
                     {edu?.startDate
@@ -180,4 +185,3 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
 };
 
 export default ClassicTemplate;
-
