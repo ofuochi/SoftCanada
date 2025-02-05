@@ -18,7 +18,7 @@ export const ResumeTemplate: React.FC<Props> = ({ data }) => {
     "2": <CreativeTemplate data={data} />,
     "3": <ElegantTemplate data={data} />,
     "4": <ClassicTemplate data={data} />,
-    "5": <VisionTemplate data={data} />,
+    // "5": <VisionTemplate data={data} />,
   };
   return templates[data.templateId];
 };

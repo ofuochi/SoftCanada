@@ -185,13 +185,7 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
                 </Text>
                 <br />
                 {edu?.score && (
-                  <Text
-                    className="!font-dm_sans text-base
-                  "
-                  >
-                    {" "}
-                    GPA: {edu.score}
-                  </Text>
+                  <Text className="!font-dm_sans"> GPA: {edu.score}</Text>
                 )}
               </div>
             ))}
