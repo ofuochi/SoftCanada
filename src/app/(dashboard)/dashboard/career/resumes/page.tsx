@@ -37,7 +37,7 @@ export default function ResumesPage() {
 
   if (isLoading)
     return (
-      <div className="flex gap-6">
+      <div className="flex flex-wrap gap-6">
         <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
         <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
         <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
@@ -68,7 +68,8 @@ export default function ResumesPage() {
 
   const handleDeleteResume = async (resumeId: string) => {
     await del(`/api/resumes/${resumeId}`);
-    data?.splice(data.indexOf(resumeData), 1);
+    mutate();
+    // data?.splice(data.indexOf(resumeData), 1);
   };
 
   return (
@@ -101,7 +102,7 @@ export default function ResumesPage() {
                 <Card
                   bordered={false}
                   size="small"
-                  key={i}
+                  key={resume.id}
                   className="w-72"
                   actions={[
                     <EditOutlined
@@ -109,7 +110,7 @@ export default function ResumesPage() {
                       onClick={() => handleResumeEditClick(resume)}
                     />,
                     <Popconfirm
-                      key={i}
+                      key={resume.id}
                       title="Delete the resume"
                       description="Are you sure you want to delete this resume?"
                       onConfirm={() => handleDeleteResume(resume.id!)}
