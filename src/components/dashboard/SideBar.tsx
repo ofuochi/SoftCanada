@@ -361,20 +361,14 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
           </div>
 
           <div className="flex items-center gap-[3px] w-fit mx-auto mt-2">
-            {advisors.map((advisor) => {
+            {advisors.map((advisor, index) => {
               if (advisorIndex === advisor.id) {
                 return (
-                  <div
-                    key={advisor.id}
-                    className="w-[5px] h-[5px] bg-[#010309] rounded-full"
-                  />
+                  <div className="w-[5px] h-[5px] bg-[#010309] rounded-full" />
                 );
               }
               return (
-                <div
-                  key={advisor.id}
-                  className="w-[5px] h-[5px] bg-[#72FA32] rounded-full"
-                />
+                <div className="w-[5px] h-[5px] bg-[#72FA32] rounded-full" />
               );
             })}
           </div>
