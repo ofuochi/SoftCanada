@@ -22,4 +22,3 @@ export const ResumeTemplate: React.FC<Props> = ({ data }) => {
   };
   return templates[data.templateId];
 };
-

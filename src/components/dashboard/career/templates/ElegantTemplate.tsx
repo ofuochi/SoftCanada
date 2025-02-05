@@ -1,6 +1,12 @@
 import { ResumeType } from "@/app/types/career";
 import { Col, Divider, Row, Space, Typography } from "antd";
+<<<<<<< HEAD
+=======
 import dayjs from "dayjs";
+<<<<<<< HEAD
+>>>>>>> parent of a961d5b (code update)
+=======
+>>>>>>> parent of a961d5b (code update)
 import Link from "next/link";
 import React from "react";
 const { Title, Text } = Typography;
@@ -36,8 +42,17 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
                 </Text>
                 <br />
                 <Text type="secondary">
+<<<<<<< HEAD
+<<<<<<< HEAD
+                  {String(job.startDate)} - {String(job.endDate) || "Present"}
+=======
                   {dayjs(job.startDate).format("MMM YYYY")} -{" "}
                   {dayjs(job.endDate).format("MMM YYYY") || "Present"}
+>>>>>>> parent of a961d5b (code update)
+=======
+                  {dayjs(job.startDate).format("MMM YYYY")} -{" "}
+                  {dayjs(job.endDate).format("MMM YYYY") || "Present"}
+>>>>>>> parent of a961d5b (code update)
                 </Text>
                 <p className="mt-2">{job.summary}</p>
                 <ul className="list-disc list-inside">
@@ -56,7 +71,24 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
                   {edu.studyType} in {edu.area} ({edu.startDate.toString()} -{" "}
                   {edu.endDate?.toString() || "Present"})
                 </Text>
+<<<<<<< HEAD
+<<<<<<< HEAD
+                <br />
+                {edu?.score && (
+                  <Text
+                    className="!font-dm_sans text-base
+                  "
+                  >
+                    {" "}
+                    GPA: {edu.score}
+                  </Text>
+                )}
+=======
                 {edu.score && <Text> - GPA: {edu.score}</Text>}
+>>>>>>> parent of a961d5b (code update)
+=======
+                {edu.score && <Text> - GPA: {edu.score}</Text>}
+>>>>>>> parent of a961d5b (code update)
               </div>
             ))}
           </Space>

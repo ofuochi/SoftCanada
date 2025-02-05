@@ -37,7 +37,7 @@ export default function ResumesPage() {
 
   if (isLoading)
     return (
-      <div className="flex flex-wrap gap-6">
+      <div className="flex gap-6">
         <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
         <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
         <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
