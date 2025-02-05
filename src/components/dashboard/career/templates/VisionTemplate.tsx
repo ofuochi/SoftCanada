@@ -109,8 +109,7 @@ const VisionTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
                   <Text strong>{job.position}</Text> <Text>at {job.name}</Text>
                   <br />
                   <Text type="secondary">
-                    {dayjs(job.startDate).format("MMM YYYY")} -{" "}
-                    {dayjs(job.endDate).format("MMM YYYY") || "Present"}
+                    {String(job.startDate)} - {String(job.endDate) || "Present"}
                   </Text>
                   {job.url && (
                     <>
