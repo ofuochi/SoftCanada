@@ -1,36 +1,84 @@
 "use client";
 
+import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useDashboard } from "@/contexts/DashboardContext";
 import Logo from "@/components/Logo";
-import {ProfileAvatar} from "@/components/ProfileAvatar";
-import {ErrorProvider} from "@/contexts/ErrorContext";
+import {
+  Badge,
+  Breadcrumb,
+  Button,
+  Dropdown,
+  Layout,
+  Menu,
+  MenuProps,
+} from "antd";
+import { useState } from "react";
+import Link from "next/link";
 import {
   CalendarOutlined,
   HomeOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import {Breadcrumb, Button, Layout, Menu, MenuProps,} from "antd";
-import Link from "next/link";
-import {usePathname} from "next/navigation";
-import React, {useState} from "react";
-import {MdDashboard} from "react-icons/md";
-import {PiSuitcaseSimple} from "react-icons/pi";
-import {breadcrumbConfig} from "./BreadcrumbConfig";
-import {ResumeDownloadProvider} from "@/contexts/ResumeDownloadContext";
+import { PiSuitcaseSimple } from "react-icons/pi";
+import { MdDashboard } from "react-icons/md";
+import { usePathname, useRouter } from "next/navigation";
 
-const {Header, Footer, Sider, Content} = Layout;
+const { Sider } = Layout;
 
-export default function DashboardLayout({children}: React.PropsWithChildren) {
-  const [collapsed, setCollapsed] = useState(false);
+const advisors = [
+  {
+    id: 0,
+    advisorType: "Career",
+    title: " Want to Become a Career Advisor?",
+    content: "Share Your Expertise - Empower Careers!",
+    imgUrl: "/images/career-advisor/facetime.svg",
+  },
+  {
+    id: 1,
+    advisorType: "Real-Estate",
+    title: " Want to Become a Real-Estate Advisor?",
+    content: "Share Your Expertise - Empower Careers!",
+    imgUrl: "/images/career-advisor/facetime.svg",
+  },
+  {
+    id: 2,
+    advisorType: "Immigration",
+    title: " Want to Become a Immigration Advisor?",
+    content: "Share Your Expertise - Empower Careers!",
+    imgUrl: "/images/career-advisor/facetime.svg",
+  },
+  {
+    id: 3,
+    advisorType: "Financial",
+    title: " Want to Become a Financial Advisor?",
+    content: "Share Your Expertise - Empower Careers!",
+    imgUrl: "/images/career-advisor/facetime.svg",
+  },
+];
+
+type SideBarProps = {
+  collapsed: boolean;
+  setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
+  const router = useRouter();
   const pathname = usePathname();
+  const { setAdvisorType } = useDashboard();
+  const [advisorIndex, setAdvisorIndex] = useState(0);
 
-  const breadcrumbs = breadcrumbConfig[pathname] || [
-    {title: "Home", path: "/"},
-  ];
+  const handlePrevious = () => {
+    setAdvisorIndex((index) => Math.max(index - 1, 0));
+  };
 
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
+  const handleNext = () => {
+    setAdvisorIndex((index) => Math.min(index + 1, 3));
+  };
+
+  const handleGetStarted = (advisorType: string) => () => {
+    setAdvisorType(advisorType);
+    router.push("/dashboard/advisor-application");
   };
 
   const menuItems: MenuProps["items"] = [
@@ -246,17 +294,8 @@ export default function DashboardLayout({children}: React.PropsWithChildren) {
       ),
     },
   ];
-
-  // const notificationMenu: MenuProps = {
-  //   items: [
-  //     { key: "1", label: "Notification 1" },
-  //     { key: "2", label: "Notification 2" },
-  //     { key: "3", label: "Notification 3" },
-  //   ],
-  // };
-
   return (
-    <Layout style={{minHeight: "100vh"}}>
+    <>
       {/* Collapsible Sider */}
       <Sider
         collapsible
@@ -277,7 +316,7 @@ export default function DashboardLayout({children}: React.PropsWithChildren) {
         }}
       >
         <div className="h-16 m-4 text-center align-middle">
-          <Logo size={collapsed ? "small" : "medium"} path="/dashboard"/>
+          <Logo size={collapsed ? "small" : "medium"} path="/dashboard" />
         </div>
         <Menu
           mode="inline"
@@ -286,65 +325,81 @@ export default function DashboardLayout({children}: React.PropsWithChildren) {
           defaultOpenKeys={[pathname.split("/").slice(0, 3).join("/")]}
           className="space-y-5"
         />
-      </Sider>
-      <Layout
-        style={{
-          marginLeft: collapsed ? 80 : 250,
-          transition: "margin-left 0.2s ease",
-        }}
-      >
-        {/* Header */}
-        <Header
-          style={{
-            background: "#fff",
-            padding: "0 16px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-          }}
+        <section
+          className={`w-full max-w-[230px] h-[278px] ${
+            collapsed ? "opacity-0" : "opacity-100"
+          } border border-[#CBCBCB] !rounded-xl bg-[#F5F5F5] mt-10 px-4 ml-2.5`}
         >
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
-            onClick={toggleCollapsed}
-            style={{fontSize: "16px"}}
-          />
-          <div className="flex items-center gap-8">
-            {/* <Dropdown
-              menu={notificationMenu}
-              placement="bottomRight"
-              trigger={["click"]}
-              arrow
+          <div className="flex justify-between">
+            <div
+              className={`${
+                advisorIndex === 0 ? "bg-[#CBCBCB] p-2.5" : "bg-[#010309] p-3"
+              } h-fit flex justify-center items-center rounded-full mt-5 cursor-pointer`}
+              onMouseDown={handlePrevious}
             >
-              <Badge count={5}>
-                <BellOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
-              </Badge>
-            </Dropdown> */}
-            <ProfileAvatar/>
+              <ChevronLeft color="#ffffff" size={16} />
+            </div>
+
+            <div className="">
+              <Image
+                width={122}
+                height={122}
+                alt="facetime"
+                src={"/images/career-advisor/facetime.svg"}
+                className={""}
+              />
+            </div>
+
+            <div
+              className={`${
+                advisorIndex === 3 ? "bg-[#CBCBCB] p-2.5" : "bg-[#010309] p-3"
+              } flex h-fit justify-center items-center rounded-full mt-3.5 cursor-pointer`}
+              onMouseDown={handleNext}
+            >
+              <ChevronRight color="#ffffff" size={24} />
+            </div>
           </div>
-        </Header>
 
-        {/* Breadcrumb */}
-        <div className="px-5 lg:px-8 xl:px-10 2xl:px-12 mt-5">
-          <Breadcrumb items={breadcrumbs} className="!font-dm_sans"/>
-        </div>
+          <div className="flex items-center gap-[3px] w-fit mx-auto mt-2">
+            {advisors.map((advisor, index) => {
+              if (advisorIndex === advisor.id) {
+                return (
+                  <div className="w-[5px] h-[5px] bg-[#010309] rounded-full" />
+                );
+              }
+              return (
+                <div className="w-[5px] h-[5px] bg-[#72FA32] rounded-full" />
+              );
+            })}
+          </div>
 
-        {/* Content */}
-        <ErrorProvider>
-          <Content className="px-5 lg:px-8 xl:px-10 2xl:px-12 mt-5">
-            <ResumeDownloadProvider>
-              {children}
-            </ResumeDownloadProvider>
-          </Content>
-        </ErrorProvider>
-
-        {/* Footer */}
-        <Footer className="text-center font-dm_sans">
-          SoftCanada ©{new Date().getFullYear()} Created by Your Company
-        </Footer>
-      </Layout>
-    </Layout>
+          <section className="mt-2">
+            <div className={""}>
+              <div className="mt-2 flex flex-col gap-2.5">
+                <h4 className="font-lato font-semibold text-center text-base text-black">
+                  {advisors[advisorIndex].title}
+                </h4>
+                <span className="text-[11px] font-lato font-medium text-center text-[#4F4F4F]">
+                  {advisors[advisorIndex].content}
+                </span>
+              </div>
+              <div className="flex justify-center mt-2">
+                <Button
+                  onMouseDown={handleGetStarted(
+                    advisors[advisorIndex].advisorType
+                  )}
+                  className="bg-white w-full max-w-[166px] rounded-md !border !border-white !shadow-none py-2 px-2.5 min-h-[35px] text-[#010309] hover:!text-[#010309] !font-semibold text-[13px] font-poppins flex justify-center items-center"
+                >
+                  Get Started
+                </Button>
+              </div>
+            </div>
+          </section>
+        </section>
+      </Sider>
+    </>
   );
-}
+};
+
+export default SideBar;
 
