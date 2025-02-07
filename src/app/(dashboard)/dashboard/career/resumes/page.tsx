@@ -1,31 +1,23 @@
 ﻿"use client";
 
-import { ResumeType } from "@/app/types/career";
+import {ResumeType} from "@/app/types/career";
 import ResumeBuilder from "@/components/dashboard/career/cv-builder/ResumeBuilder";
-import { ResumeTemplate } from "@/components/dashboard/career/cv-builder/ResumeTemplate";
+import {ResumeTemplate} from "@/components/dashboard/career/cv-builder/ResumeTemplate";
 import SelectResumeTemplateModal from "@/components/dashboard/career/cv-builder/SelectResumeTemplateModal";
-import {
-  emptyResumeData,
-  sampleResumeDataMin,
-} from "@/constants/sample-resume-data";
-import { ResumeProvider } from "@/contexts/ResumeContext";
-import { useApiClient } from "@/hooks/api-hook";
-import {
-  DeleteOutlined,
-  DownloadOutlined,
-  EditOutlined,
-  PlusOutlined,
-} from "@ant-design/icons";
-import { Button, Card, Flex, Popconfirm, Result, Skeleton } from "antd";
-import { useState } from "react";
+import {emptyResumeData, sampleResumeDataMin,} from "@/constants/sample-resume-data";
+import {ResumeProvider} from "@/contexts/ResumeContext";
+import {useApiClient} from "@/hooks/api-hook";
+import {DeleteOutlined, EditOutlined, PlusOutlined,} from "@ant-design/icons";
+import {Button, Card, Flex, Popconfirm, Result, Skeleton} from "antd";
+import {useState} from "react";
 import useSWR from "swr";
 
 export default function ResumesPage() {
   const [open, setOpen] = useState(false);
   const [showCvBuilder, setShowCvBuilder] = useState(false);
   const [resumeData, setResumeData] = useState<ResumeType>(emptyResumeData);
-  const { get, del } = useApiClient();
-  const { data, error, isLoading, mutate } = useSWR<ResumeType[]>(
+  const {get, del} = useApiClient();
+  const {data, error, isLoading, mutate} = useSWR<ResumeType[]>(
     `/api/resumes`,
     get,
     {
@@ -38,9 +30,9 @@ export default function ResumesPage() {
   if (isLoading)
     return (
       <div className="flex gap-6">
-        <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
-        <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
-        <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
+        <Skeleton.Node style={{width: "288px", height: "392px"}} active/>
+        <Skeleton.Node style={{width: "288px", height: "392px"}} active/>
+        <Skeleton.Node style={{width: "288px", height: "392px"}} active/>
       </div>
     );
   if (error && error.status >= 500) {
@@ -76,7 +68,7 @@ export default function ResumesPage() {
     <>
       {showCvBuilder ? (
         <ResumeProvider initialData={resumeData}>
-          <ResumeBuilder setShowCvBuilder={setShowCvBuilder} />
+          <ResumeBuilder setShowCvBuilder={setShowCvBuilder}/>
         </ResumeProvider>
       ) : (
         <Flex wrap gap="large" className="">
@@ -84,9 +76,9 @@ export default function ResumesPage() {
             <Button
               type="dashed"
               block
-              icon={<PlusOutlined />}
+              icon={<PlusOutlined/>}
               size="large"
-              style={{ height: "100%", background: "#f0f0f0" }}
+              style={{height: "100%", background: "#f0f0f0"}}
               onClick={() =>
                 data && data.length > 0
                   ? setOpen(true)
@@ -98,61 +90,59 @@ export default function ResumesPage() {
             </Button>
           </div>
           {data && data.length > 0
-            ? data.map((resume, i) => (
-                <Card
-                  bordered={false}
-                  size="small"
-                  key={resume.id}
-                  className="w-72"
-                  actions={[
-                    <EditOutlined
-                      key="edit"
-                      onClick={() => handleResumeEditClick(resume)}
-                    />,
-                    <Popconfirm
-                      key={resume.id}
-                      title="Delete the resume"
-                      description="Are you sure you want to delete this resume?"
-                      onConfirm={() => handleDeleteResume(resume.id!)}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <DeleteOutlined key="delete" />
-                    </Popconfirm>,
-
-                    <DownloadOutlined key={"download"} />,
-                  ]}
-                >
-                  <div className="overflow-hidden h-80 pointer-events-none">
-                    <div className="miniature-wrapper">
-                      <ResumeTemplate data={resume} />
-                    </div>
+            ? data.map((resume) => (
+              <Card
+                bordered={false}
+                size="small"
+                key={resume.id}
+                className="w-72"
+                actions={[
+                  <EditOutlined
+                    key="edit"
+                    onClick={() => handleResumeEditClick(resume)}
+                  />,
+                  <Popconfirm
+                    key={resume.id}
+                    title="Delete the resume"
+                    description="Are you sure you want to delete this resume?"
+                    onConfirm={() => handleDeleteResume(resume.id!)}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <DeleteOutlined key="delete"/>
+                  </Popconfirm>,
+                ]}
+              >
+                <div className="overflow-hidden h-80 pointer-events-none">
+                  <div className="miniature-wrapper">
+                    <ResumeTemplate data={resume}/>
                   </div>
-                </Card>
-              ))
-            : Array.from({ length: 5 }, (_, i) => (
-                <Card
-                  bordered={false}
-                  size="small"
-                  key={i}
-                  className="w-72"
-                  hoverable
-                  onClick={() =>
-                    handleResumeEditClick({
-                      ...emptyResumeData,
-                      templateId: i,
-                    })
-                  }
-                >
-                  <div className="overflow-hidden h-80 pointer-events-none">
-                    <div className="miniature-wrapper">
-                      <ResumeTemplate
-                        data={{ ...sampleResumeDataMin, templateId: i }}
-                      />
-                    </div>
+                </div>
+              </Card>
+            ))
+            : Array.from({length: 5}, (_, i) => (
+              <Card
+                bordered={false}
+                size="small"
+                key={i}
+                className="w-72"
+                hoverable
+                onClick={() =>
+                  handleResumeEditClick({
+                    ...emptyResumeData,
+                    templateId: i,
+                  })
+                }
+              >
+                <div className="overflow-hidden h-80 pointer-events-none">
+                  <div className="miniature-wrapper">
+                    <ResumeTemplate
+                      data={{...sampleResumeDataMin, templateId: i}}
+                    />
                   </div>
-                </Card>
-              ))}
+                </div>
+              </Card>
+            ))}
         </Flex>
       )}
       <SelectResumeTemplateModal
