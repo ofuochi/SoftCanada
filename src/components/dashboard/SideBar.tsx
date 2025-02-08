@@ -4,15 +4,7 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useDashboard } from "@/contexts/DashboardContext";
 import Logo from "@/components/Logo";
-import {
-  Badge,
-  Breadcrumb,
-  Button,
-  Dropdown,
-  Layout,
-  Menu,
-  MenuProps,
-} from "antd";
+import { Button, Layout, Menu, MenuProps } from "antd";
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -361,14 +353,20 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
           </div>
 
           <div className="flex items-center gap-[3px] w-fit mx-auto mt-2">
-            {advisors.map((advisor, index) => {
+            {advisors.map((advisor) => {
               if (advisorIndex === advisor.id) {
                 return (
-                  <div className="w-[5px] h-[5px] bg-[#010309] rounded-full" />
+                  <div
+                    key={advisor.id}
+                    className="w-[5px] h-[5px] bg-[#010309] rounded-full"
+                  />
                 );
               }
               return (
-                <div className="w-[5px] h-[5px] bg-[#72FA32] rounded-full" />
+                <div
+                  key={advisor.id}
+                  className="w-[5px] h-[5px] bg-[#72FA32] rounded-full"
+                />
               );
             })}
           </div>

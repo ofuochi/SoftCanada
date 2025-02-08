@@ -465,6 +465,7 @@ const ModernTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           </ul>
         </section>
       )}
+
       {/* INTERESTS SECTION */}
       {interests && interests.length > 0 && (
         <section className="mt-10">
@@ -488,6 +489,7 @@ const ModernTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           </ul>
         </section>
       )}
+      
       {/* REFERENCES SECTION */}
       {references && references.length > 0 && (
         <section className="mt-8">
