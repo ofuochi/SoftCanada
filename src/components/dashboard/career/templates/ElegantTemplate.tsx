@@ -269,13 +269,14 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             </ul>
           </section>
         )}
+
         {/* REFERENCES */}
         {data.references && data.references.length > 0 && (
           <section>
             <div>
               <div className="h-0.5 w-full border-b-2 border-b-black" />
               <h3 className="text-2xl text-black font-medium font-dm_sans my-1 text-center">
-                Interests
+                References
               </h3>
               <div className="h-0.5 w-full border-b-2 border-b-black" />
             </div>
