@@ -156,7 +156,7 @@ export default function Navbar() {
       key: "cv-builder",
       label: (
         <Link
-          href="/dashboard/career/cv-builder"
+          href="/dashboard/career/resumes"
           className={`font-dm_sans ${
             isNavbarDark ? "text-black md:!text-white" : "!text-black"
           }`}
