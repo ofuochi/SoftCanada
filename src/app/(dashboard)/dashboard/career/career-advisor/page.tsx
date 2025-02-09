@@ -14,6 +14,7 @@ const { Meta } = Card;
 export default function CareerAdvisorPage() {
   const [showMeetingScheduleModal, setShowMeetingScheduleModal] =
     useState(false);
+  const [selectedAdvisor, setSelectedAdvisor] = useState<Advisor>();
   const { get } = useApiClient();
   const {
     data: careerAdvisors,
@@ -32,6 +33,11 @@ export default function CareerAdvisorPage() {
       "Meeting scheduled successfully. You will receive an email confirmation."
     );
     setShowMeetingScheduleModal(false);
+  };
+
+  const handleBookSessionClicked = (advisor: Advisor) => {
+    setSelectedAdvisor(advisor);
+    setShowMeetingScheduleModal(true);
   };
 
   const tabItems: TabsProps["items"] = [
@@ -91,8 +97,7 @@ export default function CareerAdvisorPage() {
                   variant="filled"
                   block
                   size="large"
-                  className="bg-black text-white hover:bg-gray-800 transition"
-                  onClick={() => setShowMeetingScheduleModal(true)}
+                  onClick={() => handleBookSessionClicked(advisor)}
                 >
                   Book Session <ArrowRightOutlined />
                 </Button>
@@ -126,11 +131,14 @@ export default function CareerAdvisorPage() {
         <Tabs defaultActiveKey="1" items={tabItems} />
       </div>
 
-      <ScheduleMeetingModal
-        open={showMeetingScheduleModal}
-        onCancel={() => setShowMeetingScheduleModal(false)}
-        onSave={confirmMeetingSchedule}
-      />
+      {selectedAdvisor && (
+        <ScheduleMeetingModal
+          open={showMeetingScheduleModal}
+          advisor={selectedAdvisor}
+          onCancel={() => setShowMeetingScheduleModal(false)}
+          onSave={confirmMeetingSchedule}
+        />
+      )}
 
       {contextHolder}
     </>

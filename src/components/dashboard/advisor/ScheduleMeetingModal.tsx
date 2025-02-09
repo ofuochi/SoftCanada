@@ -1,3 +1,4 @@
+import { Advisor } from "@/app/types/advisor";
 import {
   Button,
   Calendar,
@@ -18,6 +19,7 @@ const { Option } = Select;
 
 interface RescheduleMeetingModalProps {
   open: boolean;
+  advisor: Advisor;
   onCancel: () => void;
   onSave: (date: Dayjs, time: string, timezone: string) => void;
 }
@@ -36,6 +38,7 @@ const timeSlots = [
 export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
   open,
   onCancel,
+  advisor,
   onSave,
 }) => {
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs("2024-12-20"));
@@ -53,7 +56,7 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
       open={open}
       title={
         <>
-          <Title level={3}>Schedule Meeting</Title>
+          <Title level={3}>Book session with {advisor.name}</Title>
           <Divider />
         </>
       }
