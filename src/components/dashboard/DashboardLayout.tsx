@@ -1,8 +1,8 @@
 "use client";
 
 import Logo from "@/components/Logo";
-import {ProfileAvatar} from "@/components/ProfileAvatar";
-import {ErrorProvider} from "@/contexts/ErrorContext";
+import { ProfileAvatar } from "@/components/ProfileAvatar";
+import { ErrorProvider } from "@/contexts/ErrorContext";
 import {
   CalendarOutlined,
   HomeOutlined,
@@ -10,23 +10,26 @@ import {
   MenuUnfoldOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import {Breadcrumb, Button, Layout, Menu, MenuProps,} from "antd";
+import { Breadcrumb, Button, Layout, Menu, MenuProps } from "antd";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
-import React, {useState} from "react";
-import {MdDashboard} from "react-icons/md";
-import {PiSuitcaseSimple} from "react-icons/pi";
-import {breadcrumbConfig} from "./BreadcrumbConfig";
-import {ResumeDownloadProvider} from "@/contexts/ResumeDownloadContext";
+import { usePathname } from "next/navigation";
+import React, { useState } from "react";
+import { MdDashboard } from "react-icons/md";
+import { PiSuitcaseSimple } from "react-icons/pi";
+import { breadcrumbConfig } from "./BreadcrumbConfig";
+import { ResumeDownloadProvider } from "@/contexts/ResumeDownloadContext";
+import { SWRConfig } from "swr";
+import { useApiClient } from "@/hooks/api-hook";
 
-const {Header, Footer, Sider, Content} = Layout;
+const { Header, Footer, Sider, Content } = Layout;
 
-export default function DashboardLayout({children}: React.PropsWithChildren) {
+export default function DashboardLayout({ children }: React.PropsWithChildren) {
   const [collapsed, setCollapsed] = useState(false);
+
   const pathname = usePathname();
 
   const breadcrumbs = breadcrumbConfig[pathname] || [
-    {title: "Home", path: "/"},
+    { title: "Home", path: "/" },
   ];
 
   const toggleCollapsed = () => {
@@ -256,7 +259,7 @@ export default function DashboardLayout({children}: React.PropsWithChildren) {
   // };
 
   return (
-    <Layout style={{minHeight: "100vh"}}>
+    <Layout style={{ minHeight: "100vh" }}>
       {/* Collapsible Sider */}
       <Sider
         collapsible
@@ -277,7 +280,7 @@ export default function DashboardLayout({children}: React.PropsWithChildren) {
         }}
       >
         <div className="h-16 m-4 text-center align-middle">
-          <Logo size={collapsed ? "small" : "medium"} path="/dashboard"/>
+          <Logo size={collapsed ? "small" : "medium"} path="/dashboard" />
         </div>
         <Menu
           mode="inline"
@@ -306,9 +309,9 @@ export default function DashboardLayout({children}: React.PropsWithChildren) {
         >
           <Button
             type="text"
-            icon={collapsed ? <MenuUnfoldOutlined/> : <MenuFoldOutlined/>}
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={toggleCollapsed}
-            style={{fontSize: "16px"}}
+            style={{ fontSize: "16px" }}
           />
           <div className="flex items-center gap-8">
             {/* <Dropdown
@@ -321,20 +324,29 @@ export default function DashboardLayout({children}: React.PropsWithChildren) {
                 <BellOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
               </Badge>
             </Dropdown> */}
-            <ProfileAvatar/>
+            <ProfileAvatar />
           </div>
         </Header>
 
         {/* Breadcrumb */}
         <div className="px-5 lg:px-8 xl:px-10 2xl:px-12 mt-5">
-          <Breadcrumb items={breadcrumbs} className="!font-dm_sans"/>
+          <Breadcrumb items={breadcrumbs} className="!font-dm_sans" />
         </div>
 
         {/* Content */}
         <ErrorProvider>
           <Content className="px-5 lg:px-8 xl:px-10 2xl:px-12 mt-5">
             <ResumeDownloadProvider>
-              {children}
+              <SWRConfig
+                value={{
+                  shouldRetryOnError: false,
+                  dedupingInterval: Infinity,
+                  revalidateOnFocus: false,
+                  revalidateOnReconnect: false,
+                }}
+              >
+                {children}
+              </SWRConfig>
             </ResumeDownloadProvider>
           </Content>
         </ErrorProvider>
@@ -347,4 +359,3 @@ export default function DashboardLayout({children}: React.PropsWithChildren) {
     </Layout>
   );
 }
-
