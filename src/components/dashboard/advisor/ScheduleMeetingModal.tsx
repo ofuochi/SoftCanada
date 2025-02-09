@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  Row,
-  Col,
-  Typography,
-  Select,
-  Calendar,
-  Button,
-  Card,
-  Flex,
-} from "antd";
+import { Modal, Typography, Select, Calendar, Button, Flex } from "antd";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 
@@ -22,7 +12,6 @@ interface RescheduleMeetingModalProps {
   onSave: (date: Dayjs, time: string, timezone: string) => void;
 }
 
-/** Sample list of times for demonstration. */
 const timeSlots = [
   "9:00 AM",
   "10:00 AM",
@@ -39,141 +28,121 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
   onCancel,
   onSave,
 }) => {
-  // Default date is set to December 20, 2024, just as in your screenshot
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs("2024-12-20"));
   const [selectedTime, setSelectedTime] = useState<string>("12:00 PM");
   const [timezone, setTimezone] = useState<string>("Africa/Lagos (UTC +01:00)");
 
-  const handleDateSelect = (date: Dayjs) => {
-    setSelectedDate(date);
-  };
+  const handleDateSelect = (date: Dayjs) => setSelectedDate(date);
+  const handleTimeSelect = (time: string) => setSelectedTime(time);
+  const handleTimezoneChange = (value: string) => setTimezone(value);
 
-  const handleTimeSelect = (time: string) => {
-    setSelectedTime(time);
-  };
-
-  const handleTimezoneChange = (value: string) => {
-    setTimezone(value);
-  };
-
-  const handleSave = () => {
-    onSave(selectedDate, selectedTime, timezone);
-  };
+  const handleSave = () => onSave(selectedDate, selectedTime, timezone);
 
   return (
     <Modal
       open={open}
-      title="Reschedule Meeting"
+      title="Book a Meeting"
       onCancel={onCancel}
       footer={null}
-      width={900} // Adjust width to your liking
+      width={900}
     >
-      <Row gutter={24}>
-        {/* LEFT COLUMN: Meeting details */}
-        <Col xs={24} md={8}>
-          <Card bordered={false} style={{ background: "transparent" }}>
-            <Title level={4} style={{ marginBottom: 16 }}>
-              Reschedule Meeting
-            </Title>
-            <Text strong style={{ display: "block" }}>
-              Expertise:
-            </Text>
-            <Text>
-              Resume writing, Career trajectory, Interview preparation
-            </Text>
+      <div className="flex flex-col md:flex-row gap-6">
+        {/* Left Column (35%) */}
+        <div className="w-full md:w-[35%] border-b md:border-r md:border-b-0 pr-6 pb-6 md:pb-0">
+          <Title level={4} className="mb-4">
+            Reschedule Meeting
+          </Title>
+          <Text strong className="block">
+            Expertise:
+          </Text>
+          <Text>Resume writing, Career trajectory, Interview preparation</Text>
 
-            <br />
-            <br />
-
-            <Text strong style={{ display: "block" }}>
+          <div className="mt-6">
+            <Text strong className="block">
               Duration:
             </Text>
             <Text>30 mins</Text>
+          </div>
 
-            <br />
-            <br />
-
-            <Text strong style={{ display: "block" }}>
+          <div className="mt-6">
+            <Text strong className="block">
               Language:
             </Text>
             <Text>English only</Text>
+          </div>
 
-            <br />
-            <br />
-
-            <Text strong style={{ display: "block" }}>
+          <div className="mt-6">
+            <Text strong className="block">
               Venue:
             </Text>
             <Text>Google Meet</Text>
-
-            <br />
-            <br />
-
-            <Text type="secondary">
-              Note: The advisor will be notified of this change.
-            </Text>
-          </Card>
-        </Col>
-
-        {/* MIDDLE COLUMN: Calendar + timezone */}
-        <Col xs={24} md={8}>
-          <div style={{ marginBottom: 8 }}>
-            <Text strong>Select a new date &amp; time</Text>
           </div>
 
-          <Select
-            style={{ width: "100%", marginBottom: 16 }}
-            value={timezone}
-            onChange={handleTimezoneChange}
-          >
-            <Option value="Africa/Lagos (UTC +01:00)">
-              Africa/Lagos (UTC +01:00)
-            </Option>
-            <Option value="America/New_York (UTC -05:00)">
-              America/New_York (UTC -05:00)
-            </Option>
-            <Option value="Europe/London (UTC +00:00)">
-              Europe/London (UTC +00:00)
-            </Option>
-            {/* Add more timezones as needed */}
-          </Select>
-
-          {/* A small Calendar in “card” mode (fullscreen = false) */}
-          <Calendar
-            fullscreen={false}
-            value={selectedDate}
-            onSelect={handleDateSelect}
-          />
-        </Col>
-
-        {/* RIGHT COLUMN: Time slots */}
-        <Col xs={24} md={8}>
-          <Text strong style={{ display: "block", marginBottom: 8 }}>
-            {selectedDate.format("dddd, MMMM D")}
+          <Text type="secondary" className="block mt-6">
+            Note: The advisor will be notified of this change.
           </Text>
-          <Flex vertical gap="small" style={{ width: "100%" }}>
-            {timeSlots.map((time) => (
-              <Button
-                key={time}
-                block
-                type={time === selectedTime ? "primary" : "default"}
-                onClick={() => handleTimeSelect(time)}
-              >
-                {time}
-              </Button>
-            ))}
-          </Flex>
-        </Col>
-      </Row>
+        </div>
 
-      {/* Modal Footer */}
-      <div style={{ textAlign: "right", marginTop: 24 }}>
-        <Button style={{ marginRight: 8 }} onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button type="primary" onClick={handleSave}>
-          Save Changes
-        </Button>
+        {/* Right Column (65%) */}
+        <div className="w-full md:w-[65%]">
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Calendar Section */}
+            <div className="flex-1 min-w-[280px]">
+              <Text strong className="block mb-4">
+                Select a new date &amp; time
+              </Text>
+              <Select
+                className="w-full mb-4"
+                value={timezone}
+                onChange={handleTimezoneChange}
+              >
+                <Option value="Africa/Lagos (UTC +01:00)">
+                  Africa/Lagos (UTC +01:00)
+                </Option>
+                <Option value="America/New_York (UTC -05:00)">
+                  America/New York (UTC -05:00)
+                </Option>
+                <Option value="Europe/London (UTC +00:00)">
+                  Europe/London (UTC +00:00)
+                </Option>
+              </Select>
+
+              <Calendar
+                fullscreen={false}
+                value={selectedDate}
+                onSelect={handleDateSelect}
+                className="ant-picker-calendar-mini w-full"
+              />
+              <div className="mt-6 space-y-4">
+                <Button size="large" block type="primary" onClick={handleSave}>
+                  Save Changes
+                </Button>
+                <Button size="large" block className="mr-4" onClick={onCancel}>
+                  Cancel
+                </Button>
+              </div>
+            </div>
+
+            {/* Time Slots Section */}
+            <div className="md:w-[200px] flex-shrink-0">
+              <Text strong className="block mb-4">
+                {selectedDate.format("dddd, MMMM D")}
+              </Text>
+              <Flex vertical gap="small" className="w-full">
+                {timeSlots.map((time) => (
+                  <Button
+                    key={time}
+                    block
+                    type={time === selectedTime ? "primary" : "default"}
+                    onClick={() => handleTimeSelect(time)}
+                  >
+                    {time}
+                  </Button>
+                ))}
+              </Flex>
+            </div>
+          </div>
+        </div>
       </div>
     </Modal>
   );
