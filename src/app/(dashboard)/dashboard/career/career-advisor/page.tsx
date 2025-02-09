@@ -4,7 +4,7 @@ import { Advisor } from "@/app/types/advisor";
 import { ScheduleMeetingModal } from "@/components/dashboard/advisor/ScheduleMeetingModal";
 import { useApiClient } from "@/hooks/api-hook";
 import { ArrowRightOutlined, StarFilled } from "@ant-design/icons";
-import { Button, Card, Image, message, Tabs, TabsProps } from "antd";
+import { Button, Card, Image, message, Segmented, Tabs, TabsProps } from "antd";
 import type { Dayjs } from "dayjs";
 import { useState } from "react";
 import { HiMiniUsers } from "react-icons/hi2";
@@ -44,8 +44,8 @@ export default function CareerAdvisorPage() {
           {careerAdvisors?.map((advisor) => (
             <Card
               key={advisor.id}
-              hoverable
-              className="max-w-sm mx-auto shadow-lg rounded-2xl overflow-hidden"
+              hoverable={false}
+              className="max-w-sm mx-auto"
               cover={
                 <div className="w-full h-56 flex items-center justify-center bg-gray-100 rounded-t-lg">
                   <Image
@@ -119,6 +119,10 @@ export default function CareerAdvisorPage() {
   return (
     <>
       <div className="p-6 bg-white min-h-[360px]">
+        <Segmented
+          style={{ marginBottom: 8 }}
+          options={["Advisors", "Upcoming Meetings", "Past Meetings"]}
+        />
         <Tabs defaultActiveKey="1" items={tabItems} />
       </div>
 
