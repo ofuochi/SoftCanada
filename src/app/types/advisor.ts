@@ -1,12 +1,20 @@
+export interface PaginatedList {
+  totalRecords: number
+  pageNumber: number
+  pageSize: number
+  totalPages: number
+  careerAdvisors: Advisor[]
+}
+
 export interface Advisor {
   id: string
   name: string
   email: string
   rating: number
-  profilePictureUrl: string
+  profilePictureName: any
   expertise: Expertise[]
   availabilities: Availability[]
-  bookings: Booking[]
+  bookings: any
 }
 
 export interface Expertise {
@@ -28,15 +36,4 @@ export interface TimeSlot {
   id: string
   time: string
   status: string
-}
-
-export interface Booking {
-  id: string
-  clientEmail: string
-  advisorId: string
-  advisorName: any
-  date: string
-  availabilityId: any
-  timeSlotId: any
-  notes: string
 }

@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { Advisor } from "@/app/types/advisor";
+import { Advisor, PaginatedList } from "@/app/types/advisor";
 import { ScheduleMeetingModal } from "@/components/dashboard/advisor/ScheduleMeetingModal";
 import { useApiClient } from "@/hooks/api-hook";
 import { ArrowRightOutlined, StarFilled } from "@ant-design/icons";
@@ -16,11 +16,10 @@ export default function CareerAdvisorPage() {
     useState(false);
   const [selectedAdvisor, setSelectedAdvisor] = useState<Advisor>();
   const { get } = useApiClient();
-  const {
-    data: careerAdvisors,
-    error,
-    isLoading,
-  } = useSWR<Advisor[]>("/api/career-advisors", { fetcher: get });
+  const { data, error, isLoading } = useSWR<PaginatedList>(
+    "/api/career-advisors",
+    { fetcher: get }
+  );
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -47,7 +46,7 @@ export default function CareerAdvisorPage() {
       icon: <HiMiniUsers size={20} className="-mb-5" />,
       children: (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-          {careerAdvisors?.map((advisor) => (
+          {data?.careerAdvisors?.map((advisor) => (
             <Card
               key={advisor.id}
               hoverable={false}
@@ -56,7 +55,7 @@ export default function CareerAdvisorPage() {
                 <div className="w-full h-56 flex items-center justify-center bg-gray-100 rounded-t-lg">
                   <Image
                     alt={advisor.name}
-                    src={advisor.profilePictureUrl}
+                    src={advisor.profilePictureName}
                     className="w-full h-full object-contain"
                   />
                 </div>
