@@ -1,7 +1,16 @@
 import { ResumeType } from "@/app/types/career";
-import { Col, Divider, Row, Space, Typography } from "antd";
+import { Col, Divider, message, Row, Space, Typography } from "antd";
 import dayjs from "dayjs";
-import { Mail, MapPin, Phone, Link as LucideLink, Globe } from "lucide-react";
+import {
+  Mail,
+  MapPin,
+  Phone,
+  Link as LucideLink,
+  Globe,
+  PlusIcon,
+  X,
+  CircleUser,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -11,12 +20,14 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   const { basics, work, education, skills, languages, interests, references } =
     data;
 
+  console.log(basics);
+
   return (
     <section className="bg-white text-gray-900 p-5 min-h-[1123px] !font-dm_sans">
-      {basics?.image && (
+      {basics?.imageFile?.base64Url && (
         <div className="flex justify-center">
           <Image
-            src={basics.image}
+            src={basics.imageFile.base64Url}
             width={80}
             height={80}
             className="rounded-full h-[80px] w-[80px]"
@@ -24,6 +35,7 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
           />
         </div>
       )}
+
       <section className="bg-white p-4 mb-6">
         {basics?.url && (
           <span className="flex justify-center sm:items-center gap-1">
