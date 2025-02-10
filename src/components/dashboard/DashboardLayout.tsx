@@ -14,6 +14,7 @@ const { Header, Footer, Content } = Layout;
 
 export default function DashboardLayout({ children }: React.PropsWithChildren) {
   const [collapsed, setCollapsed] = useState(false);
+
   const pathname = usePathname();
 
   const breadcrumbs = breadcrumbConfig[pathname] || [

@@ -1,13 +1,25 @@
-import React, { useState } from "react";
-import { Modal, Typography, Select, Calendar, Button, Flex } from "antd";
+import { Advisor } from "@/app/types/advisor";
+import {
+  Button,
+  Calendar,
+  Divider,
+  Flex,
+  Modal,
+  Select,
+  Space,
+  Typography,
+} from "antd";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-
+import React, { useState } from "react";
+import { CiClock2 } from "react-icons/ci";
+import { FaRegClock } from "react-icons/fa";
 const { Title, Text } = Typography;
 const { Option } = Select;
 
 interface RescheduleMeetingModalProps {
   open: boolean;
+  advisor: Advisor;
   onCancel: () => void;
   onSave: (date: Dayjs, time: string, timezone: string) => void;
 }
@@ -26,6 +38,7 @@ const timeSlots = [
 export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
   open,
   onCancel,
+  advisor,
   onSave,
 }) => {
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs("2024-12-20"));
@@ -41,19 +54,24 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
   return (
     <Modal
       open={open}
-      title="Book a Meeting"
+      title={
+        <>
+          <Title level={3}>Book session with {advisor.name}</Title>
+          <Divider />
+        </>
+      }
       onCancel={onCancel}
       footer={null}
       width={900}
     >
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col md:flex-row gap-6 mt-5 p-5">
         {/* Left Column (35%) */}
         <div className="w-full md:w-[35%] border-b md:border-r md:border-b-0 pr-6 pb-6 md:pb-0">
-          <Title level={4} className="mb-4">
+          {/* <Title level={4} className="mb-4">
             Reschedule Meeting
-          </Title>
+          </Title> */}
           <Text strong className="block">
-            Expertise:
+            Advisor's Expertise:
           </Text>
           <Text>Resume writing, Career trajectory, Interview preparation</Text>
 
@@ -61,7 +79,11 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
             <Text strong className="block">
               Duration:
             </Text>
-            <Text>30 mins</Text>
+            <Text>
+              <Space>
+                <FaRegClock /> 30 mins
+              </Space>
+            </Text>
           </div>
 
           <div className="mt-6">
@@ -78,8 +100,8 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
             <Text>Google Meet</Text>
           </div>
 
-          <Text type="secondary" className="block mt-6">
-            Note: The advisor will be notified of this change.
+          <Text type="secondary" className="block mt-6 text-pretty">
+            Note: The advisor will be notified fo this meeting schedule.
           </Text>
         </div>
 

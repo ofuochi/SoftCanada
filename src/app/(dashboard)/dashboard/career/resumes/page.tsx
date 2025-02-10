@@ -22,12 +22,7 @@ export default function ResumesPage() {
   const { get, del } = useApiClient();
   const { data, error, isLoading, mutate } = useSWR<ResumeType[]>(
     `/api/resumes`,
-    get,
-    {
-      shouldRetryOnError: false,
-      refreshInterval: 30000,
-      dedupingInterval: 60000,
-    }
+    { fetcher: get }
   );
 
   if (isLoading)
@@ -74,7 +69,7 @@ export default function ResumesPage() {
           <ResumeBuilder setShowCvBuilder={setShowCvBuilder} />
         </ResumeProvider>
       ) : (
-        <Flex wrap gap="large" className="">
+        <Flex wrap gap="large">
           <div className="w-72">
             <Button
               type="dashed"
@@ -156,4 +151,3 @@ export default function ResumesPage() {
     </>
   );
 }
-
