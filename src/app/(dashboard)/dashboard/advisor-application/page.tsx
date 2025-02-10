@@ -13,7 +13,7 @@ type CareerAdvisorApplicationInfo = {
   expertise?: string;
   experience?: string;
   qualtifications?: string;
-  availability?: string;
+  // availability?: string;
   motivationStatement?: string;
 };
 
@@ -21,19 +21,19 @@ export default function AdvisorApplicationPage() {
   const { advisorType } = useDashboard();
   const [form] = Form.useForm<CareerAdvisorApplicationInfo>();
 
-  const availabilityTime = [
-    "05:00 PM",
-    "11:00 AM",
-    "12:00 PM",
-    "9:00 AM",
-    "02:00 AM",
-  ];
+  // const availabilityTime = [
+  //   "05:00 PM",
+  //   "11:00 AM",
+  //   "12:00 PM",
+  //   "9:00 AM",
+  //   "02:00 AM",
+  // ];
 
-  const handleAvailabitityClick = (time: string) => () => {
-    const currentAvailability = form.getFieldValue("availability") || [];
-    const newAvailability = [...new Set([...currentAvailability, time])];
-    form.setFieldValue("availability", newAvailability);
-  };
+  // const handleAvailabitityClick = (time: string) => () => {
+  //   const currentAvailability = form.getFieldValue("availability") || [];
+  //   const newAvailability = [...new Set([...currentAvailability, time])];
+  //   form.setFieldValue("availability", newAvailability);
+  // };
 
   return (
     <section className="w-full bg-white pb-[30px] px-5 rounded-xl">
@@ -198,7 +198,7 @@ export default function AdvisorApplicationPage() {
 
           <div className="flex flex-col flex-1 gap-6 w-full xl:max-w-[500px]">
             {/* Availability */}
-            <div className="flex flex-col gap-5">
+            {/* <div className="flex flex-col gap-5">
               <h6 className="font-medium text-black text-xl">Availability</h6>
               <div className="flex flex-col gap-4">
                 <Form.Item<CareerAdvisorApplicationInfo>
@@ -240,7 +240,7 @@ export default function AdvisorApplicationPage() {
                   ))}
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Motivation Statement */}
             <div className="flex flex-col gap-5">
