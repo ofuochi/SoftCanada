@@ -56,7 +56,7 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
       open={open}
       title={
         <>
-          <Title level={3}>Book session with {advisor.name}</Title>
+          <Title level={3}>Book a session with {advisor.name}</Title>
           <Divider />
         </>
       }
@@ -65,11 +65,7 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
       width={900}
     >
       <div className="flex flex-col md:flex-row gap-6 mt-5 p-5">
-        {/* Left Column (35%) */}
         <div className="w-full md:w-[35%] border-b md:border-r md:border-b-0 pr-6 pb-6 md:pb-0">
-          {/* <Title level={4} className="mb-4">
-            Reschedule Meeting
-          </Title> */}
           <Text strong className="block">
             Advisor's Expertise:
           </Text>

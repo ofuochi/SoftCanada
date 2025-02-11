@@ -4,14 +4,32 @@ import { Advisor } from "@/app/types/advisor";
 import { PaginatedList } from "@/app/types/paginatedResponse";
 import { ScheduleMeetingModal } from "@/components/dashboard/advisor/ScheduleMeetingModal";
 import { useApiClient } from "@/hooks/api-hook";
-import { ArrowRightOutlined, StarFilled } from "@ant-design/icons";
-import { Button, Card, Image, message, Tabs, TabsProps } from "antd";
+import {
+  ArrowRightOutlined,
+  LikeOutlined,
+  StarFilled,
+} from "@ant-design/icons";
+import {
+  Button,
+  Card,
+  Descriptions,
+  Image,
+  message,
+  Space,
+  Statistic,
+  Tabs,
+  TabsProps,
+  Tag,
+} from "antd";
 import type { Dayjs } from "dayjs";
 import { useState } from "react";
 import { HiMiniUsers } from "react-icons/hi2";
 import { LuCalendarClock, LuCalendarDays } from "react-icons/lu";
+import { PiSuitcaseSimpleFill } from "react-icons/pi";
 import useSWR from "swr";
+
 const { Meta } = Card;
+
 export default function CareerAdvisorPage() {
   const [showMeetingScheduleModal, setShowMeetingScheduleModal] =
     useState(false);
@@ -45,12 +63,12 @@ export default function CareerAdvisorPage() {
       label: <span className="pl-3">Career Advisors</span>,
       icon: <HiMiniUsers size={20} className="-mb-5" />,
       children: (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-5 md:gap-6 p-4">
           {data?.items?.map((advisor) => (
             <Card
               key={advisor.id}
               hoverable={false}
-              className="max-w-sm mx-auto"
+              className="w-full max-w-[300px] mx-auto flex flex-col"
               cover={
                 <div className="w-full h-56 flex items-center justify-center bg-gray-100 rounded-t-lg">
                   <Image
@@ -69,6 +87,11 @@ export default function CareerAdvisorPage() {
                 }
                 description={
                   <div className="text-center text-gray-600 text-sm">
+                    <Space className="font-bold">
+                      <PiSuitcaseSimpleFill />
+                      {advisor.title}
+                    </Space>
+
                     <span className="text-yellow-500 flex items-center justify-center gap-1">
                       <StarFilled />
                       {advisor.rating.toFixed(1)}
@@ -80,27 +103,22 @@ export default function CareerAdvisorPage() {
               {/* Expertise Tags */}
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 {advisor.expertise.map((skill) => (
-                  <span
-                    key={skill.id}
-                    className="px-3 py-1 text-xs font-medium text-gray-700 bg-gray-100 rounded-full"
-                  >
-                    {skill.name}
-                  </span>
+                  <Tag key={skill.id}>{skill.name}</Tag>
                 ))}
               </div>
 
-              {/* Book Session Button */}
-              <div className="mt-6">
-                <Button
-                  color="default"
-                  variant="filled"
-                  block
-                  size="large"
-                  onClick={() => handleBookSessionClicked(advisor)}
-                >
-                  Book Session <ArrowRightOutlined />
-                </Button>
-              </div>
+              <Button
+                color="default"
+                variant="filled"
+                block
+                className="!font-dm_sans !font-semibold mt-5"
+                size="large"
+                icon={<ArrowRightOutlined />}
+                iconPosition="end"
+                onClick={() => handleBookSessionClicked(advisor)}
+              >
+                Book Session
+              </Button>
             </Card>
           ))}
         </div>

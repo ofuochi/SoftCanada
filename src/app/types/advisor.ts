@@ -1,6 +1,7 @@
 export interface Advisor {
   id: string
   name: string
+  title: string
   email: string
   rating: number
   profilePictureName: any
