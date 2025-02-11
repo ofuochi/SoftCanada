@@ -27,6 +27,28 @@ export type ResumeFormProp = {
   onSubmit: <K extends keyof ResumeType>(data: ResumeType[K]) => void;
 };
 
+const convertToFormData = (data: any) => {
+  const formData = new FormData();
+
+  const appendObject = (obj: any, prefix = "") => {
+    Object.entries(obj).forEach(([key, value]) => {
+      const formKey = prefix ? `${prefix}.${key}` : key; // Use dot notation for nesting
+
+      if (Array.isArray(value)) {
+        // Convert entire array to a JSON string to maintain uniqueness
+        formData.append(formKey, JSON.stringify(value));
+      } else if (typeof value === "object" && value !== null) {
+        appendObject(value, formKey); // Recursively flatten nested objects
+      } else {
+        formData.append(formKey, String(value));
+      }
+    });
+  };
+
+  appendObject(data);
+  return formData;
+};
+
 const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
   const { resumeData, resumeDataId, setResumeDataId } = useResume();
   const { registerResumeRef } = useResumeDownload();
@@ -46,7 +68,28 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
 
     try {
       if (resumeDataId) {
-        await put(`/api/resumes/${resumeDataId}`, reqData);
+        const imageName = resumeData.basics?.imageName;
+        if (!imageName) {
+          await put(`/api/resumes/${resumeDataId}`, reqData);
+          return;
+        }
+
+        const newData = {
+          ...reqData,
+          basics: {
+            ...reqData.basics,
+            imageName: resumeData.basics?.imageName,
+          },
+        };
+        const formDataItem = convertToFormData(newData);
+
+        await put(`/api/resumes/with-image/${resumeDataId}`, formDataItem, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        return;
+        // }
       } else {
         const { id } = await post<ResumeType, ResumeType>(
           `/api/resumes`,
