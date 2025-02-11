@@ -7,9 +7,10 @@ import Image from "next/image";
 const { Option } = Select;
 
 type CareerAdvisorApplicationInfo = {
-  fullName?: string;
   email?: string;
+  title?: string;
   contact?: string;
+  fullName?: string;
   expertise?: string;
   experience?: string;
   qualtifications?: string;
@@ -109,6 +110,19 @@ export default function AdvisorApplicationPage() {
                     {
                       required: true,
                       message: "Please input your contact number",
+                    },
+                  ]}
+                >
+                  <Input className="h-9 !font-poppins border !border-[#CBCBCB]" />
+                </Form.Item>
+
+                <Form.Item<CareerAdvisorApplicationInfo>
+                  label="Title"
+                  name="title"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your title",
                     },
                   ]}
                 >
