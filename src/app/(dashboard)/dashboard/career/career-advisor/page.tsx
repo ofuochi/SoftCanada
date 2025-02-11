@@ -4,22 +4,17 @@ import { Advisor } from "@/app/types/advisor";
 import { PaginatedList } from "@/app/types/paginatedResponse";
 import { ScheduleMeetingModal } from "@/components/dashboard/advisor/ScheduleMeetingModal";
 import { useApiClient } from "@/hooks/api-hook";
-import {
-  ArrowRightOutlined,
-  LikeOutlined,
-  StarFilled,
-} from "@ant-design/icons";
+import { ArrowRightOutlined, StarFilled } from "@ant-design/icons";
 import {
   Button,
   Card,
-  Descriptions,
   Image,
   message,
   Space,
-  Statistic,
   Tabs,
   TabsProps,
   Tag,
+  Typography,
 } from "antd";
 import type { Dayjs } from "dayjs";
 import { useState } from "react";
@@ -28,6 +23,14 @@ import { LuCalendarClock, LuCalendarDays } from "react-icons/lu";
 import { PiSuitcaseSimpleFill } from "react-icons/pi";
 import useSWR from "swr";
 
+export type MeetingType = {
+  date: Dayjs;
+  time: string;
+  timezone: string;
+  advisor: Advisor;
+};
+
+const { Title, Paragraph, Text, Link } = Typography;
 const { Meta } = Card;
 
 export default function CareerAdvisorPage() {
@@ -41,11 +44,8 @@ export default function CareerAdvisorPage() {
   );
   const [messageApi, contextHolder] = message.useMessage();
 
-  const confirmMeetingSchedule = (
-    date: Dayjs,
-    time: string,
-    timezone: string
-  ) => {
+  const confirmMeetingSchedule = (meeting: MeetingType) => {
+    console.log(meeting);
     messageApi.success(
       "Meeting scheduled successfully. You will receive an email confirmation."
     );
@@ -87,9 +87,11 @@ export default function CareerAdvisorPage() {
                 }
                 description={
                   <div className="text-center text-gray-600 text-sm">
-                    <Space className="font-bold">
+                    <Space className="font-bold text-nowrap">
                       <PiSuitcaseSimpleFill />
-                      {advisor.title}
+                      <span className="text-sm truncate whitespace-nowrap overflow-hidden">
+                        {advisor.title}
+                      </span>
                     </Space>
 
                     <span className="text-yellow-500 flex items-center justify-center gap-1">

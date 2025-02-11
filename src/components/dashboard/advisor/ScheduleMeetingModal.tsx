@@ -1,3 +1,4 @@
+import { MeetingType } from "@/app/(dashboard)/dashboard/career/career-advisor/page";
 import { Advisor } from "@/app/types/advisor";
 import {
   Button,
@@ -12,7 +13,6 @@ import {
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import React, { useState } from "react";
-import { CiClock2 } from "react-icons/ci";
 import { FaRegClock } from "react-icons/fa";
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -21,7 +21,7 @@ interface RescheduleMeetingModalProps {
   open: boolean;
   advisor: Advisor;
   onCancel: () => void;
-  onSave: (date: Dayjs, time: string, timezone: string) => void;
+  onSave: (meeting: MeetingType) => void;
 }
 
 const timeSlots = [
@@ -41,15 +41,23 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
   advisor,
   onSave,
 }) => {
-  const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs("2024-12-20"));
+  const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs(new Date()));
   const [selectedTime, setSelectedTime] = useState<string>("12:00 PM");
-  const [timezone, setTimezone] = useState<string>("Africa/Lagos (UTC +01:00)");
+  const [selectedTimezone, setSelectedTimezone] = useState<string>(
+    "America/Toronto (UTC -05:00)"
+  );
 
   const handleDateSelect = (date: Dayjs) => setSelectedDate(date);
   const handleTimeSelect = (time: string) => setSelectedTime(time);
-  const handleTimezoneChange = (value: string) => setTimezone(value);
+  const handleTimezoneChange = (value: string) => setSelectedTimezone(value);
 
-  const handleSave = () => onSave(selectedDate, selectedTime, timezone);
+  const handleSave = (advisor: Advisor) =>
+    onSave({
+      date: selectedDate,
+      time: selectedTime,
+      advisor,
+      timezone: selectedTimezone,
+    });
 
   return (
     <Modal
@@ -66,11 +74,14 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
     >
       <div className="flex flex-col md:flex-row gap-6 mt-5 p-5">
         <div className="w-full md:w-[35%] border-b md:border-r md:border-b-0 pr-6 pb-6 md:pb-0">
-          <Text strong className="block">
-            Advisor's Expertise:
-          </Text>
-          <Text>Resume writing, Career trajectory, Interview preparation</Text>
-
+          {advisor.expertise.length && (
+            <div>
+              <Text strong className="block">
+                Advisor's Expertise:
+              </Text>
+              <Text>{advisor.expertise.map((e) => e.name).join(",")}</Text>
+            </div>
+          )}
           <div className="mt-6">
             <Text strong className="block">
               Duration:
@@ -111,14 +122,14 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
               </Text>
               <Select
                 className="w-full mb-4"
-                value={timezone}
+                value={selectedTimezone}
                 onChange={handleTimezoneChange}
               >
+                <Option value="America/Toronto (UTC -05:00)">
+                  America/Toronto (UTC -05:00)
+                </Option>
                 <Option value="Africa/Lagos (UTC +01:00)">
                   Africa/Lagos (UTC +01:00)
-                </Option>
-                <Option value="America/New_York (UTC -05:00)">
-                  America/New York (UTC -05:00)
                 </Option>
                 <Option value="Europe/London (UTC +00:00)">
                   Europe/London (UTC +00:00)
@@ -132,7 +143,12 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
                 className="ant-picker-calendar-mini w-full"
               />
               <div className="mt-6 space-y-4">
-                <Button size="large" block type="primary" onClick={handleSave}>
+                <Button
+                  size="large"
+                  block
+                  type="primary"
+                  onClick={() => handleSave(advisor)}
+                >
                   Save Changes
                 </Button>
                 <Button size="large" block className="mr-4" onClick={onCancel}>
