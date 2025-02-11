@@ -25,7 +25,7 @@ export type ResumeBasicsType = {
   summary: string;
   url?: string;
   label?: string;
-  image?: File | null;
+  imageName?: string;
   imageFile?: ResumeImageFile;
   location?: ResumeLocationType;
   profiles?: ResumeProfileType[];

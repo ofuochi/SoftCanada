@@ -13,11 +13,11 @@ import {
   Space,
 } from "antd";
 import { X } from "lucide-react";
-import { ChangeEvent, Fragment, useRef, useState } from "react";
+import { ChangeEvent, Fragment, useCallback, useRef, useState } from "react";
 
 const optionalFields = {
   label: "Job Title",
-  image: "Profile Image URL",
+  imageName: "Profile Image URL",
   url: "Website URL",
   location: "Address",
   profiles: "Social Profiles",
@@ -32,8 +32,6 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
   const {
     resumeData: { basics },
     setResumeData,
-    imageFile,
-    setImageFile,
   } = useResume();
 
   const [messageApi, contextHolder] = message.useMessage();
@@ -58,60 +56,66 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
     }));
   };
 
-  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>): void => {
-    const file = e.target.files?.[0];
+  const handleImageUpload = useCallback(
+    (e: ChangeEvent<HTMLInputElement>): void => {
+      e.preventDefault();
+      const file = e.target.files?.[0];
 
-    if (!file) return;
+      if (!file) return;
 
-    // Check file size (10MB = 10 * 1024 * 1024 bytes)
-    if (file.size > 10 * 1024 * 1024) {
-      messageApi.open({
-        type: "error",
-        content: "Image size must not exceed 10MB",
-      });
-      return;
-    }
+      // Check file size (10MB = 10 * 1024 * 1024 bytes)
+      if (file.size > 10 * 1024 * 1024) {
+        messageApi.open({
+          type: "error",
+          content: "Image size must not exceed 10MB",
+        });
+        return;
+      }
 
-    // Check if file is an image
-    if (!file.type.startsWith("image/")) {
-      messageApi.open({
-        type: "error",
-        content: "Please upload an image file",
-      });
-      return;
-    }
+      // Check if file is an image
+      if (!file.type.startsWith("image/")) {
+        messageApi.open({
+          type: "error",
+          content: "Please upload an image file",
+        });
+        return;
+      }
 
-    // Create base64 preview
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      // Store file object
-      const imageFileData: ResumeImageFile = {
-        file,
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        base64Url: reader.result as string,
+      // Create base64 preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Store file object
+        const imageFileData: ResumeImageFile = {
+          file,
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          base64Url: reader.result as string,
+        };
+        setResumeData((prev: any) => ({
+          ...prev,
+          basics: {
+            ...prev.basics,
+            imageName: imageFileData?.base64Url,
+            imageFile: imageFileData,
+          },
+        }));
       };
-      setImageFile(imageFileData);
-      setResumeData((prev: any) => ({
-        ...prev,
-        basics: { ...prev.basics, image: imageFile?.file, imageFile },
-      }));
-      // setResumeData((prev) => ({ ...prev, }))
-    };
-    reader.readAsDataURL(file);
-  };
+      reader.readAsDataURL(file);
+    },
+    [setResumeData]
+  );
 
-  const handleRemoveImage = (): void => {
-    setImageFile(null);
+  const handleRemoveImage = useCallback((): void => {
     setResumeData((prev: any) => ({
       ...prev,
-      basics: { ...prev.basics, image: imageFile?.file, imageFile: null },
+      basics: { ...prev.basics, imageName: "", imageFile: null },
     }));
-  };
+  }, [setResumeData]);
 
-  const handleTriggerUpload = () => fileInputRef.current?.click();
-
+  const handleTriggerUpload = useCallback(() => {
+    fileInputRef.current?.click();
+  }, [fileInputRef]);
   return (
     <>
       {contextHolder}
@@ -374,7 +378,7 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                 </Card>
               )}
 
-              {key === "image" && (
+              {key === "imageName" && (
                 <section className="mt-2.5 mb-5">
                   <input
                     type="file"
@@ -384,15 +388,16 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                     onChange={handleImageUpload}
                   />
                   <button
+                    type="button"
                     onMouseDown={handleTriggerUpload}
                     className="bg-black p-1.5 font-dm_sans text-xs font-medium text-white rounded"
                   >
                     Upload Image
                   </button>
-                  {imageFile?.name && (
+                  {basics?.imageFile?.name && (
                     <div className="flex items-center justify-between mt-1">
                       <p className="font-dm_sans font-medium text-sm text-black">
-                        {imageFile.name}{" "}
+                        {basics.imageFile.name}{" "}
                       </p>
                       <X
                         size={16}
@@ -405,34 +410,36 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                 </section>
               )}
 
-              {key !== "location" && key !== "profiles" && key !== "image" && (
-                <div className="flex space-x-2">
-                  <div className="flex-1">
-                    <Form.Item
-                      label={label}
-                      name={key}
-                      className="!font-dm_sans"
-                    >
-                      <Input
-                        placeholder={`Enter ${label.toLowerCase()}`}
-                        className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
-                      />
-                    </Form.Item>
+              {key !== "location" &&
+                key !== "profiles" &&
+                key !== "imageName" && (
+                  <div className="flex space-x-2">
+                    <div className="flex-1">
+                      <Form.Item
+                        label={label}
+                        name={key}
+                        className="!font-dm_sans"
+                      >
+                        <Input
+                          placeholder={`Enter ${label.toLowerCase()}`}
+                          className="min-h-[44px] rounded-lg p-6 border-[0.5px] border-[#808080] !font-dm_sans"
+                        />
+                      </Form.Item>
+                    </div>
+                    <CloseOutlined
+                      onClick={() => {
+                        form.setFieldsValue({ [key]: undefined });
+                        setResumeData((prev: any) => ({
+                          ...prev,
+                          basics: { ...prev.basics, [key]: undefined },
+                        }));
+                        toggleOptionalField(key);
+                      }}
+                      className="mt-2 text-red-500"
+                      title="Remove field"
+                    />
                   </div>
-                  <CloseOutlined
-                    onClick={() => {
-                      form.setFieldsValue({ [key]: undefined });
-                      setResumeData((prev: any) => ({
-                        ...prev,
-                        basics: { ...prev.basics, [key]: undefined },
-                      }));
-                      toggleOptionalField(key);
-                    }}
-                    className="mt-2 text-red-500"
-                    title="Remove field"
-                  />
-                </div>
-              )}
+                )}
             </div>
           ) : null;
         })}
