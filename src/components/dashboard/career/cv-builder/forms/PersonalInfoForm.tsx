@@ -58,6 +58,7 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
 
   const handleImageUpload = useCallback(
     (e: ChangeEvent<HTMLInputElement>): void => {
+      e.preventDefault();
       const file = e.target.files?.[0];
 
       if (!file) return;
@@ -112,10 +113,9 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
     }));
   }, [setResumeData]);
 
-  const handleTriggerUpload = useCallback(
-    () => fileInputRef.current?.click(),
-    [fileInputRef]
-  );
+  const handleTriggerUpload = useCallback(() => {
+    fileInputRef.current?.click();
+  }, [fileInputRef]);
   return (
     <>
       {contextHolder}
@@ -388,6 +388,7 @@ const PersonalInfoForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
                     onChange={handleImageUpload}
                   />
                   <button
+                    type="button"
                     onMouseDown={handleTriggerUpload}
                     className="bg-black p-1.5 font-dm_sans text-xs font-medium text-white rounded"
                   >

@@ -1,5 +1,5 @@
 import { ResumeType } from "@/app/types/career";
-import { Col, Divider, message, Row, Space, Typography } from "antd";
+import { Typography } from "antd";
 import dayjs from "dayjs";
 import {
   Mail,
@@ -20,14 +20,12 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
   const { basics, work, education, skills, languages, interests, references } =
     data;
 
-  console.log(basics);
-
   return (
     <section className="bg-white text-gray-900 p-5 min-h-[1123px] !font-dm_sans">
-      {basics?.imageFile?.base64Url && (
+      {basics?.imageName && (
         <div className="flex justify-center">
           <Image
-            src={basics.imageFile.base64Url}
+            src={basics.imageName}
             width={80}
             height={80}
             className="rounded-full h-[80px] w-[80px]"
@@ -103,107 +101,112 @@ const ElegantTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
       </section>
 
       <section className="flex flex-col gap-5 font-dm_sans">
-        <section>
-          <div>
-            <div className="h-0.5 w-full border-b-2 border-b-black" />
-            <h3 className="text-2xl text-black font-medium font-dm_sans my-1 text-center">
-              Professional Experience
-            </h3>
-            <div className="h-0.5 w-full border-b-2 border-b-black" />
-          </div>
-          <div className="mt-2.5">
-            {work.map((job, i) => (
-              <div key={i} className="mb-6">
-                <Text className="!font-dm_sans" type="secondary">
-                  {job?.startDate
-                    ? dayjs(job.startDate).format("MMM YYYY")
-                    : "Start date not specified"}{" "}
-                  -{" "}
-                  {job?.endDate
-                    ? dayjs(job.endDate).format("MMM YYYY")
-                    : "Present"}
-                </Text>
-                <br />
-                <Text className="!font-dm_sans" strong>
-                  {job?.position || "Position not specified"}
-                </Text>
-                <Text className="!font-dm_sans">
-                  , {job?.name || "Company not specified"}
-                </Text>
-                {job?.url && (
-                  <>
-                    <span className="flex sm:items-center gap-1">
+        {work.length > 0 && (
+          <section>
+            <div>
+              <div className="h-0.5 w-full border-b-2 border-b-black" />
+              <h3 className="text-2xl text-black font-medium font-dm_sans my-1 text-center">
+                Professional Experience
+              </h3>
+              <div className="h-0.5 w-full border-b-2 border-b-black" />
+            </div>
+            <div className="mt-2.5">
+              {work.map((job, i) => (
+                <div key={i} className="mb-6">
+                  <Text className="!font-dm_sans" type="secondary">
+                    {job?.startDate
+                      ? dayjs(job.startDate).format("MMM YYYY")
+                      : "Start date not specified"}{" "}
+                    -{" "}
+                    {job?.endDate
+                      ? dayjs(job.endDate).format("MMM YYYY")
+                      : "Present"}
+                  </Text>
+                  <br />
+                  <Text className="!font-dm_sans" strong>
+                    {job?.position || "Position not specified"}
+                  </Text>
+                  <Text className="!font-dm_sans">
+                    , {job?.name || "Company not specified"}
+                  </Text>
+                  {job?.url && (
+                    <>
+                      <span className="flex sm:items-center gap-1">
+                        <LucideLink size={14} color="#000000" />
+                        <Link
+                          href={job.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600"
+                        >
+                          {job.url}
+                        </Link>
+                      </span>
+                    </>
+                  )}
+                  {job?.summary && (
+                    <p className="mt-2 font-dm_sans">{job.summary}</p>
+                  )}
+                  {job?.highlights && job.highlights.length > 0 && (
+                    <ul className="list-disc list-inside mt-2 font-dm_sans">
+                      {job.highlights.map((hl, idx) => (
+                        <li key={idx}>{hl}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {education.length > 0 && (
+          <section>
+            <div>
+              <div className="h-0.5 w-full border-b-2 border-b-black" />
+              <h3 className="text-2xl text-black font-medium font-dm_sans my-1 text-center">
+                Education
+              </h3>
+              <div className="h-0.5 w-full border-b-2 border-b-black" />
+            </div>
+            <div className="mt-2.5">
+              {education.map((edu) => (
+                <div key={edu?.institution} className="mb-4">
+                  {edu?.url && (
+                    <div className="flex items-center gap-0.5">
                       <LucideLink size={14} color="#000000" />
+                      <br />
                       <Link
-                        href={job.url}
+                        href={edu?.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600"
                       >
-                        {job.url}
+                        {edu?.url}
                       </Link>
-                    </span>
-                  </>
-                )}
-                {job?.summary && (
-                  <p className="mt-2 font-dm_sans">{job.summary}</p>
-                )}
-                {job?.highlights && job.highlights.length > 0 && (
-                  <ul className="list-disc list-inside mt-2 font-dm_sans">
-                    {job.highlights.map((hl, idx) => (
-                      <li key={idx}>{hl}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section>
-          <div>
-            <div className="h-0.5 w-full border-b-2 border-b-black" />
-            <h3 className="text-2xl text-black font-medium font-dm_sans my-1 text-center">
-              Education
-            </h3>
-            <div className="h-0.5 w-full border-b-2 border-b-black" />
-          </div>
-          <div className="mt-2.5">
-            {education.map((edu) => (
-              <div key={edu?.institution} className="mb-4">
-                {edu?.url && (
-                  <div className="flex items-center gap-0.5">
-                    <LucideLink size={14} color="#000000" />
-                    <br />
-                    <Link
-                      href={edu?.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600"
-                    >
-                      {edu?.url}
-                    </Link>
-                  </div>
-                )}
-                <Text className="!font-dm_sans" strong>
-                  {edu?.institution}
-                </Text>
-                <br />
-                <Text className="!font-dm_sans">
-                  {edu?.studyType}, {edu?.area} (
-                  {edu?.startDate && dayjs(edu.startDate).format("MMM YYYY")} -{" "}
-                  {(edu?.endDate && dayjs(edu.endDate).format("MMM YYYY")) ||
-                    "Present"}
-                  )
-                </Text>
-                <br />
-                {edu?.score && (
-                  <Text className="!font-dm_sans"> GPA: {edu.score}</Text>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
+                    </div>
+                  )}
+                  <Text className="!font-dm_sans" strong>
+                    {edu?.institution}
+                  </Text>
+                  <br />
+                  <Text className="!font-dm_sans">
+                    {edu?.studyType}, {edu?.area} (
+                    {edu?.startDate && dayjs(edu.startDate).format("MMM YYYY")}{" "}
+                    -{" "}
+                    {(edu?.endDate && dayjs(edu.endDate).format("MMM YYYY")) ||
+                      "Present"}
+                    )
+                  </Text>
+                  <br />
+                  {edu?.score && (
+                    <Text className="!font-dm_sans"> GPA: {edu.score}</Text>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* SKILLS SECTION */}
         {skills && skills.length > 0 && (

@@ -75,26 +75,51 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
         }
 
         const newData = {
-          ...reqData,
-          basics: {
-            ...reqData.basics,
-            imageName: resumeData.basics?.imageName,
+          resume: {
+            ...reqData,
+            basics: {
+              ...reqData.basics,
+              imageName: resumeData.basics?.imageName,
+            },
           },
         };
         const formDataItem = convertToFormData(newData);
-
         await put(`/api/resumes/with-image/${resumeDataId}`, formDataItem, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
         return;
-        // }
       } else {
-        const { id } = await post<ResumeType, ResumeType>(
-          `/api/resumes`,
-          reqData
+        const imageName = resumeData.basics?.imageName;
+        if (!imageName) {
+          const { id } = await post<ResumeType, ResumeType>(
+            `/api/resumes`,
+            reqData
+          );
+          setResumeDataId(id);
+          return;
+        }
+        const newData = {
+          resume: {
+            ...reqData,
+            basics: {
+              ...reqData.basics,
+              imageName: resumeData.basics?.imageName,
+            },
+          },
+        };
+        const formDataItem = convertToFormData(newData);
+        const { id } = await post<ResumeType, FormData>(
+          `/api/resumes/with-image`,
+          formDataItem,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
+        console.log(id, "id from updating endpoint");
         setResumeDataId(id);
       }
 
