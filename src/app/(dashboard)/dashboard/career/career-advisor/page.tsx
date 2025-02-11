@@ -1,10 +1,11 @@
 ﻿"use client";
 
-import { Advisor, PaginatedList } from "@/app/types/advisor";
+import { Advisor } from "@/app/types/advisor";
+import { PaginatedList } from "@/app/types/paginatedResponse";
 import { ScheduleMeetingModal } from "@/components/dashboard/advisor/ScheduleMeetingModal";
 import { useApiClient } from "@/hooks/api-hook";
 import { ArrowRightOutlined, StarFilled } from "@ant-design/icons";
-import { Button, Card, Image, message, Segmented, Tabs, TabsProps } from "antd";
+import { Button, Card, Image, message, Tabs, TabsProps } from "antd";
 import type { Dayjs } from "dayjs";
 import { useState } from "react";
 import { HiMiniUsers } from "react-icons/hi2";
@@ -16,11 +17,10 @@ export default function CareerAdvisorPage() {
     useState(false);
   const [selectedAdvisor, setSelectedAdvisor] = useState<Advisor>();
   const { get } = useApiClient();
-  const { data, error, isLoading } = useSWR<PaginatedList>(
+  const { data, error, isLoading } = useSWR<PaginatedList<Advisor>>(
     "/api/career-advisors",
     { fetcher: get }
   );
-
   const [messageApi, contextHolder] = message.useMessage();
 
   const confirmMeetingSchedule = (
@@ -46,7 +46,7 @@ export default function CareerAdvisorPage() {
       icon: <HiMiniUsers size={20} className="-mb-5" />,
       children: (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-          {data?.careerAdvisors?.map((advisor) => (
+          {data?.items?.map((advisor) => (
             <Card
               key={advisor.id}
               hoverable={false}
@@ -123,10 +123,6 @@ export default function CareerAdvisorPage() {
   return (
     <>
       <div className="p-6 bg-white min-h-[360px]">
-        <Segmented
-          style={{ marginBottom: 8 }}
-          options={["Advisors", "Upcoming Meetings", "Past Meetings"]}
-        />
         <Tabs defaultActiveKey="1" items={tabItems} />
       </div>
 

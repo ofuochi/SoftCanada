@@ -9,6 +9,8 @@ import React, { useState } from "react";
 import { breadcrumbConfig } from "./BreadcrumbConfig";
 import SideBar from "./SideBar";
 import { DashboardProvider } from "@/contexts/DashboardContext";
+import { ResumeDownloadProvider } from "@/contexts/ResumeDownloadContext";
+import { SWRConfig } from "swr";
 
 const { Header, Footer, Content } = Layout;
 
@@ -82,11 +84,20 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
             </div>
 
             {/* Content */}
-            <ErrorProvider>
-              <Content className="px-5 md:px-10 lg:px-[60px] xl:px-[80px] 2xl:px-[105px] mt-5">
-                <div className="w-full max-w-[1320px]">{children}</div>
-              </Content>
-            </ErrorProvider>
+            <SWRConfig
+              value={{
+                revalidateOnFocus: false,
+                revalidateOnReconnect: false,
+                revalidateIfStale: false,
+                shouldRetryOnError: false,
+              }}
+            >
+              <ErrorProvider>
+                <Content className="px-5 md:px-10 lg:px-[60px] xl:px-[80px] 2xl:px-[105px] mt-5">
+                  <ResumeDownloadProvider>{children}</ResumeDownloadProvider>
+                </Content>
+              </ErrorProvider>
+            </SWRConfig>
 
             {/* Footer */}
             <Footer className="text-center font-dm_sans">
@@ -98,4 +109,3 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
     </>
   );
 }
-

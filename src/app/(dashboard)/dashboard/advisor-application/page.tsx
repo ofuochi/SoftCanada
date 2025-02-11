@@ -37,7 +37,7 @@ export default function AdvisorApplicationPage() {
   // };
 
   return (
-    <section className="w-full bg-white pb-[30px] px-5 rounded-xl">
+    <section className="w-full bg-white pb-[30px] px-5 rounded-xl max-w-[1320px]">
       <div className="flex max-md:flex-col-reverse items-center md:justify-between">
         <div className="flex flex-col gap-2">
           <h1 className="font-dm_sans font-semibold text-[38px] leading-[49.8px] text-black max-md:text-center">
@@ -292,4 +292,3 @@ export default function AdvisorApplicationPage() {
     </section>
   );
 }
-

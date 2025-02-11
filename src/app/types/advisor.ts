@@ -1,11 +1,3 @@
-export interface PaginatedList {
-  totalRecords: number
-  pageNumber: number
-  pageSize: number
-  totalPages: number
-  careerAdvisors: Advisor[]
-}
-
 export interface Advisor {
   id: string
   name: string
