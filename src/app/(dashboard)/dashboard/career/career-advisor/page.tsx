@@ -96,7 +96,7 @@ export default function CareerAdvisorPage() {
 
                     <span className="text-yellow-500 flex items-center justify-center gap-1">
                       <StarFilled />
-                      {advisor.rating.toFixed(1)}
+                      {(advisor.rating || 5).toFixed(1)}
                     </span>
                   </div>
                 }
