@@ -1,7 +1,7 @@
 "use client";
 
 import { useDashboard } from "@/contexts/DashboardContext";
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, FormProps, Input, Select } from "antd";
 import Image from "next/image";
 
 const { Option } = Select;
@@ -22,19 +22,11 @@ export default function AdvisorApplicationPage() {
   const { advisorType } = useDashboard();
   const [form] = Form.useForm<CareerAdvisorApplicationInfo>();
 
-  // const availabilityTime = [
-  //   "05:00 PM",
-  //   "11:00 AM",
-  //   "12:00 PM",
-  //   "9:00 AM",
-  //   "02:00 AM",
-  // ];
-
-  // const handleAvailabitityClick = (time: string) => () => {
-  //   const currentAvailability = form.getFieldValue("availability") || [];
-  //   const newAvailability = [...new Set([...currentAvailability, time])];
-  //   form.setFieldValue("availability", newAvailability);
-  // };
+  const handleSubmit: FormProps<CareerAdvisorApplicationInfo>["onFinish"] = (
+    values
+  ) => {
+    console.log("Submitted:", values);
+  };
 
   return (
     <section className="w-full bg-white pb-[30px] px-5 rounded-xl max-w-[1320px]">
@@ -65,7 +57,7 @@ export default function AdvisorApplicationPage() {
         form={form}
         name="CareerAdvisorApplicationInfo"
         initialValues={{ remember: true }}
-        // onFinish={onFinish}
+        onFinish={handleSubmit}
         // onFinishFailed={onFinishFailed}
         autoComplete="off"
         layout="vertical"
@@ -110,6 +102,12 @@ export default function AdvisorApplicationPage() {
                     {
                       required: true,
                       message: "Please input your contact number",
+                    },
+                    {
+                      pattern:
+                        /^(\+1\s?)?(\([0-9]{3}\)|[0-9]{3})[\s\-]?[0-9]{3}[\s\-]?[0-9]{4}$/,
+                      message:
+                        "Please enter a valid US or Canadian phone number",
                     },
                   ]}
                 >
@@ -292,3 +290,4 @@ export default function AdvisorApplicationPage() {
     </section>
   );
 }
+
