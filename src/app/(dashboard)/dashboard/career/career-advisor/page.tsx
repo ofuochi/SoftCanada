@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { Advisor } from "@/app/types/advisor";
+import { Advisor, TimeSlot } from "@/app/types/advisor";
 import { PaginatedList } from "@/app/types/paginatedResponse";
 import { ScheduleMeetingModal } from "@/components/dashboard/advisor/ScheduleMeetingModal";
 import { useApiClient } from "@/hooks/api-hook";
@@ -27,7 +27,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 export type MeetingType = {
   date: Dayjs;
-  time: string;
+  timeSlot: TimeSlot;
   timezone: string;
   advisor: Advisor;
 };
@@ -95,18 +95,18 @@ export default function CareerAdvisorPage() {
           }
           scrollableTarget="scrollableContainer"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-5 md:gap-6 p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 p-4">
             {advisors.map((advisor) => (
               <Card
                 key={advisor.id}
                 hoverable={false}
-                className="w-full max-w-[300px] mx-auto flex flex-col"
+                className="w-full flex flex-col h-full"
                 cover={
-                  <div className="w-full h-56 flex items-center justify-center bg-gray-100 rounded-t-lg">
+                  <div className="w-full aspect-video flex items-center justify-center bg-gray-50 rounded-t-lg">
                     <Image
                       alt={advisor.name}
                       src={advisor.profilePictureUrl}
-                      className="!w-full !h-full !object-contain"
+                      className="!w-full !h-full !object-cover"
                     />
                   </div>
                 }
@@ -118,14 +118,11 @@ export default function CareerAdvisorPage() {
                     </div>
                   }
                   description={
-                    <div className="text-center text-gray-600 text-sm">
-                      <Space className="font-bold text-nowrap">
+                    <div className="text-center text-gray-600 text-sm font-bold truncate">
+                      <Space>
                         <PiSuitcaseSimpleFill />
-                        <span className="text-sm truncate whitespace-nowrap overflow-hidden">
-                          {advisor.title}
-                        </span>
+                        <span>{advisor.title}</span>
                       </Space>
-
                       <span className="text-yellow-500 flex items-center justify-center gap-1">
                         <StarFilled />
                         {(advisor.rating || 5).toFixed(1)}
@@ -137,7 +134,7 @@ export default function CareerAdvisorPage() {
                 {/* Expertise Tags */}
                 <div className="mt-4 flex flex-wrap justify-center gap-1">
                   {advisor.expertise.map((skill) => (
-                    <Tag key={skill.id} className="inline-flex">
+                    <Tag key={skill.id} className="inline-flex text-xs">
                       {skill.name}
                     </Tag>
                   ))}
@@ -147,8 +144,7 @@ export default function CareerAdvisorPage() {
                   color="default"
                   variant="filled"
                   block
-                  className="!font-dm_sans !font-semibold mt-5"
-                  size="large"
+                  className="mt-5"
                   icon={<ArrowRightOutlined />}
                   iconPosition="end"
                   onClick={() => handleBookSessionClicked(advisor)}
