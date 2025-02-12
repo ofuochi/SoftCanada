@@ -4,7 +4,7 @@ export interface Advisor {
   title: string
   email: string
   rating: number
-  profilePictureName: any
+  profilePictureUrl: any
   expertise: Expertise[]
   availabilities: Availability[]
   bookings: any

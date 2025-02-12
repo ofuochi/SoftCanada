@@ -63,7 +63,7 @@ export default function CareerAdvisorPage() {
       label: <span className="pl-3">Career Advisors</span>,
       icon: <HiMiniUsers size={20} className="-mb-5" />,
       children: (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-5 md:gap-6 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 p-4">
           {data?.items?.map((advisor) => (
             <Card
               key={advisor.id}
@@ -73,7 +73,7 @@ export default function CareerAdvisorPage() {
                 <div className="w-full h-56 flex items-center justify-center bg-gray-100 rounded-t-lg">
                   <Image
                     alt={advisor.name}
-                    src={advisor.profilePictureName}
+                    src={advisor.profilePictureUrl}
                     className="w-full h-full object-contain"
                   />
                 </div>
@@ -103,9 +103,11 @@ export default function CareerAdvisorPage() {
               />
 
               {/* Expertise Tags */}
-              <div className="mt-4 flex flex-wrap justify-center gap-2">
+              <div className="mt-4 flex flex-wrap justify-center gap-1">
                 {advisor.expertise.map((skill) => (
-                  <Tag key={skill.id}>{skill.name}</Tag>
+                  <Tag key={skill.id} className="inline-flex">
+                    {skill.name}
+                  </Tag>
                 ))}
               </div>
 

@@ -24,23 +24,13 @@ interface RescheduleMeetingModalProps {
   onSave: (meeting: MeetingType) => void;
 }
 
-const timeSlots = [
-  "9:00 AM",
-  "10:00 AM",
-  "11:00 AM",
-  "11:30 AM",
-  "12:00 PM",
-  "01:00 PM",
-  "02:00 PM",
-  "05:00 PM",
-];
-
 export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
   open,
   onCancel,
   advisor,
   onSave,
 }) => {
+  const timeSlots = advisor.availabilities[0].timeSlots;
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs(new Date()));
   const [selectedTime, setSelectedTime] = useState<string>("12:00 PM");
   const [selectedTimezone, setSelectedTimezone] = useState<string>(
@@ -163,7 +153,7 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
                 {selectedDate.format("dddd, MMMM D")}
               </Text>
               <Flex vertical gap="small" className="w-full">
-                {timeSlots.map((time) => (
+                {timeSlots.map(({ time }) => (
                   <Button
                     key={time}
                     block
