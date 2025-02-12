@@ -63,12 +63,12 @@ export default function CareerAdvisorPage() {
       label: <span className="pl-3">Career Advisors</span>,
       icon: <HiMiniUsers size={20} className="-mb-5" />,
       children: (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-4 sm:gap-5 md:gap-6 p-4">
+        <div className="grid grid-cols-1 max-md:place-items-center md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 p-4">
           {data?.items?.map((advisor) => (
             <Card
               key={advisor.id}
               hoverable={false}
-              className="w-full max-w-[300px] mx-auto flex flex-col"
+              className="w-full md:max-w-[300px] mx-auto flex flex-col"
               cover={
                 <div className="w-full h-56 flex items-center justify-center bg-gray-100 rounded-t-lg">
                   <Image
@@ -159,3 +159,4 @@ export default function CareerAdvisorPage() {
     </>
   );
 }
+
