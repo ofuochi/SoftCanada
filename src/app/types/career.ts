@@ -25,7 +25,8 @@ export type ResumeBasicsType = {
   summary: string;
   url?: string;
   label?: string;
-  image?: string;
+  imageName?: string;
+  imageFile?: ResumeImageFile;
   location?: ResumeLocationType;
   profiles?: ResumeProfileType[];
 };
@@ -125,6 +126,14 @@ export type ResumeProjectType = {
   url?: string;
 };
 
+export type ResumeImageFile = {
+  file: File;
+  name: string;
+  size: number;
+  type: string;
+  base64Url: string;
+};
+
 export type ResumeType = {
   id?: string;
   templateId: number;
@@ -141,3 +150,4 @@ export type ResumeType = {
   references?: ResumeReferenceType[];
   projects?: ResumeProjectType[];
 };
+

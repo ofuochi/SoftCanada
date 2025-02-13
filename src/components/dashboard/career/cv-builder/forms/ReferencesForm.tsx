@@ -121,21 +121,10 @@ const ReferencesForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
       <Form.Item>
         <Button
           loading={isSaving}
-          disabled={!showSaveBtn}
           htmlType="submit"
-          className="!font-dm_sans mt-5"
-          style={{
-            width: "100%",
-            maxWidth: "400px",
-            borderRadius: "12px",
-            padding: "18px 24px",
-            height: "50px",
-            fontWeight: "600",
-            fontSize: "16px",
-            color: "#010309",
-            border: "none",
-            backgroundColor: "#72FA3266",
-          }}
+          className="!font-dm_sans !text-black mt-5 !font-semibold !border-none !bg-sc_green-500 hover:!bg-sc_green-600"
+          block
+          size="large"
         >
           Save
         </Button>
@@ -145,4 +134,3 @@ const ReferencesForm: React.FC<Props> = ({ isSaving, onSubmit }) => {
 };
 
 export default ReferencesForm;
-

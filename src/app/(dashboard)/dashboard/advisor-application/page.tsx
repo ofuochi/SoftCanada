@@ -7,13 +7,14 @@ import Image from "next/image";
 const { Option } = Select;
 
 type CareerAdvisorApplicationInfo = {
-  fullName?: string;
   email?: string;
+  title?: string;
   contact?: string;
+  fullName?: string;
   expertise?: string;
   experience?: string;
   qualtifications?: string;
-  availability?: string;
+  // availability?: string;
   motivationStatement?: string;
 };
 
@@ -21,22 +22,22 @@ export default function AdvisorApplicationPage() {
   const { advisorType } = useDashboard();
   const [form] = Form.useForm<CareerAdvisorApplicationInfo>();
 
-  const availabilityTime = [
-    "05:00 PM",
-    "11:00 AM",
-    "12:00 PM",
-    "9:00 AM",
-    "02:00 AM",
-  ];
+  // const availabilityTime = [
+  //   "05:00 PM",
+  //   "11:00 AM",
+  //   "12:00 PM",
+  //   "9:00 AM",
+  //   "02:00 AM",
+  // ];
 
-  const handleAvailabitityClick = (time: string) => () => {
-    const currentAvailability = form.getFieldValue("availability") || [];
-    const newAvailability = [...new Set([...currentAvailability, time])];
-    form.setFieldValue("availability", newAvailability);
-  };
+  // const handleAvailabitityClick = (time: string) => () => {
+  //   const currentAvailability = form.getFieldValue("availability") || [];
+  //   const newAvailability = [...new Set([...currentAvailability, time])];
+  //   form.setFieldValue("availability", newAvailability);
+  // };
 
   return (
-    <section className="w-full bg-white pb-[30px] px-5 rounded-xl">
+    <section className="w-full bg-white pb-[30px] px-5 rounded-xl max-w-[1320px]">
       <div className="flex max-md:flex-col-reverse items-center md:justify-between">
         <div className="flex flex-col gap-2">
           <h1 className="font-dm_sans font-semibold text-[38px] leading-[49.8px] text-black max-md:text-center">
@@ -109,6 +110,19 @@ export default function AdvisorApplicationPage() {
                     {
                       required: true,
                       message: "Please input your contact number",
+                    },
+                  ]}
+                >
+                  <Input className="h-9 !font-poppins border !border-[#CBCBCB]" />
+                </Form.Item>
+
+                <Form.Item<CareerAdvisorApplicationInfo>
+                  label="Title"
+                  name="title"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your title",
                     },
                   ]}
                 >
@@ -198,7 +212,7 @@ export default function AdvisorApplicationPage() {
 
           <div className="flex flex-col flex-1 gap-6 w-full xl:max-w-[500px]">
             {/* Availability */}
-            <div className="flex flex-col gap-5">
+            {/* <div className="flex flex-col gap-5">
               <h6 className="font-medium text-black text-xl">Availability</h6>
               <div className="flex flex-col gap-4">
                 <Form.Item<CareerAdvisorApplicationInfo>
@@ -240,7 +254,7 @@ export default function AdvisorApplicationPage() {
                   ))}
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Motivation Statement */}
             <div className="flex flex-col gap-5">
@@ -278,4 +292,3 @@ export default function AdvisorApplicationPage() {
     </section>
   );
 }
-

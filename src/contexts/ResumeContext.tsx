@@ -1,4 +1,4 @@
-import { ResumeType } from "@/app/types/career";
+import { ResumeImageFile, ResumeType } from "@/app/types/career";
 import React, {
   createContext,
   PropsWithChildren,
@@ -8,9 +8,11 @@ import React, {
 
 type ResumeContextType = {
   resumeData: ResumeType;
+  imageFile: ResumeImageFile | null;
   resumeDataId: string | undefined;
-  setResumeDataId: React.Dispatch<React.SetStateAction<string | undefined>>;
   setResumeData: React.Dispatch<React.SetStateAction<ResumeType>>;
+  setImageFile: React.Dispatch<React.SetStateAction<ResumeImageFile | null>>;
+  setResumeDataId: React.Dispatch<React.SetStateAction<string | undefined>>;
 };
 
 const ResumeContext = createContext<ResumeContextType | undefined>(undefined);
@@ -32,10 +34,18 @@ export const ResumeProvider: React.FC<
   const [resumeDataId, setResumeDataId] = useState<string | undefined>(
     initialData.id
   );
+  const [imageFile, setImageFile] = useState<ResumeImageFile | null>(null);
 
   return (
     <ResumeContext.Provider
-      value={{ resumeData, setResumeData, resumeDataId, setResumeDataId }}
+      value={{
+        resumeData,
+        setResumeData,
+        resumeDataId,
+        setResumeDataId,
+        imageFile,
+        setImageFile,
+      }}
     >
       {children}
     </ResumeContext.Provider>

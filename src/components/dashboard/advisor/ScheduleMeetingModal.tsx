@@ -1,4 +1,5 @@
-import { Advisor } from "@/app/types/advisor";
+import { MeetingType } from "@/app/(dashboard)/dashboard/career/career-advisor/page";
+import { Advisor, TimeSlot } from "@/app/types/advisor";
 import {
   Button,
   Calendar,
@@ -12,7 +13,6 @@ import {
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import React, { useState } from "react";
-import { CiClock2 } from "react-icons/ci";
 import { FaRegClock } from "react-icons/fa";
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -21,19 +21,8 @@ interface RescheduleMeetingModalProps {
   open: boolean;
   advisor: Advisor;
   onCancel: () => void;
-  onSave: (date: Dayjs, time: string, timezone: string) => void;
+  onSave: (meeting: MeetingType) => void;
 }
-
-const timeSlots = [
-  "9:00 AM",
-  "10:00 AM",
-  "11:00 AM",
-  "11:30 AM",
-  "12:00 PM",
-  "01:00 PM",
-  "02:00 PM",
-  "05:00 PM",
-];
 
 export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
   open,
@@ -41,22 +30,157 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
   advisor,
   onSave,
 }) => {
-  const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs("2024-12-20"));
-  const [selectedTime, setSelectedTime] = useState<string>("12:00 PM");
-  const [timezone, setTimezone] = useState<string>("Africa/Lagos (UTC +01:00)");
+  const filteredAvailabilities = advisor.availabilities.filter(
+    (a) => a.dnd !== "true"
+  );
 
-  const handleDateSelect = (date: Dayjs) => setSelectedDate(date);
-  const handleTimeSelect = (time: string) => setSelectedTime(time);
-  const handleTimezoneChange = (value: string) => setTimezone(value);
+  const getInitialSelectedDate = (): Dayjs => {
+    const today = dayjs();
+    const availableDays = new Set(filteredAvailabilities.map((a) => a.day));
 
-  const handleSave = () => onSave(selectedDate, selectedTime, timezone);
+    for (let i = 0; i < 7; i++) {
+      const currentDate = today.add(i, "day");
+      const dayName = currentDate.format("dddd");
+
+      // Skip if no availability for this day
+      if (!availableDays.has(dayName)) continue;
+
+      const availability = filteredAvailabilities.find(
+        (a) => a.day === dayName
+      );
+      if (!availability) continue;
+
+      // For today (i === 0), ensure there's a future time slot
+      if (i === 0) {
+        const hasFutureSlot = availability.timeSlots.some(({ time }) => {
+          const slotTime = dayjs(time, "h:mm A");
+          const slotDateTime = currentDate
+            .hour(slotTime.hour())
+            .minute(slotTime.minute())
+            .second(0)
+            .millisecond(0);
+
+          return slotDateTime.isAfter(dayjs());
+        });
+        if (hasFutureSlot) return currentDate;
+      }
+      // For future days, any slot is valid
+      else if (availability.timeSlots.length > 0) {
+        return currentDate;
+      }
+    }
+
+    // Default to today if nothing else qualifies
+    return today;
+  };
+
+  const getInitialSelectedTimeSlot = (
+    initialDate: Dayjs
+  ): TimeSlot | undefined => {
+    const initialDay = initialDate.format("dddd");
+    const initialAvailability = filteredAvailabilities.find(
+      (a) => a.day === initialDay
+    );
+    if (!initialAvailability) return;
+
+    const isToday = initialDate.isSame(dayjs(), "day");
+    const now = dayjs();
+
+    const futureSlots = initialAvailability.timeSlots.filter(({ time }) => {
+      if (!isToday) return true;
+      const slotTime = dayjs(time, "h:mm A");
+      const slotDateTime = initialDate
+        .hour(slotTime.hour())
+        .minute(slotTime.minute())
+        .second(0)
+        .millisecond(0);
+      return slotDateTime.isAfter(now);
+    });
+
+    return futureSlots[0];
+  };
+
+  const initialDate = getInitialSelectedDate();
+  const initialTimeSlot = getInitialSelectedTimeSlot(initialDate);
+
+  const [selectedDate, setSelectedDate] = useState<Dayjs>(initialDate);
+  const [selectedTime, setSelectedTime] = useState<string>(
+    initialTimeSlot?.time || ""
+  );
+  const [selectedSlot, setSelectedSlot] = useState(initialTimeSlot);
+  const [selectedTimezone, setSelectedTimezone] = useState<string>(
+    "America/Toronto (UTC -05:00)"
+  );
+
+  const availableDays = new Set(filteredAvailabilities.map((a) => a.day));
+
+  const handleDateSelect = (date: Dayjs) => {
+    setSelectedDate(date);
+    const selectedDay = date.format("dddd");
+    const selectedAvailability = filteredAvailabilities.find(
+      (a) => a.day === selectedDay
+    );
+
+    const now = dayjs();
+    const firstFutureSlot = selectedAvailability?.timeSlots.find(({ time }) => {
+      const slotTime = dayjs(time, "h:mm A");
+      const slotDateTime = date
+        .hour(slotTime.hour())
+        .minute(slotTime.minute())
+        .second(0)
+        .millisecond(0);
+      return slotDateTime.isAfter(now);
+    })?.time;
+
+    if (firstFutureSlot) {
+      setSelectedTime(firstFutureSlot);
+    }
+  };
+
+  const handleTimeSelect = (slot: TimeSlot) => {
+    setSelectedTime(slot.time);
+    setSelectedSlot(slot);
+  };
+  const handleTimezoneChange = (value: string) => setSelectedTimezone(value);
+
+  const handleSave = (advisor: Advisor) =>
+    onSave({
+      date: selectedDate,
+      timeSlot: selectedSlot!,
+      advisor,
+      availability: filteredAvailabilities.find(
+        (a) => a.day === selectedDate.format("dddd")
+      )!,
+      timezone: selectedTimezone,
+    });
+
+  const selectedDay = selectedDate.format("dddd");
+  const currentDayAvailability = filteredAvailabilities.find(
+    (a) => a.day === selectedDay
+  );
+  const now = dayjs();
+
+  const availableTimeSlots =
+    currentDayAvailability?.timeSlots
+      .filter(({ time }) => {
+        const slotTime = dayjs(time, "h:mm A");
+        const slotDateTime = selectedDate
+          .hour(slotTime.hour())
+          .minute(slotTime.minute())
+          .second(0)
+          .millisecond(0);
+        return slotDateTime.isAfter(now);
+      })
+      .map((slot) => slot) || [];
+  const [modal] = Modal.useModal();
 
   return (
     <Modal
       open={open}
+      destroyOnClose
       title={
         <>
-          <Title level={3}>Book session with {advisor.name}</Title>
+          <Title level={3}>Book a session with {advisor.name}</Title>
           <Divider />
         </>
       }
@@ -65,16 +189,15 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
       width={900}
     >
       <div className="flex flex-col md:flex-row gap-6 mt-5 p-5">
-        {/* Left Column (35%) */}
         <div className="w-full md:w-[35%] border-b md:border-r md:border-b-0 pr-6 pb-6 md:pb-0">
-          {/* <Title level={4} className="mb-4">
-            Reschedule Meeting
-          </Title> */}
-          <Text strong className="block">
-            Advisor's Expertise:
-          </Text>
-          <Text>Resume writing, Career trajectory, Interview preparation</Text>
-
+          {advisor.expertise.length > 0 && (
+            <div>
+              <Text strong className="block">
+                Advisor's Expertise:
+              </Text>
+              <Text>{advisor.expertise.map((e) => e.name).join(", ")}</Text>
+            </div>
+          )}
           <div className="mt-6">
             <Text strong className="block">
               Duration:
@@ -101,7 +224,7 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
           </div>
 
           <Text type="secondary" className="block mt-6 text-pretty">
-            Note: The advisor will be notified fo this meeting schedule.
+            Note: The advisor will be notified of this meeting schedule.
           </Text>
         </div>
 
@@ -115,14 +238,14 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
               </Text>
               <Select
                 className="w-full mb-4"
-                value={timezone}
+                value={selectedTimezone}
                 onChange={handleTimezoneChange}
               >
+                <Option value="America/Toronto (UTC -05:00)">
+                  America/Toronto (UTC -05:00)
+                </Option>
                 <Option value="Africa/Lagos (UTC +01:00)">
                   Africa/Lagos (UTC +01:00)
-                </Option>
-                <Option value="America/New_York (UTC -05:00)">
-                  America/New York (UTC -05:00)
                 </Option>
                 <Option value="Europe/London (UTC +00:00)">
                   Europe/London (UTC +00:00)
@@ -133,10 +256,19 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
                 fullscreen={false}
                 value={selectedDate}
                 onSelect={handleDateSelect}
-                className="ant-picker-calendar-mini w-full"
+                disabledDate={(date) =>
+                  !availableDays.has(date.format("dddd")) ||
+                  date.isBefore(dayjs(), "day")
+                }
               />
               <div className="mt-6 space-y-4">
-                <Button size="large" block type="primary" onClick={handleSave}>
+                <Button
+                  size="large"
+                  block
+                  disabled={availableTimeSlots.length === 0 || !selectedTime}
+                  type="primary"
+                  onClick={() => handleSave(advisor)}
+                >
                   Save Changes
                 </Button>
                 <Button size="large" block className="mr-4" onClick={onCancel}>
@@ -151,16 +283,19 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
                 {selectedDate.format("dddd, MMMM D")}
               </Text>
               <Flex vertical gap="small" className="w-full">
-                {timeSlots.map((time) => (
+                {availableTimeSlots.map((slot) => (
                   <Button
-                    key={time}
+                    key={slot.id}
                     block
-                    type={time === selectedTime ? "primary" : "default"}
-                    onClick={() => handleTimeSelect(time)}
+                    type={slot.time === selectedTime ? "primary" : "default"}
+                    onClick={() => handleTimeSelect(slot)}
                   >
-                    {time}
+                    {slot.time}
                   </Button>
                 ))}
+                {availableTimeSlots.length === 0 && (
+                  <Text type="secondary">No available timeslots</Text>
+                )}
               </Flex>
             </div>
           </div>
