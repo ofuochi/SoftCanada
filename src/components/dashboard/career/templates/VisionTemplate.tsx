@@ -1,4 +1,3 @@
-// templates/VisionTemplate.tsx
 import { ResumeType } from "@/app/types/career";
 import { Col, Divider, Image, Row, Space, Typography } from "antd";
 import dayjs from "dayjs";
@@ -13,9 +12,9 @@ const VisionTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
       <div className="p-10 bg-gray-100">
         <Row gutter={24} align="middle">
           <Col flex="0 0 150px">
-            {data.basics?.image && (
+            {data.basics?.imageFile && (
               <Image
-                src={data.basics.image}
+                src={data.basics.imageFile.base64Url}
                 alt={data.basics.name}
                 width={150}
                 height={150}
@@ -417,4 +416,3 @@ const VisionTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
 };
 
 export default VisionTemplate;
-

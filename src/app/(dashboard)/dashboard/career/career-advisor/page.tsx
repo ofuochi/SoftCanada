@@ -10,21 +10,18 @@ import {
   Card,
   Image,
   message,
-  Modal,
   Space,
   Tabs,
   TabsProps,
   Tag,
-  Typography,
 } from "antd";
 import type { Dayjs } from "dayjs";
 import { useState } from "react";
 import { HiMiniUsers } from "react-icons/hi2";
 import { LuCalendarClock, LuCalendarDays } from "react-icons/lu";
 import { PiSuitcaseSimpleFill } from "react-icons/pi";
-import useSWR from "swr";
-import useSWRInfinite from "swr/infinite";
 import InfiniteScroll from "react-infinite-scroll-component";
+import useSWRInfinite from "swr/infinite";
 
 export type MeetingType = {
   date: Dayjs;
@@ -34,7 +31,6 @@ export type MeetingType = {
   advisor: Advisor;
 };
 
-const { Title, Paragraph, Text, Link } = Typography;
 const { Meta } = Card;
 
 export default function CareerAdvisorPage() {
@@ -55,7 +51,6 @@ export default function CareerAdvisorPage() {
 
   const {
     data: pages,
-    error,
     isLoading,
     size,
     setSize,
