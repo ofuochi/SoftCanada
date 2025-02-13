@@ -148,6 +148,9 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
       date: selectedDate,
       timeSlot: selectedSlot!,
       advisor,
+      availability: filteredAvailabilities.find(
+        (a) => a.day === selectedDate.format("dddd")
+      )!,
       timezone: selectedTimezone,
     });
 
@@ -169,10 +172,12 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
         return slotDateTime.isAfter(now);
       })
       .map((slot) => slot) || [];
+  const [modal] = Modal.useModal();
 
   return (
     <Modal
       open={open}
+      destroyOnClose
       title={
         <>
           <Title level={3}>Book a session with {advisor.name}</Title>

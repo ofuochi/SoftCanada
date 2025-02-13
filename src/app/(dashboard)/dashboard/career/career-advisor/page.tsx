@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { Advisor, TimeSlot } from "@/app/types/advisor";
+import { Advisor, Availability, TimeSlot } from "@/app/types/advisor";
 import { PaginatedList } from "@/app/types/paginatedResponse";
 import { ScheduleMeetingModal } from "@/components/dashboard/advisor/ScheduleMeetingModal";
 import { useApiClient } from "@/hooks/api-hook";
@@ -10,6 +10,7 @@ import {
   Card,
   Image,
   message,
+  Modal,
   Space,
   Tabs,
   TabsProps,
@@ -28,6 +29,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 export type MeetingType = {
   date: Dayjs;
   timeSlot: TimeSlot;
+  availability: Availability;
   timezone: string;
   advisor: Advisor;
 };
@@ -49,7 +51,7 @@ export default function CareerAdvisorPage() {
       ? null
       : `/api/career-advisors?pageNumber=${pageIndex + 1}&pageSize=10`;
 
-  const { get } = useApiClient();
+  const { get, post } = useApiClient();
 
   const {
     data: pages,
@@ -57,16 +59,21 @@ export default function CareerAdvisorPage() {
     isLoading,
     size,
     setSize,
+    mutate,
   } = useSWRInfinite<PaginatedList<Advisor>>(getKey, get);
   const advisors = pages ? pages.flatMap((page) => page.items) : [];
   const hasMore =
     pages && pages.length > 0 ? pages[0].totalPages > pages.length : false;
 
-  const confirmMeetingSchedule = (meeting: MeetingType) => {
+  const confirmMeetingSchedule = async (meeting: MeetingType) => {
     console.log(meeting);
-    messageApi.success(
-      "Meeting scheduled successfully. You will receive an email confirmation."
-    );
+    await post(`/api/career-advisors/${meeting.advisor.id}/book`, {
+      availabilityId: meeting.availability.id,
+      timeSlotId: meeting.timeSlot.id,
+      date: meeting.date.toISOString(),
+    });
+    messageApi.success("Booking confirmed!");
+    await mutate();
     setShowMeetingScheduleModal(false);
   };
 
