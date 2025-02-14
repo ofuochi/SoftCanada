@@ -2,7 +2,7 @@ import React, { forwardRef, useImperativeHandle } from "react";
 import { Booking } from "@/app/types/booking";
 import { PaginatedList } from "@/app/types/paginatedResponse";
 import { useApiClient } from "@/hooks/api-hook";
-import { Avatar, Button, List, Skeleton, Space } from "antd";
+import { Avatar, Button, List, Popconfirm, Skeleton, Space } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
@@ -51,9 +51,7 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
       mutate,
     } = useSWRInfinite<PaginatedList<Booking>>(getKey, get);
 
-    useImperativeHandle(ref, () => ({
-      handleShow: () => mutate(),
-    }));
+    useImperativeHandle(ref, () => ({ handleShow: mutate }));
 
     const bookings = pages ? pages.flatMap((page) => page.items) : [];
     const hasMore =
@@ -87,8 +85,24 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
                 key={item.id}
                 extra={
                   <Space size="middle">
-                    <a>edit</a>
-                    <a>cancel</a>
+                    <Button
+                      type="link"
+                      size="small"
+                      onClick={() => onEdit?.(item)}
+                    >
+                      edit
+                    </Button>
+                    <Popconfirm
+                      title="Cancel the meeting?"
+                      description="Are you sure you want to cancel this meeting?"
+                      onConfirm={() => onCancel?.(item)}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <Button type="link" size="small">
+                        cancel
+                      </Button>
+                    </Popconfirm>
                   </Space>
                 }
                 actions={[
