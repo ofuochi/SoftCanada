@@ -349,3 +349,4 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
 };
 
 export default ResumeBuilder;
+

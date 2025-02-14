@@ -135,21 +135,21 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
             </Link>
           ),
         },
-        {
-          key: "/dashboard/career/jobs",
-          label: (
-            <Link
-              href="/dashboard/career/jobs"
-              className={`font-dm_sans bg-transparent text-sm ${
-                pathname === "/dashboard/career/jobs"
-                  ? "!text-[#010309]"
-                  : "!text-[#808080]"
-              }`}
-            >
-              Job Listings
-            </Link>
-          ),
-        },
+        // {
+        //   key: "/dashboard/career/jobs",
+        //   label: (
+        //     <Link
+        //       href="/dashboard/career/jobs"
+        //       className={`font-dm_sans bg-transparent text-sm ${
+        //         pathname === "/dashboard/career/jobs"
+        //           ? "!text-[#010309]"
+        //           : "!text-[#808080]"
+        //       }`}
+        //     >
+        //       Job Listings
+        //     </Link>
+        //   ),
+        // },
         {
           key: "/dashboard/career/career-advisor",
           label: (
@@ -161,7 +161,7 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
                   : "!text-[#808080]"
               }`}
             >
-              Advisor
+              Advisors
             </Link>
           ),
         },
@@ -434,4 +434,3 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
 };
 
 export default SideBar;
-
