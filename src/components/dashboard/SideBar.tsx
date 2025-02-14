@@ -161,7 +161,7 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
                   : "!text-[#808080]"
               }`}
             >
-              Advisor
+              Career Advisors
             </Link>
           ),
         },
