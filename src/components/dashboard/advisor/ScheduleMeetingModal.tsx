@@ -12,10 +12,12 @@ import {
 } from "antd";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import React, { useState } from "react";
-import { FaRegClock } from "react-icons/fa";
+import { FaLanguage, FaRegClock } from "react-icons/fa";
+import { LuMapPin } from "react-icons/lu";
+import { LiaLanguageSolid } from "react-icons/lia";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -108,6 +110,7 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
     initialTimeSlot?.time || ""
   );
   const [selectedSlot, setSelectedSlot] = useState(initialTimeSlot);
+  const [meetingPurpose, setMeetingPurpose] = useState();
 
   // Timezones you want to offer
   const timezones = ["America/Toronto", "Africa/Lagos", "Europe/London"];
@@ -166,6 +169,7 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
       advisor,
       date: fullDate,
       timeSlot: selectedSlot!,
+      purpose: meetingPurpose,
       availability: filteredAvailabilities.find(
         (a) => a.day === selectedDate.format("dddd")
       )!,
@@ -228,14 +232,24 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
             <Text strong className="block">
               Language:
             </Text>
-            <Text>English only</Text>
+            <Text>
+              <Space>
+                <LiaLanguageSolid />
+                Language
+              </Space>
+            </Text>
           </div>
 
           <div className="mt-6">
             <Text strong className="block">
               Venue:
             </Text>
-            <Text>Google Meet</Text>
+            <Text>
+              <Space>
+                <LuMapPin />
+                Google Meet
+              </Space>
+            </Text>
           </div>
 
           <Text type="secondary" className="block mt-6 text-pretty">
@@ -285,7 +299,7 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
                   type="primary"
                   onClick={() => handleSave(advisor)}
                 >
-                  Save Changes
+                  Schedule Meeting
                 </Button>
                 <Button size="large" block onClick={onCancel}>
                   Cancel

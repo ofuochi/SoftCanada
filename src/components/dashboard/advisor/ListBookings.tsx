@@ -2,13 +2,26 @@ import React, { forwardRef, useImperativeHandle } from "react";
 import { Booking } from "@/app/types/booking";
 import { PaginatedList } from "@/app/types/paginatedResponse";
 import { useApiClient } from "@/hooks/api-hook";
-import { Avatar, Button, List, Popconfirm, Skeleton, Space } from "antd";
+import {
+  Avatar,
+  Button,
+  List,
+  Popconfirm,
+  Skeleton,
+  Space,
+  Tooltip,
+} from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
 import { LuCalendarDays, LuMapPin } from "react-icons/lu";
 import { MdOutlineWatch } from "react-icons/md";
 import useSWRInfinite from "swr/infinite";
+import { Typography } from "antd";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import Link from "next/link";
+
+const { Text } = Typography;
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -27,10 +40,11 @@ export type ListBookingsRef = {
 type ListBookingsProps = {
   onEdit?: (booking: Booking) => void;
   onCancel?: (booking: Booking) => void;
+  onDetails?: (booking: Booking) => void;
 };
 
 const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
-  ({ onCancel, onEdit }, ref) => {
+  ({ onCancel, onEdit, onDetails }, ref) => {
     const getKey = (
       pageIndex: number,
       previousPageData: PaginatedList<Booking>
@@ -42,6 +56,7 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
           }&pageSize=3`;
 
     const { get } = useApiClient();
+    const { user } = useUser();
 
     const {
       data: pages,
@@ -88,6 +103,13 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
                     <Button
                       type="link"
                       size="small"
+                      onClick={() => onDetails?.(item)}
+                    >
+                      details
+                    </Button>
+                    <Button
+                      type="link"
+                      size="small"
                       onClick={() => onEdit?.(item)}
                     >
                       edit
@@ -119,8 +141,34 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
               >
                 <Skeleton avatar title={false} loading={isLoading} active>
                   <List.Item.Meta
-                    avatar={<Avatar src={item.advisorImageUrl} />}
-                    title={<a href="https://ant.design">{item.advisorName}</a>}
+                    avatar={
+                      <Avatar.Group>
+                        <Tooltip title={item.advisorName} placement="top">
+                          <Avatar
+                            src={item.advisorImageUrl}
+                            onClick={() => {}}
+                            className="cursor-pointer"
+                          />
+                        </Tooltip>
+                        <Tooltip title={user?.nickname} placement="top">
+                          <Link href="/dashboard/settings">
+                            <Avatar src={user?.picture} />
+                          </Link>
+                        </Tooltip>
+                      </Avatar.Group>
+                    }
+                    title={
+                      <div>
+                        <Text>
+                          <span className="font-semibold">
+                            2 Participants Attending:
+                          </span>{" "}
+                          <span className="capitalize">
+                            {item.advisorName}, {user?.nickname}
+                          </span>
+                        </Text>
+                      </div>
+                    }
                     description="Ant Design, a design language for background applications, is refined by Ant UED Team"
                   />
                   {item.notes}

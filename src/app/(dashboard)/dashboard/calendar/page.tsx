@@ -73,5 +73,9 @@ export default function CalendarPage() {
     return info.originNode;
   };
 
-  return <Calendar cellRender={cellRender} />;
+  return (
+    <div className="p-5 bg-white">
+      <Calendar cellRender={cellRender} />
+    </div>
+  );
 }
