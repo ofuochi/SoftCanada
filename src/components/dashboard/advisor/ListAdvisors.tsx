@@ -60,11 +60,11 @@ export default function ListAdvisors({
             hoverable={false}
             className="w-full flex flex-col h-full"
             cover={
-              <div className="w-full h-96 flex items-center justify-center bg-gray-50 rounded-t-lg overflow-hidden">
+              <div className="w-full max-h-96 flex items-center justify-center bg-gray-50 rounded-t-lg overflow-hidden">
                 <Image
                   alt={advisor.name}
                   src={advisor.profilePictureUrl}
-                  className="w-full h-full object-cover"
+                  className="w-full min-h-96 object-cover"
                 />
               </div>
             }

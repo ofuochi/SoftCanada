@@ -163,13 +163,12 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
     // 3) Convert localDateTime to the chosen timezone, then store it if needed
     const fullDate = localDateTime.tz(selectedTimezone);
     onSave({
+      advisor,
       date: fullDate,
       timeSlot: selectedSlot!,
-      advisor,
       availability: filteredAvailabilities.find(
         (a) => a.day === selectedDate.format("dddd")
       )!,
-      timezone: selectedTimezone,
     });
   };
 
@@ -311,7 +310,7 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
                   </Button>
                 ))}
                 {availableTimeSlots.length === 0 && (
-                  <Text type="secondary">No available timeslots</Text>
+                  <Text type="secondary">No available time</Text>
                 )}
               </Flex>
             </div>
