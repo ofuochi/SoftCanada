@@ -2,6 +2,7 @@
 
 import { Advisor, Availability, TimeSlot } from "@/app/types/advisor";
 import { PaginatedList } from "@/app/types/paginatedResponse";
+import ListBookings from "@/components/dashboard/advisor/ListBookings";
 import { ScheduleMeetingModal } from "@/components/dashboard/advisor/ScheduleMeetingModal";
 import { useApiClient } from "@/hooks/api-hook";
 import { ArrowRightOutlined, StarFilled } from "@ant-design/icons";
@@ -104,11 +105,11 @@ export default function CareerAdvisorPage() {
                 hoverable={false}
                 className="w-full flex flex-col h-full"
                 cover={
-                  <div className="w-full aspect-video flex items-center justify-center bg-gray-50 rounded-t-lg">
+                  <div className="w-full h-96 flex items-center justify-center bg-gray-50 rounded-t-lg overflow-hidden">
                     <Image
                       alt={advisor.name}
                       src={advisor.profilePictureUrl}
-                      className="!w-full !h-full !object-cover"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                 }
@@ -163,7 +164,7 @@ export default function CareerAdvisorPage() {
       key: "2",
       label: <span className="pl-3">Upcoming Sessions</span>,
       icon: <LuCalendarDays size={20} className="-mb-5" />,
-      children: <p>Notifications settings go here.</p>,
+      children: <ListBookings />,
     },
     {
       key: "3",
