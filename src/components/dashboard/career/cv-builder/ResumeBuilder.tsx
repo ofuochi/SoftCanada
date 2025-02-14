@@ -336,7 +336,7 @@ const ResumeBuilder: React.FC<Props> = ({ setShowCvBuilder }) => {
             <div className="flex-shrink-0 w-full xl:min-w-[210mm] xl:max-w-[210mm] print:mx-0">
               <div
                 ref={(node) => registerResumeRef(node)}
-                className="bg-white border-1"
+                className="bg-white border-1 overflow-hidden"
               >
                 <ResumeTemplate data={resumeData} />
               </div>
