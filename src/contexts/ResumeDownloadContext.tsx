@@ -36,6 +36,10 @@ export function ResumeDownloadProvider({ children }: PropsWithChildren) {
     pageStyle: `
       @page { margin: 20mm; } 
       @media print {
+        * {
+          -webkit-print-color-adjust: exact; /* Chrome/Safari */
+          print-color-adjust: exact; /* Standard */
+        }
         .hide-for-print {
           display: none !important;
         }
@@ -58,3 +62,4 @@ export function ResumeDownloadProvider({ children }: PropsWithChildren) {
     </ResumeDownloadContext.Provider>
   );
 }
+
