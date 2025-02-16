@@ -79,9 +79,9 @@ export default function CareerAdvisorPage() {
 
   const handleTabChange = (key: string) => {
     if (key === TabKeys.UpcomingMeetings) {
-      bookingsRef.current?.handleShow();
+      bookingsRef.current?.refresh();
     } else if (key === TabKeys.MeetingHistory) {
-      bookingHistoryRef.current?.handleShow();
+      bookingHistoryRef.current?.refresh();
     }
   };
 
@@ -97,7 +97,8 @@ export default function CareerAdvisorPage() {
   const handleCancelBooking = async (booking: Booking) => {
     await post(`/api/career-advisors/bookings/${booking.id}/cancel`);
     messageApi.success("Booking cancelled!");
-    bookingsRef.current?.handleShow();
+    console.log("Booking cancelled!");
+    bookingsRef.current?.refresh();
   };
 
   const tabItems: TabsProps["items"] = [
@@ -191,7 +192,7 @@ export default function CareerAdvisorPage() {
             {/* Notes */}
             {selectedBooking.notes && (
               <Space direction="vertical" align="start" className="w-full">
-                <Text strong>Notes</Text>
+                <Text strong>Purpose of meeting</Text>
                 <Text>{selectedBooking.notes}</Text>
               </Space>
             )}

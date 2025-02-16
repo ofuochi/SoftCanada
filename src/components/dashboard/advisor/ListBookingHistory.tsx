@@ -16,7 +16,7 @@ dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
 export type ListBookingHistoryRef = {
-  handleShow: () => void;
+  refresh: () => void;
 };
 type Props = {};
 
@@ -39,7 +39,7 @@ const ListBookingHistory = forwardRef<ListBookingHistoryRef, Props>(
       get
     );
 
-    useImperativeHandle(ref, () => ({ handleShow: mutate }));
+    useImperativeHandle(ref, () => ({ refresh: mutate }));
 
     const columns: TableProps<Booking>["columns"] = [
       {
@@ -58,6 +58,16 @@ const ListBookingHistory = forwardRef<ListBookingHistoryRef, Props>(
         dataIndex: "notes",
         key: "notes",
         render: (notes) => notes,
+      },
+      {
+        title: "Meeting Duration",
+        dataIndex: "endDate",
+        sorter: true,
+        key: "endDate",
+        render: (_, { startDate, endDate }) => {
+          const duration = dayjs(endDate).diff(dayjs(startDate), "minute");
+          return <Text>{duration} minutes</Text>;
+        },
       },
       {
         title: "Date & Time",

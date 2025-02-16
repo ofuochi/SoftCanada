@@ -32,7 +32,7 @@ const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
 );
 
 export type ListBookingsRef = {
-  handleShow: () => void;
+  refresh: () => void;
 };
 
 type Props = {
@@ -67,7 +67,7 @@ const ListBookings = forwardRef<ListBookingsRef, Props>(
       mutate,
     } = useSWRInfinite<PaginatedList<Booking>>(getKey, get);
 
-    useImperativeHandle(ref, () => ({ handleShow: mutate }));
+    useImperativeHandle(ref, () => ({ refresh: mutate }));
 
     const bookings = pages ? pages.flatMap((page) => page.items) : [];
     const hasMore =
@@ -125,7 +125,7 @@ const ListBookings = forwardRef<ListBookingsRef, Props>(
                 actions={[
                   <IconText
                     icon={LuCalendarDays}
-                    text={localDate.format("YYYY-MM-DD")}
+                    text={localDate.format("ddd, MMM D, YYYY")}
                   />,
                   <IconText
                     icon={MdOutlineWatch}
