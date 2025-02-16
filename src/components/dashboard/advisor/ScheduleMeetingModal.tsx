@@ -254,11 +254,11 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
             </div>
             <div>
               <Text strong className="block">
-                Time:
+                Local Time:
               </Text>
               <Space>
                 <MdOutlineWatch />
-                <Text>{(startTime || dayjs()).format("hh:mm A")}</Text>
+                <Text>{(startTime || dayjs()).local().format("hh:mm A")}</Text>
               </Space>
             </div>
             <div>
