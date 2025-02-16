@@ -12,16 +12,13 @@ import { PiSuitcaseSimpleFill } from "react-icons/pi";
 
 const { Meta } = Card;
 
-type ListAdvisorsProps = {
+type Props = {
   onBookSessionClick: (advisor: Advisor) => void;
 };
 
-export default function ListAdvisors({
-  onBookSessionClick,
-}: ListAdvisorsProps) {
+export default function ListAdvisors({ onBookSessionClick }: Props) {
   const { get } = useApiClient();
 
-  // SWR Infinity logic
   const getKey = (
     pageIndex: number,
     previousPageData: PaginatedList<Advisor>

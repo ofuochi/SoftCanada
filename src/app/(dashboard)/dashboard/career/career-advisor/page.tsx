@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { Advisor, Availability, TimeSlot } from "@/app/types/advisor";
+import { Advisor } from "@/app/types/advisor";
 import { Booking } from "@/app/types/booking";
 import ListAdvisors from "@/components/dashboard/advisor/ListAdvisors";
 import ListBookings, {
@@ -35,10 +35,9 @@ const { Text, Title } = Typography;
 
 export type MeetingType = {
   advisor: Advisor;
-  availability: Availability;
-  timeSlot: TimeSlot;
-  date: Dayjs;
-  purpose?: string;
+  startDate: Dayjs;
+  endDate: Dayjs;
+  notes?: string;
 };
 
 export default function CareerAdvisorPage() {
@@ -60,12 +59,10 @@ export default function CareerAdvisorPage() {
   };
 
   const confirmMeetingSchedule = async (meeting: MeetingType) => {
-    await post(`/api/career-advisors/${meeting.advisor.id}/book`, {
-      availabilityId: meeting.availability.id,
-      timeSlotId: meeting.timeSlot.id,
-      note: meeting.purpose,
-      date: meeting.date.toISOString(),
-    });
+    await post<MeetingType>(
+      `/api/career-advisors/${meeting.advisor.id}/book`,
+      meeting
+    );
     messageApi.success("Booking confirmed!");
     setShowMeetingScheduleModal(false);
   };
@@ -133,7 +130,7 @@ export default function CareerAdvisorPage() {
             {/* Avatars of Advisor + User */}
             <Avatar.Group size="large">
               <Avatar
-                src={selectedBooking.advisorImageUrl}
+                src={selectedBooking.advisor.profilePictureUrl}
                 style={{ border: "2px solid #1890ff" }}
               />
               <Avatar
@@ -145,7 +142,7 @@ export default function CareerAdvisorPage() {
             {/* Meeting Headline */}
             <Space direction="vertical" align="center">
               <Title level={5} className="m-0 !mb-2">
-                {`Meeting with ${selectedBooking.advisorName}`}
+                {`Meeting with ${selectedBooking.advisor.name}`}
               </Title>
               <Text type="secondary" className="capitalize">
                 Hosted on Google Meet

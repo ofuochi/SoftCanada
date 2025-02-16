@@ -1,4 +1,3 @@
-import React, { forwardRef, useImperativeHandle } from "react";
 import { Booking } from "@/app/types/booking";
 import { PaginatedList } from "@/app/types/paginatedResponse";
 import { useApiClient } from "@/hooks/api-hook";
@@ -10,16 +9,15 @@ import {
   Skeleton,
   Space,
   Tooltip,
+  Typography,
 } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
+import React, { forwardRef, useImperativeHandle, useMemo } from "react";
 import { LuCalendarDays, LuMapPin } from "react-icons/lu";
 import { MdOutlineWatch } from "react-icons/md";
 import useSWRInfinite from "swr/infinite";
-import { Typography } from "antd";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import Link from "next/link";
 
 const { Text } = Typography;
 
@@ -48,15 +46,20 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
     const getKey = (
       pageIndex: number,
       previousPageData: PaginatedList<Booking>
-    ) =>
-      previousPageData && !previousPageData.items.length
+    ) => {
+      const utcStartDate = encodeURIComponent(
+        dayjs.utc().format("YYYY-MM-DDTHH:mm")
+      );
+
+      console.log(utcStartDate);
+      return previousPageData && !previousPageData.items.length
         ? null
         : `/api/career-advisors/bookings/user?pageNumber=${
             pageIndex + 1
-          }&pageSize=3`;
+          }&pageSize=3&startDate=${utcStartDate}`;
+    };
 
     const { get } = useApiClient();
-    const { user } = useUser();
 
     const {
       data: pages,
@@ -93,7 +96,7 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
           loadMore={loadMore}
           dataSource={bookings}
           renderItem={(item) => {
-            const localDate = dayjs.utc(item.date).local();
+            const localDate = dayjs.utc(item.startDate).local();
 
             return (
               <List.Item
@@ -142,36 +145,27 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
                 <Skeleton avatar title={false} loading={isLoading} active>
                   <List.Item.Meta
                     avatar={
-                      <Avatar.Group>
-                        <Tooltip title={item.advisorName} placement="top">
-                          <Avatar
-                            src={item.advisorImageUrl}
-                            onClick={() => {}}
-                            className="cursor-pointer"
-                          />
-                        </Tooltip>
-                        <Tooltip title={user?.nickname} placement="top">
-                          <Link href="/dashboard/settings">
-                            <Avatar src={user?.picture} />
-                          </Link>
-                        </Tooltip>
-                      </Avatar.Group>
+                      <Tooltip title={item.advisor.name} placement="top">
+                        <Avatar
+                          src={item.advisor.profilePictureUrl}
+                          onClick={() => {}}
+                          className="cursor-pointer"
+                        />
+                      </Tooltip>
                     }
                     title={
                       <div>
                         <Text>
-                          <span className="font-semibold">
-                            2 Participants Attending:
-                          </span>{" "}
                           <span className="capitalize">
-                            {item.advisorName}, {user?.nickname}
+                            {item.advisor.name}
                           </span>
                         </Text>
                       </div>
                     }
-                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                    description={item.advisor.title}
                   />
-                  {item.notes}
+                  Expertise -{" "}
+                  {item.advisor.expertise.map((e) => e.name).join(", ")}
                 </Skeleton>
               </List.Item>
             );

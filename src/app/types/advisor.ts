@@ -1,13 +1,14 @@
+import { Booking } from "./booking"
+
 export interface Advisor {
   id: string
   name: string
   title: string
   email: string
-  rating: number
-  profilePictureUrl: any
+  rating?: number
+  profilePictureUrl: string
   expertise: Expertise[]
-  availabilities: Availability[]
-  bookings: any
+  booking: Booking[]
 }
 
 export interface Expertise {
@@ -18,15 +19,3 @@ export interface Expertise {
   motivationStatement: any
 }
 
-export interface Availability {
-  id: string
-  day: string
-  timeSlots: TimeSlot[]
-  dnd: string
-}
-
-export interface TimeSlot {
-  id: string
-  time: string
-  status: string
-}
