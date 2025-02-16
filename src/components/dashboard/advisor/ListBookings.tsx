@@ -35,13 +35,13 @@ export type ListBookingsRef = {
   handleShow: () => void;
 };
 
-type ListBookingsProps = {
+type Props = {
   onEdit?: (booking: Booking) => void;
   onCancel?: (booking: Booking) => void;
   onDetails?: (booking: Booking) => void;
 };
 
-const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
+const ListBookings = forwardRef<ListBookingsRef, Props>(
   ({ onCancel, onEdit, onDetails }, ref) => {
     const getKey = (
       pageIndex: number,
@@ -51,7 +51,6 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
         dayjs.utc().format("YYYY-MM-DDTHH:mm")
       );
 
-      console.log(utcStartDate);
       return previousPageData && !previousPageData.items.length
         ? null
         : `/api/career-advisors/bookings/user?pageNumber=${
@@ -149,7 +148,6 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
                         <Avatar
                           src={item.advisor.profilePictureUrl}
                           onClick={() => {}}
-                          className="cursor-pointer"
                         />
                       </Tooltip>
                     }
@@ -164,8 +162,7 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
                     }
                     description={item.advisor.title}
                   />
-                  Expertise -{" "}
-                  {item.advisor.expertise.map((e) => e.name).join(", ")}
+                  Purpose for meeting - {item.notes}
                 </Skeleton>
               </List.Item>
             );

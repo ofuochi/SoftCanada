@@ -335,7 +335,11 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
 
                 <Divider />
 
-                <Form.Item name="meetingPurpose" label="Meeting Purpose">
+                <Form.Item
+                  name="meetingPurpose"
+                  label="Meeting Purpose"
+                  rules={[{ required: true, message: "Please enter a topic" }]}
+                >
                   <TextArea rows={4} placeholder="Discussion topic..." />
                 </Form.Item>
               </div>

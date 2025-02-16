@@ -27,6 +27,9 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import ListBookingHistory, {
+  ListBookingHistoryRef,
+} from "@/components/dashboard/advisor/ListBookingHistory";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -40,6 +43,12 @@ export type MeetingType = {
   notes?: string;
 };
 
+const TabKeys = {
+  Advisors: "advisors_list",
+  UpcomingMeetings: "current_sessions_list",
+  MeetingHistory: "past_sessions_list",
+} as const;
+
 export default function CareerAdvisorPage() {
   const { user } = useUser();
 
@@ -49,6 +58,7 @@ export default function CareerAdvisorPage() {
   const [showMeetingDetailsDrawer, setShowMeetingDetailsDrawer] =
     useState(false);
   const bookingsRef = useRef<ListBookingsRef>(null);
+  const bookingHistoryRef = useRef<ListBookingHistoryRef>(null);
   const [selectedAdvisor, setSelectedAdvisor] = useState<Advisor>();
   const [messageApi, contextHolder] = message.useMessage();
   const [selectedBooking, setSelectedBooking] = useState<Booking>();
@@ -68,8 +78,10 @@ export default function CareerAdvisorPage() {
   };
 
   const handleTabChange = (key: string) => {
-    if (key === "current_sessions_list") {
+    if (key === TabKeys.UpcomingMeetings) {
       bookingsRef.current?.handleShow();
+    } else if (key === TabKeys.MeetingHistory) {
+      bookingHistoryRef.current?.handleShow();
     }
   };
 
@@ -84,13 +96,13 @@ export default function CareerAdvisorPage() {
 
   const tabItems: TabsProps["items"] = [
     {
-      key: "advisors_list",
+      key: TabKeys.Advisors,
       label: <span className="pl-3">Career Advisors</span>,
       icon: <HiMiniUsers size={20} className="-mb-5" />,
       children: <ListAdvisors onBookSessionClick={handleBookSessionClicked} />,
     },
     {
-      key: "current_sessions_list",
+      key: TabKeys.UpcomingMeetings,
       label: <span className="pl-3">Upcoming Sessions</span>,
       icon: <LuCalendarDays size={20} className="-mb-5" />,
       children: (
@@ -98,10 +110,10 @@ export default function CareerAdvisorPage() {
       ),
     },
     {
-      key: "past_sessions_list",
+      key: TabKeys.MeetingHistory,
       label: <span className="pl-3">Past Sessions</span>,
       icon: <LuCalendarClock size={20} className="-mb-5" />,
-      children: <p>Past sessions will go here.</p>,
+      children: <ListBookingHistory ref={bookingHistoryRef} />,
     },
   ];
 
@@ -155,8 +167,12 @@ export default function CareerAdvisorPage() {
             <Space direction="vertical" align="center">
               <Text strong>Date & Time</Text>
               <Text>
-                {dayjs.utc(selectedBooking.date).local().format("MMM D, YYYY")}{" "}
-                at {dayjs.utc(selectedBooking.date).local().format("hh:mm A")}
+                {dayjs
+                  .utc(selectedBooking.startDate)
+                  .local()
+                  .format("MMM D, YYYY")}{" "}
+                at{" "}
+                {dayjs.utc(selectedBooking.startDate).local().format("hh:mm A")}
               </Text>
             </Space>
 
