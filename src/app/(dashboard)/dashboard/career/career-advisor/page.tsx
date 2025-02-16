@@ -62,6 +62,7 @@ export default function CareerAdvisorPage() {
   const [selectedAdvisor, setSelectedAdvisor] = useState<Advisor>();
   const [messageApi, contextHolder] = message.useMessage();
   const [selectedBooking, setSelectedBooking] = useState<Booking>();
+  const [pageTab, setPageTab] = useState<string>(TabKeys.Advisors);
 
   const handleBookSessionClicked = (advisor: Advisor) => {
     setSelectedAdvisor(advisor);
@@ -78,6 +79,7 @@ export default function CareerAdvisorPage() {
   };
 
   const handleTabChange = (key: string) => {
+    setPageTab(key);
     if (key === TabKeys.UpcomingMeetings) {
       bookingsRef.current?.refresh();
     } else if (key === TabKeys.MeetingHistory) {
@@ -131,6 +133,17 @@ export default function CareerAdvisorPage() {
   return (
     <>
       <div className="p-6 bg-white min-h-[360px]">
+        <div className="mb-6">
+          {pageTab === TabKeys.Advisors && (
+            <>
+              <Title level={1}>Career Advisors</Title>
+              <Title level={5}>
+                Get career advice from our expert advisors
+              </Title>
+            </>
+          )}
+        </div>
+
         <Tabs items={tabItems} onChange={handleTabChange} />
       </div>
 
