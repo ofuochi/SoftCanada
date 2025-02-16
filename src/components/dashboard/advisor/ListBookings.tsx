@@ -14,7 +14,7 @@ import {
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
-import React, { forwardRef, useImperativeHandle, useMemo } from "react";
+import React, { forwardRef, JSX, useImperativeHandle, useMemo } from "react";
 import { LuCalendarDays, LuMapPin } from "react-icons/lu";
 import { MdOutlineWatch } from "react-icons/md";
 import useSWRInfinite from "swr/infinite";
@@ -24,8 +24,16 @@ const { Text } = Typography;
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
-const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
-  <Space>
+const IconText = ({
+  icon,
+  text,
+  isCancelled,
+}: {
+  icon: React.FC;
+  text: string | JSX.Element;
+  isCancelled?: boolean;
+}) => (
+  <Space className={isCancelled ? "line-through" : ""}>
     {React.createElement(icon)}
     {text}
   </Space>
@@ -69,23 +77,9 @@ const ListBookings = forwardRef<ListBookingsRef, Props>(
 
     useImperativeHandle(ref, () => ({ refresh: mutate }));
 
-    const filteredPages = pages
-      ? pages.map((page) => ({
-          ...page,
-          items: page.items.filter(
-            (booking) => booking.status.toLowerCase() !== "cancelled"
-          ),
-        }))
-      : [];
-
-    const bookings = filteredPages
-      ? filteredPages.flatMap((page) => page.items)
-      : [];
-
+    const bookings = pages ? pages.flatMap((page) => page.items) : [];
     const hasMore =
-      filteredPages && filteredPages.length > 0
-        ? filteredPages[0].totalPages > filteredPages.length
-        : false;
+      pages && pages.length > 0 ? pages[0].totalPages > pages.length : false;
 
     const onLoadMore = () => {
       setSize(size + 1);
@@ -130,7 +124,11 @@ const ListBookings = forwardRef<ListBookingsRef, Props>(
                       okText="Yes"
                       cancelText="No"
                     >
-                      <Button type="link" size="small">
+                      <Button
+                        type="link"
+                        size="small"
+                        disabled={item.status.toLowerCase() === "cancelled"}
+                      >
                         cancel
                       </Button>
                     </Popconfirm>
@@ -138,14 +136,26 @@ const ListBookings = forwardRef<ListBookingsRef, Props>(
                 }
                 actions={[
                   <IconText
+                    isCancelled={item.status.toLowerCase() === "cancelled"}
                     icon={LuCalendarDays}
                     text={localDate.format("ddd, MMM D, YYYY")}
                   />,
                   <IconText
+                    isCancelled={item.status.toLowerCase() === "cancelled"}
                     icon={MdOutlineWatch}
                     text={localDate.format("hh:mm A")}
                   />,
-                  <IconText icon={LuMapPin} text="Google meet" />,
+                  <IconText
+                    isCancelled={item.status.toLowerCase() === "cancelled"}
+                    icon={LuMapPin}
+                    text={
+                      item.status.toLowerCase() === "cancelled" ? (
+                        <Text type="danger">Meeting cancelled</Text>
+                      ) : (
+                        "Google Meet"
+                      )
+                    }
+                  />,
                 ]}
               >
                 <Skeleton avatar title={false} loading={isLoading} active>
@@ -160,16 +170,27 @@ const ListBookings = forwardRef<ListBookingsRef, Props>(
                     }
                     title={
                       <div>
-                        <Text>
+                        <Text
+                          delete={item.status.toLowerCase() === "cancelled"}
+                        >
                           <span className="capitalize">
                             {item.advisor.name}
                           </span>
                         </Text>
                       </div>
                     }
-                    description={item.advisor.title}
+                    description={
+                      <Text
+                        type="secondary"
+                        delete={item.status.toLowerCase() === "cancelled"}
+                      >
+                        {item.advisor.title}
+                      </Text>
+                    }
                   />
-                  Purpose for meeting - {item.notes}
+                  <Text delete={item.status.toLowerCase() === "cancelled"}>
+                    Purpose for meeting - {item.notes}
+                  </Text>
                 </Skeleton>
               </List.Item>
             );
