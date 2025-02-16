@@ -36,13 +36,12 @@ export type ListBookingsRef = {
 };
 
 type Props = {
-  onEdit?: (booking: Booking) => void;
   onCancel?: (booking: Booking) => void;
   onDetails?: (booking: Booking) => void;
 };
 
 const ListBookings = forwardRef<ListBookingsRef, Props>(
-  ({ onCancel, onEdit, onDetails }, ref) => {
+  ({ onCancel, onDetails }, ref) => {
     const getKey = (
       pageIndex: number,
       previousPageData: PaginatedList<Booking>
@@ -109,13 +108,7 @@ const ListBookings = forwardRef<ListBookingsRef, Props>(
                     >
                       details
                     </Button>
-                    <Button
-                      type="link"
-                      size="small"
-                      onClick={() => onEdit?.(item)}
-                    >
-                      edit
-                    </Button>
+
                     <Popconfirm
                       title="Cancel the meeting?"
                       description="Are you sure you want to cancel this meeting?"

@@ -94,6 +94,12 @@ export default function CareerAdvisorPage() {
     setSelectedBooking(undefined);
   };
 
+  const handleCancelBooking = async (booking: Booking) => {
+    await post(`/api/career-advisors/bookings/${booking.id}/cancel`);
+    messageApi.success("Booking cancelled!");
+    bookingsRef.current?.handleShow();
+  };
+
   const tabItems: TabsProps["items"] = [
     {
       key: TabKeys.Advisors,
@@ -106,7 +112,11 @@ export default function CareerAdvisorPage() {
       label: <span className="pl-3">Upcoming Sessions</span>,
       icon: <LuCalendarDays size={20} className="-mb-5" />,
       children: (
-        <ListBookings ref={bookingsRef} onDetails={handleShowMeetingInfo} />
+        <ListBookings
+          ref={bookingsRef}
+          onDetails={handleShowMeetingInfo}
+          onCancel={handleCancelBooking}
+        />
       ),
     },
     {
