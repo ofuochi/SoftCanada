@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { Advisor, Availability, TimeSlot } from "@/app/types/advisor";
+import { Advisor } from "@/app/types/advisor";
 import { Booking } from "@/app/types/booking";
 import ListAdvisors from "@/components/dashboard/advisor/ListAdvisors";
 import ListBookings, {
@@ -27,6 +27,9 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import ListBookingHistory, {
+  ListBookingHistoryRef,
+} from "@/components/dashboard/advisor/ListBookingHistory";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -35,11 +38,16 @@ const { Text, Title } = Typography;
 
 export type MeetingType = {
   advisor: Advisor;
-  availability: Availability;
-  timeSlot: TimeSlot;
-  date: Dayjs;
-  purpose?: string;
+  startDate: Dayjs;
+  endDate: Dayjs;
+  notes?: string;
 };
+
+const TabKeys = {
+  Advisors: "advisors_list",
+  UpcomingMeetings: "current_sessions_list",
+  MeetingHistory: "past_sessions_list",
+} as const;
 
 export default function CareerAdvisorPage() {
   const { user } = useUser();
@@ -50,9 +58,11 @@ export default function CareerAdvisorPage() {
   const [showMeetingDetailsDrawer, setShowMeetingDetailsDrawer] =
     useState(false);
   const bookingsRef = useRef<ListBookingsRef>(null);
+  const bookingHistoryRef = useRef<ListBookingHistoryRef>(null);
   const [selectedAdvisor, setSelectedAdvisor] = useState<Advisor>();
   const [messageApi, contextHolder] = message.useMessage();
   const [selectedBooking, setSelectedBooking] = useState<Booking>();
+  const [pageTab, setPageTab] = useState<string>(TabKeys.Advisors);
 
   const handleBookSessionClicked = (advisor: Advisor) => {
     setSelectedAdvisor(advisor);
@@ -60,19 +70,20 @@ export default function CareerAdvisorPage() {
   };
 
   const confirmMeetingSchedule = async (meeting: MeetingType) => {
-    await post(`/api/career-advisors/${meeting.advisor.id}/book`, {
-      availabilityId: meeting.availability.id,
-      timeSlotId: meeting.timeSlot.id,
-      note: meeting.purpose,
-      date: meeting.date.toISOString(),
-    });
+    await post<MeetingType>(
+      `/api/career-advisors/${meeting.advisor.id}/book`,
+      meeting
+    );
     messageApi.success("Booking confirmed!");
     setShowMeetingScheduleModal(false);
   };
 
   const handleTabChange = (key: string) => {
-    if (key === "current_sessions_list") {
-      bookingsRef.current?.handleShow();
+    setPageTab(key);
+    if (key === TabKeys.UpcomingMeetings) {
+      bookingsRef.current?.refresh();
+    } else if (key === TabKeys.MeetingHistory) {
+      bookingHistoryRef.current?.refresh();
     }
   };
 
@@ -85,32 +96,70 @@ export default function CareerAdvisorPage() {
     setSelectedBooking(undefined);
   };
 
+  const handleCancelBooking = async (booking: Booking) => {
+    await post(`/api/career-advisors/bookings/${booking.id}/cancel`);
+    messageApi.success("Booking cancelled!");
+    bookingsRef.current?.refresh();
+  };
+
   const tabItems: TabsProps["items"] = [
     {
-      key: "advisors_list",
+      key: TabKeys.Advisors,
       label: <span className="pl-3">Career Advisors</span>,
       icon: <HiMiniUsers size={20} className="-mb-5" />,
       children: <ListAdvisors onBookSessionClick={handleBookSessionClicked} />,
     },
     {
-      key: "current_sessions_list",
+      key: TabKeys.UpcomingMeetings,
       label: <span className="pl-3">Upcoming Sessions</span>,
       icon: <LuCalendarDays size={20} className="-mb-5" />,
       children: (
-        <ListBookings ref={bookingsRef} onDetails={handleShowMeetingInfo} />
+        <ListBookings
+          ref={bookingsRef}
+          onDetails={handleShowMeetingInfo}
+          onCancel={handleCancelBooking}
+        />
       ),
     },
     {
-      key: "past_sessions_list",
+      key: TabKeys.MeetingHistory,
       label: <span className="pl-3">Past Sessions</span>,
       icon: <LuCalendarClock size={20} className="-mb-5" />,
-      children: <p>Past sessions will go here.</p>,
+      children: <ListBookingHistory ref={bookingHistoryRef} />,
     },
   ];
 
   return (
     <>
       <div className="p-6 bg-white min-h-[360px]">
+        <div className="mb-6">
+          {pageTab === TabKeys.Advisors && (
+            <>
+              <Title level={1}>Career Advisors</Title>
+              <span className="text-gray-800 font-normal text-xl">
+                Get career advice from our expert advisors
+              </span>
+            </>
+          )}
+          {pageTab === TabKeys.UpcomingMeetings && (
+            <>
+              <Title level={1}>Upcoming Meetings</Title>
+              <span className="text-gray-800 font-normal text-xl">
+                Stay on top of your schedule and connect with your advisors on
+                time.
+              </span>
+            </>
+          )}
+          {pageTab === TabKeys.MeetingHistory && (
+            <>
+              <Title level={1}>Meeting History</Title>
+              <span className="text-gray-800 font-normal text-xl">
+                View and track your past meetings with advisors
+              </span>
+            </>
+          )}
+        </div>
+
         <Tabs items={tabItems} onChange={handleTabChange} />
       </div>
 
@@ -133,7 +182,7 @@ export default function CareerAdvisorPage() {
             {/* Avatars of Advisor + User */}
             <Avatar.Group size="large">
               <Avatar
-                src={selectedBooking.advisorImageUrl}
+                src={selectedBooking.advisor.profilePictureUrl}
                 style={{ border: "2px solid #1890ff" }}
               />
               <Avatar
@@ -145,7 +194,7 @@ export default function CareerAdvisorPage() {
             {/* Meeting Headline */}
             <Space direction="vertical" align="center">
               <Title level={5} className="m-0 !mb-2">
-                {`Meeting with ${selectedBooking.advisorName}`}
+                {`Meeting with ${selectedBooking.advisor.name}`}
               </Title>
               <Text type="secondary" className="capitalize">
                 Hosted on Google Meet
@@ -158,8 +207,12 @@ export default function CareerAdvisorPage() {
             <Space direction="vertical" align="center">
               <Text strong>Date & Time</Text>
               <Text>
-                {dayjs.utc(selectedBooking.date).local().format("MMM D, YYYY")}{" "}
-                at {dayjs.utc(selectedBooking.date).local().format("hh:mm A")}
+                {dayjs
+                  .utc(selectedBooking.startDate)
+                  .local()
+                  .format("MMM D, YYYY")}{" "}
+                at{" "}
+                {dayjs.utc(selectedBooking.startDate).local().format("hh:mm A")}
               </Text>
             </Space>
 
@@ -168,7 +221,7 @@ export default function CareerAdvisorPage() {
             {/* Notes */}
             {selectedBooking.notes && (
               <Space direction="vertical" align="start" className="w-full">
-                <Text strong>Notes</Text>
+                <Text strong>Purpose of meeting</Text>
                 <Text>{selectedBooking.notes}</Text>
               </Space>
             )}

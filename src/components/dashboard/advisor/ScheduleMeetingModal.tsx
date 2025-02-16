@@ -1,197 +1,209 @@
-import { MeetingType } from "@/app/(dashboard)/dashboard/career/career-advisor/page";
-import { Advisor, TimeSlot } from "@/app/types/advisor";
+import React, { useEffect } from "react";
 import {
-  Button,
-  Calendar,
-  Divider,
-  Flex,
   Modal,
+  Calendar,
   Select,
-  Space,
+  Button,
   Typography,
+  Divider,
+  Space,
+  TimePicker,
+  Input,
+  Alert,
+  Form,
+  FormInstance,
+  Avatar,
 } from "antd";
-import type { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import React, { useState } from "react";
-import { FaLanguage, FaRegClock } from "react-icons/fa";
-import { LuMapPin } from "react-icons/lu";
+import timezone from "dayjs/plugin/timezone";
+import { FaRegClock } from "react-icons/fa";
+import { LuCalendarDays, LuMapPin } from "react-icons/lu";
 import { LiaLanguageSolid } from "react-icons/lia";
+import { Advisor } from "@/app/types/advisor";
+import { Booking } from "@/app/types/booking";
+import { MdOutlineWatch } from "react-icons/md";
+import { MeetingType } from "@/app/(dashboard)/dashboard/career/career-advisor/page";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
+const { RangePicker: TimeRangePicker } = TimePicker;
+const { TextArea } = Input;
 
-// Extend dayjs with UTC and Timezone
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-interface RescheduleMeetingModalProps {
+const START_HOUR = 9;
+const END_HOUR = 17;
+const SLOT_INTERVAL = 30;
+const NUM_DAYS_AHEAD = 30;
+const MAX_DURATION_MINUTES = 30;
+
+const generateTimeSlots = (date: Dayjs): Dayjs[] => {
+  const slots: Dayjs[] = [];
+  let current = date.hour(START_HOUR).minute(0).second(0).millisecond(0);
+  const end = date.hour(END_HOUR).minute(0).second(0).millisecond(0);
+
+  while (current.isBefore(end)) {
+    slots.push(current);
+    current = current.add(SLOT_INTERVAL, "minute");
+  }
+  return slots;
+};
+
+const intervalsOverlap = (
+  start1: Dayjs,
+  end1: Dayjs,
+  start2: Dayjs,
+  end2: Dayjs
+) => start1.isBefore(end2) && end1.isAfter(start2);
+
+const hasFree30MinSlot = (date: Dayjs, bookings: Booking[]): boolean => {
+  const potentialStarts = generateTimeSlots(date);
+  return potentialStarts.some((slotStart) => {
+    const slotEnd = slotStart.add(SLOT_INTERVAL, "minute");
+    if (slotStart.isBefore(dayjs())) return false;
+    return !bookings.some((bk) => {
+      const bkStart = dayjs(bk.startDate);
+      const bkEnd = dayjs(bk.endDate);
+      return intervalsOverlap(slotStart, slotEnd, bkStart, bkEnd);
+    });
+  });
+};
+
+interface ScheduleMeetingModalProps {
   open: boolean;
   advisor: Advisor;
   onCancel: () => void;
-  onSave: (meeting: MeetingType) => void;
+  onSave: (payload: MeetingType) => void;
 }
 
-export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
+interface FormValues {
+  selectedDate: Dayjs;
+  timeRange?: [Dayjs?, Dayjs?];
+  meetingPurpose: string;
+  timezone: string;
+}
+
+export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
   open,
-  onCancel,
   advisor,
+  onCancel,
   onSave,
 }) => {
-  // Filter out "Do Not Disturb"
-  const filteredAvailabilities = advisor.availabilities.filter(
-    (a) => a.dnd !== "true"
-  );
+  const [form] = Form.useForm<FormValues>();
+  const selectedDate = Form.useWatch("selectedDate", form);
+  const selectedTimezone = Form.useWatch("timezone", form);
 
-  // Helper to find initial date
-  const getInitialSelectedDate = (): Dayjs => {
-    const today = dayjs();
-    const availableDays = new Set(filteredAvailabilities.map((a) => a.day));
-
-    for (let i = 0; i < 7; i++) {
-      const currentDate = today.add(i, "day");
-      const dayName = currentDate.format("dddd");
-
-      if (!availableDays.has(dayName)) {
-        continue;
-      }
-      const availability = filteredAvailabilities.find(
-        (a) => a.day === dayName
-      );
-      if (!availability) continue;
-
-      if (i === 0) {
-        const hasFutureSlot = availability.timeSlots.some(({ time }) => {
-          const slotTime = dayjs(time, "h:mm A");
-          const slotDateTime = currentDate
-            .hour(slotTime.hour())
-            .minute(slotTime.minute());
-          return slotDateTime.isAfter(dayjs());
-        });
-        if (hasFutureSlot) return currentDate;
-      } else if (availability.timeSlots.length > 0) {
-        return currentDate;
+  const findInitialDate = (): Dayjs => {
+    const today = dayjs().startOf("day");
+    for (let i = 0; i <= NUM_DAYS_AHEAD; i++) {
+      const d = today.add(i, "day");
+      if (hasFree30MinSlot(d, advisor.booking)) {
+        return d;
       }
     }
     return today;
   };
 
-  // Helper to find first future slot
-  const getInitialSelectedTimeSlot = (
-    initialDate: Dayjs
-  ): TimeSlot | undefined => {
-    const initialDay = initialDate.format("dddd");
-    const initialAvailability = filteredAvailabilities.find(
-      (a) => a.day === initialDay
-    );
-    if (!initialAvailability) return;
-
-    const isToday = initialDate.isSame(dayjs(), "day");
-    const now = dayjs();
-
-    const futureSlots = initialAvailability.timeSlots.filter(({ time }) => {
-      if (!isToday) return true;
-      const slotTime = dayjs(time, "h:mm A");
-      const slotDateTime = initialDate
-        .hour(slotTime.hour())
-        .minute(slotTime.minute());
-      return slotDateTime.isAfter(now);
+  useEffect(() => {
+    if (!open) return;
+    form.resetFields();
+    form.setFieldsValue({
+      selectedDate: findInitialDate(),
+      timezone: "America/Toronto",
+      meetingPurpose: "",
     });
+  }, [open, form]);
 
-    return futureSlots[0];
+  const disabledDate = (current: Dayjs) => {
+    const today = dayjs().startOf("day");
+    if (current.isBefore(today, "day")) return true;
+    if (current.isAfter(today.add(NUM_DAYS_AHEAD, "day"))) return true;
+    return !hasFree30MinSlot(current, advisor.booking);
   };
 
-  const initialDate = getInitialSelectedDate();
-  const [selectedDate, setSelectedDate] = useState<Dayjs>(initialDate);
-
-  const initialTimeSlot = getInitialSelectedTimeSlot(initialDate);
-  const [selectedTime, setSelectedTime] = useState<string>(
-    initialTimeSlot?.time || ""
-  );
-  const [selectedSlot, setSelectedSlot] = useState(initialTimeSlot);
-  const [meetingPurpose, setMeetingPurpose] = useState();
-
-  // Timezones you want to offer
-  const timezones = ["America/Toronto", "Africa/Lagos", "Europe/London"];
-
-  const [selectedTimezone, setSelectedTimezone] =
-    useState<string>("America/Toronto");
-
-  const availableDays = new Set(filteredAvailabilities.map((a) => a.day));
-
-  const handleDateSelect = (date: Dayjs) => {
-    setSelectedDate(date);
-    const dayName = date.format("dddd");
-    const selectedAvailability = filteredAvailabilities.find(
-      (a) => a.day === dayName
-    );
-    if (!selectedAvailability) return;
-
-    const isToday = date.isSame(dayjs(), "day");
-    const now = dayjs();
-    const firstFutureSlot = selectedAvailability.timeSlots.find(({ time }) => {
-      if (!isToday) return true;
-      const slotTime = dayjs(time, "h:mm A");
-      const slotDateTime = date.hour(slotTime.hour()).minute(slotTime.minute());
-      return slotDateTime.isAfter(now);
-    })?.time;
-
-    if (firstFutureSlot) {
-      setSelectedTime(firstFutureSlot);
-    }
+  const handleDateSelect = (value: Dayjs) => {
+    form.setFieldsValue({
+      selectedDate: value,
+    });
   };
 
-  const handleTimeSelect = (slot: TimeSlot) => {
-    setSelectedTime(slot.time);
-    setSelectedSlot(slot);
-  };
-
-  const handleTimezoneChange = (value: string) => {
-    setSelectedTimezone(value);
-  };
-
-  const handleSave = (advisor: Advisor) => {
-    // Combine selected date + time + timezone to build the final date
-    // 1) parse the selectedTime (like "1:00 PM") to dayjs
-    const timeParsed = dayjs(selectedTime, "h:mm A");
-
-    // 2) set the hours/minutes in the selectedDate
-    const localDateTime = selectedDate
-      .hour(timeParsed.hour())
-      .minute(timeParsed.minute())
+  const handleFormSubmit = async (values: FormValues) => {
+    if (!values.timeRange) return;
+    const [start, end] = values.timeRange;
+    if (!start || !end) return;
+    const realStart = values.selectedDate
+      .hour(start.hour())
+      .minute(start.minute())
+      .second(0)
+      .millisecond(0);
+    const realEnd = values.selectedDate
+      .hour(end.hour())
+      .minute(end.minute())
       .second(0)
       .millisecond(0);
 
-    // 3) Convert localDateTime to the chosen timezone, then store it if needed
-    const fullDate = localDateTime.tz(selectedTimezone);
+    const overlap = advisor.booking.some((bk) => {
+      const bkStart = dayjs(bk.startDate);
+      const bkEnd = dayjs(bk.endDate);
+      return intervalsOverlap(realStart, realEnd, bkStart, bkEnd);
+    });
+
+    if (overlap) {
+      form.setFields([
+        {
+          name: "timeRange",
+          errors: ["This time slot overlaps with an existing booking"],
+        },
+      ]);
+      return;
+    }
+
     onSave({
       advisor,
-      date: fullDate,
-      timeSlot: selectedSlot!,
-      purpose: meetingPurpose,
-      availability: filteredAvailabilities.find(
-        (a) => a.day === selectedDate.format("dddd")
-      )!,
+      startDate: realStart.tz(values.timezone),
+      endDate: realEnd.tz(values.timezone),
+      notes: values.meetingPurpose,
     });
   };
 
-  const selectedDay = selectedDate.format("dddd");
-  const currentDayAvailability = filteredAvailabilities.find(
-    (a) => a.day === selectedDay
-  );
+  const timeRangeValidator = async (_: any, value?: [Dayjs?, Dayjs?]) => {
+    if (!value) throw new Error("Please select a time range");
 
-  const now = dayjs();
-  const availableTimeSlots =
-    currentDayAvailability?.timeSlots.filter(({ time }) => {
-      const slotTime = dayjs(time, "h:mm A");
-      const slotDateTime = selectedDate
-        .hour(slotTime.hour())
-        .minute(slotTime.minute())
+    const [start, end] = value;
+    if (!start) throw new Error("Please select a start time");
+    if (!end) throw new Error("Please select an end time");
+
+    // Get duration in minutes
+    const diffMin = end.diff(start, "minute");
+    if (diffMin < 5 || diffMin > 30) {
+      throw new Error("Duration must be between 5 to 30 minutes");
+    }
+
+    // Combine selected date with time to check past times
+    const selectedDate = form.getFieldValue("selectedDate");
+    if (selectedDate) {
+      const fullStartTime = selectedDate
+        .hour(start.hour())
+        .minute(start.minute())
         .second(0)
         .millisecond(0);
-      return slotDateTime.isAfter(now);
-    }) || [];
+
+      if (fullStartTime.isBefore(dayjs())) {
+        throw new Error("Cannot select a time in the past");
+      }
+    }
+  };
+
+  const [startTime, endTime] = Form.useWatch<[Dayjs?, Dayjs?]>(
+    "timeRange",
+    form
+  ) || [undefined, undefined];
+
+  const duration = endTime?.diff(startTime, "minute");
+  const fullDate = selectedDate?.format("dddd, MMMM D, YYYY");
 
   return (
     <Modal
@@ -199,7 +211,7 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
       destroyOnClose
       title={
         <>
-          <Title level={3}>Book a session with {advisor.name}</Title>
+          <Title level={3}>Schedule Session</Title>
           <Divider />
         </>
       }
@@ -207,130 +219,143 @@ export const ScheduleMeetingModal: React.FC<RescheduleMeetingModalProps> = ({
       footer={null}
       width={900}
     >
-      <div className="flex flex-col md:flex-row gap-6 mt-5 p-5">
-        <div className="w-full md:w-[35%] border-b md:border-r md:border-b-0 pr-6 pb-6 md:pb-0">
-          {advisor.expertise.length > 0 && (
+      <Form form={form} layout="vertical" onFinish={handleFormSubmit}>
+        <div className="flex flex-col md:flex-row gap-6 mt-5 p-5">
+          <div className="w-full md:w-[35%] border-b md:border-r md:border-b-0 pr-6 pb-6 md:pb-0 space-y-6">
+            <div>
+              <Avatar
+                size={228}
+                src={advisor.profilePictureUrl}
+                className="mx-auto"
+              />
+              <Title level={4} className="text-center mt-4">
+                {advisor.name}
+              </Title>
+              <Text type="secondary" className="text-center block">
+                {advisor.title}
+              </Text>
+            </div>
+            {advisor.expertise?.length > 0 && (
+              <div>
+                <Text strong className="block">
+                  Expertise:
+                </Text>
+                <Text>{advisor.expertise.map((e) => e.name).join(", ")}</Text>
+              </div>
+            )}
+            <div className="mt-6">
+              <Text strong className="block">
+                Date:
+              </Text>
+              <Space>
+                <LuCalendarDays />
+                <Text>{fullDate}</Text>
+              </Space>
+            </div>
             <div>
               <Text strong className="block">
-                Advisor's Expertise:
+                Local Time:
               </Text>
-              <Text>{advisor.expertise.map((e) => e.name).join(", ")}</Text>
-            </div>
-          )}
-          <div className="mt-6">
-            <Text strong className="block">
-              Duration:
-            </Text>
-            <Text>
               <Space>
-                <FaRegClock /> 30 mins
+                <MdOutlineWatch />
+                <Text>{(startTime || dayjs()).local().format("hh:mm A")}</Text>
               </Space>
-            </Text>
-          </div>
-
-          <div className="mt-6">
-            <Text strong className="block">
-              Language:
-            </Text>
-            <Text>
+            </div>
+            <div>
+              <Text strong className="block">
+                Duration:
+              </Text>
+              <Space>
+                <FaRegClock />
+                <Text>{duration || 5} mins</Text>
+              </Space>
+            </div>
+            <div>
+              <Text strong className="block">
+                Language:
+              </Text>
               <Space>
                 <LiaLanguageSolid />
-                Language
+                <Text>English</Text>
               </Space>
-            </Text>
-          </div>
-
-          <div className="mt-6">
-            <Text strong className="block">
-              Venue:
-            </Text>
-            <Text>
+            </div>
+            <div>
+              <Text strong className="block">
+                Venue:
+              </Text>
               <Space>
                 <LuMapPin />
-                Google Meet
+                <Text>Google Meet</Text>
               </Space>
+            </div>
+            <Text type="secondary" className="block mt-6">
+              Note: Advisor will be notified upon scheduling.
             </Text>
           </div>
 
-          <Text type="secondary" className="block mt-6 text-pretty">
-            Note: The advisor will be notified of this meeting schedule.
-          </Text>
-        </div>
+          <div className="w-full md:w-[65%]">
+            <div className="flex flex-col gap-6">
+              <div className="w-full">
+                <Text strong className="block mb-4">
+                  Select Date
+                </Text>
+                <Form.Item name="timezone" label="Timezone">
+                  <Select>
+                    {["America/Toronto", "Africa/Lagos", "Europe/London"].map(
+                      (tz) => (
+                        <Option key={tz} value={tz}>
+                          {`${tz} (UTC ${dayjs().tz(tz).format("Z")})`}
+                        </Option>
+                      )
+                    )}
+                  </Select>
+                </Form.Item>
+                <Form.Item name="selectedDate">
+                  <Calendar
+                    fullscreen={false}
+                    disabledDate={disabledDate}
+                    onSelect={handleDateSelect}
+                  />
+                </Form.Item>
+              </div>
 
-        {/* Right Column (65%) */}
-        <div className="w-full md:w-[65%]">
-          <div className="flex flex-col md:flex-row gap-6">
-            {/* Calendar Section */}
-            <div className="flex-1 min-w-[280px]">
-              <Text strong className="block mb-4">
-                Select a new date &amp; time
-              </Text>
-
-              <Select
-                className="w-full mb-4"
-                value={selectedTimezone}
-                onChange={handleTimezoneChange}
-              >
-                {timezones.map((tz) => {
-                  const offset = dayjs().tz(tz).format("Z"); // e.g. "-05:00"
-                  const label = `${tz} (UTC ${offset})`;
-                  return (
-                    <Option key={tz} value={tz}>
-                      {label}
-                    </Option>
-                  );
-                })}
-              </Select>
-
-              <Calendar
-                fullscreen={false}
-                value={selectedDate}
-                onSelect={handleDateSelect}
-                disabledDate={(date) =>
-                  !availableDays.has(date.format("dddd")) ||
-                  date.isBefore(dayjs(), "day")
-                }
-              />
-              <div className="mt-6 space-y-4">
-                <Button
-                  size="large"
-                  block
-                  disabled={availableTimeSlots.length === 0 || !selectedTime}
-                  type="primary"
-                  onClick={() => handleSave(advisor)}
+              <div className="w-full">
+                <Form.Item
+                  name="timeRange"
+                  label="Select a 5 to 30 minutes time slot"
+                  rules={[{ validator: timeRangeValidator, required: true }]}
                 >
-                  Schedule Meeting
+                  <TimeRangePicker
+                    format="hh:mm A"
+                    minuteStep={5}
+                    className="w-full"
+                    disabled={!selectedDate}
+                  />
+                </Form.Item>
+
+                <Divider />
+
+                <Form.Item
+                  name="meetingPurpose"
+                  label="Meeting Purpose"
+                  rules={[{ required: true, message: "Please enter a topic" }]}
+                >
+                  <TextArea rows={4} placeholder="Discussion topic..." />
+                </Form.Item>
+              </div>
+
+              <div className="mt-4 space-y-4">
+                <Button size="large" block type="primary" htmlType="submit">
+                  Confirm Booking
                 </Button>
                 <Button size="large" block onClick={onCancel}>
                   Cancel
                 </Button>
               </div>
             </div>
-
-            {/* Time Slots Section */}
-            <div className="md:w-[200px] flex-shrink-0">
-              <Text strong className="block mb-4">
-                {selectedDate.format("dddd, MMMM D")}
-              </Text>
-              <Flex vertical gap="small" className="w-full">
-                {availableTimeSlots.map((slot) => (
-                  <Button
-                    key={slot.id}
-                    block
-                    type={slot.time === selectedTime ? "primary" : "default"}
-                    onClick={() => handleTimeSelect(slot)}
-                  >
-                    {slot.time}
-                  </Button>
-                ))}
-                {availableTimeSlots.length === 0 && (
-                  <Text type="secondary">No available time</Text>
-                )}
-              </Flex>
-            </div>
           </div>
         </div>
-      </div>
+      </Form>
     </Modal>
   );
 };

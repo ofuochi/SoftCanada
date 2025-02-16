@@ -1,4 +1,3 @@
-import React, { forwardRef, useImperativeHandle } from "react";
 import { Booking } from "@/app/types/booking";
 import { PaginatedList } from "@/app/types/paginatedResponse";
 import { useApiClient } from "@/hooks/api-hook";
@@ -10,53 +9,63 @@ import {
   Skeleton,
   Space,
   Tooltip,
+  Typography,
 } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
+import React, { forwardRef, JSX, useImperativeHandle, useMemo } from "react";
 import { LuCalendarDays, LuMapPin } from "react-icons/lu";
 import { MdOutlineWatch } from "react-icons/md";
 import useSWRInfinite from "swr/infinite";
-import { Typography } from "antd";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import Link from "next/link";
 
 const { Text } = Typography;
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 
-const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
-  <Space>
+const IconText = ({
+  icon,
+  text,
+  isCancelled,
+}: {
+  icon: React.FC;
+  text: string | JSX.Element;
+  isCancelled?: boolean;
+}) => (
+  <Space className={isCancelled ? "line-through" : ""}>
     {React.createElement(icon)}
     {text}
   </Space>
 );
 
 export type ListBookingsRef = {
-  handleShow: () => void;
+  refresh: () => void;
 };
 
-type ListBookingsProps = {
-  onEdit?: (booking: Booking) => void;
+type Props = {
   onCancel?: (booking: Booking) => void;
   onDetails?: (booking: Booking) => void;
 };
 
-const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
-  ({ onCancel, onEdit, onDetails }, ref) => {
+const ListBookings = forwardRef<ListBookingsRef, Props>(
+  ({ onCancel, onDetails }, ref) => {
     const getKey = (
       pageIndex: number,
       previousPageData: PaginatedList<Booking>
-    ) =>
-      previousPageData && !previousPageData.items.length
+    ) => {
+      const utcStartDate = encodeURIComponent(
+        dayjs.utc().format("YYYY-MM-DDTHH:mm")
+      );
+
+      return previousPageData && !previousPageData.items.length
         ? null
         : `/api/career-advisors/bookings/user?pageNumber=${
             pageIndex + 1
-          }&pageSize=3`;
+          }&pageSize=3&startDate=${utcStartDate}`;
+    };
 
     const { get } = useApiClient();
-    const { user } = useUser();
 
     const {
       data: pages,
@@ -66,7 +75,7 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
       mutate,
     } = useSWRInfinite<PaginatedList<Booking>>(getKey, get);
 
-    useImperativeHandle(ref, () => ({ handleShow: mutate }));
+    useImperativeHandle(ref, () => ({ refresh: mutate }));
 
     const bookings = pages ? pages.flatMap((page) => page.items) : [];
     const hasMore =
@@ -93,7 +102,7 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
           loadMore={loadMore}
           dataSource={bookings}
           renderItem={(item) => {
-            const localDate = dayjs.utc(item.date).local();
+            const localDate = dayjs.utc(item.startDate).local();
 
             return (
               <List.Item
@@ -107,13 +116,7 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
                     >
                       details
                     </Button>
-                    <Button
-                      type="link"
-                      size="small"
-                      onClick={() => onEdit?.(item)}
-                    >
-                      edit
-                    </Button>
+
                     <Popconfirm
                       title="Cancel the meeting?"
                       description="Are you sure you want to cancel this meeting?"
@@ -121,7 +124,11 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
                       okText="Yes"
                       cancelText="No"
                     >
-                      <Button type="link" size="small">
+                      <Button
+                        type="link"
+                        size="small"
+                        disabled={item.status.toLowerCase() === "cancelled"}
+                      >
                         cancel
                       </Button>
                     </Popconfirm>
@@ -129,49 +136,61 @@ const ListBookings = forwardRef<ListBookingsRef, ListBookingsProps>(
                 }
                 actions={[
                   <IconText
+                    isCancelled={item.status.toLowerCase() === "cancelled"}
                     icon={LuCalendarDays}
-                    text={localDate.format("YYYY-MM-DD")}
+                    text={localDate.format("ddd, MMM D, YYYY")}
                   />,
                   <IconText
+                    isCancelled={item.status.toLowerCase() === "cancelled"}
                     icon={MdOutlineWatch}
                     text={localDate.format("hh:mm A")}
                   />,
-                  <IconText icon={LuMapPin} text="Google meet" />,
+                  <IconText
+                    isCancelled={item.status.toLowerCase() === "cancelled"}
+                    icon={LuMapPin}
+                    text={
+                      item.status.toLowerCase() === "cancelled" ? (
+                        <Text type="danger">Meeting cancelled</Text>
+                      ) : (
+                        "Google Meet"
+                      )
+                    }
+                  />,
                 ]}
               >
                 <Skeleton avatar title={false} loading={isLoading} active>
                   <List.Item.Meta
                     avatar={
-                      <Avatar.Group>
-                        <Tooltip title={item.advisorName} placement="top">
-                          <Avatar
-                            src={item.advisorImageUrl}
-                            onClick={() => {}}
-                            className="cursor-pointer"
-                          />
-                        </Tooltip>
-                        <Tooltip title={user?.nickname} placement="top">
-                          <Link href="/dashboard/settings">
-                            <Avatar src={user?.picture} />
-                          </Link>
-                        </Tooltip>
-                      </Avatar.Group>
+                      <Tooltip title={item.advisor.name} placement="top">
+                        <Avatar
+                          src={item.advisor.profilePictureUrl}
+                          onClick={() => {}}
+                        />
+                      </Tooltip>
                     }
                     title={
                       <div>
-                        <Text>
-                          <span className="font-semibold">
-                            2 Participants Attending:
-                          </span>{" "}
+                        <Text
+                          delete={item.status.toLowerCase() === "cancelled"}
+                        >
                           <span className="capitalize">
-                            {item.advisorName}, {user?.nickname}
+                            {item.advisor.name}
                           </span>
                         </Text>
                       </div>
                     }
-                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                    description={
+                      <Text
+                        type="secondary"
+                        delete={item.status.toLowerCase() === "cancelled"}
+                      >
+                        {item.advisor.title}
+                      </Text>
+                    }
                   />
-                  {item.notes}
+                  <Text delete={item.status.toLowerCase() === "cancelled"}>
+                    Purpose for meeting - {item.notes}
+                  </Text>
                 </Skeleton>
               </List.Item>
             );

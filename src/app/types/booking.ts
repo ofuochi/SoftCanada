@@ -1,13 +1,12 @@
+import { Advisor } from "./advisor";
+
 export interface Booking {
   id: string;
   clientEmail: string;
-  advisorId: string;
-  advisorName: string;
-  advisorImageUrl: string;
-  date: string;
-  availabilityId: string;
-  timeSlotId: string;
+  startDate: Date,
+  endDate: Date,
+  advisor: Advisor;
   status: string;
-  notes: any;
+  notes: string;
   createdAt: string;
 }
