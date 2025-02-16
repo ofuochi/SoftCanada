@@ -69,9 +69,23 @@ const ListBookings = forwardRef<ListBookingsRef, Props>(
 
     useImperativeHandle(ref, () => ({ refresh: mutate }));
 
-    const bookings = pages ? pages.flatMap((page) => page.items) : [];
+    const filteredPages = pages
+      ? pages.map((page) => ({
+          ...page,
+          items: page.items.filter(
+            (booking) => booking.status.toLowerCase() !== "cancelled"
+          ),
+        }))
+      : [];
+
+    const bookings = filteredPages
+      ? filteredPages.flatMap((page) => page.items)
+      : [];
+
     const hasMore =
-      pages && pages.length > 0 ? pages[0].totalPages > pages.length : false;
+      filteredPages && filteredPages.length > 0
+        ? filteredPages[0].totalPages > filteredPages.length
+        : false;
 
     const onLoadMore = () => {
       setSize(size + 1);

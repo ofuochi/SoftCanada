@@ -62,7 +62,6 @@ const ListBookingHistory = forwardRef<ListBookingHistoryRef, Props>(
       {
         title: "Meeting Duration",
         dataIndex: "endDate",
-        sorter: true,
         key: "endDate",
         render: (_, { startDate, endDate }) => {
           const duration = dayjs(endDate).diff(dayjs(startDate), "minute");

@@ -7,6 +7,6 @@ export interface Booking {
   endDate: Date,
   advisor: Advisor;
   status: string;
-  notes: any;
+  notes: string;
   createdAt: string;
 }

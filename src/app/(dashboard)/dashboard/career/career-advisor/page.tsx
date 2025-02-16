@@ -99,7 +99,6 @@ export default function CareerAdvisorPage() {
   const handleCancelBooking = async (booking: Booking) => {
     await post(`/api/career-advisors/bookings/${booking.id}/cancel`);
     messageApi.success("Booking cancelled!");
-    console.log("Booking cancelled!");
     bookingsRef.current?.refresh();
   };
 
@@ -137,9 +136,26 @@ export default function CareerAdvisorPage() {
           {pageTab === TabKeys.Advisors && (
             <>
               <Title level={1}>Career Advisors</Title>
-              <Title level={5}>
+              <span className="text-gray-800 font-normal text-xl">
                 Get career advice from our expert advisors
-              </Title>
+              </span>
+            </>
+          )}
+          {pageTab === TabKeys.UpcomingMeetings && (
+            <>
+              <Title level={1}>Upcoming Meetings</Title>
+              <span className="text-gray-800 font-normal text-xl">
+                Stay on top of your schedule and connect with your advisors on
+                time.
+              </span>
+            </>
+          )}
+          {pageTab === TabKeys.MeetingHistory && (
+            <>
+              <Title level={1}>Meeting History</Title>
+              <span className="text-gray-800 font-normal text-xl">
+                View and track your past meetings with advisors
+              </span>
             </>
           )}
         </div>
