@@ -75,8 +75,6 @@ export default function AdvisorApplicationPage() {
     };
 
   const handleChange = (info: UploadChangeParam<UploadFile<any>>) => {
-    console.log(info, "file info");
-
     if (info.file.error) {
       console.log(info.file.error, "error uploading image");
     }
