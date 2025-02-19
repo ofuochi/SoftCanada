@@ -34,7 +34,7 @@ export function ResumeDownloadProvider({ children }: PropsWithChildren) {
     contentRef,
     documentTitle: `my-resume-${new Date().toISOString()}`,
     pageStyle: `
-      @page { margin: 20mm; } 
+      @page { margin: 20mm;   } 
       @media print {
         * {
           -webkit-print-color-adjust: exact; /* Chrome/Safari */
