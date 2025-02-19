@@ -1,6 +1,8 @@
 "use client";
 
 import { useDashboard } from "@/contexts/DashboardContext";
+import { useApiClient } from "@/hooks/api-hook";
+import { convertToFormData } from "@/utils/convertToFormData";
 import {
   MinusCircleOutlined,
   PlusOutlined,
@@ -14,7 +16,6 @@ import {
   Input,
   message,
   Select,
-  Space,
   Upload,
 } from "antd";
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
@@ -31,11 +32,11 @@ type Expertise = {
 type CareerAdvisorApplicationInfo = {
   email?: string;
   title?: string;
-  contact?: string;
-  fullName?: string;
+  phoneNumber?: string;
+  name?: string;
   expertise?: Expertise[];
-  qualtifications?: string;
-  profileImage: FileList;
+  qualifications?: string;
+  image: string;
   motivationStatement?: string;
 };
 
@@ -55,13 +56,23 @@ const maxSize = 5 * 1024 * 1024;
 export default function AdvisorApplicationPage() {
   const { advisorType } = useDashboard();
   const [form] = Form.useForm<CareerAdvisorApplicationInfo>();
+  const { setFieldValue, resetFields } = form;
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
+  const { post } = useApiClient();
 
-  const handleSubmit: FormProps<CareerAdvisorApplicationInfo>["onFinish"] = (
-    values
-  ) => {
-    console.log("Submitted:", values);
-  };
+  const handleSubmit: FormProps<CareerAdvisorApplicationInfo>["onFinish"] =
+    async (values) => {
+      const payload = {
+        careerAdvisor: {
+          ...values,
+        },
+      };
+      const formDataItem = convertToFormData(payload);
+      await post("/api/career-advisors", formDataItem).then(() => {
+        resetFields();
+        setImageUrl(undefined);
+      });
+    };
 
   const handleChange = (info: UploadChangeParam<UploadFile<any>>) => {
     console.log(info, "file info");
@@ -87,6 +98,7 @@ export default function AdvisorApplicationPage() {
     if (info.file.status === "done") {
       getBase64(info.file.originFileObj as FileType, (url) => {
         setImageUrl(url);
+        setFieldValue("image", url);
       });
     }
   };
@@ -139,7 +151,7 @@ export default function AdvisorApplicationPage() {
       <Form
         form={form}
         name="CareerAdvisorApplicationInfo"
-        initialValues={{ expertiseDetails: [{}] }}
+        initialValues={{ expertise: [{}] }}
         onFinish={handleSubmit}
         // onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -156,7 +168,7 @@ export default function AdvisorApplicationPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <Form.Item<CareerAdvisorApplicationInfo>
                   label="Full name"
-                  name="fullName"
+                  name="name"
                   className="w-full"
                   rules={[
                     { required: true, message: "Please input your full name" },
@@ -180,7 +192,7 @@ export default function AdvisorApplicationPage() {
 
                 <Form.Item<CareerAdvisorApplicationInfo>
                   label="Contact number"
-                  name="contact"
+                  name="phoneNumber"
                   rules={[
                     {
                       required: true,
@@ -217,7 +229,7 @@ export default function AdvisorApplicationPage() {
               <h6 className="font-medium text-black text-xl">
                 Expertise Details
               </h6>
-              <Form.List name="expertiseDetails">
+              <Form.List name="expertise">
                 {(fields, { add, remove }) => (
                   <>
                     {fields.map(({ key, name, ...restField }) => (
@@ -228,7 +240,7 @@ export default function AdvisorApplicationPage() {
                         <div className="w-full flex flex-col md:flex-row gap-5 flex-1">
                           <Form.Item
                             {...restField}
-                            name={[name, "expertise"]}
+                            name={[name, "areaOfExpertise"]}
                             label="Select Area of Expertise"
                             rules={[
                               {
@@ -251,7 +263,7 @@ export default function AdvisorApplicationPage() {
 
                           <Form.Item
                             {...restField}
-                            name={[name, "experience"]}
+                            name={[name, "yearsOfExperience"]}
                             label="Years of Experience"
                             rules={[
                               {
@@ -302,7 +314,7 @@ export default function AdvisorApplicationPage() {
               <h6 className="font-medium text-black text-xl">Qualifications</h6>
               <div className="flex">
                 <Form.Item<CareerAdvisorApplicationInfo>
-                  name="qualtifications"
+                  name="qualifications"
                   label="List any certifications or relevant experience."
                   className="w-full"
                   rules={[
@@ -329,7 +341,15 @@ export default function AdvisorApplicationPage() {
               <h6 className="font-medium text-black text-xl">
                 Upload Cover Image
               </h6>
-              <Form.Item name="profileImage">
+              <Form.Item
+                name="image"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your cover image",
+                  },
+                ]}
+              >
                 <Upload
                   maxCount={1}
                   onChange={handleChange}
