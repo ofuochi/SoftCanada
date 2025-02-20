@@ -1,32 +1,125 @@
 "use client";
 
 import { useDashboard } from "@/contexts/DashboardContext";
-import { Button, Form, FormProps, Input, Select } from "antd";
+import { useApiClient } from "@/hooks/api-hook";
+import { convertToFormData } from "@/utils/convertToFormData";
+import {
+  MinusCircleOutlined,
+  PlusOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
+import {
+  Button,
+  Form,
+  FormProps,
+  GetProp,
+  Input,
+  message,
+  Select,
+  Upload,
+} from "antd";
+import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import Image from "next/image";
+import { useState } from "react";
 
 const { Option } = Select;
+
+type Expertise = {
+  areaOfExpertise: string;
+  yearsOfExperience: string;
+};
 
 type CareerAdvisorApplicationInfo = {
   email?: string;
   title?: string;
-  contact?: string;
-  fullName?: string;
-  expertise?: string;
-  experience?: string;
-  qualtifications?: string;
-  // availability?: string;
+  phoneNumber?: string;
+  name?: string;
+  expertise?: Expertise[];
+  qualifications?: string;
+  image: string;
   motivationStatement?: string;
 };
+
+type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
+
+const getBase64 = (img: FileType, callback: (url: string) => void) => {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result as string));
+  reader.readAsDataURL(img);
+};
+// Allowed image MIME types
+const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+
+// Max file size (5MB in bytes)
+const maxSize = 5 * 1024 * 1024;
 
 export default function AdvisorApplicationPage() {
   const { advisorType } = useDashboard();
   const [form] = Form.useForm<CareerAdvisorApplicationInfo>();
+  const { setFieldValue, resetFields } = form;
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
+  const { post } = useApiClient();
 
-  const handleSubmit: FormProps<CareerAdvisorApplicationInfo>["onFinish"] = (
-    values
-  ) => {
-    console.log("Submitted:", values);
+  const handleSubmit: FormProps<CareerAdvisorApplicationInfo>["onFinish"] =
+    async (values) => {
+      const payload = {
+        careerAdvisor: {
+          ...values,
+        },
+      };
+      const formDataItem = convertToFormData(payload);
+      await post("/api/career-advisors", formDataItem).then(() => {
+        resetFields();
+        setImageUrl(undefined);
+      });
+    };
+
+  const handleChange = (info: UploadChangeParam<UploadFile<any>>) => {
+    if (info.file.error) {
+      console.log(info.file.error, "error uploading image");
+    }
+
+    if (info.file.type && !allowedTypes.includes(info.file.type)) {
+      const error = `File type ${info.file.type} is not supported. Please upload an image (JPEG, PNG, GIF, or WEBP)`;
+      message.error(error);
+    }
+
+    if (info.file.size && info.file.size > maxSize) {
+      const error = `File size exceeds 5MB limit. Current file size: ${(
+        info.file.size /
+        1024 /
+        1024
+      ).toFixed(2)}MB`;
+      message.error(error);
+    }
+
+    if (info.file.status === "done") {
+      getBase64(info.file.originFileObj as FileType, (url) => {
+        setImageUrl(url);
+        setFieldValue("image", url);
+      });
+    }
   };
+
+  const handleBeforeUpload = (file: File) => {
+    // Check file type
+    if (!allowedTypes.includes(file.type)) {
+      const error = `File type ${file.type} is not supported. Please upload an image (JPEG, PNG, GIF, or WEBP)`;
+      message.error(error);
+    }
+
+    // Check file size
+    if (file.size > maxSize) {
+      const error = `File size exceeds 5MB limit. Current file size: ${(
+        file.size /
+        1024 /
+        1024
+      ).toFixed(2)}MB`;
+      message.error(error);
+    }
+  };
+
+  const handleRemove = (file: UploadFile<any>) => setImageUrl(undefined);
 
   return (
     <section className="w-full bg-white pb-[30px] px-5 rounded-xl max-w-[1320px]">
@@ -56,7 +149,7 @@ export default function AdvisorApplicationPage() {
       <Form
         form={form}
         name="CareerAdvisorApplicationInfo"
-        initialValues={{ remember: true }}
+        initialValues={{ expertise: [{}] }}
         onFinish={handleSubmit}
         // onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -73,7 +166,7 @@ export default function AdvisorApplicationPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <Form.Item<CareerAdvisorApplicationInfo>
                   label="Full name"
-                  name="fullName"
+                  name="name"
                   className="w-full"
                   rules={[
                     { required: true, message: "Please input your full name" },
@@ -97,7 +190,7 @@ export default function AdvisorApplicationPage() {
 
                 <Form.Item<CareerAdvisorApplicationInfo>
                   label="Contact number"
-                  name="contact"
+                  name="phoneNumber"
                   rules={[
                     {
                       required: true,
@@ -134,51 +227,84 @@ export default function AdvisorApplicationPage() {
               <h6 className="font-medium text-black text-xl">
                 Expertise Details
               </h6>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <Form.Item<CareerAdvisorApplicationInfo>
-                  name="expertise"
-                  label="Select Areas of Expertise"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your areas of expertise",
-                    },
-                  ]}
-                >
-                  <Select
-                    placeholder="Select option"
-                    className="!min-h-9 !font-poppins"
-                    allowClear
-                  >
-                    <Option value="Tech"> Tech </Option>
-                    <Option value="Finance"> Finance </Option>
-                    <Option value="Engineering"> Engineering </Option>
-                  </Select>
-                </Form.Item>
+              <Form.List name="expertise">
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <div
+                        key={key}
+                        className="flex items-center gap-2.5 flex-col-reverse md:flex-row"
+                      >
+                        <div className="w-full flex flex-col md:flex-row gap-5 flex-1">
+                          <Form.Item
+                            {...restField}
+                            name={[name, "areaOfExpertise"]}
+                            label="Select Area of Expertise"
+                            rules={[
+                              {
+                                required: true,
+                                message: "Please input your areas of expertise",
+                              },
+                            ]}
+                            className="w-full"
+                          >
+                            <Select
+                              placeholder="Select option"
+                              className="!min-h-9 !font-poppins"
+                              allowClear
+                            >
+                              <Option value="Tech">Tech</Option>
+                              <Option value="Finance">Finance</Option>
+                              <Option value="Engineering">Engineering</Option>
+                            </Select>
+                          </Form.Item>
 
-                <Form.Item<CareerAdvisorApplicationInfo>
-                  name="experience"
-                  label="Years of Experience"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Please input your years of experience",
-                    },
-                  ]}
-                >
-                  <Select
-                    placeholder="Select option"
-                    className="!h-9 !font-poppins"
-                    allowClear
-                  >
-                    <Option value="1"> 1 </Option>
-                    <Option value="2"> 2 </Option>
-                    <Option value="3"> 3 </Option>
-                    <Option value="4"> 4 </Option>
-                    <Option value="5"> 5 </Option>
-                  </Select>
-                </Form.Item>
-              </div>
+                          <Form.Item
+                            {...restField}
+                            name={[name, "yearsOfExperience"]}
+                            label="Years of Experience"
+                            rules={[
+                              {
+                                required: true,
+                                message:
+                                  "Please input your years of experience",
+                              },
+                            ]}
+                            className="w-full"
+                          >
+                            <Select
+                              placeholder="Select option"
+                              className="!h-9 !font-poppins"
+                              allowClear
+                            >
+                              {[1, 2, 3, 4, 5].map((year) => (
+                                <Option key={year} value={year.toString()}>
+                                  {year}
+                                </Option>
+                              ))}
+                            </Select>
+                          </Form.Item>
+                        </div>
+
+                        <MinusCircleOutlined
+                          className="max-md:mr-auto"
+                          onClick={() => remove(name)}
+                        />
+                      </div>
+                    ))}
+                    <Form.Item>
+                      <Button
+                        className="!bg-[#010B18] !border !border-[#010B18] !w-[167px] !h-[44px] rounded-[6px] !text-white !font-poppins"
+                        onClick={() => add()}
+                        block
+                        icon={<PlusOutlined />}
+                      >
+                        Add Expertise
+                      </Button>
+                    </Form.Item>
+                  </>
+                )}
+              </Form.List>
             </div>
 
             {/* Qualifications */}
@@ -186,7 +312,7 @@ export default function AdvisorApplicationPage() {
               <h6 className="font-medium text-black text-xl">Qualifications</h6>
               <div className="flex">
                 <Form.Item<CareerAdvisorApplicationInfo>
-                  name="qualtifications"
+                  name="qualifications"
                   label="List any certifications or relevant experience."
                   className="w-full"
                   rules={[
@@ -209,50 +335,42 @@ export default function AdvisorApplicationPage() {
           </div>
 
           <div className="flex flex-col flex-1 gap-6 w-full xl:max-w-[500px]">
-            {/* Availability */}
-            {/* <div className="flex flex-col gap-5">
-              <h6 className="font-medium text-black text-xl">Availability</h6>
-              <div className="flex flex-col gap-4">
-                <Form.Item<CareerAdvisorApplicationInfo>
-                  name="availability"
-                  className="w-full"
-                  label="Select preferred days and times for sessions."
-                  rules={[
-                    {
-                      required: true,
-                      message:
-                        "Please input your preferred session days and times",
-                    },
-                  ]}
+            <div className="flex flex-col gap-5">
+              <h6 className="font-medium text-black text-xl">
+                Upload Cover Image
+              </h6>
+              <Form.Item
+                name="image"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your cover image",
+                  },
+                ]}
+              >
+                <Upload
+                  maxCount={1}
+                  onChange={handleChange}
+                  onRemove={handleRemove}
+                  beforeUpload={handleBeforeUpload}
+                  accept=".jpeg, .png, .gif, .webp"
+                  className="!font-poppins"
                 >
-                  <Select
-                    mode="multiple"
-                    placeholder="Select option"
-                    className="!min-h-9 !font-poppins"
-                    allowClear
-                  >
-                    {availabilityTime.map((time, i) => (
-                      <Option value={time} key={i}>
-                        {" "}
-                        {time}{" "}
-                      </Option>
-                    ))}
-                  </Select>
-                </Form.Item>
-
-                <div className="flex gap-3 min-[590px]:justify-between flex-wrap">
-                  {availabilityTime.map((time, i) => (
-                    <span
-                      key={i}
-                      onMouseDown={handleAvailabitityClick(time)}
-                      className="border-[0.6px] border-[#808080] h-[30px] w-[74.5px] rounded text-black font-semibold text-[10px] flex justify-center items-center md:cursor-pointer"
-                    >
-                      {time}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div> */}
+                  <Button className="!font-poppins" icon={<UploadOutlined />}>
+                    Click to Upload
+                  </Button>
+                  {imageUrl && (
+                    <img
+                      width={495}
+                      height={314}
+                      alt="preview"
+                      src={imageUrl}
+                      className="object-cover mt-6"
+                    />
+                  )}
+                </Upload>
+              </Form.Item>
+            </div>
 
             {/* Motivation Statement */}
             <div className="flex flex-col gap-5">
