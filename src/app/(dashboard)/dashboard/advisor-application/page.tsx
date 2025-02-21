@@ -353,14 +353,14 @@ export default function AdvisorApplicationPage() {
                   onChange={handleChange}
                   onRemove={handleRemove}
                   beforeUpload={handleBeforeUpload}
-                  accept=".jpeg, .png, .gif, .webp"
+                  accept=".jpeg, .png, .webp, .jpg"
                   className="!font-poppins"
                 >
                   <Button className="!font-poppins" icon={<UploadOutlined />}>
                     Click to Upload
                   </Button>
                   {imageUrl && (
-                    <img
+                    <Image
                       width={495}
                       height={314}
                       alt="preview"
@@ -408,4 +408,3 @@ export default function AdvisorApplicationPage() {
     </section>
   );
 }
-

@@ -62,7 +62,7 @@ const ListBookings = forwardRef<ListBookingsRef, Props>(
         ? null
         : `/api/career-advisors/bookings/user?pageNumber=${
             pageIndex + 1
-          }&pageSize=3&startDate=${utcStartDate}`;
+          }&pageSize=3&startDate=${utcStartDate}&sortOrder=asc`;
     };
 
     const { get } = useApiClient();
