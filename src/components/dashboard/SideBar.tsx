@@ -297,139 +297,136 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
   }, []);
 
   return (
-    <>
-      {/* Collapsible Sider */}
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={setCollapsed}
-        breakpoint="lg"
-        theme="light"
-        width={250}
-        collapsedWidth="80"
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          bottom: 0,
-          height: "100vh",
-          overflow: "auto",
-          borderRight: "1px solid #f0f0f0",
-        }}
+    <Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={setCollapsed}
+      breakpoint="lg"
+      theme="light"
+      width={250}
+      collapsedWidth="80"
+      style={{
+        position: "fixed",
+        left: 0,
+        top: 0,
+        bottom: 0,
+        height: "100vh",
+        overflow: "auto",
+        borderRight: "1px solid #f0f0f0",
+      }}
+    >
+      <div className="h-16 m-4 text-center align-middle">
+        <Logo size={collapsed ? "small" : "medium"} path="/dashboard" />
+      </div>
+      <Menu
+        mode="inline"
+        items={menuItems}
+        selectedKeys={[pathname]}
+        defaultOpenKeys={[pathname.split("/").slice(0, 3).join("/")]}
+        className="space-y-5"
+      />
+
+      {collapsed && (
+        <section className="w-full px-4 ml-2.5 mt-10">
+          <Image
+            width={120}
+            height={120}
+            alt="advisorImage"
+            src={"/images/advisorImage.svg"}
+            className={`w-[120px] h-[120px] ${
+              showAdvisorImage ? "opacity-100 block" : "opacity-0 hidden"
+            }`}
+          />
+          <Image
+            width={120}
+            height={120}
+            alt="realEstateImage"
+            src={"/images/realEstateImage.svg"}
+            className={`w-[120px] h-[120px] ${
+              showAdvisorImage ? "opacity-0 hidden" : "opacity-100 block"
+            }`}
+          />
+        </section>
+      )}
+
+      <section
+        className={`w-full max-w-[230px] h-[278px] ${
+          collapsed ? "opacity-0" : "opacity-100"
+        } border border-[#CBCBCB] !rounded-xl bg-[#F5F5F5] mt-10 px-4 ml-2.5`}
       >
-        <div className="h-16 m-4 text-center align-middle">
-          <Logo size={collapsed ? "small" : "medium"} path="/dashboard" />
-        </div>
-        <Menu
-          mode="inline"
-          items={menuItems}
-          selectedKeys={[pathname]}
-          defaultOpenKeys={[pathname.split("/").slice(0, 3).join("/")]}
-          className="space-y-5"
-        />
-
-        {collapsed && (
-          <section className="w-full px-4 ml-2.5 mt-10">
-            <Image
-              width={120}
-              height={120}
-              alt="advisorImage"
-              src={"/images/advisorImage.svg"}
-              className={`w-[120px] h-[120px] ${
-                showAdvisorImage ? "opacity-100 block" : "opacity-0 hidden"
-              }`}
-            />
-            <Image
-              width={120}
-              height={120}
-              alt="realEstateImage"
-              src={"/images/realEstateImage.svg"}
-              className={`w-[120px] h-[120px] ${
-                showAdvisorImage ? "opacity-0 hidden" : "opacity-100 block"
-              }`}
-            />
-          </section>
-        )}
-
-        <section
-          className={`w-full max-w-[230px] h-[278px] ${
-            collapsed ? "opacity-0" : "opacity-100"
-          } border border-[#CBCBCB] !rounded-xl bg-[#F5F5F5] mt-10 px-4 ml-2.5`}
-        >
-          <div className="flex justify-between">
-            <div
-              className={`${
-                advisorIndex === 0 ? "bg-[#CBCBCB] p-2.5" : "bg-[#010309] p-3"
-              } h-fit flex justify-center items-center rounded-full mt-5 cursor-pointer`}
-              onMouseDown={handlePrevious}
-            >
-              <ChevronLeft color="#ffffff" size={16} />
-            </div>
-
-            <div className="">
-              <Image
-                width={122}
-                height={122}
-                alt="facetime"
-                src={"/images/career-advisor/facetime.svg"}
-                className={""}
-              />
-            </div>
-
-            <div
-              className={`${
-                advisorIndex === 3 ? "bg-[#CBCBCB] p-2.5" : "bg-[#010309] p-3"
-              } flex h-fit justify-center items-center rounded-full mt-3.5 cursor-pointer`}
-              onMouseDown={handleNext}
-            >
-              <ChevronRight color="#ffffff" size={24} />
-            </div>
+        <div className="flex justify-between">
+          <div
+            className={`${
+              advisorIndex === 0 ? "bg-[#CBCBCB] p-2.5" : "bg-[#010309] p-3"
+            } h-fit flex justify-center items-center rounded-full mt-5 cursor-pointer`}
+            onMouseDown={handlePrevious}
+          >
+            <ChevronLeft color="#ffffff" size={16} />
           </div>
 
-          <div className="flex items-center gap-[3px] w-fit mx-auto mt-2">
-            {advisors.map((advisor) => {
-              if (advisorIndex === advisor.id) {
-                return (
-                  <div
-                    key={advisor.id}
-                    className="w-[5px] h-[5px] bg-[#010309] rounded-full"
-                  />
-                );
-              }
+          <div className="">
+            <Image
+              width={122}
+              height={122}
+              alt="facetime"
+              src={"/images/career-advisor/facetime.svg"}
+              className={""}
+            />
+          </div>
+
+          <div
+            className={`${
+              advisorIndex === 3 ? "bg-[#CBCBCB] p-2.5" : "bg-[#010309] p-3"
+            } flex h-fit justify-center items-center rounded-full mt-3.5 cursor-pointer`}
+            onMouseDown={handleNext}
+          >
+            <ChevronRight color="#ffffff" size={24} />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-[3px] w-fit mx-auto mt-2">
+          {advisors.map((advisor) => {
+            if (advisorIndex === advisor.id) {
               return (
                 <div
                   key={advisor.id}
-                  className="w-[5px] h-[5px] bg-[#72FA32] rounded-full"
+                  className="w-[5px] h-[5px] bg-[#010309] rounded-full"
                 />
               );
-            })}
-          </div>
+            }
+            return (
+              <div
+                key={advisor.id}
+                className="w-[5px] h-[5px] bg-[#72FA32] rounded-full"
+              />
+            );
+          })}
+        </div>
 
-          <section className="mt-2">
-            <div className={""}>
-              <div className="mt-2 flex flex-col gap-2.5">
-                <h4 className="font-lato font-semibold text-center text-base text-black">
-                  {advisors[advisorIndex].title}
-                </h4>
-                <span className="text-[11px] font-lato font-medium text-center text-[#4F4F4F]">
-                  {advisors[advisorIndex].content}
-                </span>
-              </div>
-              <div className="flex justify-center mt-2">
-                <Button
-                  onMouseDown={handleGetStarted(
-                    advisors[advisorIndex].advisorType
-                  )}
-                  className="bg-white w-full max-w-[166px] rounded-md !border !border-white !shadow-none py-2 px-2.5 min-h-[35px] text-[#010309] hover:!text-[#010309] !font-semibold text-[13px] font-poppins flex justify-center items-center"
-                >
-                  Get Started
-                </Button>
-              </div>
+        <section className="mt-2">
+          <div className={""}>
+            <div className="mt-2 flex flex-col gap-2.5">
+              <h4 className="font-lato font-semibold text-center text-base text-black">
+                {advisors[advisorIndex].title}
+              </h4>
+              <span className="text-[11px] font-lato font-medium text-center text-[#4F4F4F]">
+                {advisors[advisorIndex].content}
+              </span>
             </div>
-          </section>
+            <div className="flex justify-center mt-2">
+              <Button
+                onMouseDown={handleGetStarted(
+                  advisors[advisorIndex].advisorType
+                )}
+                className="bg-white w-full max-w-[166px] rounded-md !border !border-white !shadow-none py-2 px-2.5 min-h-[35px] text-[#010309] hover:!text-[#010309] !font-semibold text-[13px] font-poppins flex justify-center items-center"
+              >
+                Get Started
+              </Button>
+            </div>
+          </div>
         </section>
-      </Sider>
-    </>
+      </section>
+    </Sider>
   );
 };
 

@@ -51,7 +51,7 @@ export default function ListAdvisors({ onBookSessionClick }: Props) {
       }
       scrollableTarget="scrollableContainer"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-3 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4 p-4">
         {advisors.map((advisor) => (
           <Card
             key={advisor.id}
@@ -103,7 +103,15 @@ export default function ListAdvisors({ onBookSessionClick }: Props) {
               color="default"
               variant="filled"
               block
-              className="mt-5"
+              className="mt-5 
+              transition-all 
+              duration-300 
+              ease-in-out 
+              hover:scale-[1.02]
+              [&_.ant-btn-icon]:transition-all 
+              [&_.ant-btn-icon]:duration-300 
+              [&:hover_.ant-btn-icon]:translate-x-3 
+              [&:hover_.ant-btn-icon]:scale-125"
               icon={<ArrowRightOutlined />}
               iconPosition="end"
               onClick={() => onBookSessionClick(advisor)}

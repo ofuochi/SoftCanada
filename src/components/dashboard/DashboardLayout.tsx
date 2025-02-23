@@ -101,7 +101,7 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
 
             {/* Footer */}
             <Footer className="text-center font-dm_sans">
-              SoftCanada ©{new Date().getFullYear()} Created by Your Company
+              SoftCanada ©{new Date().getFullYear()}
             </Footer>
           </Layout>
         </Layout>
