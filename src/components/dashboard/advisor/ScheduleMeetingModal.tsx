@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Calendar,
@@ -8,7 +8,6 @@ import {
   Divider,
   Space,
   Input,
-  Alert,
   Form,
   Avatar,
 } from "antd";
@@ -33,7 +32,7 @@ dayjs.extend(timezone);
 
 const START_HOUR = 9;
 const END_HOUR = 17;
-const SLOT_INTERVAL = 30; // minutes
+const SLOT_INTERVAL_MINUTES = 30; // in minutes
 const NUM_DAYS_AHEAD = 30;
 
 const generateTimeSlots = (date: Dayjs): Dayjs[] => {
@@ -43,7 +42,7 @@ const generateTimeSlots = (date: Dayjs): Dayjs[] => {
 
   while (current.isBefore(end)) {
     slots.push(current);
-    current = current.add(SLOT_INTERVAL, "minute");
+    current = current.add(SLOT_INTERVAL_MINUTES, "minute");
   }
   return slots;
 };
@@ -58,7 +57,7 @@ const intervalsOverlap = (
 const hasFree30MinSlot = (date: Dayjs, bookings: Booking[]): boolean => {
   const potentialStarts = generateTimeSlots(date);
   return potentialStarts.some((slotStart) => {
-    const slotEnd = slotStart.add(SLOT_INTERVAL, "minute");
+    const slotEnd = slotStart.add(SLOT_INTERVAL_MINUTES, "minute");
     if (slotStart.isBefore(dayjs())) return false;
     return !bookings.some((bk) => {
       const bkStart = dayjs(bk.startDate);
@@ -72,7 +71,7 @@ interface ScheduleMeetingModalProps {
   open: boolean;
   advisor: Advisor;
   onCancel: () => void;
-  onSave: (payload: MeetingType) => void;
+  onSave: (payload: MeetingType) => Promise<Booking>;
 }
 
 interface FormValues {
@@ -89,15 +88,25 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
   onSave,
 }) => {
   const [form] = Form.useForm<FormValues>();
+
+  // Use local state for bookings so we can update immediately.
+  const [localBookings, setLocalBookings] = useState<Booking[]>(
+    advisor.booking
+  );
+
+  // Keep local bookings in sync with advisor prop if it changes.
+  useEffect(() => {
+    setLocalBookings(advisor.booking);
+  }, [advisor.booking]);
+
   const selectedDate = Form.useWatch("selectedDate", form);
   const selectedTimeSlot = Form.useWatch("selectedTime", form);
-  const selectedTimezone = Form.useWatch("timezone", form);
 
   const findInitialDate = (): Dayjs => {
     const today = dayjs().startOf("day");
     for (let i = 0; i <= NUM_DAYS_AHEAD; i++) {
       const d = today.add(i, "day");
-      if (hasFree30MinSlot(d, advisor.booking)) {
+      if (hasFree30MinSlot(d, localBookings)) {
         return d;
       }
     }
@@ -124,7 +133,7 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
     const today = dayjs().startOf("day");
     if (current.isBefore(today, "day")) return true;
     if (current.isAfter(today.add(NUM_DAYS_AHEAD, "day"))) return true;
-    return !hasFree30MinSlot(current, advisor.booking);
+    return !hasFree30MinSlot(current, localBookings);
   };
 
   const handleDateSelect = (value: Dayjs) => {
@@ -133,15 +142,15 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
     });
   };
 
-  // Check if an individual slot is available
+  // Check if an individual slot is available.
   const isSlotAvailable = (slot: Dayjs): boolean => {
     if (slot.isBefore(dayjs())) return false;
-    return !advisor.booking.some((bk) => {
+    return !localBookings.some((bk) => {
       const bkStart = dayjs(bk.startDate);
       const bkEnd = dayjs(bk.endDate);
       return intervalsOverlap(
         slot,
-        slot.add(SLOT_INTERVAL, "minute"),
+        slot.add(SLOT_INTERVAL_MINUTES, "minute"),
         bkStart,
         bkEnd
       );
@@ -151,9 +160,9 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
   const handleFormSubmit = async (values: FormValues) => {
     if (!values.selectedTime) return;
     const realStart = values.selectedTime;
-    const realEnd = realStart.add(SLOT_INTERVAL, "minute");
+    const realEnd = realStart.add(SLOT_INTERVAL_MINUTES, "minute");
 
-    const overlap = advisor.booking.some((bk) => {
+    const overlap = localBookings.some((bk) => {
       const bkStart = dayjs(bk.startDate);
       const bkEnd = dayjs(bk.endDate);
       return intervalsOverlap(realStart, realEnd, bkStart, bkEnd);
@@ -169,12 +178,16 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
       return;
     }
 
-    onSave({
+    // Trigger the save callback.
+    const newBooking = await onSave({
       advisor,
       startDate: realStart.tz(values.timezone),
       endDate: realEnd.tz(values.timezone),
       notes: values.meetingPurpose,
     });
+
+    // Optimistically update the local bookings to disable the slot immediately.
+    setLocalBookings((prev) => [...prev, { ...newBooking }]);
   };
 
   const fullDate = selectedDate?.format("dddd, MMMM D, YYYY");
@@ -246,7 +259,9 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
               </Text>
               <Space>
                 <FaRegClock />
-                <Text>{selectedTimeSlot ? SLOT_INTERVAL : "--"} mins</Text>
+                <Text>
+                  {selectedTimeSlot ? SLOT_INTERVAL_MINUTES : "--"} mins
+                </Text>
               </Space>
             </div>
             <div>
@@ -310,7 +325,10 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
                     <div className="overflow-auto h-[400px]">
                       {selectedDate ? (
                         generateTimeSlots(selectedDate).map((slot, index) => {
-                          const slotEnd = slot.add(SLOT_INTERVAL, "minute");
+                          const slotEnd = slot.add(
+                            SLOT_INTERVAL_MINUTES,
+                            "minute"
+                          );
                           const available = isSlotAvailable(slot);
                           const isSelected =
                             selectedTimeSlot &&

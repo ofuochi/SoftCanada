@@ -70,12 +70,13 @@ export default function CareerAdvisorPage() {
   };
 
   const confirmMeetingSchedule = async (meeting: MeetingType) => {
-    await post<MeetingType>(
+    const result = await post<Booking, MeetingType>(
       `/api/career-advisors/${meeting.advisor.id}/book`,
       meeting
     );
     messageApi.success("Booking confirmed!");
     setShowMeetingScheduleModal(false);
+    return result;
   };
 
   const handleTabChange = (key: string) => {
