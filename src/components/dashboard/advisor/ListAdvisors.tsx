@@ -9,6 +9,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Card, Image, Space, Tag, Button } from "antd";
 import { ArrowRightOutlined, StarFilled } from "@ant-design/icons";
 import { PiSuitcaseSimpleFill } from "react-icons/pi";
+import { VscVerifiedFilled } from "react-icons/vsc";
 
 const { Meta } = Card;
 
@@ -50,7 +51,7 @@ export default function ListAdvisors({ onBookSessionClick }: Props) {
       }
       scrollableTarget="scrollableContainer"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-3 gap-4 p-4">
         {advisors.map((advisor) => (
           <Card
             key={advisor.id}
@@ -68,7 +69,12 @@ export default function ListAdvisors({ onBookSessionClick }: Props) {
           >
             <Meta
               title={
-                <div className="text-center font-semibold">{advisor.name}</div>
+                <div className="text-center font-semibold flex items-center justify-center gap-1">
+                  {advisor.name}
+                  {advisor.isVerified && (
+                    <VscVerifiedFilled className="text-blue-400" />
+                  )}
+                </div>
               }
               description={
                 <div className="text-center text-gray-600 text-sm font-bold truncate">

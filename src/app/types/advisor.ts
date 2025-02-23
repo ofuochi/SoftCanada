@@ -3,6 +3,7 @@ import { Booking } from "./booking"
 export interface Advisor {
   id: string
   name: string
+  isVerified: boolean
   title: string
   email: string
   rating?: number

@@ -18,6 +18,7 @@ import React, { forwardRef, JSX, useImperativeHandle, useMemo } from "react";
 import { LuCalendarDays, LuMapPin } from "react-icons/lu";
 import { MdOutlineWatch } from "react-icons/md";
 import useSWRInfinite from "swr/infinite";
+import classnames from "classnames";
 
 const { Text } = Typography;
 
@@ -169,23 +170,21 @@ const ListBookings = forwardRef<ListBookingsRef, Props>(
                       </Tooltip>
                     }
                     title={
-                      <div>
-                        <Text
-                          delete={item.status.toLowerCase() === "cancelled"}
-                        >
-                          <span className="capitalize">
-                            {item.advisor.name}
-                          </span>
-                        </Text>
-                      </div>
+                      <Text delete={item.status.toLowerCase() === "cancelled"}>
+                        <span className="capitalize">{item.advisor.name}</span>
+                      </Text>
                     }
                     description={
-                      <Text
-                        type="secondary"
-                        delete={item.status.toLowerCase() === "cancelled"}
+                      <span
+                        className={classnames(
+                          "text-gray-500",
+                          item.status.toLowerCase() === "cancelled"
+                            ? "line-through"
+                            : ""
+                        )}
                       >
                         {item.advisor.title}
-                      </Text>
+                      </span>
                     }
                   />
                   <Text delete={item.status.toLowerCase() === "cancelled"}>
