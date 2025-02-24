@@ -122,7 +122,7 @@ export default function AdvisorApplicationPage() {
   const handleRemove = (file: UploadFile<any>) => setImageUrl(undefined);
 
   return (
-    <section className="w-full bg-white pb-[30px] px-5 rounded-xl max-w-[1320px]">
+    <section className="w-full bg-white pb-[30px] px-4 sm:px-6 max-xl:py-6 md:px-10 rounded-xl max-w-[1320px]">
       <div className="flex max-md:flex-col-reverse items-center md:justify-between">
         <div className="flex flex-col gap-2">
           <h1 className="font-dm_sans font-semibold text-[38px] leading-[49.8px] text-black max-md:text-center">
@@ -408,3 +408,4 @@ export default function AdvisorApplicationPage() {
     </section>
   );
 }
+
