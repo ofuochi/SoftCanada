@@ -61,6 +61,7 @@ export default function CareerAdvisorPage() {
   const bookingHistoryRef = useRef<ListBookingHistoryRef>(null);
   const [selectedAdvisor, setSelectedAdvisor] = useState<Advisor>();
   const [messageApi, contextHolder] = message.useMessage();
+  const [isBookSessionLoading, setIsBookSessionLoading] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<Booking>();
   const [pageTab, setPageTab] = useState<string>(TabKeys.Advisors);
 
@@ -70,13 +71,18 @@ export default function CareerAdvisorPage() {
   };
 
   const confirmMeetingSchedule = async (meeting: MeetingType) => {
-    const result = await post<Booking, MeetingType>(
-      `/api/career-advisors/${meeting.advisor.id}/book`,
-      meeting
-    );
-    messageApi.success("Booking confirmed!");
-    setShowMeetingScheduleModal(false);
-    return result;
+    try {
+      setIsBookSessionLoading(true);
+      const result = await post<Booking, MeetingType>(
+        `/api/career-advisors/${meeting.advisor.id}/book`,
+        meeting
+      );
+      messageApi.success("Booking confirmed!");
+      setShowMeetingScheduleModal(false);
+      return result;
+    } finally {
+      setIsBookSessionLoading(false);
+    }
   };
 
   const handleTabChange = (key: string) => {
@@ -108,7 +114,12 @@ export default function CareerAdvisorPage() {
       key: TabKeys.Advisors,
       label: <span className="pl-3">Career Advisors</span>,
       icon: <HiMiniUsers size={20} className="-mb-5" />,
-      children: <ListAdvisors onBookSessionClick={handleBookSessionClicked} />,
+      children: (
+        <ListAdvisors
+          onBookSessionClick={handleBookSessionClicked}
+          isBookSessionLoading={isBookSessionLoading}
+        />
+      ),
     },
     {
       key: TabKeys.UpcomingMeetings,

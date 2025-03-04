@@ -15,9 +15,13 @@ const { Meta } = Card;
 
 type Props = {
   onBookSessionClick: (advisor: Advisor) => void;
+  isBookSessionLoading?: boolean;
 };
 
-export default function ListAdvisors({ onBookSessionClick }: Props) {
+export default function ListAdvisors({
+  onBookSessionClick,
+  isBookSessionLoading,
+}: Props) {
   const { get } = useApiClient();
 
   const getKey = (
@@ -94,7 +98,7 @@ export default function ListAdvisors({ onBookSessionClick }: Props) {
             <div className="mt-4 flex flex-wrap justify-center gap-1">
               {advisor.expertise.map((skill) => (
                 <Tag key={skill.id} className="inline-flex text-xs">
-                  {skill.name}
+                  {skill.areaOfExpertise}
                 </Tag>
               ))}
             </div>
@@ -114,6 +118,7 @@ export default function ListAdvisors({ onBookSessionClick }: Props) {
               [&:hover_.ant-btn-icon]:scale-125"
               icon={<ArrowRightOutlined />}
               iconPosition="end"
+              loading={isBookSessionLoading}
               onClick={() => onBookSessionClick(advisor)}
             >
               Book Session

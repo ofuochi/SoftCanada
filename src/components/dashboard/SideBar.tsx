@@ -1,21 +1,23 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useDashboard } from "@/contexts/DashboardContext";
-import { Button, Layout, Menu, MenuProps } from "antd";
 import Logo from "@/components/Logo";
-import Link from "next/link";
+import { useDashboard } from "@/contexts/DashboardContext";
+import { defineAbilityFor, getRoles, UserRoleKey } from "@/lib/abilities";
 import {
   CalendarOutlined,
   HomeOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { PiSuitcaseSimple } from "react-icons/pi";
-import { MdDashboard } from "react-icons/md";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { Can } from "@casl/react";
+import { Button, Layout, Menu, MenuProps } from "antd";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-
+import { useEffect, useState } from "react";
+import { MdDashboard } from "react-icons/md";
+import { PiSuitcaseSimple } from "react-icons/pi";
 const { Sider } = Layout;
 
 const advisors = [
@@ -55,11 +57,19 @@ type SideBarProps = {
 };
 
 const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
+  const { user } = useUser();
   const router = useRouter();
   const pathname = usePathname();
   const { setAdvisorType } = useDashboard();
   const [advisorIndex, setAdvisorIndex] = useState(0);
   const [showAdvisorImage, setShowAdvisorImage] = useState(true);
+  const [userAbility, setUserAbility] = useState(defineAbilityFor());
+
+  useEffect(() => {
+    const userRoles = getRoles(user);
+    console.log(userRoles);
+    if (userRoles.length) setUserAbility(defineAbilityFor(userRoles));
+  }, [user?.[UserRoleKey]]);
 
   const handlePrevious = () => {
     setAdvisorIndex((index) => Math.max(index - 1, 0));
@@ -135,21 +145,6 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
             </Link>
           ),
         },
-        // {
-        //   key: "/dashboard/career/jobs",
-        //   label: (
-        //     <Link
-        //       href="/dashboard/career/jobs"
-        //       className={`font-dm_sans bg-transparent text-sm ${
-        //         pathname === "/dashboard/career/jobs"
-        //           ? "!text-[#010309]"
-        //           : "!text-[#808080]"
-        //       }`}
-        //     >
-        //       Job Listings
-        //     </Link>
-        //   ),
-        // },
         {
           key: "/dashboard/career/career-advisor",
           label: (
@@ -349,83 +344,85 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
         </section>
       )}
 
-      <section
-        className={`w-full max-w-[230px] h-[278px] ${
-          collapsed ? "opacity-0" : "opacity-100"
-        } border border-[#CBCBCB] !rounded-xl bg-[#F5F5F5] mt-10 px-4 ml-2.5`}
-      >
-        <div className="flex justify-between">
-          <div
-            className={`${
-              advisorIndex === 0 ? "bg-[#CBCBCB] p-2.5" : "bg-[#010309] p-3"
-            } h-fit flex justify-center items-center rounded-full mt-5 cursor-pointer`}
-            onMouseDown={handlePrevious}
-          >
-            <ChevronLeft color="#ffffff" size={16} />
+      <Can I="read" a="publicContent" ability={userAbility}>
+        <section
+          className={`w-full max-w-[230px] h-[278px] ${
+            collapsed ? "opacity-0" : "opacity-100"
+          } border border-[#CBCBCB] !rounded-xl bg-[#F5F5F5] mt-10 px-4 ml-2.5`}
+        >
+          <div className="flex justify-between">
+            <div
+              className={`${
+                advisorIndex === 0 ? "bg-[#CBCBCB] p-2.5" : "bg-[#010309] p-3"
+              } h-fit flex justify-center items-center rounded-full mt-5 cursor-pointer`}
+              onMouseDown={handlePrevious}
+            >
+              <ChevronLeft color="#ffffff" size={16} />
+            </div>
+
+            <div className="">
+              <Image
+                width={122}
+                height={122}
+                alt="facetime"
+                src={"/images/career-advisor/facetime.svg"}
+                className={""}
+              />
+            </div>
+
+            <div
+              className={`${
+                advisorIndex === 3 ? "bg-[#CBCBCB] p-2.5" : "bg-[#010309] p-3"
+              } flex h-fit justify-center items-center rounded-full mt-3.5 cursor-pointer`}
+              onMouseDown={handleNext}
+            >
+              <ChevronRight color="#ffffff" size={24} />
+            </div>
           </div>
 
-          <div className="">
-            <Image
-              width={122}
-              height={122}
-              alt="facetime"
-              src={"/images/career-advisor/facetime.svg"}
-              className={""}
-            />
-          </div>
-
-          <div
-            className={`${
-              advisorIndex === 3 ? "bg-[#CBCBCB] p-2.5" : "bg-[#010309] p-3"
-            } flex h-fit justify-center items-center rounded-full mt-3.5 cursor-pointer`}
-            onMouseDown={handleNext}
-          >
-            <ChevronRight color="#ffffff" size={24} />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-[3px] w-fit mx-auto mt-2">
-          {advisors.map((advisor) => {
-            if (advisorIndex === advisor.id) {
+          <div className="flex items-center gap-[3px] w-fit mx-auto mt-2">
+            {advisors.map((advisor) => {
+              if (advisorIndex === advisor.id) {
+                return (
+                  <div
+                    key={advisor.id}
+                    className="w-[5px] h-[5px] bg-[#010309] rounded-full"
+                  />
+                );
+              }
               return (
                 <div
                   key={advisor.id}
-                  className="w-[5px] h-[5px] bg-[#010309] rounded-full"
+                  className="w-[5px] h-[5px] bg-[#72FA32] rounded-full"
                 />
               );
-            }
-            return (
-              <div
-                key={advisor.id}
-                className="w-[5px] h-[5px] bg-[#72FA32] rounded-full"
-              />
-            );
-          })}
-        </div>
-
-        <section className="mt-2">
-          <div className={""}>
-            <div className="mt-2 flex flex-col gap-2.5">
-              <h4 className="font-lato font-semibold text-center text-base text-black">
-                {advisors[advisorIndex].title}
-              </h4>
-              <span className="text-[11px] font-lato font-medium text-center text-[#4F4F4F]">
-                {advisors[advisorIndex].content}
-              </span>
-            </div>
-            <div className="flex justify-center mt-2">
-              <Button
-                onMouseDown={handleGetStarted(
-                  advisors[advisorIndex].advisorType
-                )}
-                className="bg-white w-full max-w-[166px] rounded-md !border !border-white !shadow-none py-2 px-2.5 min-h-[35px] text-[#010309] hover:!text-[#010309] !font-semibold text-[13px] font-poppins flex justify-center items-center"
-              >
-                Get Started
-              </Button>
-            </div>
+            })}
           </div>
+
+          <section className="mt-2">
+            <div className={""}>
+              <div className="mt-2 flex flex-col gap-2.5">
+                <h4 className="font-lato font-semibold text-center text-base text-black">
+                  {advisors[advisorIndex].title}
+                </h4>
+                <span className="text-[11px] font-lato font-medium text-center text-[#4F4F4F]">
+                  {advisors[advisorIndex].content}
+                </span>
+              </div>
+              <div className="flex justify-center mt-2">
+                <Button
+                  onMouseDown={handleGetStarted(
+                    advisors[advisorIndex].advisorType
+                  )}
+                  className="bg-white w-full max-w-[166px] rounded-md !border !border-white !shadow-none py-2 px-2.5 min-h-[35px] text-[#010309] hover:!text-[#010309] !font-semibold text-[13px] font-poppins flex justify-center items-center"
+                >
+                  Get Started
+                </Button>
+              </div>
+            </div>
+          </section>
         </section>
-      </section>
+      </Can>
     </Sider>
   );
 };

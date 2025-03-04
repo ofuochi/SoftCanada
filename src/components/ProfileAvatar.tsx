@@ -1,10 +1,12 @@
 import { LOGOUT_PATH } from "@/constants/paths";
-import { UserOutlined } from "@ant-design/icons";
+import { getRoleDescription, UserRoleKey } from "@/lib/abilities";
+import { DownOutlined, UserOutlined } from "@ant-design/icons";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { Avatar, Dropdown, MenuProps } from "antd";
+import { Avatar, Dropdown, MenuProps, Space, Typography } from "antd";
 import type { AvatarSize } from "antd/es/avatar/AvatarContext";
 import Link from "next/link";
 import React from "react";
+const { Text } = Typography;
 
 type Props = {
   size?: AvatarSize;
@@ -39,20 +41,22 @@ export const ProfileAvatar: React.FC<Props> = ({ size = "large" }) => {
   };
 
   return (
-    <Dropdown
-      menu={profileMenu}
-      trigger={["click"]}
-      placement="bottomLeft"
-      arrow
-    >
-      <Avatar
-        size={size}
-        icon={<UserOutlined />}
-        src={user?.picture}
-        alt={user?.name || "User"}
-        className="cursor-pointer"
-      />
+    <Dropdown menu={profileMenu} trigger={["click"]} placement="bottomLeft">
+      <Space className="cursor-pointer px-3">
+        <Avatar
+          size={size}
+          icon={<UserOutlined />}
+          src={user?.picture}
+          alt={user?.name || "User"}
+        />
+        <div className="text-sm">
+          <Text className="capitalize">{user?.nickname}</Text>
+          <Text type="secondary" className="block !text-xs">
+            {getRoleDescription(user)}
+          </Text>
+        </div>
+        <DownOutlined />
+      </Space>
     </Dropdown>
   );
 };
-

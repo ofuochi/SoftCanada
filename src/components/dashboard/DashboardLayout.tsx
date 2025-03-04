@@ -1,21 +1,23 @@
 "use client";
 
 import { ProfileAvatar } from "@/components/ProfileAvatar";
+import { DashboardProvider } from "@/contexts/DashboardContext";
 import { ErrorProvider } from "@/contexts/ErrorContext";
+import { ResumeDownloadProvider } from "@/contexts/ResumeDownloadContext";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { Breadcrumb, Button, Layout, MenuProps } from "antd";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
+import { SWRConfig } from "swr";
 import { breadcrumbConfig } from "./BreadcrumbConfig";
 import SideBar from "./SideBar";
-import { DashboardProvider } from "@/contexts/DashboardContext";
-import { ResumeDownloadProvider } from "@/contexts/ResumeDownloadContext";
-import { SWRConfig } from "swr";
 
 const { Header, Footer, Content } = Layout;
 
 export default function DashboardLayout({ children }: React.PropsWithChildren) {
   const [collapsed, setCollapsed] = useState(false);
+  const { user } = useUser();
 
   const pathname = usePathname();
 
@@ -34,6 +36,11 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
   //     { key: "3", label: "Notification 3" },
   //   ],
   // };
+  const profileItems: MenuProps["items"] = [
+    { key: "1", label: "Notification 1" },
+    { key: "2", label: "Notification 2" },
+    { key: "3", label: "Notification 3" },
+  ];
 
   return (
     <>
@@ -64,16 +71,6 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
                 style={{ fontSize: "16px" }}
               />
               <div className="flex items-center gap-8">
-                {/* <Dropdown
-              menu={notificationMenu}
-              placement="bottomRight"
-              trigger={["click"]}
-              arrow
-              >
-              <Badge count={5}>
-              <BellOutlined style={{ fontSize: "20px", cursor: "pointer" }} />
-              </Badge>
-              </Dropdown> */}
                 <ProfileAvatar />
               </div>
             </Header>

@@ -14,9 +14,7 @@ export interface Advisor {
 
 export interface Expertise {
   id: string
-  name: string
-  yearsOfExperience: any
-  qualification: any
-  motivationStatement: any
+  areaOfExpertise: string
+  yearsOfExperience: number
 }
 
