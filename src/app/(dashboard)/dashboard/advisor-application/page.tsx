@@ -100,13 +100,10 @@ export default function AdvisorApplicationPage() {
         JSON.stringify(values.expertise)
       );
 
-      await post("/api/career-advisors", formData).then(() => {
-        resetFields();
-        setImageUrl(undefined);
-        router.push("/dashboard");
-      });
-    };
-
+      await post("/api/career-advisors", formData);
+      resetFields();
+      setImageUrl(undefined);
+      router.push("/dashboard");
   const handleChange = (info: UploadChangeParam<UploadFile<any>>) => {
     if (info.file.status === "done") {
       getBase64(info.file.originFileObj as FileType, (url) => {
