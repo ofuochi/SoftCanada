@@ -67,7 +67,6 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
 
   useEffect(() => {
     const userRoles = getRoles(user);
-    console.log(userRoles);
     if (userRoles.length) setUserAbility(defineAbilityFor(userRoles));
   }, [user?.[UserRoleKey]]);
 
@@ -428,3 +427,4 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
 };
 
 export default SideBar;
+
