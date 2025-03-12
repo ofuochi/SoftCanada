@@ -156,8 +156,8 @@ export default function Footer() {
           <h3 className="font-semibold text-lg mb-4">Contact</h3>
           <ul className="space-y-2">
             <li>
-              <Link href="/faqs" className="text-gray-400 hover:text-gray-700">
-                FAQs
+              <Link href="/Blogs" className="text-gray-400 hover:text-gray-700">
+                Blogs
               </Link>
             </li>
             <li>
@@ -234,4 +234,3 @@ export default function Footer() {
     </footer>
   );
 }
-

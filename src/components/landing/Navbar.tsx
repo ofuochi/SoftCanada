@@ -152,32 +152,20 @@ export default function Navbar() {
         </Link>
       ),
     },
-    {
-      key: "cv-builder",
-      label: (
-        <Link
-          href="/dashboard/career/resumes"
-          className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
-          }`}
-        >
-          CV Builder
-        </Link>
-      ),
-    },
-    {
-      key: "faq",
-      label: (
-        <Link
-          href="/faq"
-          className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
-          }`}
-        >
-          FAQ
-        </Link>
-      ),
-    },
+    // {
+    //   key: "cv-builder",
+    //   label: (
+    //     <Link
+    //       href="/dashboard/career/resumes"
+    //       className={`font-dm_sans ${
+    //         isNavbarDark ? "text-black md:!text-white" : "!text-black"
+    //       }`}
+    //     >
+    //       CV Builder
+    //     </Link>
+    //   ),
+    // },
+
     {
       key: "contact",
       label: (
@@ -188,6 +176,19 @@ export default function Navbar() {
           }`}
         >
           Contact
+        </Link>
+      ),
+    },
+    {
+      key: "faq",
+      label: (
+        <Link
+          href="/posts"
+          className={`font-dm_sans ${
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+          }`}
+        >
+          Blogs
         </Link>
       ),
     },
@@ -325,4 +326,3 @@ export default function Navbar() {
     </>
   );
 }
-
