@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { Card, Row, Col, Typography, Space } from "antd";
+import { Card, Row, Col, Typography, Space, Image, Avatar } from "antd";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import client from "@/tina/__generated__/client";
+const { Meta } = Card;
 
 const { Title, Text } = Typography;
 
@@ -47,20 +48,32 @@ export default function Page() {
           <Row gutter={[16, 16]}>
             {posts.map((post) => {
               if (!post?.node) return null;
-              const { id, title, _sys } = post.node;
+              const { id, title, _sys, body } = post.node;
+              const image = body.children
+                .map((child: any) => child.children)
+                .flat()
+                .find((child: any) => child.type === "img");
 
               return (
                 <Col xs={24} sm={12} md={8} key={id}>
                   <Link href={`/posts/${_sys.filename}`} passHref>
                     <Card
                       hoverable
-                      title={title || _sys.filename}
-                      style={{
-                        borderRadius: "8px",
-                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                      }}
+                      cover={
+                        <Image
+                          preview={false}
+                          alt={image?.alt}
+                          src={image?.url}
+                        />
+                      }
                     >
-                      <Text type="secondary">{`/posts/${_sys.filename}`}</Text>
+                      <Meta
+                        avatar={
+                          <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
+                        }
+                        title={title}
+                        description="This is the description"
+                      />
                     </Card>
                   </Link>
                 </Col>

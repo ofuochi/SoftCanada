@@ -4,6 +4,8 @@ title: Statement of Work
 
 # Statement of Work (SOW)
 
+![](/images/landing/immigration_news_feature.jpg)
+
 ### Project Title
 
 Provide a clear, concise title for the project.
