@@ -28,9 +28,9 @@ export default function Page() {
   }, []);
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12">
       <Head>
-        <title>Blog Posts | My Website</title>
+        <title>Blog Posts | SoftCanada</title>
         <meta
           name="description"
           content="Read our latest blog posts and updates."
@@ -82,6 +82,6 @@ export default function Page() {
           </Row>
         )}
       </div>
-    </>
+    </div>
   );
 }
