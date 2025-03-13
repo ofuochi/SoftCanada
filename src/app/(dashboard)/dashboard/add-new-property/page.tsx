@@ -378,7 +378,7 @@ const AddNewProperty = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your cover image",
+                      message: "Please input your images",
                     },
                   ]}
                 >
@@ -425,7 +425,7 @@ const AddNewProperty = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Please input your cover image",
+                      message: "Please input your video",
                     },
                   ]}
                 >
