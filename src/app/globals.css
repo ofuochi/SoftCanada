@@ -21,7 +21,7 @@ body {
   width: 350%;
 }
 
-.ant-menu-submenu-selected .ant-menu-submenu-arrow {
+/* .ant-menu-submenu-selected .ant-menu-submenu-arrow {
   color: #010309 !important;
 }
 .ant-menu-submenu-arrow {
@@ -42,5 +42,5 @@ body {
   color: #010b18;
   font-weight: 500;
   font-family: "Poppins" serif;
-}
+} */
 

@@ -12,27 +12,11 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import {
-  Button,
-  Form,
-  FormProps,
-  GetProp,
-  Input,
-  message,
-  Select,
-  Upload,
-} from "antd";
+import { Button, Form, FormProps, GetProp, message, Upload } from "antd";
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-const { Option } = Select;
-
-type squareFootage = {
-  areaOfsquareFootage: string;
-  yearsOfExperience: string;
-};
 
 type AddPropertyType = {
   propertyName?: string;
