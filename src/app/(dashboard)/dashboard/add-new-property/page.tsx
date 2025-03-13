@@ -374,7 +374,7 @@ const AddNewProperty = () => {
                   Upload Images
                 </h6>
                 <Form.Item
-                  name="image"
+                  name="images"
                   rules={[
                     {
                       required: true,
@@ -421,7 +421,7 @@ const AddNewProperty = () => {
                   Upload Videos
                 </h6>
                 <Form.Item
-                  name="image"
+                  name="video"
                   rules={[
                     {
                       required: true,
