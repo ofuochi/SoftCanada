@@ -4,13 +4,13 @@ import CustomFormInput from "@/components/form/CustomFormInput";
 import CustomFormSelect from "@/components/form/CustomFormSelect";
 import CustomFormTextarea from "@/components/form/CustomFormTextarea";
 import { useApiClient } from "@/hooks/api-hook";
-import { UploadOutlined } from "@ant-design/icons";
+import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { Button, Form, FormProps, GetProp, message, Upload } from "antd";
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type AddPropertyType = {
   propertyName?: string;
@@ -59,6 +59,7 @@ const AddNewProperty = () => {
   const [form] = Form.useForm<AddPropertyType>();
   const { setFieldValue, resetFields } = form;
   const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [videoUrl, setVideoUrl] = useState<string | undefined>(undefined);
 
   const handleSubmit: FormProps<AddPropertyType>["onFinish"] = async (
@@ -110,22 +111,23 @@ const AddNewProperty = () => {
 
   const handleVideoChange = (info: UploadChangeParam<UploadFile<any>>) => {
     if (info.file.status === "done") {
-      info.fileList.map((file) =>
-        getBase64(info.file.originFileObj as FileType, (url) => {
-          setVideoUrl(url);
-          setFieldValue("video", url);
-        })
-      );
+      getBase64(info.file.originFileObj as FileType, (url) => {
+        setVideoUrl(url);
+        setFieldValue("video", url);
+      });
     }
   };
 
   const handleChange = (info: UploadChangeParam<UploadFile<any>>) => {
-    if (info.file.status === "done") {
-      info.fileList.map((file) =>
-        getBase64(file.originFileObj as FileType, (url) => {
+    setFileList(info.fileList);
+    const newFile = info.file;
+    if (newFile.status === "done" && newFile.originFileObj) {
+      getBase64(newFile.originFileObj as FileType, (url) => {
+        // Avoid duplicate entries by checking if URL already exists
+        if (!imageUrls.includes(url)) {
           setImageUrls((prevUrls) => [...prevUrls, url]);
-        })
-      );
+        }
+      });
     }
   };
 
@@ -170,7 +172,25 @@ const AddNewProperty = () => {
   };
 
   const handleRemove = (file: UploadFile<any>) => {
-    setImageUrls((prevUrls) => prevUrls.filter((url) => url !== file.thumbUrl));
+    // Find the URL associated with this file and remove it
+    if (file.url) {
+      setImageUrls((prevUrls) => prevUrls.filter((url) => url !== file.url));
+    } else if (file.thumbUrl) {
+      setImageUrls((prevUrls) =>
+        prevUrls.filter((url) => url !== file.thumbUrl)
+      );
+    } else if (file.originFileObj) {
+      // For files that were just added and don't have URLs yet
+      // We need to find them by another means
+      const fileIndex = fileList.findIndex((f) => f.uid === file.uid);
+      if (fileIndex >= 0 && imageUrls.length > fileIndex) {
+        setImageUrls((prevUrls) => prevUrls.filter((_, i) => i !== fileIndex));
+      }
+    }
+    // Update fileList
+    setFileList((prevList) => prevList.filter((item) => item.uid !== file.uid));
+
+    return true;
   };
 
   const handleVideoRemove = () => {
@@ -193,13 +213,11 @@ const AddNewProperty = () => {
           layout="vertical"
         >
           <section className="flex flex-col xl:flex-row w-full mt-[55px] gap-8 font-poppins">
-            <div className="flex flex-col gap-5 w-full xl:max-w-[500px]">
-              <div>
-                <h6 className="text-black font-poppins font-medium text-xl">
-                  {" "}
-                  Property Information{" "}
-                </h6>
-              </div>
+            <div className="flex flex-col w-full xl:max-w-[500px]">
+              <h6 className="text-black font-poppins font-medium text-xl mb-6">
+                {" "}
+                Property Information{" "}
+              </h6>
 
               <CustomFormInput<AddPropertyType>
                 label="Property Name"
@@ -365,22 +383,23 @@ const AddNewProperty = () => {
                   ]}
                 >
                   <Upload
-                    maxCount={3}
+                    maxCount={10}
                     onChange={handleChange}
-                    onRemove={handleRemove}
                     beforeUpload={handleBeforeUpload}
+                    onRemove={handleRemove}
                     // showUploadList={false}
                     accept=".jpeg, .jpg, .png, .webp,"
                     className="!font-poppins"
+                    multiple
                   >
                     <Button className="!font-poppins" icon={<UploadOutlined />}>
                       Choose file
                     </Button>
-                    <div className="flex gap-3 mt-6">
+                    <div className="flex flex-wrap gap-3 mt-6">
                       {imageUrls.length > 0 &&
                         imageUrls.map((image, index) => (
                           <div
-                            className="w-full max-w-[194px] h-[150px]"
+                            className="w-[194px] h-[150px] relative"
                             key={index}
                           >
                             <Image
