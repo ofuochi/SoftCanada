@@ -20,6 +20,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "antd": "^5.24.0",
     "axios": "^1.7.9",
+    "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "file-saver": "^2.0.5",
     "framer-motion": "^11.17.0",
@@ -36,6 +37,7 @@
     "react-to-print": "^3.0.5",
     "softcan": "file:",
     "swr": "^2.3.0",
+    "tailwind-merge": "^3.0.2",
     "tinacms": "^2.7.2",
     "yup": "^1.6.1"
   },

@@ -1,5 +1,6 @@
 "use client";
 
+import CustomFormInput from "@/components/CustomFormInput";
 import { useDashboard } from "@/contexts/DashboardContext";
 import { useApiClient } from "@/hooks/api-hook";
 import { getRoles, UserRoleKey } from "@/lib/abilities";
@@ -32,6 +33,7 @@ type Expertise = {
 };
 
 type CareerAdvisorApplicationInfo = {
+  propertyName?: string;
   title?: string;
   phoneNumber?: string;
   name?: string;
@@ -60,7 +62,7 @@ const allowedTypes = [
 // Max file size (5MB in bytes)
 const maxSize = 1 * 1024 * 1024;
 
-export default function AdvisorApplicationPage() {
+export default function AddNewProperty() {
   const { user } = useUser();
   const router = useRouter();
 
@@ -148,14 +150,9 @@ export default function AdvisorApplicationPage() {
           <section className="w-full bg-white pb-[30px] px-4 sm:px-6 max-xl:py-6 md:px-10 rounded-xl max-w-[1320px]">
             <div className="flex max-md:flex-col-reverse items-center md:justify-between">
               <div className="flex flex-col gap-2">
-                <h1 className="font-dm_sans font-semibold text-[38px] leading-[49.8px] text-black max-md:text-center">
-                  {advisorType} Advisor Application
+                <h1 className="font-lato font-semibold text-[38px] leading-[49.8px] text-black">
+                  Add a New Property
                 </h1>
-                <span className="font-lato text-[#4F4F4F] font-normal text-lg max-md:text-center">
-                  {" "}
-                  Complete the form below to start your journey as a{" "}
-                  {advisorType} Advisor.{" "}
-                </span>
               </div>
               <div className="">
                 <Image
@@ -180,10 +177,17 @@ export default function AdvisorApplicationPage() {
                 <div className="flex flex-col gap-6 w-full xl:max-w-[500px]">
                   {/* Personal Information */}
                   <div className="flex flex-col gap-5">
-                    <h6 className="font-medium text-black text-xl">
-                      {" "}
-                      Personal Information{" "}
-                    </h6>
+                    <CustomFormInput<CareerAdvisorApplicationInfo>
+                      label="Property Name"
+                      name="propertyName"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your property name",
+                        },
+                      ]}
+                    />
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <Form.Item<CareerAdvisorApplicationInfo>
                         label="Full name"
