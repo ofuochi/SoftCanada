@@ -15,7 +15,7 @@ interface CustomFormSelectProps<T> extends Omit<FormItemProps<T>, "className"> {
   }[];
 }
 
-const CustomFormInput = <T extends object>({
+const CustomFormSelect = <T extends object>({
   label,
   rules,
   name,
@@ -50,5 +50,5 @@ const CustomFormInput = <T extends object>({
   );
 };
 
-export default CustomFormInput;
+export default CustomFormSelect;
 

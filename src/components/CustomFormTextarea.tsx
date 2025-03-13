@@ -11,7 +11,7 @@ interface CustomFormTextareaProps<T>
   placeholder?: string;
 }
 
-const CustomFormInput = <T extends object>({
+const CustomFormTextarea = <T extends object>({
   label,
   rules,
   name,
@@ -44,5 +44,5 @@ const CustomFormInput = <T extends object>({
   );
 };
 
-export default CustomFormInput;
+export default CustomFormTextarea;
 

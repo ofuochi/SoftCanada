@@ -1,6 +1,8 @@
 "use client";
 
 import CustomFormInput from "@/components/CustomFormInput";
+import CustomFormSelect from "@/components/CustomFormSelect";
+import CustomFormTextarea from "@/components/CustomFormTextarea";
 import { useDashboard } from "@/contexts/DashboardContext";
 import { useApiClient } from "@/hooks/api-hook";
 import { getRoles, UserRoleKey } from "@/lib/abilities";
@@ -23,24 +25,29 @@ import {
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const { Option } = Select;
 
-type Expertise = {
-  areaOfExpertise: string;
+type squareFootage = {
+  areaOfsquareFootage: string;
   yearsOfExperience: string;
 };
 
-type CareerAdvisorApplicationInfo = {
+type AddPropertyType = {
   propertyName?: string;
-  title?: string;
-  phoneNumber?: string;
-  name?: string;
-  expertise?: Expertise[];
-  qualifications?: string;
-  image: string;
-  motivationStatement?: string;
+  propertyDescription?: string;
+  propertyType?: string;
+  location?: string;
+  price?: string;
+  noOfBedroom?: string;
+  noOfBathroom?: string;
+  squareFootage?: string;
+  contact?: string;
+  officeAddress?: string;
+  availabilityStatus?: string;
+  images: string[];
+  videos: string[];
 };
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
@@ -58,388 +65,440 @@ const allowedTypes = [
   "image/gif",
   "image/webp",
 ];
+const allowedVideoTypes = ["video/mp4", "video/webm", "video/ogg"];
 
 // Max file size (5MB in bytes)
-const maxSize = 1 * 1024 * 1024;
+const maxSize = 5 * 1024 * 1024;
+
+// Max file size (50MB in bytes)
+const maxVideoSize = 50 * 1024 * 1024;
 
 export default function AddNewProperty() {
   const { user } = useUser();
   const router = useRouter();
 
-  useEffect(() => {
-    const userRoles = getRoles(user);
-
-    if (userRoles?.[0].toLowerCase() === "career_advisor") {
-      router.replace("/dashboard");
-    }
-  }, [user]);
-
-  const { advisorType } = useDashboard();
-
   const { post } = useApiClient();
   const [messageApi, contextHolder] = message.useMessage();
-  const [form] = Form.useForm<CareerAdvisorApplicationInfo>();
+  const [form] = Form.useForm<AddPropertyType>();
   const { setFieldValue, resetFields } = form;
-  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [videoUrls, setVideoUrls] = useState<string[]>([]);
 
-  const handleSubmit: FormProps<CareerAdvisorApplicationInfo>["onFinish"] =
-    async (values) => {
-      const formData = new FormData();
+  const handleSubmit: FormProps<AddPropertyType>["onFinish"] = async (
+    values
+  ) => {
+    const formData = new FormData();
 
-      formData.append("CareerAdvisor.Name", JSON.stringify(values.name));
-      formData.append("CareerAdvisor.Title", JSON.stringify(values.title));
-      formData.append(
-        "CareerAdvisor.PhoneNumber",
-        JSON.stringify(values.phoneNumber)
+    formData.append(
+      "CareerAdvisor.propertyName",
+      JSON.stringify(values.propertyName)
+    );
+    formData.append(
+      "CareerAdvisor.propertyDescription",
+      JSON.stringify(values.propertyDescription)
+    );
+    formData.append(
+      "CareerAdvisor.propertyType",
+      JSON.stringify(values.propertyType)
+    );
+    formData.append("CareerAdvisor.location", JSON.stringify(values.location));
+    formData.append("CareerAdvisor.price", JSON.stringify(values.price));
+    formData.append(
+      "CareerAdvisor.noOfBedroom",
+      JSON.stringify(values.noOfBedroom)
+    );
+    formData.append(
+      "CareerAdvisor.noOfBathroom",
+      JSON.stringify(values.noOfBathroom)
+    );
+    formData.append(
+      "CareerAdvisor.squareFootage",
+      JSON.stringify(values.squareFootage)
+    );
+    formData.append("CareerAdvisor.contact", JSON.stringify(values.contact));
+    formData.append(
+      "CareerAdvisor.officeAddress",
+      JSON.stringify(values.officeAddress)
+    );
+    formData.append(
+      "CareerAdvisor.availabilityStatus",
+      JSON.stringify(values.availabilityStatus)
+    );
+
+    await post("/api/career-advisors", formData);
+    resetFields();
+    setImageUrls([]);
+    router.push("/dashboard");
+
+    const handleVideoChange = (info: UploadChangeParam<UploadFile<any>>) => {
+      if (info.file.status === "done") {
+        info.fileList.map((file) =>
+          getBase64(file.originFileObj as FileType, (url) => {
+            setVideoUrls((prevUrls) => [...prevUrls, url]);
+          })
+        );
+      }
+    };
+    const handleChange = (info: UploadChangeParam<UploadFile<any>>) => {
+      if (info.file.status === "done") {
+        info.fileList.map((file) =>
+          getBase64(file.originFileObj as FileType, (url) => {
+            setImageUrls((prevUrls) => [...prevUrls, url]);
+          })
+        );
+      }
+    };
+
+    const handleBeforeUpload = (file: File) => {
+      // Check file type
+      if (!allowedTypes.includes(file.type)) {
+        const error = `File type ${file.type} is not supported. Please upload an image (JPEG, PNG, GIF, or WEBP)`;
+        messageApi.error(error);
+        return Upload.LIST_IGNORE;
+      }
+
+      // Check file size
+      if (file.size > maxSize) {
+        const error = `File size exceeds 5MB limit. Current file size: ${(
+          file.size /
+          1024 /
+          1024
+        ).toFixed(2)}MB`;
+        messageApi.error(error);
+        return Upload.LIST_IGNORE;
+      }
+    };
+
+    const handleVideoBeforeUpload = (file: File) => {
+      // Check file type
+      if (!allowedVideoTypes.includes(file.type)) {
+        const error = `File type ${file.type} is not supported. Please upload an image (JPEG, PNG, GIF, or WEBP)`;
+        messageApi.error(error);
+        return Upload.LIST_IGNORE;
+      }
+
+      // Check file size
+      if (file.size > maxVideoSize) {
+        const error = `File size exceeds 50MB limit. Current file size: ${(
+          file.size /
+          1024 /
+          1024
+        ).toFixed(2)}MB`;
+        messageApi.error(error);
+        return Upload.LIST_IGNORE;
+      }
+    };
+
+    const handleRemove = (file: UploadFile<any>) => {
+      setImageUrls((prevUrls) =>
+        prevUrls.filter((url) => url !== file.thumbUrl)
       );
-      formData.append(
-        "CareerAdvisor.Qualification",
-        JSON.stringify(values.qualifications)
+    };
+
+    const handleVideoRemove = (file: UploadFile<any>) => {
+      setVideoUrls((prevUrls) =>
+        prevUrls.filter((url) => url !== file.thumbUrl)
       );
-      formData.append(
-        "CareerAdvisor.MotivationStatement",
-        JSON.stringify(values.motivationStatement)
-      );
-      formData.append(
-        "CareerAdvisor.expertise",
-        JSON.stringify(values.expertise)
-      );
-      formData.append(
-        "CareerAdvisor.Expertise",
-        JSON.stringify(values.expertise)
-      );
+    };
 
-      await post("/api/career-advisors", formData);
-      resetFields();
-      setImageUrl(undefined);
-      router.push("/dashboard");
-      const handleChange = (info: UploadChangeParam<UploadFile<any>>) => {
-        if (info.file.status === "done") {
-          getBase64(info.file.originFileObj as FileType, (url) => {
-            setImageUrl(url);
-            setFieldValue("image", url);
-          });
-        }
-      };
+    return (
+      <>
+        {contextHolder}
+        <section className="w-full bg-white pb-[30px] px-4 sm:px-6 max-xl:py-6 md:px-10 rounded-xl max-w-[1320px]">
+          <div className="flex max-md:flex-col-reverse items-center md:justify-between">
+            <div className="flex flex-col gap-2">
+              <h1 className="font-lato font-semibold text-[38px] leading-[49.8px] text-black">
+                Add a New Property
+              </h1>
+            </div>
+            <div className="">
+              <Image
+                width={228}
+                height={228}
+                alt="facetime"
+                src={"/images/career-advisor/facetime.svg"}
+              />
+            </div>
+          </div>
 
-      const handleBeforeUpload = (file: File) => {
-        // Check file type
-        if (!allowedTypes.includes(file.type)) {
-          const error = `File type ${file.type} is not supported. Please upload an image (JPEG, PNG, GIF, or WEBP)`;
-          messageApi.error(error);
-          return Upload.LIST_IGNORE;
-        }
+          <Form
+            form={form}
+            name="AddProperty"
+            //   initialValues={{ squareFootage: [{}] }}
+            onFinish={handleSubmit}
+            // onFinishFailed={onFinishFailed}
+            autoComplete="off"
+            layout="vertical"
+          >
+            <section className="flex flex-col xl:flex-row w-full mt-[55px] gap-8 font-poppins">
+              <div className="flex flex-col gap-7 w-full xl:max-w-[500px]">
+                <h6 className="text-black font-poppins font-medium text-xl">
+                  {" "}
+                  Property Information{" "}
+                </h6>
+                <CustomFormInput<AddPropertyType>
+                  label="Property Name"
+                  name="propertyName"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your property name",
+                    },
+                  ]}
+                />
 
-        // Check file size
-        if (file.size > maxSize) {
-          const error = `File size exceeds 5MB limit. Current file size: ${(
-            file.size /
-            1024 /
-            1024
-          ).toFixed(2)}MB`;
-          messageApi.error(error);
-          return Upload.LIST_IGNORE;
-        }
-      };
+                <CustomFormTextarea<AddPropertyType>
+                  label="Property Description"
+                  name="propertyDescription"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your property description",
+                    },
+                  ]}
+                />
 
-      const handleRemove = (file: UploadFile<any>) => setImageUrl(undefined);
+                <CustomFormSelect<AddPropertyType>
+                  label="Property Type"
+                  name="propertyType"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input the property type",
+                    },
+                  ]}
+                  optionValues={[
+                    { label: "Residential", value: "Residential" },
+                    { label: "Commercial", value: "Commercial" },
+                    { label: "Industrial", value: "Industrial" },
+                    { label: "Agricultural", value: "Agricultural" },
+                  ]}
+                />
 
-      return (
-        <>
-          {contextHolder}
-          <section className="w-full bg-white pb-[30px] px-4 sm:px-6 max-xl:py-6 md:px-10 rounded-xl max-w-[1320px]">
-            <div className="flex max-md:flex-col-reverse items-center md:justify-between">
-              <div className="flex flex-col gap-2">
-                <h1 className="font-lato font-semibold text-[38px] leading-[49.8px] text-black">
-                  Add a New Property
-                </h1>
-              </div>
-              <div className="">
-                <Image
-                  width={228}
-                  height={228}
-                  alt="facetime"
-                  src={"/images/career-advisor/facetime.svg"}
+                <CustomFormInput<AddPropertyType>
+                  label="Location"
+                  name="location"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input the property location",
+                    },
+                  ]}
+                />
+
+                <CustomFormInput<AddPropertyType>
+                  label="Price"
+                  name="price"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input the price",
+                    },
+                  ]}
+                />
+
+                <CustomFormSelect<AddPropertyType>
+                  label="Number of Bedrooms"
+                  name="noOfBedroom"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input the number of bedroom",
+                    },
+                  ]}
+                  optionValues={[
+                    { label: "1", value: "1" },
+                    { label: "2", value: "2" },
+                    { label: "3", value: "3" },
+                    { label: "4", value: "4" },
+                  ]}
+                />
+
+                <CustomFormSelect<AddPropertyType>
+                  label="Number of Bathrooms"
+                  name="noOfBathroom"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input the number of bathroom",
+                    },
+                  ]}
+                  optionValues={[
+                    { label: "1", value: "1" },
+                    { label: "2", value: "2" },
+                    { label: "3", value: "3" },
+                    { label: "4", value: "4" },
+                  ]}
+                />
+
+                <CustomFormInput<AddPropertyType>
+                  label="Square Footage"
+                  name="squareFootage"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input the square footage",
+                    },
+                  ]}
                 />
               </div>
-            </div>
 
-            <Form
-              form={form}
-              name="CareerAdvisorApplicationInfo"
-              initialValues={{ expertise: [{}] }}
-              onFinish={handleSubmit}
-              // onFinishFailed={onFinishFailed}
-              autoComplete="off"
-              layout="vertical"
-            >
-              <section className="flex flex-col xl:flex-row w-full mt-8 gap-8 font-poppins">
-                <div className="flex flex-col gap-6 w-full xl:max-w-[500px]">
-                  {/* Personal Information */}
-                  <div className="flex flex-col gap-5">
-                    <CustomFormInput<CareerAdvisorApplicationInfo>
-                      label="Property Name"
-                      name="propertyName"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your property name",
-                        },
-                      ]}
-                    />
+              <div className="flex flex-col gap-7 w-full xl:flex-1">
+                <CustomFormInput<AddPropertyType>
+                  label="Contact"
+                  name="contact"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your contact number",
+                    },
+                    {
+                      pattern:
+                        /^(\+1\s?)?(\([0-9]{3}\)|[0-9]{3})[\s\-]?[0-9]{3}[\s\-]?[0-9]{4}$/,
+                      message:
+                        "Please enter a valid US or Canadian phone number",
+                    },
+                  ]}
+                />
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <Form.Item<CareerAdvisorApplicationInfo>
-                        label="Full name"
-                        name="name"
-                        className="w-full"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your full name",
-                          },
-                        ]}
+                <CustomFormInput<AddPropertyType>
+                  label="Office Address"
+                  name="officeAddress"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input the office address",
+                    },
+                  ]}
+                />
+
+                <CustomFormSelect<AddPropertyType>
+                  label="Availability Status"
+                  name="availabilityStatus"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please select availability status",
+                    },
+                  ]}
+                  optionValues={[
+                    { label: "Available", value: "Available" },
+                    { label: "Unavailable", value: "Unavailable" },
+                  ]}
+                />
+
+                <div className="flex flex-col gap-5">
+                  <h6 className="font-medium text-black text-xl">
+                    Upload Images
+                  </h6>
+                  <Form.Item
+                    name="image"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your cover image",
+                      },
+                    ]}
+                  >
+                    <Upload
+                      maxCount={3}
+                      onChange={handleChange}
+                      onRemove={handleRemove}
+                      beforeUpload={handleBeforeUpload}
+                      // showUploadList={false}
+                      accept=".jpeg, .jpg, .png, .webp,"
+                      className="!font-poppins"
+                    >
+                      <Button
+                        className="!font-poppins"
+                        icon={<UploadOutlined />}
                       >
-                        <Input className="h-9 !font-poppins border !border-[#CBCBCB]" />
-                      </Form.Item>
-
-                      <Form.Item<CareerAdvisorApplicationInfo>
-                        label="Contact number"
-                        name="phoneNumber"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your contact number",
-                          },
-                          {
-                            pattern:
-                              /^(\+1\s?)?(\([0-9]{3}\)|[0-9]{3})[\s\-]?[0-9]{3}[\s\-]?[0-9]{4}$/,
-                            message:
-                              "Please enter a valid US or Canadian phone number",
-                          },
-                        ]}
-                      >
-                        <Input className="h-9 !font-poppins border !border-[#CBCBCB]" />
-                      </Form.Item>
-
-                      <Form.Item<CareerAdvisorApplicationInfo>
-                        label="Title"
-                        name="title"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your title",
-                          },
-                        ]}
-                      >
-                        <Input className="h-9 !font-poppins border !border-[#CBCBCB]" />
-                      </Form.Item>
-                    </div>
-                  </div>
-
-                  {/* Expertise Details */}
-                  <div className="flex flex-col gap-5">
-                    <h6 className="font-medium text-black text-xl">
-                      Expertise Details
-                    </h6>
-                    <Form.List name="expertise">
-                      {(fields, { add, remove }) => (
-                        <>
-                          {fields.map(({ key, name, ...restField }) => (
+                        Choose file
+                      </Button>
+                      <div className="flex gap-3 mt-6">
+                        {imageUrls.length > 0 &&
+                          imageUrls.map((image, index) => (
                             <div
-                              key={key}
-                              className="flex items-center gap-2.5 flex-col-reverse md:flex-row"
+                              className="w-full max-w-[194px] h-[150px]"
+                              key={index}
                             >
-                              <div className="w-full flex flex-col md:flex-row gap-5 flex-1">
-                                <Form.Item
-                                  {...restField}
-                                  name={[name, "areaOfExpertise"]}
-                                  label="Select Area of Expertise"
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message:
-                                        "Please input your areas of expertise",
-                                    },
-                                  ]}
-                                  className="w-full"
-                                >
-                                  <Select
-                                    placeholder="Select option"
-                                    className="!min-h-9 !font-poppins"
-                                    allowClear
-                                  >
-                                    <Option value="Tech">Tech</Option>
-                                    <Option value="Finance">Finance</Option>
-                                    <Option value="Engineering">
-                                      Engineering
-                                    </Option>
-                                  </Select>
-                                </Form.Item>
-
-                                <Form.Item
-                                  {...restField}
-                                  name={[name, "yearsOfExperience"]}
-                                  label="Years of Experience"
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message:
-                                        "Please input your years of experience",
-                                    },
-                                  ]}
-                                  className="w-full"
-                                >
-                                  <Select
-                                    placeholder="Select option"
-                                    className="!h-9 !font-poppins"
-                                    allowClear
-                                  >
-                                    {[1, 2, 3, 4, 5].map((year) => (
-                                      <Option
-                                        key={year}
-                                        value={year.toString()}
-                                      >
-                                        {year}
-                                      </Option>
-                                    ))}
-                                  </Select>
-                                </Form.Item>
-                              </div>
-
-                              <MinusCircleOutlined
-                                className="max-md:mr-auto"
-                                onClick={() => remove(name)}
+                              <Image
+                                width={194}
+                                height={150}
+                                alt="preview"
+                                src={image}
+                                className="object-cover"
                               />
                             </div>
                           ))}
-                          <Form.Item>
-                            <Button
-                              className="!bg-[#010B18] !border !border-[#010B18] !w-[167px] !h-[44px] rounded-[6px] !text-white !font-poppins"
-                              onClick={() => add()}
-                              block
-                              icon={<PlusOutlined />}
-                            >
-                              Add Expertise
-                            </Button>
-                            {fields.length === 0 && (
-                              <span className="block text-[#ff4d4f]">
-                                Expertise details is required
-                              </span>
-                            )}
-                          </Form.Item>
-                        </>
-                      )}
-                    </Form.List>
-                  </div>
-
-                  {/* Qualifications */}
-                  <div className="flex flex-col gap-5">
-                    <h6 className="font-medium text-black text-xl">
-                      Qualifications
-                    </h6>
-                    <div className="flex">
-                      <Form.Item<CareerAdvisorApplicationInfo>
-                        name="qualifications"
-                        label="List any certifications or relevant experience."
-                        className="w-full"
-                        rules={[
-                          {
-                            required: true,
-                            message: "Please input your qualifications",
-                          },
-                        ]}
-                      >
-                        <Input.TextArea
-                          className="h-9 !font-poppins resize-none py-4 px-2.5 border !border-[#CBCBCB]"
-                          autoSize={{
-                            minRows: 8,
-                          }}
-                          placeholder="Certified Career Coach, 5+ years as a Hiring Manager, etc."
-                        />
-                      </Form.Item>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col flex-1 gap-6 w-full xl:max-w-[500px]">
-                  <div className="flex flex-col gap-5">
-                    <h6 className="font-medium text-black text-xl">
-                      Upload Cover Image
-                    </h6>
-                    <Form.Item
-                      name="image"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input your cover image",
-                        },
-                      ]}
-                    >
-                      <Upload
-                        maxCount={1}
-                        onChange={handleChange}
-                        onRemove={handleRemove}
-                        beforeUpload={handleBeforeUpload}
-                        // showUploadList={false}
-                        accept=".jpeg, .jpg, .png, .webp,"
-                        className="!font-poppins"
-                      >
-                        <Button
-                          className="!font-poppins"
-                          icon={<UploadOutlined />}
-                        >
-                          Click to Upload
-                        </Button>
-                        {imageUrl && (
-                          <Image
-                            width={495}
-                            height={200}
-                            alt="preview"
-                            src={imageUrl}
-                            className="object-cover mt-6 h-[250px]"
-                          />
-                        )}
-                      </Upload>
-                    </Form.Item>
-                  </div>
-
-                  {/* Motivation Statement */}
-                  <div className="flex flex-col gap-5">
-                    <h6 className="font-medium text-black text-xl">
-                      Motivation Statement (Optional)
-                    </h6>
-                    <div className="flex">
-                      <Form.Item<CareerAdvisorApplicationInfo>
-                        name="motivationStatement"
-                        className="w-full py-4 px-2.5"
-                        rules={[{ required: false }]}
-                      >
-                        <Input.TextArea
-                          className="h-9 !font-poppins resize-none border !border-[#CBCBCB]"
-                          autoSize={{
-                            minRows: 8,
-                          }}
-                          placeholder="Why do you want to become a Career Advisor?"
-                        />
-                      </Form.Item>
-                    </div>
-                  </div>
-
-                  <Form.Item label={null}>
-                    <Button
-                      htmlType="submit"
-                      className="w-full !bg-[#4441F8] !border-[#4441F8] !py-1 !px-3 !text-white !h-12 !rounded-md !font-semibold !text-[13px] leading-[15.6px] !font-poppins"
-                    >
-                      Submit Application
-                    </Button>
+                      </div>
+                    </Upload>
                   </Form.Item>
                 </div>
-              </section>
-            </Form>
-          </section>
-        </>
-      );
-    };
+
+                <div className="flex flex-col gap-5">
+                  <h6 className="font-medium text-black text-xl">
+                    Upload Videos
+                  </h6>
+                  <Form.Item
+                    name="image"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please input your cover image",
+                      },
+                    ]}
+                  >
+                    <Upload
+                      maxCount={3}
+                      onChange={handleVideoChange}
+                      onRemove={handleVideoRemove}
+                      beforeUpload={handleVideoBeforeUpload}
+                      // showUploadList={false}
+                      accept=".jpeg, .jpg, .png, .webp,"
+                      className="!font-poppins"
+                    >
+                      <Button
+                        className="!font-poppins"
+                        icon={<UploadOutlined />}
+                      >
+                        Choose file
+                      </Button>
+                      <div className="flex gap-3 mt-6">
+                        {imageUrls.length > 0 &&
+                          imageUrls.map((image, index) => (
+                            <div
+                              className="w-full max-w-[194px] h-[150px]"
+                              key={index}
+                            >
+                              <Image
+                                width={194}
+                                height={150}
+                                alt="preview"
+                                src={image}
+                                className="object-cover"
+                              />
+                            </div>
+                          ))}
+                      </div>
+                    </Upload>
+                  </Form.Item>
+                </div>
+
+                <Form.Item label={null}>
+                  <Button
+                    htmlType="submit"
+                    className="w-full !bg-[#010B18] !border-[#010B18] !py-1 !px-3 !text-white !h-[59px] !rounded-md !font-normal !text-lg !font-lato"
+                  >
+                    Publish Property
+                  </Button>
+                </Form.Item>
+              </div>
+            </section>
+          </Form>
+        </section>
+      </>
+    );
+  };
 }
 
