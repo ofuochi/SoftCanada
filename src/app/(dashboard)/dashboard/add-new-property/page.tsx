@@ -180,7 +180,7 @@ const AddNewProperty = () => {
   return (
     <>
       {contextHolder}
-      <section className="w-full bg-white pb-[30px] px-4 sm:px-6 max-xl:py-6 md:px-10 rounded-xl max-w-[1320px]">
+      <section className="w-full bg-white pb-[30px] px-4 sm:px-6 py-6 md:px-10 rounded-xl max-w-[1320px]">
         <h1 className="font-lato font-semibold text-[38px] leading-[49.8px] text-black">
           Add a New Property
         </h1>
