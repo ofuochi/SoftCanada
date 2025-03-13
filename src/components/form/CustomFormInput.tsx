@@ -29,7 +29,7 @@ const CustomFormInput = <T extends object>({
     >
       <Input
         className={cn(
-          "h-9 border border-[#CBCBCB] !font-poppins",
+          "!h-12 border border-[#CBCBCB] !font-poppins",
           inputClassName
         )}
         placeholder={placeholder}

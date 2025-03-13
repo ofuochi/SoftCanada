@@ -31,7 +31,7 @@ const CustomFormTextarea = <T extends object>({
     >
       <Input.TextArea
         className={cn(
-          "h-9 border border-[#CBCBCB] !font-poppins resize-none",
+          "!h-[128px] !border !border-[#CBCBCB] !font-poppins resize-none",
           textareaClassName
         )}
         autoSize={{

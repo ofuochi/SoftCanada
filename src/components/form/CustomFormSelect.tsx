@@ -36,7 +36,7 @@ const CustomFormSelect = <T extends object>({
     >
       <Select
         placeholder="Select option"
-        className="!h-9 !font-poppins"
+        className="!h-12 !font-poppins"
         allowClear
         {...selectProps}
       >
