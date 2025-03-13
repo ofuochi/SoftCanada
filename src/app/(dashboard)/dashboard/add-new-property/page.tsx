@@ -1,8 +1,8 @@
 "use client";
 
-import CustomFormInput from "@/components/CustomFormInput";
-import CustomFormSelect from "@/components/CustomFormSelect";
-import CustomFormTextarea from "@/components/CustomFormTextarea";
+import CustomFormInput from "@/components/form/CustomFormInput";
+import CustomFormSelect from "@/components/form/CustomFormSelect";
+import CustomFormTextarea from "@/components/form/CustomFormTextarea";
 import { useDashboard } from "@/contexts/DashboardContext";
 import { useApiClient } from "@/hooks/api-hook";
 import { getRoles, UserRoleKey } from "@/lib/abilities";
