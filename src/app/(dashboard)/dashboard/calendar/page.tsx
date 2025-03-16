@@ -2,7 +2,10 @@
 
 import type { BadgeProps, CalendarProps } from "antd";
 import { Badge, Calendar } from "antd";
+import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
+import React from "react";
+import { useState } from "react";
 
 const getListData = (value: Dayjs) => {
   let listData: { type: string; content: string }[] = []; // Specify the type of listData
@@ -41,6 +44,37 @@ const getMonthData = (value: Dayjs) => {
   }
 };
 export default function CalendarPage() {
+  // State to track the selected date if needed
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
+
+  // Handle date selection
+  const onDateSelect = (date: Dayjs) => {
+    setSelectedDate(date);
+
+    // Perform actions based on the selected date
+    console.log("Selected date:", date.format("YYYY-MM-DD"));
+
+    // Example: Show different actions based on date content
+    const events = getListData(date);
+    if (events.length > 0) {
+      console.log("Events on this date:", events);
+      // e.g., open a modal with these events
+    } else {
+      // e.g., open an "add event" form
+    }
+  };
+
+  // Function to determine which dates to disable
+  const disabledDate = (current: Dayjs) => {
+    // Disable dates in the past
+    const isPastDate = current < dayjs().startOf("day");
+
+    // Disable weekends
+    const isWeekend = current.day() === 0 || current.day() === 6;
+
+    return isPastDate || isWeekend;
+  };
+
   const monthCellRender = (value: Dayjs) => {
     const num = getMonthData(value);
     return num ? (
@@ -75,7 +109,12 @@ export default function CalendarPage() {
 
   return (
     <div className="p-5 bg-white">
-      <Calendar cellRender={cellRender} />
+      <Calendar
+        cellRender={cellRender}
+        onSelect={onDateSelect}
+        disabledDate={disabledDate}
+      />
     </div>
   );
 }
+

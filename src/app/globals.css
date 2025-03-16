@@ -21,10 +21,26 @@ body {
   width: 350%;
 }
 
-.ant-menu-submenu-selected .ant-menu-submenu-arrow {
+/* .ant-menu-submenu-selected .ant-menu-submenu-arrow {
   color: #010309 !important;
 }
 .ant-menu-submenu-arrow {
   color: #808080 !important;
 }
+
+.ant-table-thead > tr > th {
+  color: #000000;
+  font-family: "Lato" serif;
+}
+
+.ant-table-thead > tr {
+  padding: 20px 24px;
+  background-color: #f5f5f5 !important;
+}
+
+.ant-table-tbody > tr > td {
+  color: #010b18;
+  font-weight: 500;
+  font-family: "Poppins" serif;
+} */
 
