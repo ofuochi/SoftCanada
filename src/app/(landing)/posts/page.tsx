@@ -37,15 +37,15 @@ export default function Page() {
         />
       </Head>
 
-      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "20px" }}>
+      <div className="container mx-auto px-4">
         <Title level={2}>Recent Posts</Title>
 
         {loading ? (
           <Text type="secondary">Loading posts...</Text>
         ) : posts.length === 0 ? (
-          <Text type="secondary">No posts found.</Text>
+          <Text type="secondary">No posts.</Text>
         ) : (
-          <Row gutter={[16, 16]}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
             {posts.map((post) => {
               if (!post?.node) return null;
               const { id, title, _sys, body } = post.node;
@@ -55,16 +55,20 @@ export default function Page() {
                 .find((child: any) => child.type === "img");
 
               return (
-                <Col xs={24} sm={12} md={8} key={id}>
+                <Col key={id}>
                   <Link href={`/posts/${_sys.filename}`} passHref>
                     <Card
+                      className="w-full flex flex-col h-full shadow-md"
                       hoverable
                       cover={
-                        <Image
-                          preview={false}
-                          alt={image?.alt}
-                          src={image?.url}
-                        />
+                        <div className="w-full max-h-86 flex items-center justify-center bg-gray-50 rounded-t-lg overflow-hidden">
+                          <Image
+                            preview={false}
+                            alt={image?.alt}
+                            src={image?.url}
+                            className="w-full min-h-86 object-cover"
+                          />
+                        </div>
                       }
                     >
                       <Meta
@@ -79,7 +83,7 @@ export default function Page() {
                 </Col>
               );
             })}
-          </Row>
+          </div>
         )}
       </div>
     </div>

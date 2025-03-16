@@ -101,7 +101,7 @@ export default function Post(props: ClientPageProps) {
                       preview={false}
                       src={p.url}
                       alt={p.alt}
-                      className="w-full h-auto rounded-xl border border-gray-300"
+                      className="w-full h-auto "
                     />
                     {p.caption && (
                       <div className="text-center text-sm text-gray-500 mt-2">
@@ -171,3 +171,4 @@ export default function Post(props: ClientPageProps) {
     </div>
   );
 }
+
