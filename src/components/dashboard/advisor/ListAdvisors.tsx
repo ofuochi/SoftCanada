@@ -9,14 +9,19 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Card, Image, Space, Tag, Button } from "antd";
 import { ArrowRightOutlined, StarFilled } from "@ant-design/icons";
 import { PiSuitcaseSimpleFill } from "react-icons/pi";
+import { VscVerifiedFilled } from "react-icons/vsc";
 
 const { Meta } = Card;
 
 type Props = {
   onBookSessionClick: (advisor: Advisor) => void;
+  isBookSessionLoading?: boolean;
 };
 
-export default function ListAdvisors({ onBookSessionClick }: Props) {
+export default function ListAdvisors({
+  onBookSessionClick,
+  isBookSessionLoading,
+}: Props) {
   const { get } = useApiClient();
 
   const getKey = (
@@ -50,7 +55,7 @@ export default function ListAdvisors({ onBookSessionClick }: Props) {
       }
       scrollableTarget="scrollableContainer"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4 p-4">
         {advisors.map((advisor) => (
           <Card
             key={advisor.id}
@@ -68,7 +73,12 @@ export default function ListAdvisors({ onBookSessionClick }: Props) {
           >
             <Meta
               title={
-                <div className="text-center font-semibold">{advisor.name}</div>
+                <div className="text-center font-semibold flex items-center justify-center gap-1">
+                  {advisor.name}
+                  {advisor.isVerified && (
+                    <VscVerifiedFilled className="text-blue-400" />
+                  )}
+                </div>
               }
               description={
                 <div className="text-center text-gray-600 text-sm font-bold truncate">
@@ -88,7 +98,7 @@ export default function ListAdvisors({ onBookSessionClick }: Props) {
             <div className="mt-4 flex flex-wrap justify-center gap-1">
               {advisor.expertise.map((skill) => (
                 <Tag key={skill.id} className="inline-flex text-xs">
-                  {skill.name}
+                  {skill.areaOfExpertise}
                 </Tag>
               ))}
             </div>
@@ -97,9 +107,18 @@ export default function ListAdvisors({ onBookSessionClick }: Props) {
               color="default"
               variant="filled"
               block
-              className="mt-5"
+              className="mt-5 
+              transition-all 
+              duration-300 
+              ease-in-out 
+              hover:scale-[1.02]
+              [&_.ant-btn-icon]:transition-all 
+              [&_.ant-btn-icon]:duration-300 
+              [&:hover_.ant-btn-icon]:translate-x-3 
+              [&:hover_.ant-btn-icon]:scale-125"
               icon={<ArrowRightOutlined />}
               iconPosition="end"
+              loading={isBookSessionLoading}
               onClick={() => onBookSessionClick(advisor)}
             >
               Book Session

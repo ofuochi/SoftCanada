@@ -1,21 +1,23 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useDashboard } from "@/contexts/DashboardContext";
-import { Button, Layout, Menu, MenuProps } from "antd";
 import Logo from "@/components/Logo";
-import Link from "next/link";
+import { useDashboard } from "@/contexts/DashboardContext";
+import { defineAbilityFor, getRoles, UserRoleKey } from "@/lib/abilities";
 import {
   CalendarOutlined,
   HomeOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { PiSuitcaseSimple } from "react-icons/pi";
-import { MdDashboard } from "react-icons/md";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { Can } from "@casl/react";
+import { Button, Layout, Menu, MenuProps } from "antd";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-
+import { useEffect, useState } from "react";
+import { MdDashboard } from "react-icons/md";
+import { PiSuitcaseSimple } from "react-icons/pi";
 const { Sider } = Layout;
 
 const advisors = [
@@ -55,11 +57,19 @@ type SideBarProps = {
 };
 
 const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
+  const { user } = useUser();
   const router = useRouter();
   const pathname = usePathname();
   const { setAdvisorType } = useDashboard();
   const [advisorIndex, setAdvisorIndex] = useState(0);
   const [showAdvisorImage, setShowAdvisorImage] = useState(true);
+  const [userAbility, setUserAbility] = useState(defineAbilityFor());
+
+  useEffect(() => {
+    const userRoles = getRoles(user);
+    console.log(userRoles);
+    if (userRoles.length) setUserAbility(defineAbilityFor(userRoles));
+  }, [user?.[UserRoleKey]]);
 
   const handlePrevious = () => {
     setAdvisorIndex((index) => Math.max(index - 1, 0));
@@ -135,21 +145,6 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
             </Link>
           ),
         },
-        // {
-        //   key: "/dashboard/career/jobs",
-        //   label: (
-        //     <Link
-        //       href="/dashboard/career/jobs"
-        //       className={`font-dm_sans bg-transparent text-sm ${
-        //         pathname === "/dashboard/career/jobs"
-        //           ? "!text-[#010309]"
-        //           : "!text-[#808080]"
-        //       }`}
-        //     >
-        //       Job Listings
-        //     </Link>
-        //   ),
-        // },
         {
           key: "/dashboard/career/career-advisor",
           label: (
@@ -297,60 +292,59 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
   }, []);
 
   return (
-    <>
-      {/* Collapsible Sider */}
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={setCollapsed}
-        breakpoint="lg"
-        theme="light"
-        width={250}
-        collapsedWidth="80"
-        style={{
-          position: "fixed",
-          left: 0,
-          top: 0,
-          bottom: 0,
-          height: "100vh",
-          overflow: "auto",
-          borderRight: "1px solid #f0f0f0",
-        }}
-      >
-        <div className="h-16 m-4 text-center align-middle">
-          <Logo size={collapsed ? "small" : "medium"} path="/dashboard" />
-        </div>
-        <Menu
-          mode="inline"
-          items={menuItems}
-          selectedKeys={[pathname]}
-          defaultOpenKeys={[pathname.split("/").slice(0, 3).join("/")]}
-          className="space-y-5"
-        />
+    <Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={setCollapsed}
+      breakpoint="lg"
+      theme="light"
+      width={250}
+      collapsedWidth="80"
+      style={{
+        position: "fixed",
+        left: 0,
+        top: 0,
+        bottom: 0,
+        height: "100vh",
+        overflow: "auto",
+        borderRight: "1px solid #f0f0f0",
+      }}
+    >
+      <div className="h-16 m-4 text-center align-middle">
+        <Logo size={collapsed ? "small" : "medium"} path="/dashboard" />
+      </div>
+      <Menu
+        mode="inline"
+        items={menuItems}
+        selectedKeys={[pathname]}
+        defaultOpenKeys={[pathname.split("/").slice(0, 3).join("/")]}
+        className="space-y-5"
+      />
 
-        {collapsed && (
-          <section className="w-full px-4 ml-2.5 mt-10">
-            <Image
-              width={120}
-              height={120}
-              alt="advisorImage"
-              src={"/images/advisorImage.svg"}
-              className={`w-[120px] h-[120px] ${
-                showAdvisorImage ? "opacity-100 block" : "opacity-0 hidden"
-              }`}
-            />
-            <Image
-              width={120}
-              height={120}
-              alt="realEstateImage"
-              src={"/images/realEstateImage.svg"}
-              className={`w-[120px] h-[120px] ${
-                showAdvisorImage ? "opacity-0 hidden" : "opacity-100 block"
-              }`}
-            />
-          </section>
-        )}
+      {collapsed && (
+        <section className="w-full px-4 ml-2.5 mt-10">
+          <Image
+            width={120}
+            height={120}
+            alt="advisorImage"
+            src={"/images/advisorImage.svg"}
+            className={`w-[120px] h-[120px] ${
+              showAdvisorImage ? "opacity-100 block" : "opacity-0 hidden"
+            }`}
+          />
+          <Image
+            width={120}
+            height={120}
+            alt="realEstateImage"
+            src={"/images/realEstateImage.svg"}
+            className={`w-[120px] h-[120px] ${
+              showAdvisorImage ? "opacity-0 hidden" : "opacity-100 block"
+            }`}
+          />
+        </section>
+      )}
 
+      <Can I="read" a="publicContent" ability={userAbility}>
         <section
           className={`w-full max-w-[230px] h-[278px] ${
             collapsed ? "opacity-0" : "opacity-100"
@@ -428,8 +422,8 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
             </div>
           </section>
         </section>
-      </Sider>
-    </>
+      </Can>
+    </Sider>
   );
 };
 
