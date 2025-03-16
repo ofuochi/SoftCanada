@@ -319,31 +319,29 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
         defaultOpenKeys={[pathname.split("/").slice(0, 3).join("/")]}
         className="space-y-5"
       />
-
-      {collapsed && (
-        <section className="w-full px-4 ml-2.5 mt-10">
-          <Image
-            width={120}
-            height={120}
-            alt="advisorImage"
-            src={"/images/advisorImage.svg"}
-            className={`w-[120px] h-[120px] ${
-              showAdvisorImage ? "opacity-100 block" : "opacity-0 hidden"
-            }`}
-          />
-          <Image
-            width={120}
-            height={120}
-            alt="realEstateImage"
-            src={"/images/realEstateImage.svg"}
-            className={`w-[120px] h-[120px] ${
-              showAdvisorImage ? "opacity-0 hidden" : "opacity-100 block"
-            }`}
-          />
-        </section>
-      )}
-
       <Can I="read" a="publicContent" ability={userAbility}>
+        {collapsed && (
+          <section className="w-full px-4 ml-2.5 mt-10">
+            <Image
+              width={120}
+              height={120}
+              alt="advisorImage"
+              src={"/images/advisorImage.svg"}
+              className={`w-[120px] h-[120px] ${
+                showAdvisorImage ? "opacity-100 block" : "opacity-0 hidden"
+              }`}
+            />
+            <Image
+              width={120}
+              height={120}
+              alt="realEstateImage"
+              src={"/images/realEstateImage.svg"}
+              className={`w-[120px] h-[120px] ${
+                showAdvisorImage ? "opacity-0 hidden" : "opacity-100 block"
+              }`}
+            />
+          </section>
+        )}
         <section
           className={`w-full max-w-[230px] h-[278px] ${
             collapsed ? "opacity-0" : "opacity-100"
@@ -427,4 +425,3 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
 };
 
 export default SideBar;
-
