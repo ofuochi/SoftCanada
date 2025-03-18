@@ -4,13 +4,13 @@ import CustomFormInput from "@/components/form/CustomFormInput";
 import CustomFormSelect from "@/components/form/CustomFormSelect";
 import CustomFormTextarea from "@/components/form/CustomFormTextarea";
 import { useApiClient } from "@/hooks/api-hook";
-import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { UploadOutlined } from "@ant-design/icons";
+import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";
 import { Button, Form, FormProps, GetProp, message, Upload } from "antd";
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type AddPropertyType = {
   propertyName?: string;
@@ -51,8 +51,15 @@ const maxSize = 5 * 1024 * 1024;
 // Max file size (100MB in bytes)
 const maxVideoSize = 100 * 1024 * 1024;
 
+type ExtendedUserProfile = UserProfile & { sid: string };
+
 const AddNewProperty = () => {
   const router = useRouter();
+
+  const { user } = useUser();
+  const currentUser: ExtendedUserProfile = user as ExtendedUserProfile;
+
+  console.log(user, "currentUser");
 
   const { post } = useApiClient();
   const [messageApi, contextHolder] = message.useMessage();
@@ -103,10 +110,13 @@ const AddNewProperty = () => {
       JSON.stringify(values.availabilityStatus)
     );
 
-    await post("/api/career-advisors", formData);
-    resetFields();
-    setImageUrls([]);
-    router.push("/dashboard");
+    await post(`/api/RealEstate/${currentUser?.sid}/properties`, formData).then(
+      () => {
+        resetFields();
+        setImageUrls([]);
+        router.push("/dashboard");
+      }
+    );
   };
 
   const handleVideoChange = (info: UploadChangeParam<UploadFile<any>>) => {
