@@ -72,41 +72,19 @@ const AddNewProperty = () => {
   ) => {
     const formData = new FormData();
 
-    formData.append(
-      "CareerAdvisor.propertyName",
-      JSON.stringify(values.propertyName)
-    );
-    formData.append(
-      "CareerAdvisor.propertyDescription",
-      JSON.stringify(values.propertyDescription)
-    );
-    formData.append(
-      "CareerAdvisor.propertyType",
-      JSON.stringify(values.propertyType)
-    );
-    formData.append("CareerAdvisor.location", JSON.stringify(values.location));
-    formData.append("CareerAdvisor.price", JSON.stringify(values.price));
-    formData.append(
-      "CareerAdvisor.noOfBedroom",
-      JSON.stringify(values.noOfBedroom)
-    );
-    formData.append(
-      "CareerAdvisor.noOfBathroom",
-      JSON.stringify(values.noOfBathroom)
-    );
-    formData.append(
-      "CareerAdvisor.squareFootage",
-      JSON.stringify(values.squareFootage)
-    );
-    formData.append("CareerAdvisor.contact", JSON.stringify(values.contact));
-    formData.append(
-      "CareerAdvisor.officeAddress",
-      JSON.stringify(values.officeAddress)
-    );
-    formData.append(
-      "CareerAdvisor.availabilityStatus",
-      JSON.stringify(values.availabilityStatus)
-    );
+    formData.append("Name", JSON.stringify(values.propertyName));
+    formData.append("Description", JSON.stringify(values.propertyDescription));
+    formData.append("Type", JSON.stringify(values.propertyType));
+    formData.append("Location", JSON.stringify(values.location));
+    formData.append("Price", JSON.stringify(values.price));
+    formData.append("NumberOfBedroom", JSON.stringify(values.noOfBedroom));
+    formData.append("NumberOfBathroom", JSON.stringify(values.noOfBathroom));
+    formData.append("SquareFootage", JSON.stringify(values.squareFootage));
+    formData.append("contact", JSON.stringify(values.contact));
+    formData.append("Address", JSON.stringify(values.officeAddress));
+    formData.append("Status", JSON.stringify(values.availabilityStatus));
+    formData.append("Video", JSON.stringify(values.video));
+    values.images?.forEach((image) => formData.append("Images", image));
 
     await post(`/api/RealEstate/${currentUser?.sid}/properties`, formData).then(
       () => {
