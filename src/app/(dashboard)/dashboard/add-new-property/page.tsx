@@ -84,7 +84,7 @@ const AddNewProperty = () => {
     formData.append("Address", JSON.stringify(values.officeAddress));
     formData.append("Status", JSON.stringify(values.availabilityStatus));
     formData.append("Video", JSON.stringify(values.video));
-    values.images?.forEach((image) => formData.append("Images", image));
+    formData.append("Images", JSON.stringify(values.images));
 
     await post(`/api/RealEstate/${currentUser?.sid}/properties`, formData).then(
       () => {
