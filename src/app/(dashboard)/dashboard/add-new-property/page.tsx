@@ -59,8 +59,6 @@ const AddNewProperty = () => {
   const { user } = useUser();
   const currentUser: ExtendedUserProfile = user as ExtendedUserProfile;
 
-  console.log(user, "currentUser");
-
   const { post } = useApiClient();
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm<AddPropertyType>();
