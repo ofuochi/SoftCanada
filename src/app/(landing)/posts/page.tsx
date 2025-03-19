@@ -38,7 +38,7 @@ export default function Page() {
       </Head>
 
       <div className="container mx-auto px-4">
-        <Title level={2}>Recent Posts</Title>
+        <Title level={2}>Recent Immigration Posts</Title>
 
         {loading ? (
           <Text type="secondary">Loading posts...</Text>
