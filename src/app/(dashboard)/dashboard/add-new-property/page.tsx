@@ -6,7 +6,15 @@ import CustomFormTextarea from "@/components/form/CustomFormTextarea";
 import { useApiClient } from "@/hooks/api-hook";
 import { UploadOutlined } from "@ant-design/icons";
 import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";
-import { Button, Form, FormProps, GetProp, message, Upload } from "antd";
+import {
+  Button,
+  Checkbox,
+  Form,
+  FormProps,
+  GetProp,
+  message,
+  Upload,
+} from "antd";
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -26,6 +34,7 @@ type AddPropertyType = {
   availabilityStatus?: string;
   images?: string[];
   video?: string;
+  isForSale?: boolean;
 };
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
@@ -70,6 +79,8 @@ const AddNewProperty = () => {
   const handleSubmit: FormProps<AddPropertyType>["onFinish"] = async (
     values
   ) => {
+    console.log(values, "property values");
+
     const formData = new FormData();
 
     formData.append("Name", JSON.stringify(values.propertyName));
@@ -83,6 +94,7 @@ const AddNewProperty = () => {
     formData.append("contact", JSON.stringify(values.contact));
     formData.append("Address", JSON.stringify(values.officeAddress));
     formData.append("Status", JSON.stringify(values.availabilityStatus));
+    formData.append("IsForSale", JSON.stringify(values.isForSale));
     formData.append("Video", JSON.stringify(values.video));
     formData.append("Images", JSON.stringify(values.images));
 
@@ -90,7 +102,7 @@ const AddNewProperty = () => {
       () => {
         resetFields();
         setImageUrls([]);
-        router.push("/dashboard");
+        messageApi.success("Property added successfully");
       }
     );
   };
@@ -204,6 +216,19 @@ const AddNewProperty = () => {
                 {" "}
                 Property Information{" "}
               </h6>
+
+              <Form.Item<AddPropertyType>
+                name="isForSale"
+                valuePropName="checked"
+                label={null}
+              >
+                <Checkbox className="checked:!bg-[#010B18]">
+                  {" "}
+                  <span className="text-[#010B18] text-base font-medium">
+                    Is the property for sale?
+                  </span>
+                </Checkbox>
+              </Form.Item>
 
               <CustomFormInput<AddPropertyType>
                 label="Property Name"
