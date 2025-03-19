@@ -454,15 +454,15 @@ const AddNewProperty = () => {
                     </Button>
                     <div className="flex gap-3 mt-6">
                       {videoUrl && (
-                        <div className="w-full max-w-[194px] h-[150px]">
-                          <Image
-                            width={194}
-                            height={150}
-                            alt="preview"
-                            src={videoUrl}
-                            className="object-cover"
-                          />
-                        </div>
+                        <video
+                          controls
+                          width="200"
+                          height={"150"}
+                          className="w-[200px] h-[200px] object-cover"
+                        >
+                          <source src={videoUrl} />
+                          Your browser does not support the video tag.
+                        </video>
                       )}
                     </div>
                   </Upload>
