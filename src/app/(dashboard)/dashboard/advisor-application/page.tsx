@@ -64,13 +64,13 @@ export default function AdvisorApplicationPage() {
   const { user } = useUser();
   const router = useRouter();
 
-  useEffect(() => {
-    const userRoles = getRoles(user);
+  // useEffect(() => {
+  //   const userRoles = getRoles(user);
 
-    if (userRoles?.[0].toLowerCase() === "career_advisor") {
-      router.replace("/dashboard");
-    }
-  }, [user]);
+  //   if (userRoles?.[0].toLowerCase() === "career_advisor") {
+  //     router.replace("/dashboard");
+  //   }
+  // }, [user]);
 
   const { advisorType } = useDashboard();
 
@@ -149,12 +149,11 @@ export default function AdvisorApplicationPage() {
             <div className="flex max-md:flex-col-reverse items-center md:justify-between">
               <div className="flex flex-col gap-2">
                 <h1 className="font-dm_sans font-semibold text-[38px] leading-[49.8px] text-black max-md:text-center">
-                  {advisorType} Advisor Application
+                  Advisor Application
                 </h1>
                 <span className="font-lato text-[#4F4F4F] font-normal text-lg max-md:text-center">
                   {" "}
-                  Complete the form below to start your journey as a{" "}
-                  {advisorType} Advisor.{" "}
+                  Complete the form below to start your journey as an Advisor.{" "}
                 </span>
               </div>
               <div className="">
