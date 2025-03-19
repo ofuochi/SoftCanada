@@ -124,7 +124,7 @@ export default function Navbar() {
         {
           key: "immigration",
           label: (
-            <Link href="/immigration" className={`font-dm_sans`}>
+            <Link href="/posts" className={`font-dm_sans`}>
               Immigration
             </Link>
           ),
@@ -188,7 +188,7 @@ export default function Navbar() {
             isNavbarDark ? "text-black md:!text-white" : "!text-black"
           }`}
         >
-          Blogs
+          FAQs
         </Link>
       ),
     },
