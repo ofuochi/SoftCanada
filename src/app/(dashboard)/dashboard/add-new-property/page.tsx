@@ -16,6 +16,7 @@ import {
   Upload,
 } from "antd";
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
+import { log } from "console";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -88,12 +89,15 @@ const AddNewProperty = () => {
     formData.append("Address", values.officeAddress.toString());
     formData.append("ListingType", values.listingType.toString());
     formData.append("Video", values.video);
+    // formData.append("Images", values.images[0].originFileObj as File);
+
     imageFiles.forEach((file, index) => {
       if (file) {
         formData.append(`Images`, file);
       }
     });
 
+    console.log(formData, "formData");
     await post(`/api/RealEstate/properties`, formData).then(() => {
       // resetFields();
       // setImageUrls([]);
@@ -189,10 +193,6 @@ const AddNewProperty = () => {
   const handleVideoRemove = () => {
     setVideoUrl(undefined);
   };
-
-  useEffect(() => {
-    console.log(fileList);
-  }, [fileList]);
 
   return (
     <>
