@@ -99,8 +99,8 @@ const AddNewProperty = () => {
 
     console.log(formData, "formData");
     await post(`/api/RealEstate/properties`, formData).then(() => {
-      // resetFields();
-      // setImageUrls([]);
+      resetFields();
+      setImageUrls([]);
       messageApi.success("Property added successfully");
     });
   };
