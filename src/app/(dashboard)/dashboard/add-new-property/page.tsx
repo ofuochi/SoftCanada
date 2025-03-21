@@ -4,28 +4,27 @@ import CustomFormInput from "@/components/form/CustomFormInput";
 import CustomFormSelect from "@/components/form/CustomFormSelect";
 import CustomFormTextarea from "@/components/form/CustomFormTextarea";
 import { useApiClient } from "@/hooks/api-hook";
-import { DeleteOutlined, UploadOutlined } from "@ant-design/icons";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { Button, Form, FormProps, GetProp, message, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { Button, Form, FormProps, GetProp, message, Radio, Upload } from "antd";
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 type AddPropertyType = {
-  propertyName?: string;
-  propertyDescription?: string;
-  propertyType?: string;
-  location?: string;
-  price?: string;
-  noOfBedroom?: string;
-  noOfBathroom?: string;
-  squareFootage?: string;
-  contact?: string;
-  officeAddress?: string;
-  availabilityStatus?: string;
-  images?: string[];
-  video?: string;
+  propertyName: string;
+  propertyDescription: string;
+  propertyType: string;
+  location: string;
+  price: string;
+  listingType: string;
+  noOfBedroom: string;
+  noOfBathroom: string;
+  squareFootage: string;
+  contact: string;
+  officeAddress: string;
+  images: UploadFile[];
+  video: File;
 };
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
@@ -54,7 +53,7 @@ const maxVideoSize = 100 * 1024 * 1024;
 const AddNewProperty = () => {
   const router = useRouter();
 
-  const { post } = useApiClient();
+  const { post, inProgress } = useApiClient();
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm<AddPropertyType>();
   const { setFieldValue, resetFields } = form;
@@ -65,61 +64,46 @@ const AddNewProperty = () => {
   const handleSubmit: FormProps<AddPropertyType>["onFinish"] = async (
     values
   ) => {
+    const imageFiles = values.images.map((image) => image.originFileObj);
     const formData = new FormData();
 
-    formData.append(
-      "CareerAdvisor.propertyName",
-      JSON.stringify(values.propertyName)
-    );
-    formData.append(
-      "CareerAdvisor.propertyDescription",
-      JSON.stringify(values.propertyDescription)
-    );
-    formData.append(
-      "CareerAdvisor.propertyType",
-      JSON.stringify(values.propertyType)
-    );
-    formData.append("CareerAdvisor.location", JSON.stringify(values.location));
-    formData.append("CareerAdvisor.price", JSON.stringify(values.price));
-    formData.append(
-      "CareerAdvisor.noOfBedroom",
-      JSON.stringify(values.noOfBedroom)
-    );
-    formData.append(
-      "CareerAdvisor.noOfBathroom",
-      JSON.stringify(values.noOfBathroom)
-    );
-    formData.append(
-      "CareerAdvisor.squareFootage",
-      JSON.stringify(values.squareFootage)
-    );
-    formData.append("CareerAdvisor.contact", JSON.stringify(values.contact));
-    formData.append(
-      "CareerAdvisor.officeAddress",
-      JSON.stringify(values.officeAddress)
-    );
-    formData.append(
-      "CareerAdvisor.availabilityStatus",
-      JSON.stringify(values.availabilityStatus)
-    );
+    formData.append("Name", values.propertyName.toString());
+    formData.append("Description", values.propertyDescription.toString());
+    formData.append("Type", values.propertyType.toString());
+    formData.append("Location", values.location.toString());
+    formData.append("Price", values.price.toString());
+    formData.append("NumberOfBedroom", values.noOfBedroom.toString());
+    formData.append("NumberOfBathroom", values.noOfBathroom.toString());
+    formData.append("SquareFootage", values.squareFootage.toString());
+    formData.append("contact", values.contact.toString());
+    formData.append("Address", values.officeAddress.toString());
+    formData.append("ListingType", values.listingType.toString());
+    formData.append("Video", values.video);
+    imageFiles.forEach((file, index) => {
+      if (file) {
+        formData.append(`Images`, file);
+      }
+    });
 
-    await post("/api/career-advisors", formData);
-    resetFields();
-    setImageUrls([]);
-    router.push("/dashboard");
+    await post(`/api/RealEstate/properties`, formData).then(() => {
+      // resetFields();
+      // setImageUrls([]);
+      messageApi.success("Property added successfully");
+    });
   };
 
   const handleVideoChange = (info: UploadChangeParam<UploadFile<any>>) => {
     if (info.file.status === "done") {
       getBase64(info.file.originFileObj as FileType, (url) => {
         setVideoUrl(url);
-        setFieldValue("video", url);
+        setFieldValue("video", info.file.originFileObj);
       });
     }
   };
 
   const handleChange = (info: UploadChangeParam<UploadFile<any>>) => {
     setFileList(info.fileList);
+    setFieldValue("images", info.fileList);
     const newFile = info.file;
     if (newFile.status === "done" && newFile.originFileObj) {
       getBase64(newFile.originFileObj as FileType, (url) => {
@@ -180,15 +164,15 @@ const AddNewProperty = () => {
         prevUrls.filter((url) => url !== file.thumbUrl)
       );
     } else if (file.originFileObj) {
-      // For files that were just added and don't have URLs yet
-      // We need to find them by another means
       const fileIndex = fileList.findIndex((f) => f.uid === file.uid);
       if (fileIndex >= 0 && imageUrls.length > fileIndex) {
         setImageUrls((prevUrls) => prevUrls.filter((_, i) => i !== fileIndex));
       }
     }
     // Update fileList
-    setFileList((prevList) => prevList.filter((item) => item.uid !== file.uid));
+    const filteredList = fileList.filter((item) => item.uid !== file.uid);
+    setFileList(filteredList);
+    setFieldValue("images", filteredList);
 
     return true;
   };
@@ -196,6 +180,10 @@ const AddNewProperty = () => {
   const handleVideoRemove = () => {
     setVideoUrl(undefined);
   };
+
+  useEffect(() => {
+    console.log(fileList);
+  }, [fileList]);
 
   return (
     <>
@@ -354,20 +342,18 @@ const AddNewProperty = () => {
                 ]}
               />
 
-              <CustomFormSelect<AddPropertyType>
-                label="Availability Status"
-                name="availabilityStatus"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select availability status",
-                  },
-                ]}
-                optionValues={[
-                  { label: "Available", value: "Available" },
-                  { label: "Unavailable", value: "Unavailable" },
-                ]}
-              />
+              <Form.Item<AddPropertyType>
+                name="listingType"
+                valuePropName="checked"
+                label={"Tenancy Type"}
+              >
+                <Radio.Group
+                  options={[
+                    { value: "Rent", label: "Rent" },
+                    { value: "Lease", label: "Lease" },
+                  ]}
+                />
+              </Form.Item>
 
               <div className="flex flex-col gap-5">
                 <h6 className="font-medium text-black text-xl">
@@ -434,7 +420,6 @@ const AddNewProperty = () => {
                     onChange={handleVideoChange}
                     onRemove={handleVideoRemove}
                     beforeUpload={handleVideoBeforeUpload}
-                    // showUploadList={false}
                     accept=".mp4, .webm, .ogg"
                     className="!font-poppins"
                   >
@@ -443,15 +428,15 @@ const AddNewProperty = () => {
                     </Button>
                     <div className="flex gap-3 mt-6">
                       {videoUrl && (
-                        <div className="w-full max-w-[194px] h-[150px]">
-                          <Image
-                            width={194}
-                            height={150}
-                            alt="preview"
-                            src={videoUrl}
-                            className="object-cover"
-                          />
-                        </div>
+                        <video
+                          controls
+                          width="200"
+                          height={"150"}
+                          className="w-[200px] h-[200px] object-cover"
+                        >
+                          <source src={videoUrl} />
+                          Your browser does not support the video tag.
+                        </video>
                       )}
                     </div>
                   </Upload>
@@ -460,6 +445,8 @@ const AddNewProperty = () => {
 
               <Form.Item label={null}>
                 <Button
+                  disabled={inProgress}
+                  loading={inProgress}
                   htmlType="submit"
                   className="w-full !bg-[#010B18] !border-[#010B18] !py-1 !px-3 !text-white !h-[59px] !rounded-md !font-normal !text-lg !font-lato"
                 >

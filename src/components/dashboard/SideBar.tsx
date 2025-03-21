@@ -293,6 +293,7 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
   return (
     <Sider
       collapsible
+      trigger={null}
       collapsed={collapsed}
       onCollapse={setCollapsed}
       breakpoint="lg"
@@ -319,7 +320,7 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
         defaultOpenKeys={[pathname.split("/").slice(0, 3).join("/")]}
         className="space-y-5"
       />
-      <Can I="read" a="publicContent" ability={userAbility}>
+      {/* <Can I="read" a="publicContent" ability={userAbility}>
         {collapsed && (
           <section className="w-full px-4 ml-2.5 mt-10">
             <Image
@@ -419,9 +420,10 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
             </div>
           </section>
         </section>
-      </Can>
+      </Can> */}
     </Sider>
   );
 };
 
 export default SideBar;
+
