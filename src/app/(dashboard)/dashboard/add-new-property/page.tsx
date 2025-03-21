@@ -5,7 +5,16 @@ import CustomFormSelect from "@/components/form/CustomFormSelect";
 import CustomFormTextarea from "@/components/form/CustomFormTextarea";
 import { useApiClient } from "@/hooks/api-hook";
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, FormProps, GetProp, message, Radio, Upload } from "antd";
+import {
+  Button,
+  Form,
+  FormProps,
+  GetProp,
+  InputNumber,
+  message,
+  Radio,
+  Upload,
+} from "antd";
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -257,7 +266,7 @@ const AddNewProperty = () => {
                 ]}
               />
 
-              <CustomFormInput<AddPropertyType>
+              <Form.Item<AddPropertyType>
                 label="Price"
                 name="price"
                 rules={[
@@ -266,7 +275,18 @@ const AddNewProperty = () => {
                     message: "Please input the price",
                   },
                 ]}
-              />
+              >
+                <InputNumber<number>
+                  defaultValue={0}
+                  formatter={(value) =>
+                    `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value) =>
+                    value?.replace(/\$\s?|(,*)/g, "") as unknown as number
+                  }
+                  className="!py-2.5 !w-full border border-[#CBCBCB] !font-poppins"
+                />
+              </Form.Item>
 
               <CustomFormSelect<AddPropertyType>
                 label="Number of Bedrooms"
