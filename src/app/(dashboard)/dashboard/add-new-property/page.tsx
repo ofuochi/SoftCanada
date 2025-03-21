@@ -5,36 +5,26 @@ import CustomFormSelect from "@/components/form/CustomFormSelect";
 import CustomFormTextarea from "@/components/form/CustomFormTextarea";
 import { useApiClient } from "@/hooks/api-hook";
 import { UploadOutlined } from "@ant-design/icons";
-import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";
-import {
-  Button,
-  Checkbox,
-  Form,
-  FormProps,
-  GetProp,
-  message,
-  Upload,
-} from "antd";
+import { Button, Form, FormProps, GetProp, message, Radio, Upload } from "antd";
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type AddPropertyType = {
-  propertyName?: string;
-  propertyDescription?: string;
-  propertyType?: string;
-  location?: string;
-  price?: string;
-  noOfBedroom?: string;
-  noOfBathroom?: string;
-  squareFootage?: string;
-  contact?: string;
-  officeAddress?: string;
-  availabilityStatus?: string;
-  images?: string[];
-  video?: string;
-  isForSale?: boolean;
+  propertyName: string;
+  propertyDescription: string;
+  propertyType: string;
+  location: string;
+  price: string;
+  listingType: string;
+  noOfBedroom: string;
+  noOfBathroom: string;
+  squareFootage: string;
+  contact: string;
+  officeAddress: string;
+  images: UploadFile[];
+  video: File;
 };
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
@@ -60,15 +50,10 @@ const maxSize = 5 * 1024 * 1024;
 // Max file size (100MB in bytes)
 const maxVideoSize = 100 * 1024 * 1024;
 
-type ExtendedUserProfile = UserProfile & { sid: string };
-
 const AddNewProperty = () => {
   const router = useRouter();
 
-  const { user } = useUser();
-  const currentUser: ExtendedUserProfile = user as ExtendedUserProfile;
-
-  const { post } = useApiClient();
+  const { post, inProgress } = useApiClient();
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm<AddPropertyType>();
   const { setFieldValue, resetFields } = form;
@@ -79,45 +64,46 @@ const AddNewProperty = () => {
   const handleSubmit: FormProps<AddPropertyType>["onFinish"] = async (
     values
   ) => {
-    console.log(values, "property values");
-
+    const imageFiles = values.images.map((image) => image.originFileObj);
     const formData = new FormData();
 
-    formData.append("Name", JSON.stringify(values.propertyName));
-    formData.append("Description", JSON.stringify(values.propertyDescription));
-    formData.append("Type", JSON.stringify(values.propertyType));
-    formData.append("Location", JSON.stringify(values.location));
-    formData.append("Price", JSON.stringify(values.price));
-    formData.append("NumberOfBedroom", JSON.stringify(values.noOfBedroom));
-    formData.append("NumberOfBathroom", JSON.stringify(values.noOfBathroom));
-    formData.append("SquareFootage", JSON.stringify(values.squareFootage));
-    formData.append("contact", JSON.stringify(values.contact));
-    formData.append("Address", JSON.stringify(values.officeAddress));
-    formData.append("Status", JSON.stringify(values.availabilityStatus));
-    formData.append("IsForSale", JSON.stringify(values.isForSale));
-    formData.append("Video", JSON.stringify(values.video));
-    formData.append("Images", JSON.stringify(values.images));
-
-    await post(`/api/RealEstate/${currentUser?.sid}/properties`, formData).then(
-      () => {
-        resetFields();
-        setImageUrls([]);
-        messageApi.success("Property added successfully");
+    formData.append("Name", values.propertyName.toString());
+    formData.append("Description", values.propertyDescription.toString());
+    formData.append("Type", values.propertyType.toString());
+    formData.append("Location", values.location.toString());
+    formData.append("Price", values.price.toString());
+    formData.append("NumberOfBedroom", values.noOfBedroom.toString());
+    formData.append("NumberOfBathroom", values.noOfBathroom.toString());
+    formData.append("SquareFootage", values.squareFootage.toString());
+    formData.append("contact", values.contact.toString());
+    formData.append("Address", values.officeAddress.toString());
+    formData.append("ListingType", values.listingType.toString());
+    formData.append("Video", values.video);
+    imageFiles.forEach((file, index) => {
+      if (file) {
+        formData.append(`Images`, file);
       }
-    );
+    });
+
+    await post(`/api/RealEstate/properties`, formData).then(() => {
+      // resetFields();
+      // setImageUrls([]);
+      messageApi.success("Property added successfully");
+    });
   };
 
   const handleVideoChange = (info: UploadChangeParam<UploadFile<any>>) => {
     if (info.file.status === "done") {
       getBase64(info.file.originFileObj as FileType, (url) => {
         setVideoUrl(url);
-        setFieldValue("video", url);
+        setFieldValue("video", info.file.originFileObj);
       });
     }
   };
 
   const handleChange = (info: UploadChangeParam<UploadFile<any>>) => {
     setFileList(info.fileList);
+    setFieldValue("images", info.fileList);
     const newFile = info.file;
     if (newFile.status === "done" && newFile.originFileObj) {
       getBase64(newFile.originFileObj as FileType, (url) => {
@@ -178,15 +164,15 @@ const AddNewProperty = () => {
         prevUrls.filter((url) => url !== file.thumbUrl)
       );
     } else if (file.originFileObj) {
-      // For files that were just added and don't have URLs yet
-      // We need to find them by another means
       const fileIndex = fileList.findIndex((f) => f.uid === file.uid);
       if (fileIndex >= 0 && imageUrls.length > fileIndex) {
         setImageUrls((prevUrls) => prevUrls.filter((_, i) => i !== fileIndex));
       }
     }
     // Update fileList
-    setFileList((prevList) => prevList.filter((item) => item.uid !== file.uid));
+    const filteredList = fileList.filter((item) => item.uid !== file.uid);
+    setFileList(filteredList);
+    setFieldValue("images", filteredList);
 
     return true;
   };
@@ -194,6 +180,10 @@ const AddNewProperty = () => {
   const handleVideoRemove = () => {
     setVideoUrl(undefined);
   };
+
+  useEffect(() => {
+    console.log(fileList);
+  }, [fileList]);
 
   return (
     <>
@@ -216,19 +206,6 @@ const AddNewProperty = () => {
                 {" "}
                 Property Information{" "}
               </h6>
-
-              <Form.Item<AddPropertyType>
-                name="isForSale"
-                valuePropName="checked"
-                label={null}
-              >
-                <Checkbox className="checked:!bg-[#010B18]">
-                  {" "}
-                  <span className="text-[#010B18] text-base font-medium">
-                    Is the property for sale?
-                  </span>
-                </Checkbox>
-              </Form.Item>
 
               <CustomFormInput<AddPropertyType>
                 label="Property Name"
@@ -365,20 +342,18 @@ const AddNewProperty = () => {
                 ]}
               />
 
-              <CustomFormSelect<AddPropertyType>
-                label="Availability Status"
-                name="availabilityStatus"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please select availability status",
-                  },
-                ]}
-                optionValues={[
-                  { label: "Available", value: "Available" },
-                  { label: "Unavailable", value: "Unavailable" },
-                ]}
-              />
+              <Form.Item<AddPropertyType>
+                name="listingType"
+                valuePropName="checked"
+                label={"Tenancy Type"}
+              >
+                <Radio.Group
+                  options={[
+                    { value: "Rent", label: "Rent" },
+                    { value: "Lease", label: "Lease" },
+                  ]}
+                />
+              </Form.Item>
 
               <div className="flex flex-col gap-5">
                 <h6 className="font-medium text-black text-xl">
@@ -445,7 +420,6 @@ const AddNewProperty = () => {
                     onChange={handleVideoChange}
                     onRemove={handleVideoRemove}
                     beforeUpload={handleVideoBeforeUpload}
-                    // showUploadList={false}
                     accept=".mp4, .webm, .ogg"
                     className="!font-poppins"
                   >
@@ -471,6 +445,8 @@ const AddNewProperty = () => {
 
               <Form.Item label={null}>
                 <Button
+                  disabled={inProgress}
+                  loading={inProgress}
                   htmlType="submit"
                   className="w-full !bg-[#010B18] !border-[#010B18] !py-1 !px-3 !text-white !h-[59px] !rounded-md !font-normal !text-lg !font-lato"
                 >

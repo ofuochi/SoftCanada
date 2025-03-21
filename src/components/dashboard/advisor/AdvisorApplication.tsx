@@ -80,28 +80,22 @@ export default function AdvisorApplication() {
       if (values.motivationStatement !== undefined) {
         formData.append(
           "CareerAdvisor.MotivationStatement",
-          JSON.stringify(values.motivationStatement)
+          values.motivationStatement.toString()
         );
       }
 
-      formData.append(
-        "CareerAdvisor.Name",
-        JSON.stringify(values.name?.trim())
-      );
-      formData.append("CareerAdvisor.Title", JSON.stringify(values.title));
+      formData.append("CareerAdvisor.Name", values.name.toString());
+      formData.append("CareerAdvisor.Title", values.title.toString());
       formData.append(
         "CareerAdvisor.PhoneNumber",
-        JSON.stringify(values.phoneNumber)
+        values.phoneNumber.toString()
       );
       formData.append(
         "CareerAdvisor.Qualification",
-        JSON.stringify(values.qualifications)
+        values.qualifications.toString()
       );
 
-      formData.append(
-        "CareerAdvisor.Expertise",
-        JSON.stringify(values.expertise)
-      );
+      formData.append("CareerAdvisor.Expertise", values.expertise.toString());
       formData.append("Image", values.image);
 
       await post("/api/career-advisors", formData).then(() => {
