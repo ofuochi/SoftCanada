@@ -98,7 +98,7 @@ export default function AdvisorApplication() {
       formData.append("CareerAdvisor.Expertise", values.expertise.toString());
       formData.append("Image", values.image);
 
-      await post("/api/career-advisors", formData).then(() => {
+      await post("/api/advisors", formData).then(() => {
         resetFields();
         setImageUrl(undefined);
         router.push("/dashboard");
