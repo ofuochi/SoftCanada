@@ -85,7 +85,7 @@ export default function AdvisorApplication() {
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
 
   const searchParams = useSearchParams();
-  const type = searchParams.get("ty");
+  const type = searchParams.get("at");
 
   const handleSubmit: FormProps<CareerAdvisorApplicationInfo>["onFinish"] =
     async (values) => {
