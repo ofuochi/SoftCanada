@@ -5,8 +5,18 @@ import CustomFormSelect from "@/components/form/CustomFormSelect";
 import CustomFormTextarea from "@/components/form/CustomFormTextarea";
 import { useApiClient } from "@/hooks/api-hook";
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, FormProps, GetProp, message, Radio, Upload } from "antd";
+import {
+  Button,
+  Form,
+  FormProps,
+  GetProp,
+  InputNumber,
+  message,
+  Radio,
+  Upload,
+} from "antd";
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
+import { log } from "console";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -79,6 +89,8 @@ const AddNewProperty = () => {
     formData.append("Address", values.officeAddress.toString());
     formData.append("ListingType", values.listingType.toString());
     formData.append("Video", values.video);
+    // formData.append("Images", values.images[0].originFileObj as File);
+
     imageFiles.forEach((file, index) => {
       if (file) {
         formData.append(`Images`, file);
@@ -86,8 +98,8 @@ const AddNewProperty = () => {
     });
 
     await post(`/api/RealEstate/properties`, formData).then(() => {
-      // resetFields();
-      // setImageUrls([]);
+      resetFields();
+      setImageUrls([]);
       messageApi.success("Property added successfully");
     });
   };
@@ -181,10 +193,6 @@ const AddNewProperty = () => {
     setVideoUrl(undefined);
   };
 
-  useEffect(() => {
-    console.log(fileList);
-  }, [fileList]);
-
   return (
     <>
       {contextHolder}
@@ -257,7 +265,7 @@ const AddNewProperty = () => {
                 ]}
               />
 
-              <CustomFormInput<AddPropertyType>
+              <Form.Item<AddPropertyType>
                 label="Price"
                 name="price"
                 rules={[
@@ -266,7 +274,18 @@ const AddNewProperty = () => {
                     message: "Please input the price",
                   },
                 ]}
-              />
+              >
+                <InputNumber<number>
+                  defaultValue={0}
+                  formatter={(value) =>
+                    `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value) =>
+                    value?.replace(/\$\s?|(,*)/g, "") as unknown as number
+                  }
+                  className="!py-2.5 !w-full border border-[#CBCBCB] !font-poppins"
+                />
+              </Form.Item>
 
               <CustomFormSelect<AddPropertyType>
                 label="Number of Bedrooms"

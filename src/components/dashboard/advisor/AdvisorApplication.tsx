@@ -25,7 +25,7 @@ import {
   UploadProps,
 } from "antd/es/upload";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const { Option } = Select;
@@ -64,14 +64,28 @@ const allowedTypes = [
 // Max file size (5MB in bytes)
 const maxSize = 1 * 1024 * 1024;
 
+const convertAdvisorType = (advisorType: string): string | null => {
+  const advisorMap: { [key: string]: string } = {
+    career_advisor: "Career",
+    immigration_advisor: "Immigration",
+    finance_advisor: "Finance",
+    study_advisor: "Study",
+  };
+
+  return advisorMap[advisorType] || null;
+};
+
 export default function AdvisorApplication() {
   const router = useRouter();
-  const { advisorType } = useDashboard();
+  const { advisorType, setAdvisorType } = useDashboard();
   const { post, inProgress } = useApiClient();
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm<CareerAdvisorApplicationInfo>();
   const { setFieldValue, resetFields } = form;
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
+
+  const searchParams = useSearchParams();
+  const type = searchParams.get("ty");
 
   const handleSubmit: FormProps<CareerAdvisorApplicationInfo>["onFinish"] =
     async (values) => {
@@ -98,7 +112,7 @@ export default function AdvisorApplication() {
       formData.append("CareerAdvisor.Expertise", values.expertise.toString());
       formData.append("Image", values.image);
 
-      await post("/api/career-advisors", formData).then(() => {
+      await post("/api/advisors", formData).then(() => {
         resetFields();
         setImageUrl(undefined);
         router.push("/dashboard");
@@ -135,6 +149,13 @@ export default function AdvisorApplication() {
   };
   const handleRemove = (file: UploadFile<any>) => setImageUrl(undefined);
 
+  useEffect(() => {
+    if (type) {
+      const advisorType = convertAdvisorType(type) || "";
+      setAdvisorType(advisorType);
+    }
+  }, [type]);
+
   return (
     <>
       {contextHolder}
@@ -142,14 +163,12 @@ export default function AdvisorApplication() {
         <div className="flex max-md:flex-col-reverse items-center md:justify-between">
           <div className="flex flex-col gap-2">
             <h1 className="font-dm_sans font-semibold text-[38px] leading-[49.8px] text-black max-md:text-center">
-              {advisorType} Advisor Application
+              {advisorType ?? ""} Advisor Application
             </h1>
             <span className="font-lato text-[#4F4F4F] font-normal text-lg max-md:text-center">
               {" "}
-              Complete the form below to start your journey as a {
-                advisorType
-              }{" "}
-              Advisor.{" "}
+              Complete the form below to start your journey as a{" "}
+              {advisorType ?? ""} Advisor.{" "}
             </span>
           </div>
           <div className="">

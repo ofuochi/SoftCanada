@@ -6,6 +6,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { getSession } from "@auth0/nextjs-auth0";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Soft Canada",
@@ -18,6 +19,14 @@ export default async function LandingLayout({
   children,
 }: React.PropsWithChildren) {
   const session = await getSession();
+
+  const user = session?.user;
+
+  // Check if user is logged in
+  if (!user) {
+    // Redirect to homepage if not logged in
+    redirect("/");
+  }
 
   return (
     <html lang="en">

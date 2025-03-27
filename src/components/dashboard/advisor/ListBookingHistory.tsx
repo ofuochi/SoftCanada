@@ -35,7 +35,7 @@ const ListBookingHistory = forwardRef<ListBookingHistoryRef, Props>(
     }).toString();
 
     const { data, mutate, isLoading } = useSWR<PaginatedList<Booking>>(
-      `/api/career-advisors/bookings/user?${queryParams}`,
+      `/api/advisors/bookings/user?${queryParams}`,
       get
     );
 
@@ -158,3 +158,4 @@ const ListBookingHistory = forwardRef<ListBookingHistoryRef, Props>(
 ListBookingHistory.displayName = "ListBookingHistory";
 
 export default ListBookingHistory;
+

@@ -30,7 +30,7 @@ export default function ListAdvisors({
   ) =>
     previousPageData && !previousPageData.items.length
       ? null
-      : `/api/career-advisors?pageNumber=${pageIndex + 1}&pageSize=10`;
+      : `/api/advisors?pageNumber=${pageIndex + 1}&pageSize=10`;
 
   const {
     data: pages,
@@ -129,3 +129,4 @@ export default function ListAdvisors({
     </InfiniteScroll>
   );
 }
+
