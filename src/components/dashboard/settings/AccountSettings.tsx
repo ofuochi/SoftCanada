@@ -2,7 +2,7 @@
 
 import { useSession } from "@/contexts/SessionContext";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useUser } from "@auth0/nextjs-auth0";
 import {
   Button,
   Card,
@@ -172,3 +172,4 @@ export default function AccountSettings() {
     </>
   );
 }
+

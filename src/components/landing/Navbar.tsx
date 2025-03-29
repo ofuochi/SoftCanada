@@ -2,7 +2,7 @@
 
 import Logo from "@/components/Logo";
 import { DownOutlined, MenuOutlined } from "@ant-design/icons";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useUser } from "@auth0/nextjs-auth0";
 import { Button, Drawer, Menu, Space } from "antd";
 import classNames from "classnames";
 import Link from "next/link";
@@ -265,7 +265,7 @@ export default function Navbar() {
                     Sign In
                   </Button>
                 </Link>
-                <Link href={`${LOGIN_PATH}`}>
+                <Link href={`${LOGIN_PATH}?screen_hint=signup`}>
                   <Button
                     type="primary"
                     className="font-bold !border-none !font-dm_sans !shadow-none"
@@ -311,15 +311,22 @@ export default function Navbar() {
             selectable={false}
           />
           <div className="flex flex-col items-start p-4 gap-2.5">
-            <Button className="w-full !shadow-none !border-black !font-dm_sans !py-5">
-              Sign In
-            </Button>
-            <Button
-              className="w-full !shadow-none !font-dm_sans !py-5"
-              type="primary"
+            <Link href={`${LOGIN_PATH}`} className="block w-full">
+              <Button className="w-full !shadow-none !border-black !font-dm_sans !py-5">
+                Sign In
+              </Button>
+            </Link>
+            <Link
+              href={`${LOGIN_PATH}?screen_hint=signup`}
+              className="block w-full"
             >
-              Register Now!
-            </Button>
+              <Button
+                className="w-full !shadow-none !font-dm_sans !py-5"
+                type="primary"
+              >
+                Register Now!
+              </Button>
+            </Link>
           </div>
         </Drawer>
       </nav>

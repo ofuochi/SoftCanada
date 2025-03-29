@@ -8,7 +8,7 @@ import {
   HomeOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useUser } from "@auth0/nextjs-auth0";
 import { Can } from "@casl/react";
 import { Button, Layout, Menu, MenuProps } from "antd";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -66,6 +66,7 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
   const [userAbility, setUserAbility] = useState(defineAbilityFor());
 
   useEffect(() => {
+    if (!user) return;
     const userRoles = getRoles(user);
     if (userRoles.length) setUserAbility(defineAbilityFor(userRoles));
   }, [user?.[UserRoleKey]]);

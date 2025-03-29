@@ -1,7 +1,7 @@
 import { LOGOUT_PATH } from "@/constants/paths";
 import { getRoleDescription, UserRoleKey } from "@/lib/abilities";
 import { DownOutlined, UserOutlined } from "@ant-design/icons";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useUser } from "@auth0/nextjs-auth0";
 import { Avatar, Dropdown, MenuProps, Space, Typography } from "antd";
 import type { AvatarSize } from "antd/es/avatar/AvatarContext";
 import Link from "next/link";
@@ -60,3 +60,4 @@ export const ProfileAvatar: React.FC<Props> = ({ size = "large" }) => {
     </Dropdown>
   );
 };
+

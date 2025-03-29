@@ -13,7 +13,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.5.2",
     "@ant-design/nextjs-registry": "^1.0.2",
-    "@auth0/nextjs-auth0": "^3.5.0",
+    "@auth0/nextjs-auth0": "^4.3.0",
     "@casl/ability": "^6.7.3",
     "@casl/react": "^5.0.0",
     "@hookform/resolvers": "^3.10.0",
@@ -27,6 +27,7 @@
     "highlight.js": "^11.11.1",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.2",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.473.0",
     "next": "^15.1.4",
     "react": "^19.0.0",

@@ -2,14 +2,14 @@ import "../globals.css";
 
 import Footer from "@/components/landing/Footer";
 import Navbar from "@/components/landing/Navbar";
+import auth0 from "@/lib/auth0";
 import theme from "@/theme/theme.config";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { ConfigProvider } from "antd";
 import { Metadata } from "next";
-import { getSession } from "@auth0/nextjs-auth0";
 import localFont from "next/font/local";
 import React from "react";
+import { Auth0Provider } from "@auth0/nextjs-auth0";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -32,12 +32,12 @@ export const metadata: Metadata = {
 export default async function LandingLayout({
   children,
 }: React.PropsWithChildren) {
-  const session = await getSession();
+  const session = await auth0.getSession();
 
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        <UserProvider user={session?.user}>
+        <Auth0Provider user={session?.user}>
           <AntdRegistry>
             <ConfigProvider theme={theme}>
               <>
@@ -49,9 +49,8 @@ export default async function LandingLayout({
               </>
             </ConfigProvider>
           </AntdRegistry>
-        </UserProvider>
+        </Auth0Provider>
       </body>
     </html>
   );
 }
-

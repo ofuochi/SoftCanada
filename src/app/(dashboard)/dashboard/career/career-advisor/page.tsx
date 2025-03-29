@@ -11,7 +11,7 @@ import ListBookings, {
 } from "@/components/dashboard/advisor/ListBookings";
 import { ScheduleMeetingModal } from "@/components/dashboard/advisor/ScheduleMeetingModal";
 import { useApiClient } from "@/hooks/api-hook";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useUser } from "@auth0/nextjs-auth0";
 import {
   Avatar,
   Button,
