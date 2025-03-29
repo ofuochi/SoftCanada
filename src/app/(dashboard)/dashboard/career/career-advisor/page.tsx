@@ -3,33 +3,33 @@
 import { Advisor } from "@/app/types/advisor";
 import { Booking } from "@/app/types/booking";
 import ListAdvisors from "@/components/dashboard/advisor/ListAdvisors";
+import ListBookingHistory, {
+  ListBookingHistoryRef,
+} from "@/components/dashboard/advisor/ListBookingHistory";
 import ListBookings, {
   ListBookingsRef,
 } from "@/components/dashboard/advisor/ListBookings";
 import { ScheduleMeetingModal } from "@/components/dashboard/advisor/ScheduleMeetingModal";
 import { useApiClient } from "@/hooks/api-hook";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import {
   Avatar,
   Button,
   Divider,
   Drawer,
+  message,
   Space,
   Tabs,
   TabsProps,
   Typography,
-  message,
 } from "antd";
 import { Dayjs } from "dayjs";
-import { useRef, useState } from "react";
-import { HiMiniUsers } from "react-icons/hi2";
-import { LuCalendarClock, LuCalendarDays } from "react-icons/lu";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import ListBookingHistory, {
-  ListBookingHistoryRef,
-} from "@/components/dashboard/advisor/ListBookingHistory";
+import { useRef, useState } from "react";
+import { HiMiniUsers } from "react-icons/hi2";
+import { LuCalendarClock, LuCalendarDays } from "react-icons/lu";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -74,7 +74,7 @@ export default function CareerAdvisorPage() {
     try {
       setIsBookSessionLoading(true);
       const result = await post<Booking, MeetingType>(
-        `/api/career-advisors/${meeting.advisor.id}/book`,
+        `/api/advisors/${meeting.advisor.id}/book`,
         meeting
       );
       messageApi.success("Booking confirmed!");
@@ -104,7 +104,7 @@ export default function CareerAdvisorPage() {
   };
 
   const handleCancelBooking = async (booking: Booking) => {
-    await post(`/api/career-advisors/bookings/${booking.id}/cancel`);
+    await post(`/api/advisors/bookings/${booking.id}/cancel`);
     messageApi.success("Booking cancelled!");
     bookingsRef.current?.refresh();
   };

@@ -1,3 +1,4 @@
+import { TinaAuth } from "@/tinaAuth";
 import { defineConfig } from "tinacms";
 
 // Your hosting provider likely exposes this as an environment variable
@@ -9,7 +10,7 @@ const branch =
 
 export default defineConfig({
   branch,
-
+  authProvider: new TinaAuth(),
   // Get this from tina.io
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID,
   // Get this from tina.io
@@ -49,10 +50,11 @@ export default defineConfig({
           },
         ],
         ui: {
-          router: props => 
-            props.document._sys.relativePath === 'home.md' ?
-              '/': `/posts/${props.document._sys.filename}`
-        }
+          router: (props) =>
+            props.document._sys.relativePath === "home.md"
+              ? "/"
+              : `/posts/${props.document._sys.filename}`,
+        },
       },
     ],
   },
