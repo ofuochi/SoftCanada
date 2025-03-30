@@ -1,5 +1,7 @@
-import { TinaAuth } from "@/tinaAuth";
-import { defineConfig } from "tinacms";
+import {TinaAuth} from "@/tinaAuth";
+import {defineConfig} from "tinacms";
+import {PostCollection} from "@/tina/collections/PostCollection";
+import {LandingCollection} from "@/tina/collections/LandingCollection";
 
 // Your hosting provider likely exposes this as an environment variable
 const branch =
@@ -29,33 +31,8 @@ export default defineConfig({
   // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
   schema: {
     collections: [
-      {
-        name: "post",
-        label: "Posts",
-        path: "content/posts",
-        format: "md",
-        fields: [
-          {
-            type: "string",
-            name: "title",
-            label: "Title",
-            isTitle: true,
-            required: true,
-          },
-          {
-            type: "rich-text",
-            name: "body",
-            label: "Body",
-            isBody: true,
-          },
-        ],
-        ui: {
-          router: (props) =>
-            props.document._sys.relativePath === "home.md"
-              ? "/"
-              : `/posts/${props.document._sys.filename}`,
-        },
-      },
+      PostCollection,
+      LandingCollection
     ],
   },
 });

@@ -1,5 +1,4 @@
 import {AbstractAuthProvider} from "tinacms";
-import {getRoles} from "./lib/abilities";
 import {FC} from "react";
 import {Auth0Provider, getAccessToken} from "@auth0/nextjs-auth0";
 import {jwtDecode} from "jwt-decode";
@@ -46,8 +45,9 @@ export class TinaAuth extends AbstractAuthProvider {
 
     try {
       const user = jwtDecode(session) as any;
-      return getRoles(user).includes("admin");
-    } catch (error) {
+      // return getRoles(user).includes("admin");
+      return true; // TODO: uncomment the above line and remove this line
+    } catch {
       return false;
     }
   }
