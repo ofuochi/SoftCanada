@@ -1,6 +1,6 @@
 ﻿import {Collection} from "tinacms";
 
-export const PostCollection: Collection = ({
+export const PostCollection: Collection = {
   name: "post",
   label: "Posts",
   path: "content/posts",
@@ -26,4 +26,4 @@ export const PostCollection: Collection = ({
         ? "/"
         : `/posts/${props.document._sys.filename}`,
   },
-});
+};

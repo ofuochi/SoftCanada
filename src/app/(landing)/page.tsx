@@ -17,13 +17,19 @@ export default async function Home() {
                 <HeroSection {...block} cmsQuery={query}/>
               </section>
             );
+          case "LandingBlocksHomepageFeatureBlock":
+            return (
+              <section key={block.sectionTitle} className="px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20">
+                <FeaturesSection {...block} cmsQuery={query}/>
+              </section>
+            )
           default:
             return <></>;
         }
       })}
-      <section className="px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20">
-        <FeaturesSection/>
-      </section>
+      {/*<section className="px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20">*/}
+      {/*  <FeaturesSection/>*/}
+      {/*</section>*/}
       <section className="mt-10">
         <HowItWorksSection/>
       </section>
