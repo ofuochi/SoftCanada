@@ -118,6 +118,19 @@ export default function AdvisorApplication() {
         router.push("/dashboard");
         messageApi.success("Application submitted successfully");
       });
+
+      // make a POST call to /api/auth/update-session to nextjs backend
+      // to update the session with the new user role
+      // this is to make sure the user can see the new role in the dashboard
+      await fetch("/api/auth/update-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          role: "career_advisor", // TODO: update this to the correct role
+        }),
+      });
     };
   const handleChange = (info: UploadChangeParam<UploadFile<any>>) => {
     if (info.file.status === "done") {

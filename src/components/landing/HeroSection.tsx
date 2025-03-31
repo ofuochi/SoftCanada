@@ -1,44 +1,61 @@
-﻿import Link from "next/link";
+﻿"use client";
+
+import {tinaField, useTina} from "tinacms/dist/react";
+import {TinaMarkdown} from "tinacms/dist/rich-text";
+import {LandingBlocksWelcomeHero, LandingQuery} from "@/tina/__generated__/types";
+import Link from "next/link";
 import React from "react";
 
-interface HeroSectionProps {
-  backgroundImage: string;
-  title: string;
-  subtitle: string;
-  buttonText: string;
-  buttonLink: string;
-}
+type Props = LandingBlocksWelcomeHero & {
+  cmsQuery?: any;
+};
 
-const HeroSection: React.FC<HeroSectionProps> = ({
-  backgroundImage,
-  title,
-  subtitle,
-  buttonText,
-  buttonLink,
-}) => {
+const HeroSection: React.FC<Props> = (props) => {
+  // Re-hydrate Tina content on client (only in edit mode)
+  const {data} = useTina<LandingQuery>(props.cmsQuery);
+
+  const heroBlock = data?.landing?.blocks?.find(
+    (b) => b?.__typename === "LandingBlocksWelcomeHero"
+  );
+
+  const {backgroundImage, message, buttonLink, buttonText} = heroBlock ?? props;
+
   return (
     <section
       className="relative w-full mx-auto mt-8 sm:mt-12 rounded-xl overflow-hidden shadow-lg bg-white"
-      style={{ height: "80vh" }}
+      style={{height: "80vh"}}
       id="hero-section"
     >
-      {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url('${backgroundImage}')`,
-        }}
+        data-tina-field={tinaField(heroBlock, "backgroundImage")}
+        style={{backgroundImage: `url('${backgroundImage}')`}}
       />
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
       <div className="relative flex flex-col justify-end items-start pb-10 h-full px-8 sm:px-16 text-white z-10">
         <div className="w-full sm:max-w-[50%]">
-          <h1 className="text-3xl sm:text-5xl font-bold leading-snug break-words">
-            {title}
-          </h1>
-          <p className="mt-4 text-lg break-words">{subtitle}</p>
+          <div data-tina-field={tinaField(heroBlock, "message")}>
+            <TinaMarkdown
+              content={message}
+              components={{
+                h1: (props) => (
+                  <h1
+                    className="text-3xl sm:text-5xl font-bold leading-snug break-words"
+                    {...props}
+                  />
+                ),
+                p: (props) => (
+                  <p className="text-lg mt-4 break-words" {...props} />
+                ),
+                break: () => <br/>,
+              }}
+            />
+          </div>
+
           <div className="mt-8">
             <Link
               href={buttonLink}
+              data-tina-field={tinaField(heroBlock, "buttonText")}
               className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
             >
               {buttonText}

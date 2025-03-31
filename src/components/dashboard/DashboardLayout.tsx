@@ -5,7 +5,7 @@ import { DashboardProvider } from "@/contexts/DashboardContext";
 import { ErrorProvider } from "@/contexts/ErrorContext";
 import { ResumeDownloadProvider } from "@/contexts/ResumeDownloadContext";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useUser } from "@auth0/nextjs-auth0";
 import { Breadcrumb, Button, Layout, MenuProps } from "antd";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";

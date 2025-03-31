@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
-import { getSession } from "@auth0/nextjs-auth0";
 import { getRoles } from "@/lib/abilities";
 import AdvisorApplication from "@/components/dashboard/advisor/AdvisorApplication";
+import auth0 from "@/lib/auth0";
 
 export default async function AdvisorApplicationWrapper() {
-  const session = await getSession();
+  const session = await auth0.getSession();
   const user = session?.user;
 
   if (!user) {
@@ -18,4 +18,3 @@ export default async function AdvisorApplicationWrapper() {
 
   return <AdvisorApplication />;
 }
-

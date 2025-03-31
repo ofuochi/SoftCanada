@@ -2,9 +2,9 @@ import "../globals.css";
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { SessionProvider } from "@/contexts/SessionContext";
+import auth0 from "@/lib/auth0";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { getSession } from "@auth0/nextjs-auth0";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
+import { Auth0Provider } from "@auth0/nextjs-auth0";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default async function LandingLayout({
   children,
 }: React.PropsWithChildren) {
-  const session = await getSession();
+  const session = await auth0.getSession();
 
   const user = session?.user;
 
@@ -31,15 +31,12 @@ export default async function LandingLayout({
   return (
     <html lang="en">
       <body className={`antialiased`}>
-        <UserProvider user={session?.user}>
-          <SessionProvider session={{ ...session }}>
-            <AntdRegistry>
-              <DashboardLayout>{children}</DashboardLayout>
-            </AntdRegistry>
-          </SessionProvider>
-        </UserProvider>
+        <Auth0Provider user={session?.user}>
+          <AntdRegistry>
+            <DashboardLayout>{children}</DashboardLayout>
+          </AntdRegistry>
+        </Auth0Provider>
       </body>
     </html>
   );
 }
-
