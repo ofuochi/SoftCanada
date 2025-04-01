@@ -1,4 +1,7 @@
-﻿import {Collection} from "tinacms";
+﻿import { Collection } from "tinacms";
+import { IconPicker } from "../../src/components/IconPicker";
+
+import * as Icons from "react-icons/fa";
 
 export const LandingCollection: Collection = {
   name: "landing",
@@ -57,7 +60,7 @@ export const LandingCollection: Collection = {
         },
         {
           name: "homepageFeatureBlock",
-          label: "Feature Sections",
+          label: "Features section",
           fields: [
             {
               name: "sectionTitle",
@@ -110,7 +113,7 @@ export const LandingCollection: Collection = {
                   name: "buttonText",
                   label: "Button Text",
                   type: "string",
-                  required: true
+                  required: true,
                 },
                 {
                   name: "buttonLink",
@@ -140,7 +143,7 @@ export const LandingCollection: Collection = {
                   name: "buttonText",
                   label: "Button Text",
                   type: "string",
-                  required: true
+                  required: true,
                 },
                 {
                   name: "buttonLink",
@@ -170,7 +173,7 @@ export const LandingCollection: Collection = {
                   name: "buttonText",
                   label: "Button Text",
                   type: "string",
-                  required: true
+                  required: true,
                 },
                 {
                   name: "buttonLink",
@@ -200,7 +203,7 @@ export const LandingCollection: Collection = {
                   name: "buttonText",
                   label: "Button Text",
                   type: "string",
-                  required: true
+                  required: true,
                 },
                 {
                   name: "buttonLink",
@@ -212,6 +215,140 @@ export const LandingCollection: Collection = {
                   label: "Feature Image",
                   type: "image",
                   required: true,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: "howItWorksBlock",
+          label: '"How It Works" section',
+          fields: [
+            {
+              name: "heading",
+              label: "Heading",
+              type: "rich-text",
+            },
+
+            {
+              name: "step1",
+              label: "Left to right step",
+              type: "object",
+              list: true,
+              ui: {
+                itemProps: (item) => {
+                  return {
+                    label: item.label,
+                  };
+                },
+                defaultItem: () => {
+                  return {
+                    title: "Step Title",
+                    description: "Step Description",
+                    icon: Object.keys(Icons)[0],
+                  };
+                },
+              },
+              fields: [
+                {
+                  name: "title",
+                  label: "Title",
+                  type: "string",
+                  required: true,
+                },
+                {
+                  name: "description",
+                  label: "Description",
+                  type: "string",
+                  ui: {
+                    component: "textarea",
+                  },
+                  required: true,
+                },
+                {
+                  name: "icon",
+                  label: "Icon",
+                  type: "string",
+                  options: Object.keys(Icons),
+                  ui: {
+                    component: IconPicker,
+                  },
+                  required: true,
+                },
+                {
+                  name: "iconColor",
+                  label: "Icon Color",
+                  type: "string",
+                  options: [
+                    "red",
+                    "blue",
+                    "yellow",
+                    "purple",
+                    "green",
+                    "orange",
+                    "pink",
+                  ],
+                },
+              ],
+            },
+            {
+              name: "step2",
+              label: "Right to left step",
+              type: "object",
+              list: true,
+              ui: {
+                itemProps: (item) => {
+                  return {
+                    label: item.label,
+                  };
+                },
+                defaultItem: () => {
+                  return {
+                    title: "Step Title",
+                    description: "Step Description",
+                    icon: Object.keys(Icons)[0],
+                  };
+                },
+              },
+              fields: [
+                {
+                  name: "title",
+                  label: "Title",
+                  type: "string",
+                  required: true,
+                },
+                {
+                  name: "description",
+                  label: "Description",
+                  type: "string",
+                  ui: {
+                    component: "textarea",
+                  },
+                  required: true,
+                },
+                {
+                  name: "icon",
+                  label: "Icon",
+                  type: "string",
+                  options: Object.keys(Icons),
+                  ui: {
+                    component: IconPicker,
+                  },
+                  required: true,
+                },
+                {
+                  name: "iconColor",
+                  label: "Icon Color",
+                  type: "string",
+                  options: [
+                    "red",
+                    "blue",
+                    "yellow",
+                    "purple",
+                    "green",
+                    "orange",
+                    "pink",
+                  ],
                 },
               ],
             },

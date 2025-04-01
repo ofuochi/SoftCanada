@@ -62,5 +62,37 @@ blocks:
       buttonText: Learn More
       image: /images/landing/grant_feature.jpg
     _template: homepageFeatureBlock
+  - heading: >
+      ## Embark on Your Adventure
+
+
+      Follow our easy steps to seamlessly start your journey. Let SoftCanada be
+      your guide through the complex maze of opportunity — we make your
+      transition effortless and exciting.
+    step1:
+      - title: 'Lift Off: Sign Up'
+        description: >-
+          Begin your adventure by signing up for a SoftCanada account.
+          Registration takes just a moment, but it opens the doors to all of our
+          comprehensive tools and insights, ready to help you navigate this
+          thrilling journey to Canada
+        icon: FaRocket
+        iconColor: red
+      - title: Save & Celebrate
+        description: >-
+          Save your progress, bookmark important milestones, and take full
+          control of your journey. Once completed, celebrate your achievements
+          knowing that we are here for every step of the way.
+        icon: FaHandshake
+        iconColor: yellow
+    step2:
+      - title: Explore the Possibilities
+        description: >-
+          Explore our exclusive tools, ranging from job recommendations, real
+          estate guidance, financial planning tools, to immigration pathways. We
+          offer the best features that help you navigate everything smoothly.
+        icon: FaCompass
+        iconColor: blue
+    _template: howItWorksBlock
 ---
 
