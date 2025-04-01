@@ -94,5 +94,15 @@ blocks:
         icon: FaCompass
         iconColor: blue
     _template: howItWorksBlock
+  - heading: >
+      # Ready to Start Your Journey?
+
+
+      Take the first step toward a successful settlement in Canada with all the
+      resources you need.
+    buttonText: Join Today!
+    buttonLink: /auth/login
+    bgImage: /images/landing/cta_section_bg.jpg
+    _template: callToActionBlock
 ---
 

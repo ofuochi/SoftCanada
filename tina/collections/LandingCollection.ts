@@ -354,6 +354,81 @@ export const LandingCollection: Collection = {
             },
           ],
         },
+        {
+          name: "testimonialsBlock",
+          label: "Testimonials section",
+          fields: [
+            {
+              name: "heading",
+              label: "Heading",
+              type: "rich-text",
+            },
+            {
+              name: "testimonials",
+              label: "Testimonials",
+              type: "object",
+              list: true,
+              ui: {
+                itemProps: (item) => {
+                  return {
+                    label: item.label,
+                  };
+                },
+                defaultItem: () => {
+                  return {
+                    name: "Testimonial Name",
+                    text: "Testimonial Text",
+                  };
+                },
+              },
+              fields: [
+                {
+                  name: "name",
+                  label: "Name",
+                  type: "string",
+                  required: true,
+                },
+                {
+                  name: "text",
+                  label: "Text",
+                  type: "string",
+                  ui: {
+                    component: "textarea",
+                  },
+                  required: true,
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: "callToActionBlock",
+          label: "Call to Action section",
+          fields: [
+            {
+              name: "heading",
+              label: "Heading",
+              type: "rich-text",
+            },
+            {
+              name: "buttonText",
+              label: "Button Text",
+              type: "string",
+              required: true,
+            },
+            {
+              name: "buttonLink",
+              label: "Button Link",
+              type: "string",
+              required: true,
+            },
+            {
+              name: "bgImage",
+              label: "Background Image",
+              type: "image",
+            },
+          ],
+        },
       ],
     },
   ],

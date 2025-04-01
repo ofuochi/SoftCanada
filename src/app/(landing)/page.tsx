@@ -38,13 +38,22 @@ export default async function Home() {
                 <HowItWorksSection {...block} cmsQuery={query} />
               </section>
             );
+          case "LandingBlocksCallToActionBlock":
+            return (
+              <section
+                key={i}
+                className="px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20"
+              >
+                <CallToActionSection {...block} cmsQuery={query} />
+              </section>
+            );
           default:
             return <></>;
         }
       })}
-      <section className="mb-12">
+      {/* <section className="mb-12">
         <CallToActionSection />
-      </section>
+      </section> */}
     </>
   );
 }
