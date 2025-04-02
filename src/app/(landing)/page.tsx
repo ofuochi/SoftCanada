@@ -51,9 +51,6 @@ export default async function Home() {
             return <></>;
         }
       })}
-      {/* <section className="mb-12">
-        <CallToActionSection />
-      </section> */}
     </>
   );
 }
