@@ -2,9 +2,26 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { FaCompass, FaHandshake, FaRocket } from "react-icons/fa";
+import {
+  LandingBlocksHowItWorksBlock,
+  LandingQuery,
+} from "@/tina/__generated__/types";
+import { tinaField, useTina } from "tinacms/dist/react";
+import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { getIconComponent } from "@/utils/icon.util";
 
-const HowItWorks = () => {
+type Props = LandingBlocksHowItWorksBlock & {
+  cmsQuery: any;
+};
+
+const HowItWorks = (props: Props) => {
+  const { data } = useTina<LandingQuery>(props.cmsQuery);
+
+  const howItWorksBlock = data?.landing?.blocks?.find(
+    (b) => b?.__typename === "LandingBlocksHowItWorksBlock"
+  );
+  const content = howItWorksBlock ?? props;
+
   // Framer Motion Variants
   const containerVariants = {
     hidden: { opacity: 0, y: 50, scale: 0.9 },
@@ -39,6 +56,17 @@ const HowItWorks = () => {
     },
   };
 
+  // Combine and alternate steps
+  const mergedSteps = [];
+  const step1 = content.step1 || [];
+  const step2 = content.step2 || [];
+  const maxLength = Math.max(step1.length, step2.length);
+
+  for (let i = 0; i < maxLength; i++) {
+    if (step1[i]) mergedSteps.push({ type: "step1", data: step1[i] });
+    if (step2[i]) mergedSteps.push({ type: "step2", data: step2[i] });
+  }
+
   return (
     <section className="w-full bg-gradient-to-b from-blue-50 via-white to-blue-50 py-24 relative overflow-hidden">
       {/* Background Elements */}
@@ -55,124 +83,79 @@ const HowItWorks = () => {
 
       {/* Title and Description */}
       <motion.div
+        data-tina-field={tinaField(content, "heading")}
         className="text-center px-4 sm:px-8 md:px-14"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5 }}
       >
-        <h2 className="text-4xl xl:text-5xl font-bold text-gray-800 tracking-wide leading-tight max-lg:text-center">
-          Embark on Your Adventure
-        </h2>
-        <p className="text-gray-600 text-base sm:text-lg max-lg:text-center md:max-w-3xl mx-auto mt-5 mb-16">
-          Follow our easy steps to seamlessly start your journey. Let SoftCanada
-          be your guide through the complex maze of opportunity — we make your
-          transition effortless and exciting.
-        </p>
+        <TinaMarkdown
+          content={content.heading}
+          components={{
+            h2: (props) => (
+              <h2
+                className="text-4xl xl:text-5xl font-bold text-gray-800 tracking-wide leading-tight max-lg:text-center"
+                {...props}
+              />
+            ),
+            p: (props) => (
+              <p
+                className="text-gray-600 text-base sm:text-lg max-lg:text-center md:max-w-3xl mx-auto mt-5 mb-16"
+                {...props}
+              />
+            ),
+          }}
+        />
       </motion.div>
 
-      {/* Step 1 */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="flex flex-col md:flex-row items-center gap-12 mb-32 px-3 sm:px-8 md:px-14 lg:px-20 xl:px-28"
-      >
-        <motion.div
-          className="flex-shrink-0"
-          variants={floatingVariants}
-          animate="animate"
-        >
+      {/* Steps */}
+      {mergedSteps.map((step, index) => {
+        const IconComponent = getIconComponent(step.data?.icon);
+        return (
           <motion.div
-            className="p-8 bg-white rounded-full shadow-2xl border-4 border-blue-100"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ rotate: 360, transition: { duration: 1 } }}
+            data-tina-field={tinaField(step.data)}
+            key={index}
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className={`flex flex-col ${
+              index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+            } items-center gap-12 mb-32 px-3 sm:px-8 md:px-14 lg:px-20 xl:px-28`}
           >
-            <FaRocket className="text-red-500 text-7xl" />
+            <motion.div
+              className="flex-shrink-0"
+              variants={floatingVariants}
+              animate="animate"
+            >
+              <motion.div
+                className={`p-8 bg-white rounded-full shadow-2xl border-4 border-${step.data?.iconColor}-100`}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{
+                  rotate: step.type === "step1" ? 360 : -360,
+                  transition: { duration: 1 },
+                }}
+              >
+                {IconComponent && (
+                  <IconComponent
+                    className={`text-${step.data?.iconColor}-500 text-7xl`}
+                  />
+                )}
+              </motion.div>
+            </motion.div>
+            <motion.div className="lg:w-2/3 space-y-5" variants={textVariants}>
+              <h3 className="text-3xl lg:text-4xl font-semibold text-gray-800 max-lg:text-center">
+                {step.data?.title}
+              </h3>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-lg:text-center">
+                {step.data?.description}
+              </p>
+            </motion.div>
           </motion.div>
-        </motion.div>
-        <motion.div className="lg:w-2/3" variants={textVariants}>
-          <h3 className="text-3xl lg:text-4xl font-semibold text-gray-800 mb-6 max-lg:text-center">
-            Lift Off: Sign Up
-          </h3>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-lg:text-center">
-            Begin your adventure by signing up for a SoftCanada account.
-            Registration takes just a moment, but it opens the doors to all of
-            our comprehensive tools and insights, ready to help you navigate
-            this thrilling journey to Canada.
-          </p>
-        </motion.div>
-      </motion.div>
-
-      {/* Step 2 */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="flex flex-col md:flex-row-reverse items-center gap-12 mb-32 px-3 sm:px-8 md:px-14 lg:px-20 xl:px-28"
-      >
-        <motion.div
-          className="flex-shrink-0"
-          variants={floatingVariants}
-          animate="animate"
-        >
-          <motion.div
-            className="p-8 bg-white rounded-full shadow-2xl border-4 border-purple-100"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ rotate: -360, transition: { duration: 1 } }}
-          >
-            <FaCompass className="text-blue-500 text-7xl" />
-          </motion.div>
-        </motion.div>
-        <motion.div className="lg:w-2/3 space-y-5" variants={textVariants}>
-          <h3 className="text-3xl lg:text-4xl max-lg:text-center font-semibold text-gray-800">
-            Explore the Possibilities
-          </h3>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-lg:text-center">
-            Explore our exclusive tools, ranging from job recommendations, real
-            estate guidance, financial planning tools, to immigration pathways.
-            We offer the best features that help you navigate everything
-            smoothly.
-          </p>
-        </motion.div>
-      </motion.div>
-
-      {/* Step 3 */}
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="flex flex-col md:flex-row items-center gap-12 px-3 sm:px-8 md:px-14 lg:px-20 xl:px-28"
-      >
-        <motion.div
-          className="flex-shrink-0"
-          variants={floatingVariants}
-          animate="animate"
-        >
-          <motion.div
-            className="p-8 bg-white rounded-full shadow-2xl border-4 border-yellow-100"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ rotate: 180, transition: { duration: 1 } }}
-          >
-            <FaHandshake className="text-yellow-500 text-7xl" />
-          </motion.div>
-        </motion.div>
-        <motion.div className="lg:w-2/3 space-y-5" variants={textVariants}>
-          <h3 className="text-3xl lg:text-4xl font-semibold max-lg:text-center text-gray-800">
-            Save & Celebrate
-          </h3>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-lg:text-center">
-            Save your progress, bookmark important milestones, and take full
-            control of your journey. Once completed, celebrate your achievements
-            knowing that we are here for every step of the way.
-          </p>
-        </motion.div>
-      </motion.div>
+        );
+      })}
     </section>
   );
 };
 
 export default HowItWorks;
-

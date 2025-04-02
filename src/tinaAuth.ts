@@ -1,8 +1,8 @@
-import {AbstractAuthProvider} from "tinacms";
-import {FC} from "react";
-import {Auth0Provider, getAccessToken} from "@auth0/nextjs-auth0";
-import {jwtDecode} from "jwt-decode";
-import {LOGOUT_PATH} from "./constants/paths";
+import { AbstractAuthProvider } from "tinacms";
+import { FC } from "react";
+import { Auth0Provider, getAccessToken } from "@auth0/nextjs-auth0";
+import { jwtDecode } from "jwt-decode";
+import { LOGOUT_PATH } from "./constants/paths";
 
 type TokenObj = {
   id_token: string;
@@ -17,6 +17,7 @@ export class TinaAuth extends AbstractAuthProvider {
 
   async authenticate() {
     const session = await getAccessToken();
+    console.log("session", session);
     return !!session;
   }
 
