@@ -1,4 +1,4 @@
-import { Collection } from "tinacms";
+import {Collection} from "tinacms";
 
 export const FooterCollection: Collection = {
   name: "footer",
@@ -6,10 +6,7 @@ export const FooterCollection: Collection = {
   path: "content/footer",
   format: "md",
   ui: {
-    router: (props) =>
-      props.document._sys.relativePath === "footer.md"
-        ? "/"
-        : props.document._sys.filename,
+    router: () => "/"
   },
   fields: [
     {
@@ -38,15 +35,15 @@ export const FooterCollection: Collection = {
           label: "Section Type",
           type: "string",
           options: [
-            { label: "Links", value: "links" },
-            { label: "Socials", value: "socials" },
+            {label: "Links", value: "links"},
+            {label: "Socials", value: "socials"},
           ],
         },
         {
           name: "description",
           label: "Description",
           type: "string",
-          ui: { component: "textarea" },
+          ui: {component: "textarea"},
         },
         {
           name: "links",

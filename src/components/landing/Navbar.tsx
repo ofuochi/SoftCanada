@@ -4,13 +4,12 @@ import Logo from "@/components/Logo";
 import {DownOutlined, MenuOutlined} from "@ant-design/icons";
 import {useUser} from "@auth0/nextjs-auth0";
 import type {MenuProps} from "antd";
-import {Button, Drawer, Menu, Space} from "antd";
+import {Button, Drawer, Menu} from "antd";
 import classNames from "classnames";
 import Link from "next/link";
 import {useEffect, useState} from "react";
 
 import {LOGIN_PATH} from "@/constants/paths";
-import {LuLayoutDashboard} from "react-icons/lu";
 import {ProfileAvatar} from "../ProfileAvatar";
 
 export default function Navbar() {
@@ -234,19 +233,10 @@ export default function Navbar() {
           {/* Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
-              <Space size="middle">
-                <Link href="/dashboard">
-                  <Button
-                    size="small"
-                    icon={<LuLayoutDashboard/>}
-                    title="Dashboard"
-                  />
-                </Link>
-                <ProfileAvatar/>
-              </Space>
+              <ProfileAvatar theme={isNavbarDark ? "dark" : "light"}/>
             ) : (
               <>
-                <Link href={`${LOGIN_PATH}`}>
+                <Link href={LOGIN_PATH}>
                   <Button className="font-semibold !border-none !font-dm_sans !bg-white !shadow-none">
                     Sign In
                   </Button>
@@ -297,7 +287,7 @@ export default function Navbar() {
             selectable={false}
           />
           <div className="flex flex-col items-start p-4 gap-2.5">
-            <Link href={`${LOGIN_PATH}`} className="block w-full">
+            <Link href={LOGIN_PATH} className="block w-full">
               <Button className="w-full !shadow-none !border-black !font-dm_sans !py-5">
                 Sign In
               </Button>
