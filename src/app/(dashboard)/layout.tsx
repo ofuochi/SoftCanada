@@ -1,7 +1,6 @@
 import "../globals.css";
 
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
-import { SessionProvider } from "@/contexts/SessionContext";
 import auth0 from "@/lib/auth0";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Auth0Provider } from "@auth0/nextjs-auth0";
@@ -40,3 +39,4 @@ export default async function LandingLayout({
     </html>
   );
 }
+

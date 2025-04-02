@@ -120,7 +120,6 @@ export default function ResumesPage() {
               ))
             : Array.from({ length: 5 }, (_, i) => (
                 <Card
-                  bordered={false}
                   size="small"
                   key={i}
                   className="w-72"
