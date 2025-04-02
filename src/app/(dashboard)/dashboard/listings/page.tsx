@@ -1,3 +1,5 @@
+"use client";
+
 import { PaginatedList } from "@/app/types/paginatedResponse";
 import { PropertyListing } from "@/app/types/property-listing";
 import { useApiClient } from "@/hooks/api-hook";
@@ -40,7 +42,7 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
     }).toString();
 
     const { data, mutate, isLoading } = useSWR<PaginatedList<PropertyListing>>(
-      `/api/RealEstate/properties/user?${queryParams}`,
+      `/api/RealEstate/agent/properties?${queryParams}`,
       get
     );
 
