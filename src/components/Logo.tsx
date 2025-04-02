@@ -15,8 +15,6 @@ export default function Logo({
   path = "/",
   src = theme === "dark" ? "/dark_logo.svg" : "/light_logo.svg",
 }: LogoProps) {
-  // const logoSrc = theme === "dark" ? "/dark_logo.svg" : "/light_logo.svg";
-
   // Tailwind CSS classes for scaling based on size prop
   const sizeClasses = classNames({
     "h-12 w-12": size === "small",
@@ -29,7 +27,6 @@ export default function Logo({
       <Image
         src={src!}
         alt={`${theme} theme logo`}
-        layout="intrinsic"
         width={96}
         height={96}
         priority

@@ -28,7 +28,6 @@ export default new Auth0Client({
   authorizationParameters: {
     scope: "openid profile email offline_access",
     audience: process.env.AUTH0_AUDIENCE,
-    prompt: "consent",
   },
   session: {
     rolling: true, // Automatically refresh the session before it expires
