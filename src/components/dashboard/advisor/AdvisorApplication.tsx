@@ -128,7 +128,7 @@ export default function AdvisorApplication() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          role: "career_advisor", // TODO: update this to the correct role
+          role: type, // Gets the updated role from the url
         }),
       });
     };

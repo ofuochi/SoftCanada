@@ -1,4 +1,4 @@
-﻿import {Collection} from "tinacms";
+﻿import { Collection } from "tinacms";
 
 export const PostCollection: Collection = {
   name: "post",
