@@ -68,7 +68,7 @@ const HowItWorks = (props: Props) => {
   }
 
   return (
-    <section className="w-full bg-gradient-to-b from-blue-50 via-white to-blue-50 py-24 relative overflow-hidden">
+    <section className="w-full bg-gradient-to-b from-blue-50 via-white to-blue-50 pt-24 relative overflow-hidden">
       {/* Background Elements */}
       <motion.div
         className="absolute top-0 left-1/3 w-64 h-64 bg-gradient-to-r from-pink-300 via-purple-400 to-indigo-500 rounded-full filter blur-xl opacity-20"
@@ -92,13 +92,13 @@ const HowItWorks = (props: Props) => {
         <TinaMarkdown
           content={content.heading}
           components={{
-            h2: (props) => (
+            h2: (props: any) => (
               <h2
                 className="text-4xl xl:text-5xl font-bold text-gray-800 tracking-wide leading-tight max-lg:text-center"
                 {...props}
               />
             ),
-            p: (props) => (
+            p: (props: any) => (
               <p
                 className="text-gray-600 text-base sm:text-lg max-lg:text-center md:max-w-3xl mx-auto mt-5 mb-16"
                 {...props}

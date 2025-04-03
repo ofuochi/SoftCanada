@@ -6,15 +6,15 @@ interface LogoProps {
   theme?: "dark" | "light";
   size?: "small" | "medium" | "large";
   path?: string;
+  src?: string | null;
 }
 
 export default function Logo({
   theme = "dark",
   size = "medium",
   path = "/",
+  src = theme === "dark" ? "/dark_logo.svg" : "/light_logo.svg",
 }: LogoProps) {
-  const logoSrc = theme === "dark" ? "/dark_logo.svg" : "/light_logo.svg";
-
   // Tailwind CSS classes for scaling based on size prop
   const sizeClasses = classNames({
     "h-12 w-12": size === "small",
@@ -25,9 +25,8 @@ export default function Logo({
   return (
     <Link href={path} aria-label="Home">
       <Image
-        src={logoSrc}
+        src={src!}
         alt={`${theme} theme logo`}
-        layout="intrinsic"
         width={96}
         height={96}
         priority

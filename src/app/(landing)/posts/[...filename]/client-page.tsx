@@ -3,10 +3,55 @@
 import { PostQuery } from "@/tina/__generated__/types";
 import { useTina } from "tinacms/dist/react";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
-import hljs from "highlight.js";
-import "highlight.js/styles/github-dark.css";
-import { useEffect } from "react";
+// import hljs from "highlight.js";
+// import "highlight.js/styles/github-dark.css";
+import React, { useEffect } from "react";
 import { Image } from "antd";
+
+// Define a set of block-level elements for our check.
+const blockElements = new Set([
+  "address",
+  "article",
+  "aside",
+  "blockquote",
+  "canvas",
+  "div",
+  "dl",
+  "fieldset",
+  "figcaption",
+  "figure",
+  "footer",
+  "form",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "header",
+  "hr",
+  "li",
+  "main",
+  "nav",
+  "noscript",
+  "ol",
+  "p",
+  "pre",
+  "section",
+  "table",
+  "tfoot",
+  "ul",
+  "video",
+]);
+
+// Helper function to check if a child is a block-level element.
+const isBlockElement = (child: any) => {
+  if (typeof child === "string" || typeof child === "number") return false;
+  if (React.isValidElement(child) && typeof child.type === "string") {
+    return blockElements.has(child.type);
+  }
+  return false;
+};
 
 interface ClientPageProps {
   query: string;
@@ -19,9 +64,9 @@ interface ClientPageProps {
 export default function Post(props: ClientPageProps) {
   const { data } = useTina(props);
 
-  useEffect(() => {
-    hljs.highlightAll();
-  }, []);
+  // useEffect(() => {
+  //   hljs.highlightAll();
+  // }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12">
@@ -51,19 +96,36 @@ export default function Post(props: ClientPageProps) {
                   {...p}
                 />
               ),
+              p: (p: any) => {
+                // Check if children contain any block-level elements.
+                const childrenArray = React.Children.toArray(p.children);
+                const hasBlockElements = childrenArray.some((child) =>
+                  isBlockElement(child)
+                );
+
+                if (hasBlockElements) {
+                  // Use a div to wrap block elements.
+                  return (
+                    <p className="text-lg leading-relaxed text-gray-700 mb-6">
+                      {p.children}
+                    </p>
+                  );
+                }
+
+                // Otherwise, safely use a p element.
+                return (
+                  <div
+                    className="text-lg leading-relaxed text-gray-700 mb-6"
+                    {...p}
+                  />
+                );
+              },
               code: (p: any) => (
                 <code
                   className="font-mono bg-gray-100 text-gray-800 rounded-md px-1"
                   {...p}
                 />
               ),
-              p: (p: any) => (
-                <p
-                  className="text-lg leading-relaxed text-gray-700 mb-6"
-                  {...p}
-                />
-              ),
-
               ul: (p: any) => (
                 <ul
                   className="space-y-2 mb-6 pl-6 list-disc marker:text-blue-400"
@@ -77,7 +139,6 @@ export default function Post(props: ClientPageProps) {
                 />
               ),
               li: (p: any) => <li className="pl-2" {...p} />,
-
               bold: (p: any) => <strong className="font-semibold" {...p} />,
               italic: (p: any) => <em className="italic" {...p} />,
               underline: (p: any) => (
@@ -86,14 +147,12 @@ export default function Post(props: ClientPageProps) {
               strikethrough: (p: any) => (
                 <span className="line-through" {...p} />
               ),
-
               a: (p: any) => (
                 <a
                   className="text-blue-500 hover:text-blue-700 underline underline-offset-4"
                   {...p}
                 />
               ),
-
               img: (p: any) => {
                 return (
                   <div className="my-8">
@@ -101,7 +160,7 @@ export default function Post(props: ClientPageProps) {
                       preview={false}
                       src={p.url}
                       alt={p.alt}
-                      className="w-full h-auto "
+                      className="w-full h-auto"
                     />
                     {p.caption && (
                       <div className="text-center text-sm text-gray-500 mt-2">
@@ -111,18 +170,15 @@ export default function Post(props: ClientPageProps) {
                   </div>
                 );
               },
-
               block_quote: (p: any) => (
                 <blockquote
                   className="my-8 border-l-4 border-blue-400 bg-gray-50 px-6 py-4 rounded-r text-gray-700"
                   {...p}
                 />
               ),
-
               hr: (p: any) => (
                 <hr className="my-8 border-t-2 border-gray-200" {...p} />
               ),
-
               table: (p: any) => (
                 <div className="overflow-x-auto my-8 rounded-lg shadow-sm border border-gray-200">
                   <table className="w-full" {...p} />
@@ -146,13 +202,11 @@ export default function Post(props: ClientPageProps) {
               td: (p: any) => (
                 <td className="px-4 py-3 text-gray-700 align-top" {...p} />
               ),
-
               code_block: (p: any) => (
                 <pre className="my-8 rounded-xl overflow-hidden">
                   <code {...p} />
                 </pre>
               ),
-
               pre: (p: any) => (
                 <div className="relative">
                   <pre className="my-8 rounded-xl overflow-hidden" {...p} />
@@ -171,4 +225,3 @@ export default function Post(props: ClientPageProps) {
     </div>
   );
 }
-

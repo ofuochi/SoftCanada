@@ -1,23 +1,22 @@
 "use client";
 
 import Logo from "@/components/Logo";
-import {DownOutlined, MenuOutlined} from "@ant-design/icons";
-import {useUser} from "@auth0/nextjs-auth0";
-import type {MenuProps} from "antd";
-import {Button, Drawer, Menu, Space} from "antd";
+import { DownOutlined, MenuOutlined } from "@ant-design/icons";
+import { useUser } from "@auth0/nextjs-auth0";
+import type { MenuProps } from "antd";
+import { Button, Drawer, Menu } from "antd";
 import classNames from "classnames";
 import Link from "next/link";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
-import {LOGIN_PATH} from "@/constants/paths";
-import {LuLayoutDashboard} from "react-icons/lu";
-import {ProfileAvatar} from "../ProfileAvatar";
+import { LOGIN_PATH } from "@/constants/paths";
+import { ProfileAvatar } from "../ProfileAvatar";
 
 export default function Navbar() {
   const [navbarStyle, setNavbarStyle] = useState("bg-transparent");
   const [isNavbarDark, setIsNavbarDark] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const {user} = useUser();
+  const { user } = useUser();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -177,7 +176,7 @@ export default function Navbar() {
           ),
         },
       ],
-    }
+    },
   ];
 
   const toggleMobileMenu = () => {
@@ -209,10 +208,10 @@ export default function Navbar() {
           navbarStyle
         )}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <Logo theme={isNavbarDark ? "light" : "dark"}/>
+            <Logo theme={isNavbarDark ? "light" : "dark"} />
           </div>
 
           {/* Desktop Menu */}
@@ -234,19 +233,10 @@ export default function Navbar() {
           {/* Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
-              <Space size="middle">
-                <Link href="/dashboard">
-                  <Button
-                    size="small"
-                    icon={<LuLayoutDashboard/>}
-                    title="Dashboard"
-                  />
-                </Link>
-                <ProfileAvatar/>
-              </Space>
+              <ProfileAvatar theme={isNavbarDark ? "dark" : "light"} />
             ) : (
               <>
-                <Link href={`${LOGIN_PATH}`}>
+                <Link href={LOGIN_PATH}>
                   <Button className="font-semibold !border-none !font-dm_sans !bg-white !shadow-none">
                     Sign In
                   </Button>
@@ -288,7 +278,7 @@ export default function Navbar() {
           closable={true}
           onClose={toggleMobileMenu}
           open={isMobileMenuOpen}
-          styles={{body: {padding: 0}}}
+          styles={{ body: { padding: 0 } }}
         >
           <Menu
             mode="vertical"
@@ -297,7 +287,7 @@ export default function Navbar() {
             selectable={false}
           />
           <div className="flex flex-col items-start p-4 gap-2.5">
-            <Link href={`${LOGIN_PATH}`} className="block w-full">
+            <Link href={LOGIN_PATH} className="block w-full">
               <Button className="w-full !shadow-none !border-black !font-dm_sans !py-5">
                 Sign In
               </Button>

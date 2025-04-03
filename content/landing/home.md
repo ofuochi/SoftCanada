@@ -93,6 +93,13 @@ blocks:
           offer the best features that help you navigate everything smoothly.
         icon: FaCompass
         iconColor: blue
+      - title: Speak to Experts
+        description: >-
+          Hear what the experts say! Book a one-on-one meeting with
+          professionals with years of experience in your field to set yourself
+          up for success in Canada.
+        icon: FaUserTie
+        iconColor: orange
     _template: howItWorksBlock
   - heading: >
       # Ready to Start Your Journey?

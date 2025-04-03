@@ -32,13 +32,13 @@ export default function CallToActionSection(props: Props) {
           <TinaMarkdown
             content={content.heading}
             components={{
-              h1: (props) => (
+              h1: (props: any) => (
                 <h1
                   className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4"
                   {...props}
                 />
               ),
-              p: (props) => (
+              p: (props: any) => (
                 <p
                   className="text-base md:text-lg lg:text-xl mb-8"
                   {...props}

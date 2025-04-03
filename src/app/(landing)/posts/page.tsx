@@ -1,16 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { Card, Row, Col, Typography, Space, Image, Avatar } from "antd";
+import { Avatar, Card, Col, Image, Typography } from "antd";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import client from "@/tina/__generated__/client";
+import { PostConnectionQuery } from "@/tina/__generated__/types";
+import { tinaField } from "tinacms/dist/react";
+
 const { Meta } = Card;
 
 const { Title, Text } = Typography;
 
 export default function Page() {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<
+    PostConnectionQuery["postConnection"]["edges"]
+  >([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,6 +29,7 @@ export default function Page() {
         setLoading(false);
       }
     }
+
     fetchPosts();
   }, []);
 
@@ -42,11 +48,11 @@ export default function Page() {
 
         {loading ? (
           <Text type="secondary">Loading posts...</Text>
-        ) : posts.length === 0 ? (
+        ) : posts?.length === 0 ? (
           <Text type="secondary">No posts.</Text>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4">
-            {posts.map((post) => {
+            {posts?.map((post) => {
               if (!post?.node) return null;
               const { id, title, _sys, body } = post.node;
               const image = body.children
@@ -60,6 +66,7 @@ export default function Page() {
                     <Card
                       className="w-full flex flex-col h-full shadow-md"
                       hoverable
+                      data-tina-field={tinaField(post.node)}
                       cover={
                         <div className="w-full max-h-86 flex items-center justify-center bg-gray-50 rounded-t-lg overflow-hidden">
                           <Image

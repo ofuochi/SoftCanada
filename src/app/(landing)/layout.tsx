@@ -1,6 +1,6 @@
 import "../globals.css";
 
-import Footer from "@/components/landing/Footer";
+import Footer from "@/components/landing/footer/Footer";
 import Navbar from "@/components/landing/Navbar";
 import auth0 from "@/lib/auth0";
 import theme from "@/theme/theme.config";

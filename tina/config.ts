@@ -1,7 +1,8 @@
-import {TinaAuth} from "@/tinaAuth";
-import {defineConfig} from "tinacms";
-import {PostCollection} from "@/tina/collections/PostCollection";
-import {LandingCollection} from "@/tina/collections/LandingCollection";
+import { TinaAuth } from "@/tinaAuth";
+import { defineConfig } from "tinacms";
+import { PostCollection } from "@/tina/collections/PostCollection";
+import { LandingCollection } from "@/tina/collections/LandingCollection";
+import { FooterCollection } from "./collections/FooterCollection";
 
 // Your hosting provider likely exposes this as an environment variable
 const branch =
@@ -30,9 +31,6 @@ export default defineConfig({
   },
   // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
   schema: {
-    collections: [
-      PostCollection,
-      LandingCollection
-    ],
+    collections: [PostCollection, LandingCollection, FooterCollection],
   },
 });
