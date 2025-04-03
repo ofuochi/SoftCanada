@@ -143,7 +143,7 @@ export default function CareerAdvisorPage() {
 
   return (
     <>
-      <div className="p-6 bg-white min-h-[360px]">
+      <div className="p-2.5 sm:p-6 bg-white min-h-[360px]">
         <div className="mb-6">
           {pageTab === TabKeys.Advisors && (
             <>
@@ -250,3 +250,4 @@ export default function CareerAdvisorPage() {
     </>
   );
 }
+

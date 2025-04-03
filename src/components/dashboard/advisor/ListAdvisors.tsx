@@ -55,7 +55,7 @@ export default function ListAdvisors({
       }
       scrollableTarget="scrollableContainer"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:p-4">
         {advisors.map((advisor) => (
           <Card
             key={advisor.id}
@@ -82,10 +82,10 @@ export default function ListAdvisors({
               }
               description={
                 <div className="text-center text-gray-600 text-sm font-bold truncate">
-                  <Space>
+                  {/* <Space>
                     <PiSuitcaseSimpleFill />
                     <span>{advisor.title}</span>
-                  </Space>
+                  </Space> */}
                   <span className="text-yellow-500 flex items-center justify-center gap-1">
                     <StarFilled />
                     {(advisor.rating || 5).toFixed(1)}
@@ -95,13 +95,13 @@ export default function ListAdvisors({
             />
 
             {/* Expertise Tags */}
-            <div className="mt-4 flex flex-wrap justify-center gap-1">
+            {/* <div className="mt-4 flex flex-wrap justify-center gap-1">
               {advisor.expertise.map((skill) => (
                 <Tag key={skill.id} className="inline-flex text-xs">
                   {skill.areaOfExpertise}
                 </Tag>
               ))}
-            </div>
+            </div> */}
 
             <Button
               color="default"

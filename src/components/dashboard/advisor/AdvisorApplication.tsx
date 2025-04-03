@@ -66,9 +66,9 @@ const maxSize = 1 * 1024 * 1024;
 
 const convertAdvisorType = (advisorType: string): string | null => {
   const advisorMap: { [key: string]: string } = {
+    finance_advisor: "Finance",
     career_advisor: "Career",
     immigration_advisor: "Immigration",
-    finance_advisor: "Finance",
     study_advisor: "Study",
   };
 
@@ -93,31 +93,33 @@ export default function AdvisorApplication() {
 
       if (values.motivationStatement !== undefined) {
         formData.append(
-          "CareerAdvisor.MotivationStatement",
+          "Advisor.MotivationStatement",
           values.motivationStatement.toString()
         );
       }
 
-      formData.append("CareerAdvisor.Name", values.name.toString());
-      formData.append("CareerAdvisor.Title", values.title.toString());
+      formData.append("Advisor.Name", values.name.toString());
+      formData.append("Advisor.Title", values.title.toString());
+      formData.append("Advisor.PhoneNumber", values.phoneNumber.toString());
       formData.append(
-        "CareerAdvisor.PhoneNumber",
-        values.phoneNumber.toString()
-      );
-      formData.append(
-        "CareerAdvisor.Qualification",
+        "Advisor.Qualification",
         values.qualifications.toString()
       );
 
-      formData.append("CareerAdvisor.Expertise", values.expertise.toString());
+      formData.append("Advisor.expertise", JSON.stringify(values.expertise));
+      formData.append("Advisor.AdvisorType", type!.toString());
       formData.append("Image", values.image);
 
-      await post("/api/advisors", formData).then(() => {
-        resetFields();
-        setImageUrl(undefined);
-        router.push("/dashboard");
-        messageApi.success("Application submitted successfully");
-      });
+      await post("/api/advisors", formData)
+        .then(() => {
+          resetFields();
+          setImageUrl(undefined);
+          router.push("/dashboard");
+          messageApi.success("Application submitted successfully");
+        })
+        .catch((error) => {
+          messageApi.error(error);
+        });
 
       // make a POST call to /api/auth/update-session to nextjs backend
       // to update the session with the new user role
@@ -245,7 +247,7 @@ export default function AdvisorApplication() {
                   </Form.Item>
 
                   <Form.Item<CareerAdvisorApplicationInfo>
-                    label="Title"
+                    label="Job Title"
                     name="title"
                     rules={[
                       {

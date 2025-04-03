@@ -3,6 +3,8 @@
 import { PaginatedList } from "@/app/types/paginatedResponse";
 import { PropertyListing } from "@/app/types/property-listing";
 import { useApiClient } from "@/hooks/api-hook";
+import { formatCAD } from "@/utils/currency";
+import { DeleteOutlined } from "@ant-design/icons";
 import { Avatar, Table, TableProps, Tag, Typography } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -35,14 +37,14 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
     // }).toString();
 
     const queryParams = new URLSearchParams({
-      isForSale: "false",
-      location: "ojota",
-      minPrice: "12",
-      maxPrice: "23",
+      isForSale: "",
+      location: "",
+      minPrice: "",
+      maxPrice: "",
     }).toString();
 
-    const { data, mutate, isLoading } = useSWR<PaginatedList<PropertyListing>>(
-      `/api/RealEstate/agent/properties?${queryParams}`,
+    const { data, mutate, isLoading } = useSWR<PropertyListing[]>(
+      `/api/RealEstate/agent/properties`,
       get
     );
 
@@ -61,10 +63,22 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
         ),
       },
       {
+        title: "Description",
+        dataIndex: ["description"],
+        key: "description",
+        render: (_, record) => <Text>{record.description}</Text>,
+      },
+      {
+        title: "Type",
+        dataIndex: ["type"],
+        key: "type",
+        render: (_, record) => <Text>{record.type}</Text>,
+      },
+      {
         title: "Price",
         dataIndex: "price",
         key: "notes",
-        render: (_, { price }) => <span> {price} </span>,
+        render: (_, { price }) => <span> {formatCAD(price)} </span>,
       },
       {
         title: "Location",
@@ -88,23 +102,15 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
         },
       },
       {
-        title: "Status",
-        dataIndex: "status",
-        key: "status",
-        render: (_, { status }) => {
-          if (status.toLowerCase() === "booked") {
-            if (status === "Sold")
-              return <Tag color="rgba(114, 250, 50, 1)">Ongoing</Tag>;
-            if (status === "Active") return <Tag color="blue">Active</Tag>;
-
-            return <Tag color="rgba(250, 90, 50, 0.2)">Pending</Tag>;
-          }
-          return (
-            <Tag color={status.toLowerCase() === "cancelled" ? "red" : "blue"}>
-              {status}
-            </Tag>
-          );
-        },
+        title: "Actions",
+        dataIndex: "actions",
+        key: "actions",
+        render: (_, record) => (
+          <span>
+            {" "}
+            <DeleteOutlined className="text-[#D32F2F]" />{" "}
+          </span>
+        ),
       },
     ];
 
@@ -135,12 +141,12 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
       <Table<PropertyListing>
         columns={columns}
         loading={isLoading}
-        dataSource={data?.items}
+        dataSource={data}
         onChange={handleTableChange}
         pagination={{
           current: currentPage,
           pageSize: pageSize,
-          total: data?.totalRecords,
+          total: data?.length,
           showSizeChanger: true,
           showTotal: (total) => `Total ${total} item(s)`,
           pageSizeOptions: [5, 10, 20, 50],

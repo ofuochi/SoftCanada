@@ -228,7 +228,9 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
                 <Text strong className="block">
                   Expertise:
                 </Text>
-                <Text>{advisor.expertise.map((e) => e.name).join(", ")}</Text>
+                <Text>
+                  {advisor.expertise.map((e) => e.areaOfExpertise).join(", ")}
+                </Text>
               </div>
             )}
             <div className="mt-6">
@@ -382,3 +384,4 @@ export const ScheduleMeetingModal: React.FC<ScheduleMeetingModalProps> = ({
     </Modal>
   );
 };
+

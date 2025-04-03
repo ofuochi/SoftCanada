@@ -12,9 +12,10 @@ export default async function AdvisorApplicationWrapper() {
   }
   const userRoles = getRoles(user);
 
-  // if (userRoles?.[0] === "career_advisor") {
-  //   redirect("/dashboard");
-  // }
+  if (userRoles.length > 0) {
+    redirect("/dashboard");
+  }
 
   return <AdvisorApplication />;
 }
+
