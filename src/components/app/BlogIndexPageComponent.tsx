@@ -18,12 +18,7 @@ import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 const { Title, Paragraph, Text } = Typography;
-const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
-  <Space>
-    {React.createElement(icon)}
-    {text}
-  </Space>
-);
+
 type Props = {
   categories: readonly string[];
   categoryCounts: Record<string, number>;
