@@ -114,21 +114,19 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
       ),
     },
     {
-      key: "/dashboard/career/resumes",
+      key: "/dashboard/resumes",
       icon: (
         <CircleUserRound
           strokeWidth={1}
-          color={`${
-            pathname === "/dashboard/career/resumes" ? "#010309" : "#808080"
-          }`}
-          size={pathname === "/dashboard/career/resumes" ? 28 : 24}
+          color={`${pathname === "/dashboard/resumes" ? "#010309" : "#808080"}`}
+          size={pathname === "/dashboard/resumes" ? 28 : 24}
         />
       ),
       label: (
         <Link
-          href="/dashboard/career/resumes"
+          href="/dashboard/resumes"
           className={`font-dm_sans bg-transparent text-sm ${
-            pathname === "/dashboard/career/resumes"
+            pathname === "/dashboard/resumes"
               ? "!text-[#010309] text-xl"
               : "!text-[#808080] text-sm"
           }`}
@@ -138,23 +136,19 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
       ),
     },
     {
-      key: "/dashboard/career/career-advisor",
+      key: "/dashboard/advisor",
       icon: (
         <UserPen
-          color={`${
-            pathname === "/dashboard/career/career-advisor"
-              ? "#010309"
-              : "#808080"
-          }`}
+          color={`${pathname === "/dashboard/advisor" ? "#010309" : "#808080"}`}
           strokeWidth={1}
-          size={pathname === "/dashboard/career/career-advisor" ? 28 : 24}
+          size={pathname === "/dashboard/advisor" ? 28 : 24}
         />
       ),
       label: (
         <Link
-          href="/dashboard/career/career-advisor"
+          href="/dashboard/advisor"
           className={`font-dm_sans text-sm ${
-            pathname === "/dashboard/career/career-advisor"
+            pathname === "/dashboard/advisor"
               ? "!text-[#010309] text-xl"
               : "!text-[#808080] text-sm"
           }`}

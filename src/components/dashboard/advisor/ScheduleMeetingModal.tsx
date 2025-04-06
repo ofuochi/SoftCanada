@@ -21,7 +21,7 @@ import { LiaLanguageSolid } from "react-icons/lia";
 import { MdOutlineWatch } from "react-icons/md";
 import { Advisor } from "@/app/types/advisor";
 import { Booking } from "@/app/types/booking";
-import { MeetingType } from "@/app/(dashboard)/dashboard/career/career-advisor/page";
+import { MeetingType } from "@/app/(dashboard)/dashboard/advisor/page";
 
 const { Title, Text } = Typography;
 const { Option } = Select;

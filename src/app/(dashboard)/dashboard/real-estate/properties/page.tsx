@@ -4,11 +4,20 @@ import { PaginatedList } from "@/app/types/paginatedResponse";
 import { PropertyListing } from "@/app/types/property-listing";
 import { useApiClient } from "@/hooks/api-hook";
 import { formatCAD } from "@/utils/currency";
-import { DeleteOutlined } from "@ant-design/icons";
-import { Avatar, Table, TableProps, Tag, Typography } from "antd";
+import { DeleteOutlined, EllipsisOutlined } from "@ant-design/icons";
+import {
+  Avatar,
+  Dropdown,
+  MenuProps,
+  Table,
+  TableProps,
+  Tag,
+  Typography,
+} from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
+import Image from "next/image";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import useSWR from "swr";
 
@@ -57,7 +66,15 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
         key: "advisor",
         render: (_, record) => (
           <div className="flex items-center gap-3">
-            <Avatar src={record.imagesUrls[0]} />
+            <div className="w-[76px] h-[53px] overflow-clip">
+              <Image
+                width={73}
+                height={53}
+                className="object-cover rounded-sm"
+                alt="property-image"
+                src={record.imagesUrls[0]}
+              />
+            </div>
             <Text>{record.name}</Text>
           </div>
         ),
@@ -105,12 +122,35 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
         title: "Actions",
         dataIndex: "actions",
         key: "actions",
-        render: (_, record) => (
-          <span>
-            {" "}
-            <DeleteOutlined className="text-[#D32F2F]" />{" "}
-          </span>
-        ),
+        render: (_, record) => {
+          const items: MenuProps["items"] = [
+            {
+              label: (
+                <div className="flex items-center gap-2">
+                  <DeleteOutlined className="text-black" />
+                  <span className="text-[#4F4F4F] font-lato text-sm">
+                    {" "}
+                    Delete{" "}
+                  </span>
+                </div>
+              ),
+              key: "0",
+            },
+          ];
+
+          return (
+            <Dropdown
+              placement="bottomRight"
+              overlayClassName="w-[210px] py-2.5 px-3"
+              menu={{ items }}
+              trigger={["click"]}
+            >
+              <div className="w-[29px] h-[25px] bg-[#F5F5F5] py-2 px-3 flex justify-center items-center cursor-pointer">
+                <EllipsisOutlined className="text-xl" color="#000000" />
+              </div>
+            </Dropdown>
+          );
+        },
       },
     ];
 
