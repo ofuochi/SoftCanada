@@ -112,7 +112,7 @@ export default function CareerAdvisorPage() {
   const tabItems: TabsProps["items"] = [
     {
       key: TabKeys.Advisors,
-      label: <span className="pl-3">Career Advisors</span>,
+      label: <span className="pl-3">Advisors</span>,
       icon: <HiMiniUsers size={20} className="-mb-5" />,
       children: (
         <ListAdvisors
@@ -147,9 +147,9 @@ export default function CareerAdvisorPage() {
         <div className="mb-6">
           {pageTab === TabKeys.Advisors && (
             <>
-              <Title level={1}>Career Advisors</Title>
+              <Title level={1}>Advisors</Title>
               <span className="text-gray-800 font-normal text-xl">
-                Get career advice from our expert advisors
+                Get advice from our expert advisors
               </span>
             </>
           )}

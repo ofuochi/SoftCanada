@@ -11,7 +11,12 @@ import {
 import { useUser } from "@auth0/nextjs-auth0";
 import { Can } from "@casl/react";
 import { Button, Layout, Menu, MenuProps } from "antd";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  CircleUserRound,
+  UserPen,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -109,59 +114,78 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
       ),
     },
     {
-      key: "career",
+      key: "/dashboard/career/resumes",
       icon: (
-        <PiSuitcaseSimple
-          className={`${
-            pathname.includes("career") ? "!text-[#010309]" : "!text-[#808080]"
+        <CircleUserRound
+          strokeWidth={1}
+          color={`${
+            pathname === "/dashboard/career/resumes" ? "#010309" : "#808080"
           }`}
-          size={pathname.includes("career") ? "24px" : "18px"}
+          size={pathname === "/dashboard/career/resumes" ? 28 : 24}
         />
       ),
       label: (
-        <span
-          className={`font-dm_sans ${
-            pathname.includes("career")
-              ? "text-[#010309] text-xl"
+        <Link
+          href="/dashboard/career/resumes"
+          className={`font-dm_sans bg-transparent text-sm ${
+            pathname === "/dashboard/career/resumes"
+              ? "!text-[#010309] text-xl"
               : "!text-[#808080] text-sm"
           }`}
         >
-          Career
-        </span>
+          Resumes
+        </Link>
       ),
-      children: [
-        {
-          key: "/dashboard/career/resumes",
-          label: (
-            <Link
-              href="/dashboard/career/resumes"
-              className={`font-dm_sans bg-transparent text-sm ${
-                pathname === "/dashboard/career/resumes"
-                  ? "!text-[#010309]"
-                  : "!text-[#808080]"
-              }`}
-            >
-              Resumes
-            </Link>
-          ),
-        },
-        {
-          key: "/dashboard/career/career-advisor",
-          label: (
-            <Link
-              href="/dashboard/career/career-advisor"
-              className={`font-dm_sans text-sm ${
-                pathname === "/dashboard/career/career-advisor"
-                  ? "!text-[#010309]"
-                  : "!text-[#808080]"
-              }`}
-            >
-              Advisors
-            </Link>
-          ),
-        },
-      ],
     },
+    {
+      key: "/dashboard/career/career-advisor",
+      icon: (
+        <UserPen
+          color={`${
+            pathname === "/dashboard/career/career-advisor"
+              ? "#010309"
+              : "#808080"
+          }`}
+          strokeWidth={1}
+          size={pathname === "/dashboard/career/career-advisor" ? 28 : 24}
+        />
+      ),
+      label: (
+        <Link
+          href="/dashboard/career/career-advisor"
+          className={`font-dm_sans text-sm ${
+            pathname === "/dashboard/career/career-advisor"
+              ? "!text-[#010309] text-xl"
+              : "!text-[#808080] text-sm"
+          }`}
+        >
+          Advisors
+        </Link>
+      ),
+    },
+    // {
+    //   key: "career",
+    //   icon: (
+    //     <PiSuitcaseSimple
+    //       className={`${
+    //         pathname.includes("career") ? "!text-[#010309]" : "!text-[#808080]"
+    //       }`}
+    //       size={pathname.includes("career") ? "24px" : "18px"}
+    //     />
+    //   ),
+    //   label: (
+    //     <span
+    //       className={`font-dm_sans ${
+    //         pathname.includes("career")
+    //           ? "text-[#010309] text-xl"
+    //           : "!text-[#808080] text-sm"
+    //       }`}
+    //     >
+    //       Career
+    //     </span>
+    //   ),
+    //   children: [],
+    // },
     {
       key: "/dashboard/real-estate",
       icon: (
