@@ -1,5 +1,11 @@
 ---
 title: 'How to Get a Job in Canada: A Step-by-Step Guide'
+category: Immigration
+author: Gbenga
+date: 2025-04-05T04:00:00.000Z
+readTime: '5'
+excerpt: How to get a nice job in canada
+thumbnail: /images/landing/hero_section_bg.jpg
 ---
 
 # How to Get a Job in Canada: A Step-by-Step Guide

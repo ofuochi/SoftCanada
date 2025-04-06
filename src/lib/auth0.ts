@@ -1,22 +1,12 @@
-// lib/auth0.ts
 import { Auth0Client } from "@auth0/nextjs-auth0/server";
-import { jwtDecode } from "jwt-decode";
-import { UserRoleKey } from "@/lib/abilities";
 import { NextResponse } from "next/server";
 
 export default new Auth0Client({
-  async beforeSessionSaved(session, idToken) {
-    const decoded = jwtDecode(idToken!) as any;
-    return {
-      ...session,
-      user: {
-        ...session.user,
-        [UserRoleKey]: decoded[UserRoleKey],
-      },
-      refreshToken: session.refreshToken,
-    };
+  async beforeSessionSaved(session) {
+    delete session.tokenSet.idToken;
+    return session;
   },
-  async onCallback(error, context, session) {
+  async onCallback(error, context) {
     if (error) {
       return NextResponse.redirect(
         new URL(`/error?error=${error.message}`, process.env.APP_BASE_URL)
@@ -30,8 +20,7 @@ export default new Auth0Client({
     audience: process.env.AUTH0_AUDIENCE,
   },
   session: {
-    rolling: true, // Automatically refresh the session before it expires
-    absoluteDuration: 60 * 60 * 24 * 7, // Set the session duration to 7 days
-    inactivityDuration: 60 * 60 * 24 * 7, // Set the session timeout to 7 days
+    inactivityDuration: 60 * 60 * 24, // 1 day
+    absoluteDuration: 60 * 60 * 24 * 7, // 7 days
   },
 });

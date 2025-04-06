@@ -1,79 +1,32 @@
 "use client";
 
-import { PostQuery } from "@/tina/__generated__/types";
+import { TinaCrmQuery } from "@/app/types/tinaCrmQuery";
+import { BlogsQuery } from "@/tina/__generated__/types";
+import React from "react";
 import { useTina } from "tinacms/dist/react";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
-// import hljs from "highlight.js";
-// import "highlight.js/styles/github-dark.css";
-import React, { useEffect } from "react";
 import { Image } from "antd";
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 
-// Define a set of block-level elements for our check.
-const blockElements = new Set([
-  "address",
-  "article",
-  "aside",
-  "blockquote",
-  "canvas",
-  "div",
-  "dl",
-  "fieldset",
-  "figcaption",
-  "figure",
-  "footer",
-  "form",
-  "h1",
-  "h2",
-  "h3",
-  "h4",
-  "h5",
-  "h6",
-  "header",
-  "hr",
-  "li",
-  "main",
-  "nav",
-  "noscript",
-  "ol",
-  "p",
-  "pre",
-  "section",
-  "table",
-  "tfoot",
-  "ul",
-  "video",
-]);
-
-// Helper function to check if a child is a block-level element.
-const isBlockElement = (child: any) => {
-  if (typeof child === "string" || typeof child === "number") return false;
-  if (React.isValidElement(child) && typeof child.type === "string") {
-    return blockElements.has(child.type);
-  }
-  return false;
-};
-
-interface ClientPageProps {
-  query: string;
-  variables: {
-    relativePath: string;
-  };
-  data: PostQuery;
-}
-
-export default function Post(props: ClientPageProps) {
+export const BlogPost: React.FC<TinaCrmQuery<BlogsQuery>> = (props) => {
   const { data } = useTina(props);
-
-  // useEffect(() => {
-  //   hljs.highlightAll();
-  // }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12">
       <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <Link
+            href="/blogs"
+            className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5 mr-2" />
+            Back to Blogs
+          </Link>
+        </div>
         <div className="prose prose-lg md:prose-xl prose-slate hover:prose-a:text-blue-600 prose-a:transition-colors prose-a:font-medium prose-headings:font-bold prose-headings:tracking-tight prose-blockquote:border-l-4 prose-blockquote:border-blue-400 prose-blockquote:bg-gray-50 prose-blockquote:px-6 prose-blockquote:py-2 prose-blockquote:rounded-r prose-blockquote:not-italic prose-pre:bg-[#0d1117] prose-pre:rounded-xl prose-pre:shadow-xl prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-gray-200 max-w-none">
           <TinaMarkdown
-            content={data.post.body}
+            content={data.blogs.body}
             components={{
               h1: (p: any) => (
                 <h1 className="text-5xl md:text-6xl mt-12 mb-6" {...p} />
@@ -96,36 +49,19 @@ export default function Post(props: ClientPageProps) {
                   {...p}
                 />
               ),
-              p: (p: any) => {
-                // Check if children contain any block-level elements.
-                const childrenArray = React.Children.toArray(p.children);
-                const hasBlockElements = childrenArray.some((child) =>
-                  isBlockElement(child)
-                );
-
-                if (hasBlockElements) {
-                  // Use a div to wrap block elements.
-                  return (
-                    <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                      {p.children}
-                    </p>
-                  );
-                }
-
-                // Otherwise, safely use a p element.
-                return (
-                  <div
-                    className="text-lg leading-relaxed text-gray-700 mb-6"
-                    {...p}
-                  />
-                );
-              },
               code: (p: any) => (
                 <code
                   className="font-mono bg-gray-100 text-gray-800 rounded-md px-1"
                   {...p}
                 />
               ),
+              p: (p: any) => (
+                <div
+                  className="text-lg leading-relaxed text-gray-700 mb-6"
+                  {...p}
+                />
+              ),
+
               ul: (p: any) => (
                 <ul
                   className="space-y-2 mb-6 pl-6 list-disc marker:text-blue-400"
@@ -139,6 +75,7 @@ export default function Post(props: ClientPageProps) {
                 />
               ),
               li: (p: any) => <li className="pl-2" {...p} />,
+
               bold: (p: any) => <strong className="font-semibold" {...p} />,
               italic: (p: any) => <em className="italic" {...p} />,
               underline: (p: any) => (
@@ -147,12 +84,14 @@ export default function Post(props: ClientPageProps) {
               strikethrough: (p: any) => (
                 <span className="line-through" {...p} />
               ),
+
               a: (p: any) => (
                 <a
                   className="text-blue-500 hover:text-blue-700 underline underline-offset-4"
                   {...p}
                 />
               ),
+
               img: (p: any) => {
                 return (
                   <div className="my-8">
@@ -170,15 +109,18 @@ export default function Post(props: ClientPageProps) {
                   </div>
                 );
               },
+
               block_quote: (p: any) => (
                 <blockquote
                   className="my-8 border-l-4 border-blue-400 bg-gray-50 px-6 py-4 rounded-r text-gray-700"
                   {...p}
                 />
               ),
+
               hr: (p: any) => (
                 <hr className="my-8 border-t-2 border-gray-200" {...p} />
               ),
+
               table: (p: any) => (
                 <div className="overflow-x-auto my-8 rounded-lg shadow-sm border border-gray-200">
                   <table className="w-full" {...p} />
@@ -202,11 +144,13 @@ export default function Post(props: ClientPageProps) {
               td: (p: any) => (
                 <td className="px-4 py-3 text-gray-700 align-top" {...p} />
               ),
+
               code_block: (p: any) => (
                 <pre className="my-8 rounded-xl overflow-hidden">
                   <code {...p} />
                 </pre>
               ),
+
               pre: (p: any) => (
                 <div className="relative">
                   <pre className="my-8 rounded-xl overflow-hidden" {...p} />
@@ -224,4 +168,4 @@ export default function Post(props: ClientPageProps) {
       </article>
     </div>
   );
-}
+};

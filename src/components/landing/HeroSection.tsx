@@ -1,8 +1,11 @@
 ﻿"use client";
 
-import {tinaField, useTina} from "tinacms/dist/react";
-import {TinaMarkdown} from "tinacms/dist/rich-text";
-import {LandingBlocksWelcomeHero, LandingQuery} from "@/tina/__generated__/types";
+import { tinaField, useTina } from "tinacms/dist/react";
+import { TinaMarkdown } from "tinacms/dist/rich-text";
+import {
+  LandingBlocksWelcomeHero,
+  LandingQuery,
+} from "@/tina/__generated__/types";
 import Link from "next/link";
 import React from "react";
 
@@ -12,24 +15,25 @@ type Props = LandingBlocksWelcomeHero & {
 
 const HeroSection: React.FC<Props> = (props) => {
   // Re-hydrate Tina content on client (only in edit mode)
-  const {data} = useTina<LandingQuery>(props.cmsQuery);
+  const { data } = useTina<LandingQuery>(props.cmsQuery);
 
   const heroBlock = data?.landing?.blocks?.find(
     (b) => b?.__typename === "LandingBlocksWelcomeHero"
   );
 
-  const {backgroundImage, message, buttonLink, buttonText} = heroBlock ?? props;
+  const { backgroundImage, message, buttonLink, buttonText } =
+    heroBlock ?? props;
 
   return (
     <section
       className="relative w-full mx-auto mt-8 sm:mt-12 rounded-xl overflow-hidden shadow-lg bg-white"
-      style={{height: "80vh"}}
+      style={{ height: "80vh" }}
       id="hero-section"
     >
       <div
         className="absolute inset-0 bg-cover bg-center"
         data-tina-field={tinaField(heroBlock, "backgroundImage")}
-        style={{backgroundImage: `url('${backgroundImage}')`}}
+        style={{ backgroundImage: `url('${backgroundImage}')` }}
       />
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>
       <div className="relative flex flex-col justify-end items-start pb-10 h-full px-8 sm:px-16 text-white z-10">
@@ -38,16 +42,16 @@ const HeroSection: React.FC<Props> = (props) => {
             <TinaMarkdown
               content={message}
               components={{
-                h1: (props) => (
+                h1: (p: any) => (
                   <h1
                     className="text-3xl sm:text-5xl font-bold leading-snug break-words"
-                    {...props}
+                    {...p}
                   />
                 ),
-                p: (props) => (
-                  <p className="text-lg mt-4 break-words" {...props} />
+                p: (p: any) => (
+                  <p className="text-lg mt-4 break-words" {...p} />
                 ),
-                break: () => <br/>,
+                break: () => <br />,
               }}
             />
           </div>
