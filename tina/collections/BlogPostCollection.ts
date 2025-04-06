@@ -23,7 +23,7 @@ export const BlogPostCollection: Collection = {
       name: "title",
       label: "Title",
       isTitle: true,
-      description: "The title of the post.",
+      description: "The title of the the blog post.",
       required: true,
     },
     {
@@ -31,7 +31,7 @@ export const BlogPostCollection: Collection = {
       name: "category",
       label: "Category",
       options: BlogCategories as string[],
-      description: "Select a category for the post.",
+      description: "Select a category for the blog post.",
       required: true,
     },
     {
@@ -40,13 +40,13 @@ export const BlogPostCollection: Collection = {
       label: "Body",
       isBody: true,
       required: true,
-      description: "The main content of the post.",
+      description: "The main content of the blog post.",
     },
     {
       type: "string",
       name: "author",
       label: "Author",
-      description: "The author of the post.",
+      description: "The author of the blog post.",
       required: true,
     },
     {
@@ -80,7 +80,7 @@ export const BlogPostCollection: Collection = {
       type: "image",
       name: "thumbnail",
       label: "Thumbnail Image",
-      description: "A thumbnail image for the post.",
+      description: "A thumbnail image for the blog post.",
     },
   ],
   ui: {

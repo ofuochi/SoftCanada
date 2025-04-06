@@ -48,8 +48,7 @@ export class TinaAuth extends AbstractAuthProvider {
       if (!user) return false;
 
       const roles = user[UserRoleKey] as UserRoles[];
-      // return roles.includes("admin");
-      return true; // TODO: uncomment the above line and remove this line
+      return roles.includes("admin");
     } catch (e) {
       return false;
     }

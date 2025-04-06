@@ -1,7 +1,6 @@
 "use client";
 
-import { CiCalendar } from "react-icons/ci";
-import { Blogs } from "@/tina/__generated__/types";
+import { Blogs, BlogsConnectionQuery } from "@/tina/__generated__/types";
 import {
   Avatar,
   Card,
@@ -16,7 +15,7 @@ import {
 } from "antd";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import { useTina } from "tinacms/dist/react";
 const { Title, Paragraph, Text } = Typography;
 
 type Props = {
@@ -28,11 +27,13 @@ type Props = {
 };
 
 export const BlogIndexPageComponent = ({
+  cmsQuery,
   blogPosts,
   categories,
   categoryCounts,
   selectedCategory,
 }: Props) => {
+  const { data } = useTina<BlogsConnectionQuery>(cmsQuery);
   return (
     <div className="max-w-6xl mx-auto px-4 pb-8">
       {/* Hero Section */}
