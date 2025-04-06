@@ -1,8 +1,8 @@
 import { AbstractAuthProvider } from "tinacms";
 import { FC } from "react";
 import { Auth0Provider, getAccessToken } from "@auth0/nextjs-auth0";
-import { jwtDecode } from "jwt-decode";
 import { LOGOUT_PATH } from "./constants/paths";
+import { UserRoleKey, UserRoles } from "./lib/abilities";
 
 type TokenObj = {
   id_token: string;
@@ -17,7 +17,6 @@ export class TinaAuth extends AbstractAuthProvider {
 
   async authenticate() {
     const session = await getAccessToken();
-    console.log("session", session);
     return !!session;
   }
 
@@ -37,18 +36,21 @@ export class TinaAuth extends AbstractAuthProvider {
   }
 
   async logout() {
-    window.location.href = `${process.env.NEXT_PUBLIC_AUTH0_BASE_URL}/${LOGOUT_PATH}`;
+    window.location.href = `${process.env.NEXT_PUBLIC_AUTH0_BASE_URL}${LOGOUT_PATH}`;
   }
 
-  async authorize(context?: any): Promise<boolean> {
-    const session = await getAccessToken();
-    if (!session) return false;
-
+  async authorize(): Promise<boolean> {
     try {
-      const user = jwtDecode(session) as any;
-      // return getRoles(user).includes("admin");
+      const response = await fetch("/auth/profile");
+      if (!response.ok) throw new Error("Failed to fetch profile");
+
+      const user = await response.json();
+      if (!user) return false;
+
+      const roles = user[UserRoleKey] as UserRoles[];
+      // return roles.includes("admin");
       return true; // TODO: uncomment the above line and remove this line
-    } catch {
+    } catch (e) {
       return false;
     }
   }

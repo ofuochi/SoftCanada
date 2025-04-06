@@ -113,7 +113,7 @@ export default function Navbar() {
       key: "faq",
       label: (
         <Link
-          href="/posts"
+          href="/faqs"
           className={`font-dm_sans ${
             isNavbarDark ? "text-black md:!text-white" : "!text-black"
           }`}
@@ -125,57 +125,15 @@ export default function Navbar() {
     {
       key: "blogs",
       label: (
-        <>
-          <span
-            className={`font-dm_sans ${
-              isNavbarDark ? "text-black md:!text-white" : "text-black"
-            }`}
-          >
-            Blogs{" "}
-          </span>
-          <span className="hidden md:inline">
-            <DownOutlined
-              className={`${
-                isNavbarDark ? "text-black md:!text-white" : "!text-black"
-              }`}
-            />
-          </span>
-        </>
+        <Link
+          href="/blogs"
+          className={`font-dm_sans ${
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+          }`}
+        >
+          Blogs
+        </Link>
       ),
-      children: [
-        {
-          key: "deals",
-          label: (
-            <Link href="/deals" className={`font-dm_sans`}>
-              Deals
-            </Link>
-          ),
-        },
-        {
-          key: "finance",
-          label: (
-            <Link href="/finance" className={`font-dm_sans`}>
-              Finance
-            </Link>
-          ),
-        },
-        {
-          key: "immigration",
-          label: (
-            <Link href="/posts" className={`font-dm_sans`}>
-              Immigration
-            </Link>
-          ),
-        },
-        {
-          key: "grants",
-          label: (
-            <Link href="/grants" className={`font-dm_sans`}>
-              Grants & Studies
-            </Link>
-          ),
-        },
-      ],
     },
   ];
 

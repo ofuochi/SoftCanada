@@ -1,11 +1,16 @@
 import client from "@/tina/__generated__/client";
-import {FooterComponent} from "./FooterComponent";
+import { FooterComponent } from "./FooterComponent";
 
 export default async function Footer() {
-  const query = await client.queries.footer({
-    relativePath: "footer.md",
-  });
+  let query;
+  try {
+    query = await client.queries.footer({
+      relativePath: "footer.md",
+    });
+  } catch (err) {
+    console.error("Error fetching footer data:", err);
+    return <div>Error loading footer data</div>;
+  }
 
-  // return <></>;
   return <FooterComponent cmsQuery={query} {...query.data} />;
 }

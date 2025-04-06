@@ -6,6 +6,8 @@ sections:
     type: links
     description: ''
     links:
+      - label: Contact
+        url: /contact
       - label: Terms and Conditions
         url: /
   - title: Services
