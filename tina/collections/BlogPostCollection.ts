@@ -50,6 +50,12 @@ export const BlogPostCollection: Collection = {
       required: true,
     },
     {
+      type: "image",
+      name: "authorImage",
+      label: "Author Image",
+      description: "Upload an image of the author.",
+    },
+    {
       type: "datetime",
       name: "date",
       label: "Publish Date",
@@ -57,7 +63,7 @@ export const BlogPostCollection: Collection = {
       required: true,
     },
     {
-      type: "string",
+      type: "number",
       name: "readTime",
       label: "Read Time",
       description: "Estimated read time in minutes",

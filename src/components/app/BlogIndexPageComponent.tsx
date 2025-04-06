@@ -1,21 +1,42 @@
 "use client";
 
+import { CiCalendar } from "react-icons/ci";
 import { Blogs } from "@/tina/__generated__/types";
-import { Card, Col, Divider, Image, List, Row, Tag, Typography } from "antd";
+import {
+  Avatar,
+  Card,
+  Col,
+  Divider,
+  Image,
+  List,
+  Row,
+  Space,
+  Tag,
+  Typography,
+} from "antd";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import React from "react";
 const { Title, Paragraph, Text } = Typography;
+const IconText = ({ icon, text }: { icon: React.FC; text: string }) => (
+  <Space>
+    {React.createElement(icon)}
+    {text}
+  </Space>
+);
 type Props = {
   categories: readonly string[];
   categoryCounts: Record<string, number>;
   blogPosts: Blogs[];
   cmsQuery?: any;
+  selectedCategory?: string;
 };
 
 export const BlogIndexPageComponent = ({
-  cmsQuery,
   blogPosts,
   categories,
   categoryCounts,
+  selectedCategory,
 }: Props) => {
   return (
     <div className="max-w-6xl mx-auto px-4 pb-8">
@@ -30,33 +51,45 @@ export const BlogIndexPageComponent = ({
         </p>
       </div>
 
-      {/* Top Categories */}
-      <Title level={2} className="text-2xl font-semibold mb-6">
-        Top categories
-      </Title>
-      <Row gutter={[16, 16]} className="mb-12">
-        {categories.map((category) => (
-          <Col xs={24} sm={12} md={8} key={category}>
-            <Link href={`/blogs/${category.toLowerCase()}`} className="block">
-              <Card hoverable>
-                <Text strong className="text-lg block mb-2">
-                  {category}
-                </Text>
-                <Text type="secondary" className="text-gray-500">
-                  {categoryCounts[category]} articles
-                </Text>
-              </Card>
-            </Link>
-          </Col>
-        ))}
-      </Row>
-
-      <Divider />
+      {selectedCategory ? (
+        <div className="mb-6">
+          <Link
+            href="/blogs"
+            className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5 mr-2" />
+            Back to Blogs
+          </Link>
+          <h2 className="text-2xl font-semibold mt-4 mb-6">
+            Articles in {selectedCategory}
+          </h2>
+        </div>
+      ) : (
+        <>
+          {/* Top Categories */}
+          <h2 className="text-2xl font-semibold mb-6">Top categories</h2>
+          <Row gutter={[16, 16]} className="mb-12">
+            {categories.map((category) => (
+              <Col xs={24} sm={12} md={8} key={category}>
+                <Link href={`/blogs?category=${category}`} className="block">
+                  <Card hoverable>
+                    <Text strong className="text-lg block mb-2">
+                      {category}
+                    </Text>
+                    <Text type="secondary" className="text-gray-500">
+                      {categoryCounts[category]} articles
+                    </Text>
+                  </Card>
+                </Link>
+              </Col>
+            ))}
+          </Row>
+          <Divider />
+          <h2 className="text-2xl font-semibold mb-6">Recent Articles</h2>
+        </>
+      )}
 
       {/* Articles List */}
-      <Title level={2} className="text-2xl font-semibold mb-6">
-        Recent Articles
-      </Title>
       <List
         itemLayout="vertical"
         size="large"
@@ -72,12 +105,9 @@ export const BlogIndexPageComponent = ({
             key={post?.id}
           >
             <List.Item
-              className="hover:bg-blue-50 transition-colors bg-white  shadow-sm mb-2 border-gray-100 border"
+              className="hover:bg-blue-50 transition-colors bg-white shadow-sm mb-2 border-gray-100 border"
               actions={[
-                <Text type="secondary" key="author">
-                  {post?.author}
-                </Text>,
-                <Text type="secondary" key="date">
+                <Text type="secondary" key="date" className="!text-sm">
                   {post?.date &&
                     new Date(post.date).toLocaleDateString("en-US", {
                       year: "numeric",
@@ -85,6 +115,19 @@ export const BlogIndexPageComponent = ({
                       day: "numeric",
                     })}
                 </Text>,
+                <Space key="author">
+                  <Avatar
+                    src={post?.authorImage}
+                    alt={post?.author}
+                    size="small"
+                    className="!border-none"
+                  >
+                    {post?.author?.charAt(0).toUpperCase()}
+                  </Avatar>
+                  <Text type="secondary" key="author" className="!text-sm">
+                    Written by {post?.author}
+                  </Text>
+                </Space>,
               ]}
               extra={
                 post?.thumbnail && (
