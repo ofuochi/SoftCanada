@@ -1,10 +1,23 @@
+"use client";
+
 import { PaginatedList } from "@/app/types/paginatedResponse";
 import { PropertyListing } from "@/app/types/property-listing";
 import { useApiClient } from "@/hooks/api-hook";
-import { Avatar, Table, TableProps, Tag, Typography } from "antd";
+import { formatCAD } from "@/utils/currency";
+import { DeleteOutlined, EllipsisOutlined } from "@ant-design/icons";
+import {
+  Avatar,
+  Dropdown,
+  MenuProps,
+  Table,
+  TableProps,
+  Tag,
+  Typography,
+} from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
+import Image from "next/image";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import useSWR from "swr";
 
@@ -33,14 +46,14 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
     // }).toString();
 
     const queryParams = new URLSearchParams({
-      isForSale: "false",
-      location: "ojota",
-      minPrice: "12",
-      maxPrice: "23",
+      isForSale: "",
+      location: "",
+      minPrice: "",
+      maxPrice: "",
     }).toString();
 
-    const { data, mutate, isLoading } = useSWR<PaginatedList<PropertyListing>>(
-      `/api/RealEstate/properties/user?${queryParams}`,
+    const { data, mutate, isLoading } = useSWR<PropertyListing[]>(
+      `/api/RealEstate/agent/properties`,
       get
     );
 
@@ -53,16 +66,36 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
         key: "advisor",
         render: (_, record) => (
           <div className="flex items-center gap-3">
-            <Avatar src={record.imagesUrls[0]} />
+            <div className="w-[76px] h-[53px] overflow-clip">
+              <Image
+                width={73}
+                height={53}
+                className="object-cover rounded-sm"
+                alt="property-image"
+                src={record.imagesUrls[0]}
+              />
+            </div>
             <Text>{record.name}</Text>
           </div>
         ),
       },
       {
+        title: "Description",
+        dataIndex: ["description"],
+        key: "description",
+        render: (_, record) => <Text>{record.description}</Text>,
+      },
+      {
+        title: "Type",
+        dataIndex: ["type"],
+        key: "type",
+        render: (_, record) => <Text>{record.type}</Text>,
+      },
+      {
         title: "Price",
         dataIndex: "price",
         key: "notes",
-        render: (_, { price }) => <span> {price} </span>,
+        render: (_, { price }) => <span> {formatCAD(price)} </span>,
       },
       {
         title: "Location",
@@ -86,21 +119,36 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
         },
       },
       {
-        title: "Status",
-        dataIndex: "status",
-        key: "status",
-        render: (_, { status }) => {
-          if (status.toLowerCase() === "booked") {
-            if (status === "Sold")
-              return <Tag color="rgba(114, 250, 50, 1)">Ongoing</Tag>;
-            if (status === "Active") return <Tag color="blue">Active</Tag>;
+        title: "Actions",
+        dataIndex: "actions",
+        key: "actions",
+        render: (_, record) => {
+          const items: MenuProps["items"] = [
+            {
+              label: (
+                <div className="flex items-center gap-2">
+                  <DeleteOutlined className="text-black" />
+                  <span className="text-[#4F4F4F] font-lato text-sm">
+                    {" "}
+                    Delete{" "}
+                  </span>
+                </div>
+              ),
+              key: "0",
+            },
+          ];
 
-            return <Tag color="rgba(250, 90, 50, 0.2)">Pending</Tag>;
-          }
           return (
-            <Tag color={status.toLowerCase() === "cancelled" ? "red" : "blue"}>
-              {status}
-            </Tag>
+            <Dropdown
+              placement="bottomRight"
+              overlayClassName="w-[210px] py-2.5 px-3"
+              menu={{ items }}
+              trigger={["click"]}
+            >
+              <div className="w-[29px] h-[25px] bg-[#F5F5F5] py-2 px-3 flex justify-center items-center cursor-pointer">
+                <EllipsisOutlined className="text-xl" color="#000000" />
+              </div>
+            </Dropdown>
           );
         },
       },
@@ -133,12 +181,12 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
       <Table<PropertyListing>
         columns={columns}
         loading={isLoading}
-        dataSource={data?.items}
+        dataSource={data}
         onChange={handleTableChange}
         pagination={{
           current: currentPage,
           pageSize: pageSize,
-          total: data?.totalRecords,
+          total: data?.length,
           showSizeChanger: true,
           showTotal: (total) => `Total ${total} item(s)`,
           pageSizeOptions: [5, 10, 20, 50],

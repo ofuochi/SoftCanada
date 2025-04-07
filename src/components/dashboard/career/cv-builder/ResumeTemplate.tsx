@@ -5,14 +5,12 @@ import CreativeTemplate from "../templates/CreativeTemplate";
 import ElegantTemplate from "../templates/ElegantTemplate";
 import ClassicTemplate from "../templates/ClassicTemplate";
 import React, { JSX } from "react";
-import { useResume } from "@/contexts/ResumeContext";
 
 type Props = {
   data: ResumeType;
 };
 
 export const ResumeTemplate: React.FC<Props> = ({ data }) => {
-  // const {  } = useResume();
   const templates: { [key: string]: JSX.Element } = {
     "0": <StandardTemplate data={data} />,
     "1": <ModernTemplate data={data} />,

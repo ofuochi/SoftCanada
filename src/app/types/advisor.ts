@@ -1,20 +1,21 @@
-import { Booking } from "./booking"
+import { Booking } from "./booking";
 
 export interface Advisor {
-  id: string
-  name: string
-  isVerified: boolean
-  title: string
-  email: string
-  rating?: number
-  profilePictureUrl: string
-  expertise: Expertise[]
-  booking: Booking[]
+  id: string;
+  name: string;
+  title: string;
+  email: string;
+  rating?: number;
+  booking: Booking[];
+  isVerified: boolean;
+  advisorType: string[];
+  expertise: Expertise[];
+  profilePictureUrl: string;
 }
 
 export interface Expertise {
-  id: string
-  areaOfExpertise: string
-  yearsOfExperience: number
+  id: string;
+  areaOfExpertise: string;
+  yearsOfExperience: number;
 }
 

@@ -6,9 +6,12 @@ import useSWRInfinite from "swr/infinite";
 import { PaginatedList } from "@/app/types/paginatedResponse";
 import { useApiClient } from "@/hooks/api-hook";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Card, Image, Space, Tag, Button } from "antd";
-import { ArrowRightOutlined, StarFilled } from "@ant-design/icons";
-import { PiSuitcaseSimpleFill } from "react-icons/pi";
+import { Card, Image, Tag, Button, Spin } from "antd";
+import {
+  ArrowRightOutlined,
+  LoadingOutlined,
+  StarFilled,
+} from "@ant-design/icons";
 import { VscVerifiedFilled } from "react-icons/vsc";
 
 const { Meta } = Card;
@@ -16,6 +19,17 @@ const { Meta } = Card;
 type Props = {
   onBookSessionClick: (advisor: Advisor) => void;
   isBookSessionLoading?: boolean;
+};
+
+const convertAdvisorType = (advisorType: string): string | null => {
+  const advisorMap: { [key: string]: string } = {
+    finance_advisor: "Finance Advisor",
+    career_advisor: "Career Advisor",
+    immigration_advisor: "Immigration Advisor",
+    study_advisor: "Study Advisor",
+  };
+
+  return advisorMap[advisorType] || null;
 };
 
 export default function ListAdvisors({
@@ -49,13 +63,23 @@ export default function ListAdvisors({
       hasMore={hasMore}
       loader={<div className="text-center p-4">Loading more advisors...</div>}
       endMessage={
-        <p className="text-center p-4 text-gray-500">
-          {isLoading && "Loading..."}
-        </p>
+        <div className="w-fit h-fit mx-auto">
+          {isLoading && (
+            <Spin
+              className="mx-auto"
+              indicator={
+                <LoadingOutlined
+                  style={{ fontSize: 48, color: "black" }}
+                  spin
+                />
+              }
+            />
+          )}
+        </div>
       }
       scrollableTarget="scrollableContainer"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-4 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:p-4">
         {advisors.map((advisor) => (
           <Card
             key={advisor.id}
@@ -80,25 +104,13 @@ export default function ListAdvisors({
                   )}
                 </div>
               }
-              description={
-                <div className="text-center text-gray-600 text-sm font-bold truncate">
-                  <Space>
-                    <PiSuitcaseSimpleFill />
-                    <span>{advisor.title}</span>
-                  </Space>
-                  <span className="text-yellow-500 flex items-center justify-center gap-1">
-                    <StarFilled />
-                    {(advisor.rating || 5).toFixed(1)}
-                  </span>
-                </div>
-              }
             />
 
-            {/* Expertise Tags */}
+            {/* Advisor Type Tags */}
             <div className="mt-4 flex flex-wrap justify-center gap-1">
-              {advisor.expertise.map((skill) => (
-                <Tag key={skill.id} className="inline-flex text-xs">
-                  {skill.areaOfExpertise}
+              {advisor?.advisorType?.map((type, index) => (
+                <Tag key={index} className="inline-flex text-xs">
+                  {convertAdvisorType(type)}
                 </Tag>
               ))}
             </div>

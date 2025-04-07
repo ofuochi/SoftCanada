@@ -12,12 +12,14 @@ import React, { useState } from "react";
 import { SWRConfig } from "swr";
 import { breadcrumbConfig } from "./BreadcrumbConfig";
 import SideBar from "./SideBar";
+import useMobile from "@/hooks/useMobile";
 
 const { Header, Footer, Content } = Layout;
 
 export default function DashboardLayout({ children }: React.PropsWithChildren) {
-  const [collapsed, setCollapsed] = useState(false);
+  const isMobile = useMobile();
   const { user } = useUser();
+  const [collapsed, setCollapsed] = useState(false);
 
   const pathname = usePathname();
 
@@ -26,7 +28,11 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
   ];
 
   const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
+    if (isMobile) {
+      setCollapsed(true);
+    } else {
+      setCollapsed((collapsed) => !collapsed);
+    }
   };
 
   // const notificationMenu: MenuProps = {
@@ -59,17 +65,21 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
                 background: "#fff",
                 padding: "0 16px",
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: isMobile ? "end" : "space-between",
                 alignItems: "center",
                 boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
               }}
             >
-              <Button
-                type="text"
-                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                onClick={toggleCollapsed}
-                style={{ fontSize: "16px" }}
-              />
+              {!isMobile && (
+                <Button
+                  type="text"
+                  icon={
+                    collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
+                  }
+                  onClick={toggleCollapsed}
+                  style={{ fontSize: "16px" }}
+                />
+              )}
               <div className="flex items-center gap-8">
                 <ProfileAvatar />
               </div>
