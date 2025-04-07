@@ -19,18 +19,18 @@ import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import { log } from "console";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type AddPropertyType = {
   propertyName: string;
   propertyDescription: string;
   propertyType: string;
   location: string;
-  price: string;
+  price: number;
   listingType: string;
   noOfBedroom: string;
   noOfBathroom: string;
-  squareFootage: string;
+  squareFootage: number;
   contact: string;
   officeAddress: string;
   images: UploadFile[];
@@ -91,7 +91,7 @@ const AddNewProperty = () => {
     formData.append("Video", values.video);
     // formData.append("Images", values.images[0].originFileObj as File);
 
-    imageFiles.forEach((file, index) => {
+    imageFiles.forEach((file) => {
       if (file) {
         formData.append(`Images`, file);
       }
@@ -273,16 +273,48 @@ const AddNewProperty = () => {
                     required: true,
                     message: "Please input the price",
                   },
+                  {
+                    type: "number",
+                    message: "Price must be a number",
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (value >= 0) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        new Error("Price cannot be negative")
+                      );
+                    },
+                  },
                 ]}
               >
                 <InputNumber<number>
-                  defaultValue={0}
                   formatter={(value) =>
                     `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
                   parser={(value) =>
                     value?.replace(/\$\s?|(,*)/g, "") as unknown as number
                   }
+                  onKeyDown={(event) => {
+                    // Allow only numbers, backspace, delete, arrows, tab, etc.
+                    const isNumber = /^[0-9]$/.test(event.key);
+                    const isAllowedKey = [
+                      "Backspace",
+                      "Delete",
+                      "ArrowLeft",
+                      "ArrowRight",
+                      "Tab",
+                      "Home",
+                      "End",
+                      ".",
+                      ",",
+                    ].includes(event.key);
+
+                    if (!isNumber && !isAllowedKey) {
+                      event.preventDefault();
+                    }
+                  }}
                   className="!py-2.5 !w-full border border-[#CBCBCB] !font-poppins"
                 />
               </Form.Item>
@@ -321,7 +353,7 @@ const AddNewProperty = () => {
                 ]}
               />
 
-              <CustomFormInput<AddPropertyType>
+              <Form.Item<AddPropertyType>
                 label="Square Footage"
                 name="squareFootage"
                 rules={[
@@ -329,8 +361,51 @@ const AddNewProperty = () => {
                     required: true,
                     message: "Please input the square footage",
                   },
+                  {
+                    type: "number",
+                    message: "Square footage must be a number",
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (value > 0) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        new Error("Square footage must be greater than 0")
+                      );
+                    },
+                  },
                 ]}
-              />
+              >
+                <InputNumber<number>
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value) =>
+                    value?.replace(/(,*)/g, "") as unknown as number
+                  }
+                  onKeyDown={(event) => {
+                    // Allow only numbers, backspace, delete, arrows, tab, etc.
+                    const isNumber = /^[0-9]$/.test(event.key);
+                    const isAllowedKey = [
+                      "Backspace",
+                      "Delete",
+                      "ArrowLeft",
+                      "ArrowRight",
+                      "Tab",
+                      "Home",
+                      "End",
+                      ".",
+                      ",",
+                    ].includes(event.key);
+
+                    if (!isNumber && !isAllowedKey) {
+                      event.preventDefault();
+                    }
+                  }}
+                  className="!py-2.5 !w-full border border-[#CBCBCB] !font-poppins"
+                />
+              </Form.Item>
             </div>
 
             <div className="flex flex-col gap-7 w-full xl:flex-1">
@@ -467,7 +542,7 @@ const AddNewProperty = () => {
                   disabled={inProgress}
                   loading={inProgress}
                   htmlType="submit"
-                  className="w-full !bg-[#010B18] !border-[#010B18] !py-1 !px-3 !text-white !h-[59px] !rounded-md !font-normal !text-lg !font-lato"
+                  className="w-full !bg-[#010B18] !border-[#010B18] !py-1 !px-3 !text-white !h-[50px] !rounded-md !font-normal !text-lg !font-lato"
                 >
                   Publish Property
                 </Button>
