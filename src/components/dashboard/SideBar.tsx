@@ -10,19 +10,13 @@ import {
 } from "@ant-design/icons";
 import { useUser } from "@auth0/nextjs-auth0";
 import { Can } from "@casl/react";
-import { Button, Layout, Menu, MenuProps } from "antd";
-import {
-  ChevronLeft,
-  ChevronRight,
-  CircleUserRound,
-  UserPen,
-} from "lucide-react";
+import { Layout, Menu, MenuProps } from "antd";
+import { FileUser, UserPen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdDashboard } from "react-icons/md";
-import { PiSuitcaseSimple } from "react-icons/pi";
 const { Sider } = Layout;
 
 const advisors = [
@@ -116,7 +110,7 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
     {
       key: "/dashboard/resumes",
       icon: (
-        <CircleUserRound
+        <FileUser
           strokeWidth={1}
           color={`${pathname === "/dashboard/resumes" ? "#010309" : "#808080"}`}
           size={pathname === "/dashboard/resumes" ? 28 : 24}

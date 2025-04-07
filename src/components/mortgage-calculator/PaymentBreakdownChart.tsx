@@ -107,7 +107,7 @@ const MortgagePaymentChart: React.FC<MortgagePaymentChartProps> = ({
       {
         type: "text",
         style: {
-          text: `$${paymentAmount.toFixed(2)} /mo`,
+          text: `$${paymentAmount.toFixed(2)}`,
           x: "50%",
           y: "50%",
           textAlign: "center",
@@ -129,7 +129,7 @@ const MortgagePaymentChart: React.FC<MortgagePaymentChartProps> = ({
       >
         <Title level={3}>{chartTitle}</Title>
         <div style={{ width: "100%", height: "400px" }}>
-          <Pie {...pieConfig} />
+          <Pie className={"w-full"} {...pieConfig} />
         </div>
         <div style={{ marginTop: "20px" }}>
           <Text strong>Principal: ${formatCurrency(principal)}</Text>

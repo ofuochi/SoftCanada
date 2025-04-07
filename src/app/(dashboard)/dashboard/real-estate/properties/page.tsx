@@ -4,7 +4,11 @@ import { PaginatedList } from "@/app/types/paginatedResponse";
 import { PropertyListing } from "@/app/types/property-listing";
 import { useApiClient } from "@/hooks/api-hook";
 import { formatCAD } from "@/utils/currency";
-import { DeleteOutlined, EllipsisOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+} from "@ant-design/icons";
 import {
   Avatar,
   Dropdown,
@@ -106,7 +110,6 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
       {
         title: "Created Date",
         dataIndex: "createdAt",
-        sorter: true,
         key: "startDate",
         render: (_, { createdAt }) => {
           return (
@@ -127,6 +130,18 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
             {
               label: (
                 <div className="flex items-center gap-2">
+                  <EditOutlined className="text-black" />
+                  <span className="text-[#4F4F4F] font-lato text-sm">
+                    {" "}
+                    Edit
+                  </span>
+                </div>
+              ),
+              key: "0",
+            },
+            {
+              label: (
+                <div className="flex items-center gap-2">
                   <DeleteOutlined className="text-black" />
                   <span className="text-[#4F4F4F] font-lato text-sm">
                     {" "}
@@ -134,7 +149,7 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
                   </span>
                 </div>
               ),
-              key: "0",
+              key: "1",
             },
           ];
 
