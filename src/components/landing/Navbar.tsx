@@ -245,22 +245,28 @@ export default function Navbar() {
             selectable={false}
           />
           <div className="flex flex-col items-start p-4 gap-2.5">
-            <Link href={LOGIN_PATH} className="block w-full">
-              <Button className="w-full !shadow-none !border-black !font-dm_sans !py-5">
-                Sign In
-              </Button>
-            </Link>
-            <Link
-              href={`${LOGIN_PATH}?screen_hint=signup`}
-              className="block w-full"
-            >
-              <Button
-                className="w-full !shadow-none !font-dm_sans !py-5"
-                type="primary"
-              >
-                Register Now!
-              </Button>
-            </Link>
+            {user ? (
+              <ProfileAvatar theme={isNavbarDark ? "dark" : "light"} />
+            ) : (
+              <>
+                <Link href={LOGIN_PATH} className="block w-full">
+                  <Button className="w-full !shadow-none !border-black !font-dm_sans !py-5">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link
+                  href={`${LOGIN_PATH}?screen_hint=signup`}
+                  className="block w-full"
+                >
+                  <Button
+                    className="w-full !shadow-none !font-dm_sans !py-5"
+                    type="primary"
+                  >
+                    Register Now!
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </Drawer>
       </nav>
