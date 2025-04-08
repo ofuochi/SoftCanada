@@ -220,7 +220,7 @@ export default function Navbar() {
                 <MenuOutlined
                   className={classNames(
                     "text-xl",
-                    isNavbarDark ? "text-white" : "text-black"
+                    isNavbarDark ? "!text-white" : "text-black"
                   )}
                 />
               }
@@ -273,3 +273,4 @@ export default function Navbar() {
     </>
   );
 }
+

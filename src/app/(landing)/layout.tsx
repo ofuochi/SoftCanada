@@ -42,10 +42,10 @@ export default async function LandingLayout({
             <ConfigProvider theme={theme}>
               <>
                 <Navbar />
-                <main className="relative min-h-screen bg-white pt-16 font-dm_sans">
+                <main className="relative min-h-screen bg-white pt-16 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 font-dm_sans">
                   {children}
-                  <Footer />
                 </main>
+                <Footer />
               </>
             </ConfigProvider>
           </AntdRegistry>
@@ -54,3 +54,4 @@ export default async function LandingLayout({
     </html>
   );
 }
+

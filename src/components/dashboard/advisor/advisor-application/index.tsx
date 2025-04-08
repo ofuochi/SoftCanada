@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  MinusCircleOutlined,
   PlusOutlined,
   UploadOutlined,
+  MinusCircleOutlined,
 } from "@ant-design/icons";
 import { Button, Form, Input, Select, Upload, Image as AntImage } from "antd";
 import Image from "next/image";
@@ -11,7 +11,7 @@ import { UploadChangeParam, UploadFile } from "antd/es/upload";
 import {
   AdvisorApplicationFormData,
   useAdvisorApplicationForm,
-} from "./useAdvisorApplicationForm";
+} from "../../../../hooks/useAdvisorApplicationForm";
 
 const { Option } = Select;
 
@@ -340,3 +340,4 @@ export default function AdvisorApplication() {
     </>
   );
 }
+

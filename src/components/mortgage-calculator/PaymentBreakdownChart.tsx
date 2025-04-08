@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Typography } from "antd";
+import { Typography } from "antd";
 import { Pie } from "@ant-design/charts";
 
 const { Title, Text } = Typography;
@@ -10,7 +10,6 @@ type MortgagePaymentChartProps = {
   paymentAmount: number;
   paymentFrequency: string;
   title?: string;
-  style?: React.CSSProperties;
 };
 
 type ChartDataItem = {
@@ -29,7 +28,6 @@ const MortgagePaymentChart: React.FC<MortgagePaymentChartProps> = ({
   paymentAmount,
   paymentFrequency,
   title,
-  style = {},
 }) => {
   // Use payment frequency for the title if no custom title is provided
   const chartTitle = title || `${paymentFrequency} Payment Breakdown`;
@@ -119,29 +117,27 @@ const MortgagePaymentChart: React.FC<MortgagePaymentChartProps> = ({
   };
 
   return (
-    <Card style={{ ...style }}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Title level={3}>{chartTitle}</Title>
-        <div style={{ width: "100%", height: "400px" }}>
-          <Pie className={"w-full"} {...pieConfig} />
-        </div>
-        <div style={{ marginTop: "20px" }}>
-          <Text strong>Principal: ${formatCurrency(principal)}</Text>
-          <br />
-          <Text strong>Interest: ${formatCurrency(interest)}</Text>
-          <br />
-          <Text strong>
-            Total {paymentFrequency} Payment: ${formatCurrency(paymentAmount)}
-          </Text>
-        </div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Title level={3}>{chartTitle}</Title>
+      <div style={{ width: "100%", height: "400px" }}>
+        <Pie className={"w-full"} {...pieConfig} />
       </div>
-    </Card>
+      <div>
+        <Text strong>Principal: ${formatCurrency(principal)}</Text>
+        <br />
+        <Text strong>Interest: ${formatCurrency(interest)}</Text>
+        <br />
+        <Text strong>
+          Total {paymentFrequency} Payment: ${formatCurrency(paymentAmount)}
+        </Text>
+      </div>
+    </div>
   );
 };
 

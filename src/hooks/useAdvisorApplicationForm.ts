@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useApiClient } from "@/hooks/api-hook";
 import { useDashboard } from "@/contexts/DashboardContext";
-import { FileType, getBase64 } from "./fileUtils";
+import { FileType, getBase64 } from "../utils/fileUtils";
 
 export type Expertise = {
   areaOfExpertise: string;
@@ -12,12 +12,12 @@ export type Expertise = {
 };
 
 export type AdvisorApplicationFormData = {
+  image: File;
+  name: string;
   title: string;
   phoneNumber: string;
-  name: string;
   expertise: Expertise[];
   qualifications: string;
-  image: File;
   motivationStatement?: string;
 };
 
@@ -122,8 +122,6 @@ export function useAdvisorApplicationForm() {
     formData.append("Advisor.expertise", JSON.stringify(values.expertise));
     formData.append("Advisor.AdvisorType", type!.toString());
     formData.append("Image", values.image);
-
-    console.log(formData, "formData");
 
     try {
       await post("/api/advisors", formData);

@@ -5,7 +5,7 @@ import { FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 export default function ContactPage() {
   return (
     <>
-      <section className="mt-10 px-4 md:px-16">
+      <section className="mt-10 px-4 md:px-16 max-w-7xl mx-auto">
         <div className="text-center">
           <h3 className="text-3xl md:text-3xl lg:text-4xl font-bold">
             Contact
@@ -89,3 +89,4 @@ export default function ContactPage() {
     </>
   );
 }
+

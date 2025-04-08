@@ -22,6 +22,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import useSWR from "swr";
 
@@ -37,6 +38,7 @@ type Props = {};
 
 const PropertyListings = forwardRef<PropertyListingsRef, Props>(
   (props, ref) => {
+    const router = useRouter();
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
     const [sortOrder, setSortOrder] = useState("dsc");
@@ -129,7 +131,10 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
           const items: MenuProps["items"] = [
             {
               label: (
-                <div className="flex items-center gap-2">
+                <div
+                  onClick={() => router.push(`properties/${record.id}`)}
+                  className="flex items-center gap-2"
+                >
                   <EditOutlined className="text-black" />
                   <span className="text-[#4F4F4F] font-lato text-sm">
                     {" "}

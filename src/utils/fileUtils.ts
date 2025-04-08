@@ -8,3 +8,4 @@ export const getBase64 = (img: FileType, callback: (url: string) => void) => {
   reader.addEventListener("load", () => callback(reader.result as string));
   reader.readAsDataURL(img);
 };
+
