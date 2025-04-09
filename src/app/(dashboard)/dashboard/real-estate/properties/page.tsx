@@ -12,6 +12,7 @@ import {
 import {
   Avatar,
   Dropdown,
+  Empty,
   MenuProps,
   Table,
   TableProps,
@@ -72,14 +73,22 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
         key: "advisor",
         render: (_, record) => (
           <div className="flex items-center gap-3">
-            <div className="w-[76px] h-[53px] overflow-clip">
-              <Image
-                width={73}
-                height={53}
-                className="object-cover rounded-sm"
-                alt="property-image"
-                src={record.imagesUrls[0]}
-              />
+            <div className="w-[76px] h-[60px] overflow-clip !rounded-sm flex justify-center items-center">
+              {record.imagesUrls[0].includes("http") ? (
+                <Image
+                  width={73}
+                  height={53}
+                  className="object-cover !rounded-sm"
+                  alt="property-image"
+                  src={record?.imagesUrls[0]}
+                />
+              ) : (
+                <Empty
+                  description="No img"
+                  className="!rounded-sm"
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                />
+              )}
             </div>
             <Text>{record.name}</Text>
           </div>

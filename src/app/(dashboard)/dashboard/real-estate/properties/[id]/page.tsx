@@ -15,7 +15,6 @@ export default async function PropertyPage({
   if (isEditMode) {
     try {
       propertyData = await fetchPropertyById(params.id);
-      console.log(propertyData, "propertyData");
 
       if (!propertyData) {
         return (

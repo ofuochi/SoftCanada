@@ -15,8 +15,6 @@ type PropertyFormType = {
   noOfBedroom: string;
   noOfBathroom: string;
   squareFootage: number;
-  contact: string;
-  officeAddress: string;
   images: UploadFile[];
   video: File;
 };
@@ -32,8 +30,6 @@ type PropertyData = {
   numberOfBedroom: string;
   numberOfBathroom: string;
   squareFootage: number;
-  contact: string;
-  address: string;
   imagesUrls: string[];
   videoUrl: string;
 };
@@ -142,8 +138,6 @@ export const usePropertyForm = (propertyData?: PropertyData) => {
         noOfBedroom: propertyData.numberOfBedroom,
         noOfBathroom: propertyData.numberOfBathroom,
         squareFootage: propertyData.squareFootage,
-        contact: propertyData.contact,
-        officeAddress: propertyData.address,
       };
 
       // Set form values
@@ -193,8 +187,6 @@ export const usePropertyForm = (propertyData?: PropertyData) => {
       formData.append("NumberOfBedroom", values.noOfBedroom);
       formData.append("NumberOfBathroom", values.noOfBathroom);
       formData.append("SquareFootage", values.squareFootage.toString());
-      formData.append("Contact", values.contact);
-      formData.append("Address", values.officeAddress);
       formData.append("ListingType", values.listingType);
       const imageFiles = values.images.map((image) => image.originFileObj);
 
@@ -235,7 +227,7 @@ export const usePropertyForm = (propertyData?: PropertyData) => {
         }
 
         // Navigate back to properties list after a short delay
-        router.push("/real-estate/properties");
+        router.push("dashboard/real-estate/properties");
       }
     } catch (error) {
       console.error("Error submitting property:", error);

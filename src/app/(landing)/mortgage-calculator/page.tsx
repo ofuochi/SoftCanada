@@ -38,12 +38,7 @@ const MortgageCalculator = () => {
         paymentFrequency={getPaymentFrequencyLabel()}
       />
     );
-  }, [
-    principal,
-    interest,
-    paymentAmount,
-    form.getFieldValue("paymentFrequency"),
-  ]);
+  }, []);
 
   return (
     <section className="w-full bg-white py-[30px] max-w-7xl mx-auto rounded-xl font-lato">

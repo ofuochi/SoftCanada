@@ -192,23 +192,6 @@ const PropertyForm = ({ propertyData }: PropertyFormProps) => {
 
             {/* Right Column - Contact Info, Media, and Submission */}
             <div className="flex flex-col gap-7 w-full xl:flex-1">
-              <CustomFormInput<PropertyFormType>
-                label="Contact"
-                name="contact"
-                rules={[
-                  VALIDATION_RULES.required("Please input your contact number"),
-                  VALIDATION_RULES.usPhoneNumber,
-                ]}
-              />
-
-              <CustomFormInput<PropertyFormType>
-                label="Office Address"
-                name="officeAddress"
-                rules={[
-                  VALIDATION_RULES.required("Please input the office address"),
-                ]}
-              />
-
               <Form.Item<PropertyFormType>
                 name="listingType"
                 label="Listing Type"
