@@ -1,7 +1,5 @@
 import PropertyForm from "@/components/dashboard/advisor/add-property";
 import auth0 from "@/lib/auth0";
-import { notFound } from "next/navigation";
-import { cookies, headers } from "next/headers";
 import { Button, Result } from "antd";
 
 export default async function PropertyPage({
