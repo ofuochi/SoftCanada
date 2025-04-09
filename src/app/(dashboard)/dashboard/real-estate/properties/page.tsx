@@ -14,6 +14,9 @@ import {
   Dropdown,
   Empty,
   MenuProps,
+  message,
+  Popconfirm,
+  PopconfirmProps,
   Table,
   TableProps,
   Tag,
@@ -40,10 +43,11 @@ type Props = {};
 const PropertyListings = forwardRef<PropertyListingsRef, Props>(
   (props, ref) => {
     const router = useRouter();
+    const [messageApi, contextHolder] = message.useMessage();
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
     const [sortOrder, setSortOrder] = useState("dsc");
-    const { get } = useApiClient();
+    const { get, del } = useApiClient();
 
     // const queryParams = new URLSearchParams({
     //   pageNumber: currentPage.toString(),
@@ -137,6 +141,22 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
         dataIndex: "actions",
         key: "actions",
         render: (_, record) => {
+          const confirm: PopconfirmProps["onConfirm"] = () => {
+            handleDelete();
+          };
+
+          const handleDelete = async () => {
+            try {
+              const response = await del(
+                `/api/RealEstate/properties/${record.id}`
+              );
+              messageApi.success(`Property Deleted successfully`);
+              mutate();
+            } catch (error: any) {
+              messageApi.error(error || `Error deleting property`);
+            }
+          };
+
           const items: MenuProps["items"] = [
             {
               label: (
@@ -155,13 +175,21 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
             },
             {
               label: (
-                <div className="flex items-center gap-2">
-                  <DeleteOutlined className="text-black" />
-                  <span className="text-[#4F4F4F] font-lato text-sm">
-                    {" "}
-                    Delete{" "}
-                  </span>
-                </div>
+                <Popconfirm
+                  title="Delete property"
+                  description="Are you sure to delete this property"
+                  onConfirm={confirm}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <div className="flex items-center gap-2">
+                    <DeleteOutlined className="text-black" />
+                    <span className="text-[#4F4F4F] font-lato text-sm">
+                      {" "}
+                      Delete{" "}
+                    </span>
+                  </div>
+                </Popconfirm>
               ),
               key: "1",
             },
@@ -207,26 +235,29 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
     };
 
     return (
-      <Table<PropertyListing>
-        columns={columns}
-        loading={isLoading}
-        dataSource={data}
-        onChange={handleTableChange}
-        pagination={{
-          current: currentPage,
-          pageSize: pageSize,
-          total: data?.length,
-          showSizeChanger: true,
-          showTotal: (total) => `Total ${total} item(s)`,
-          pageSizeOptions: [5, 10, 20, 50],
-          onChange: (page, size) => {
-            setCurrentPage(page);
-            setPageSize(size);
-          },
-        }}
-        rowKey="id"
-        scroll={{ x: true }}
-      />
+      <>
+        {contextHolder}
+        <Table<PropertyListing>
+          columns={columns}
+          loading={isLoading}
+          dataSource={data}
+          onChange={handleTableChange}
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: data?.length,
+            showSizeChanger: true,
+            showTotal: (total) => `Total ${total} item(s)`,
+            pageSizeOptions: [5, 10, 20, 50],
+            onChange: (page, size) => {
+              setCurrentPage(page);
+              setPageSize(size);
+            },
+          }}
+          rowKey="id"
+          scroll={{ x: true }}
+        />
+      </>
     );
   }
 );
