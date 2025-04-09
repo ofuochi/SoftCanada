@@ -1,5 +1,5 @@
 import { Form, FormProps } from "antd";
-import { useState, } from "react";
+import { useState } from "react";
 
 // Constants moved to the hook file
 const AMORTIZATION_PERIODS = [
@@ -56,6 +56,16 @@ export const useMortgageCalculator = () => {
   const [principal, setPrincipal] = useState<number>(0);
   const [interest, setInterest] = useState<number>(0);
   const [paymentAmount, setPaymentAmount] = useState<number>(0);
+
+  const scrollToChartContainer = () => {
+    const element = document.getElementById("chart_container");
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  };
 
   // Utility function for input number formatting
   const currencyFormatter = (value: number | undefined) =>
@@ -145,9 +155,11 @@ export const useMortgageCalculator = () => {
       });
   };
 
-  const handleSubmit: FormProps<MortgageCalculatorFormType>["onFinish"] = () => {
-    calculateMortgage();
-  };
+  const handleSubmit: FormProps<MortgageCalculatorFormType>["onFinish"] =
+    () => {
+      calculateMortgage();
+      scrollToChartContainer();
+    };
 
   // Form value change handler
   const handleValuesChange = (
@@ -200,3 +212,4 @@ export const useMortgageCalculator = () => {
     PAYMENT_FREQUENCIES,
   };
 };
+

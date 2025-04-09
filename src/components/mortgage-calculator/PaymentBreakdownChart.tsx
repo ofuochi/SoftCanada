@@ -107,7 +107,7 @@ const MortgagePaymentChart: React.FC<MortgagePaymentChartProps> = ({
       <div style={{ width: "100%", height: "400px" }}>
         <Pie className={"w-full"} {...pieConfig} />
       </div>
-      <div className="mt-5">
+      <div className="md:mt-5">
         <Text className="!font-poppins !text-base !font-semibold">
           Principal: ${formatCurrency(principal)}
         </Text>

@@ -38,7 +38,7 @@ const MortgageCalculator = () => {
         paymentFrequency={getPaymentFrequencyLabel()}
       />
     );
-  }, []);
+  }, [principal, interest, form.getFieldValue("paymentFrequency")]);
 
   return (
     <section className="w-full bg-white py-[30px] max-w-7xl mx-auto rounded-xl font-lato">
@@ -214,7 +214,9 @@ const MortgageCalculator = () => {
           </div>
         </Form>
 
-        <div className="w-full xl:max-w-[800px]">{memoizedChart}</div>
+        <div id="chart_container" className="w-full xl:max-w-[800px]">
+          {memoizedChart}
+        </div>
       </section>
     </section>
   );
