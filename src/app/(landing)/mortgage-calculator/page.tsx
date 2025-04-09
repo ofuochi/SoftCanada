@@ -202,7 +202,7 @@ const MortgageCalculator = () => {
   ]);
 
   return (
-    <section className="w-full bg-white pb-[30px] px-4 sm:px-6 py-6 md:px-10 max-w-7xl mx-auto rounded-xl font-lato">
+    <section className="w-full bg-white py-[30px] max-w-7xl mx-auto rounded-xl font-lato">
       <section className="font-lato text-black">
         <h1 className="font-semibold text-[38px] leading-[49.8px]">
           Mortgage Calculator
@@ -226,7 +226,7 @@ const MortgageCalculator = () => {
             interestRate: 5,
           }}
         >
-          <div className="flex flex-col w-full xl:w-[382px]">
+          <div className="flex flex-col w-full xl:w-[400px]">
             <Form.Item<MortgageCalculatorFormType>
               label="Home price"
               name="homePrice"

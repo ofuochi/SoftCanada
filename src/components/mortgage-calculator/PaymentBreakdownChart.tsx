@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Typography } from "antd";
 import { Pie } from "@ant-design/charts";
 
@@ -37,42 +37,21 @@ const MortgagePaymentChart: React.FC<MortgagePaymentChartProps> = ({
     return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const [chartData, setChartData] = useState<ChartDataItem[]>([
-    { type: "Principal", value: 0 },
-    { type: "Interest", value: 0 },
-  ]);
-
-  // Update chart data when props change
-  useEffect(() => {
-    // Ensure values are numbers and not zero
-    const principalValue = Number(principal.toFixed(2));
-    const interestValue = Number(interest.toFixed(2));
-
-    // Only set data if we have valid values
-    if (principalValue > 0 || interestValue > 0) {
-      setChartData([
-        { type: "Principal", value: principalValue },
-        { type: "Interest", value: interestValue },
-      ]);
-    }
-  }, [principal, interest]);
-
   // Data for pie chart
-  const pieData: ChartDataItem[] = chartData;
+  const pieData: ChartDataItem[] = useMemo(
+    () => [
+      { type: "Principal", value: Number(principal.toFixed(2)) },
+      { type: "Interest", value: Number(interest.toFixed(2)) },
+    ],
+    [principal, interest]
+  );
 
   // Pie chart configuration
   const pieConfig = {
     data: pieData,
     angleField: "value",
     colorField: "type",
-    // radius: 1,
     innerRadius: 0.6,
-    // label: {
-    //   text: "value",
-    //   style: {
-    //     fontWeight: "bold",
-    //   },
-    // },
     legend: {
       color: {
         title: false,

@@ -34,9 +34,7 @@ type PropertyData = {
   squareFootage: number;
   contact: string;
   address: string;
-  images: string[];
   imagesUrls: string[];
-  video: string;
   videoUrl: string;
 };
 
@@ -202,17 +200,10 @@ export const usePropertyForm = (propertyData?: PropertyData) => {
 
       imageFiles.forEach((file) => {
         if (file) {
-          formData.append(isEditMode ? "imagesUrls" : "Images", file);
+          formData.append("Images", file);
         }
       });
-      formData.append(isEditMode ? "videoUrl" : "Video", values.video);
-
-      // imageFiles.forEach((file) => {
-      //   if (file) {
-      //     formData.append(``, file);
-      //   }
-      // });
-      // formData.append("Video", values.video);
+      formData.append("Video", values.video);
 
       // Add property ID if in edit mode
       if (isEditMode && propertyData?.id) {
@@ -244,9 +235,7 @@ export const usePropertyForm = (propertyData?: PropertyData) => {
         }
 
         // Navigate back to properties list after a short delay
-        setTimeout(() => {
-          router.push("/real-estate/properties");
-        }, 1500);
+        router.push("/real-estate/properties");
       }
     } catch (error) {
       console.error("Error submitting property:", error);
