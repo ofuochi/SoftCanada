@@ -41,7 +41,7 @@ const MortgageCalculator = () => {
   }, [principal, interest, form.getFieldValue("paymentFrequency")]);
 
   return (
-    <section className="w-full bg-white py-[30px] max-w-7xl mx-auto rounded-xl font-lato">
+    <section className="w-full bg-white py-[30px] max-w-7xl mx-auto font-lato">
       <section className="font-lato text-black">
         <h1 className="font-semibold text-[38px] leading-[49.8px]">
           Mortgage Calculator
