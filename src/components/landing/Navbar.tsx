@@ -182,9 +182,10 @@ export default function Navbar() {
             <Menu
               mode="horizontal"
               items={menuItems}
-              className="transparent-menu flex-wrap"
               theme={menuTheme}
               selectable={false}
+              forceSubMenuRender
+              className="transparent-menu flex-wrap"
             />
           </div>
 

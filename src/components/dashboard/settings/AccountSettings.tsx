@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "@/contexts/SessionContext";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useUser } from "@auth0/nextjs-auth0";
 import {
@@ -30,13 +29,11 @@ export default function AccountSettings() {
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>(user?.picture || "");
-  const session = useSession();
 
   const handleUpdatePersonalDetails: FormProps<FieldType>["onFinish"] = (
     values
   ) => {
     console.log("Success:", values);
-    console.log(session?.accessTokenExpiresAt);
   };
 
   const handleUpdatePersonalDetailError: FormProps<FieldType>["onFinishFailed"] =

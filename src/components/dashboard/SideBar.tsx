@@ -11,6 +11,7 @@ import {
 import { useUser } from "@auth0/nextjs-auth0";
 import { Can } from "@casl/react";
 import { Layout, Menu, MenuProps } from "antd";
+import { ItemType } from "antd/es/breadcrumb/Breadcrumb";
 import { FileUser, UserPen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -55,11 +56,58 @@ type SideBarProps = {
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+interface CustomMenuProps extends Omit<MenuProps, "items"> {
+  items?: MenuProps["items"];
+}
+
+const CustomMenu: React.FC<CustomMenuProps> = ({ items, ...props }) => {
+  // Apply custom styling to each menu item
+  const enhancedItems = items?.map((item) => {
+    if (!item) return item;
+
+    // Apply different focus styling for parent items vs submenu items
+    const isSubmenuItem =
+      typeof item.key === "string" && item.key.includes("/real-estate/");
+    const focusClass = isSubmenuItem
+      ? "focus-within:bg-blue-300 focus-within:outline focus-within:outline-2 focus-within:outline-blue-600 focus-within:outline-offset-[-2px] rounded"
+      : "focus-within:bg-blue-100 focus-within:outline focus-within:outline-2 focus-within:outline-blue-500 focus-within:outline-offset-[-2px] rounded";
+
+    // Type guard to check if the item has children
+    if ("children" in item && item.children) {
+      const enhancedChildren = item.children.map((child) => {
+        if (!child) return child;
+
+        return {
+          ...child,
+          className:
+            "focus-within:bg-blue-300 focus-within:outline focus-within:outline-2 focus-within:outline-blue-600 focus-within:outline-offset-[-2px] rounded",
+        };
+      });
+
+      return {
+        ...item,
+        children: enhancedChildren,
+        className: focusClass,
+      };
+    }
+
+    return {
+      ...item,
+      className: focusClass,
+    };
+  });
+
+  return <Menu items={enhancedItems} {...props} />;
+};
+
 const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
   const { user } = useUser();
   const router = useRouter();
   const pathname = usePathname();
   const { setAdvisorType } = useDashboard();
+  const [openKeys, setOpenKeys] = useState<string[]>([
+    pathname.split("/").slice(0, 3).join("/"),
+  ]);
   const [advisorIndex, setAdvisorIndex] = useState(0);
   const [showAdvisorImage, setShowAdvisorImage] = useState(true);
   const [userAbility, setUserAbility] = useState(defineAbilityFor());
@@ -326,12 +374,14 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
       <div className="h-16 m-4 text-center align-middle">
         <Logo size={collapsed ? "small" : "medium"} path="/dashboard" />
       </div>
-      <Menu
+      <CustomMenu
         mode="inline"
         items={menuItems}
-        selectedKeys={[pathname]}
-        defaultOpenKeys={[pathname.split("/").slice(0, 3).join("/")]}
+        forceSubMenuRender
         className="space-y-5"
+        selectedKeys={[pathname]}
+        // openKeys={openKeys}
+        onOpenChange={(keys) => setOpenKeys(keys)}
       />
       {/* <Can I="read" a="publicContent" ability={userAbility}>
         {collapsed && (

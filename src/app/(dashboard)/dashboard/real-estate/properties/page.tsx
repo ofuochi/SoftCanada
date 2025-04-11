@@ -1,6 +1,5 @@
 "use client";
 
-import { PaginatedList } from "@/app/types/paginatedResponse";
 import { PropertyListing } from "@/app/types/property-listing";
 import { useApiClient } from "@/hooks/api-hook";
 import { formatCAD } from "@/utils/currency";
@@ -19,7 +18,6 @@ import {
   PopconfirmProps,
   Table,
   TableProps,
-  Tag,
   Typography,
 } from "antd";
 import dayjs from "dayjs";
@@ -235,12 +233,13 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
     };
 
     return (
-      <>
+      <section className="w-full overflow-x-auto">
         {contextHolder}
         <Table<PropertyListing>
           columns={columns}
           loading={isLoading}
           dataSource={data}
+          className="w-full max-xl:min-w-[1000px]"
           onChange={handleTableChange}
           pagination={{
             current: currentPage,
@@ -257,7 +256,7 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
           rowKey="id"
           scroll={{ x: true }}
         />
-      </>
+      </section>
     );
   }
 );

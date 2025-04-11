@@ -173,6 +173,19 @@ export const usePropertyForm = (propertyData?: PropertyData) => {
     }
   }, [propertyData, form, setFieldValue]);
 
+  useEffect(() => {
+    const handleKeyDown = () => {
+      form.submit();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Form submission handler
   const handleSubmit = async (values: PropertyFormType) => {
     try {

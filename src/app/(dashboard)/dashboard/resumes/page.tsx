@@ -27,10 +27,10 @@ export default function ResumesPage() {
 
   if (isLoading)
     return (
-      <div className="flex gap-6">
-        <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
-        <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
-        <Skeleton.Node style={{ width: "288px", height: "392px" }} active />
+      <div className="flex max-md:flex-col md:flex-wrap gap-6">
+        <Skeleton.Node className="!w-[288px] !h-[392px]" active />
+        <Skeleton.Node className="!w-[288px] !h-[392px]" active />
+        <Skeleton.Node className="!w-[288px] !h-[392px]" active />
       </div>
     );
   if (error && error.status >= 500) {
@@ -69,7 +69,7 @@ export default function ResumesPage() {
           <ResumeBuilder setShowCvBuilder={setShowCvBuilder} />
         </ResumeProvider>
       ) : (
-        <Flex wrap gap="large">
+        <Flex className="" wrap gap="large">
           <div className="w-72">
             <Button
               type="dashed"
@@ -90,10 +90,9 @@ export default function ResumesPage() {
           {data && data.length > 0
             ? data.map((resume) => (
                 <Card
-                  bordered={false}
                   size="small"
                   key={resume.id}
-                  className="w-72"
+                  className="!w-[220px] min-[360px]:w-[240px] min-[400px]:!w-72"
                   actions={[
                     <EditOutlined
                       key="edit"
@@ -111,7 +110,7 @@ export default function ResumesPage() {
                     </Popconfirm>,
                   ]}
                 >
-                  <div className="overflow-hidden h-80 pointer-events-none">
+                  <div className="overflow-hidden h-80 pointer-events-none ">
                     <div className="miniature-wrapper">
                       <ResumeTemplate data={resume} />
                     </div>
@@ -122,7 +121,7 @@ export default function ResumesPage() {
                 <Card
                   size="small"
                   key={i}
-                  className="w-72"
+                  className="!w-[220px] min-[360px]:w-[240px] min-[400px]:!w-72"
                   hoverable
                   onClick={() =>
                     handleResumeEditClick({

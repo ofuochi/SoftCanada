@@ -1,5 +1,5 @@
 import { Form, FormProps } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Constants moved to the hook file
 const AMORTIZATION_PERIODS = [
@@ -192,6 +192,19 @@ export const useMortgageCalculator = () => {
       ]?.label || ""
     );
   };
+
+  useEffect(() => {
+    const handleKeyDown = () => {
+      form.submit();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     form,
