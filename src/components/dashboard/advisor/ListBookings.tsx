@@ -11,14 +11,14 @@ import {
   Tooltip,
   Typography,
 } from "antd";
+import classnames from "classnames";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
-import React, { forwardRef, JSX, useImperativeHandle, useMemo } from "react";
+import React, { forwardRef, JSX, useImperativeHandle } from "react";
 import { LuCalendarDays, LuMapPin } from "react-icons/lu";
 import { MdOutlineWatch } from "react-icons/md";
 import useSWRInfinite from "swr/infinite";
-import classnames from "classnames";
 
 const { Text } = Typography;
 
@@ -61,7 +61,7 @@ const ListBookings = forwardRef<ListBookingsRef, Props>(
 
       return previousPageData && !previousPageData.items.length
         ? null
-        : `/api/career-advisors/bookings/user?pageNumber=${
+        : `/api/advisors/bookings/user?pageNumber=${
             pageIndex + 1
           }&pageSize=3&startDate=${utcStartDate}&sortOrder=asc`;
     };

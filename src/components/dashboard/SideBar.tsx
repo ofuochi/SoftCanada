@@ -8,16 +8,16 @@ import {
   HomeOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useUser } from "@auth0/nextjs-auth0";
 import { Can } from "@casl/react";
-import { Button, Layout, Menu, MenuProps } from "antd";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Layout, Menu, MenuProps } from "antd";
+import { ItemType } from "antd/es/breadcrumb/Breadcrumb";
+import { FileUser, UserPen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdDashboard } from "react-icons/md";
-import { PiSuitcaseSimple } from "react-icons/pi";
 const { Sider } = Layout;
 
 const advisors = [
@@ -56,18 +56,63 @@ type SideBarProps = {
   setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+interface CustomMenuProps extends Omit<MenuProps, "items"> {
+  items?: MenuProps["items"];
+}
+
+const CustomMenu: React.FC<CustomMenuProps> = ({ items, ...props }) => {
+  // Apply custom styling to each menu item
+  const enhancedItems = items?.map((item) => {
+    if (!item) return item;
+
+    // Apply different focus styling for parent items vs submenu items
+    const isSubmenuItem =
+      typeof item.key === "string" && item.key.includes("/real-estate/");
+    const focusClass = isSubmenuItem
+      ? "focus-within:bg-blue-300 focus-within:outline focus-within:outline-2 focus-within:outline-blue-600 focus-within:outline-offset-[-2px] rounded"
+      : "focus-within:bg-blue-100 focus-within:outline focus-within:outline-2 focus-within:outline-blue-500 focus-within:outline-offset-[-2px] rounded";
+
+    // Type guard to check if the item has children
+    if ("children" in item && item.children) {
+      const enhancedChildren = item.children.map((child) => {
+        if (!child) return child;
+
+        return {
+          ...child,
+          className:
+            "focus-within:bg-blue-300 focus-within:outline focus-within:outline-2 focus-within:outline-blue-600 focus-within:outline-offset-[-2px] rounded",
+        };
+      });
+
+      return {
+        ...item,
+        children: enhancedChildren,
+        className: focusClass,
+      };
+    }
+
+    return {
+      ...item,
+      className: focusClass,
+    };
+  });
+
+  return <Menu items={enhancedItems} {...props} />;
+};
+
 const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
   const { user } = useUser();
   const router = useRouter();
   const pathname = usePathname();
   const { setAdvisorType } = useDashboard();
+
   const [advisorIndex, setAdvisorIndex] = useState(0);
   const [showAdvisorImage, setShowAdvisorImage] = useState(true);
   const [userAbility, setUserAbility] = useState(defineAbilityFor());
 
   useEffect(() => {
+    if (!user) return;
     const userRoles = getRoles(user);
-    console.log(userRoles);
     if (userRoles.length) setUserAbility(defineAbilityFor(userRoles));
   }, [user?.[UserRoleKey]]);
 
@@ -109,59 +154,72 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
       ),
     },
     {
-      key: "career",
+      key: "/dashboard/resumes",
       icon: (
-        <PiSuitcaseSimple
-          className={`${
-            pathname.includes("career") ? "!text-[#010309]" : "!text-[#808080]"
-          }`}
-          size={pathname.includes("career") ? "24px" : "18px"}
+        <FileUser
+          strokeWidth={1}
+          color={`${pathname === "/dashboard/resumes" ? "#010309" : "#808080"}`}
+          size={pathname === "/dashboard/resumes" ? 28 : 24}
         />
       ),
       label: (
-        <span
-          className={`font-dm_sans ${
-            pathname.includes("career")
-              ? "text-[#010309] text-xl"
+        <Link
+          href="/dashboard/resumes"
+          className={`font-dm_sans bg-transparent text-sm ${
+            pathname === "/dashboard/resumes"
+              ? "!text-[#010309] text-xl"
               : "!text-[#808080] text-sm"
           }`}
         >
-          Career
-        </span>
+          Resumes
+        </Link>
       ),
-      children: [
-        {
-          key: "/dashboard/career/resumes",
-          label: (
-            <Link
-              href="/dashboard/career/resumes"
-              className={`font-dm_sans bg-transparent text-sm ${
-                pathname === "/dashboard/career/resumes"
-                  ? "!text-[#010309]"
-                  : "!text-[#808080]"
-              }`}
-            >
-              Resumes
-            </Link>
-          ),
-        },
-        {
-          key: "/dashboard/career/career-advisor",
-          label: (
-            <Link
-              href="/dashboard/career/career-advisor"
-              className={`font-dm_sans text-sm ${
-                pathname === "/dashboard/career/career-advisor"
-                  ? "!text-[#010309]"
-                  : "!text-[#808080]"
-              }`}
-            >
-              Advisors
-            </Link>
-          ),
-        },
-      ],
     },
+    {
+      key: "/dashboard/advisor",
+      icon: (
+        <UserPen
+          color={`${pathname === "/dashboard/advisor" ? "#010309" : "#808080"}`}
+          strokeWidth={1}
+          size={pathname === "/dashboard/advisor" ? 28 : 24}
+        />
+      ),
+      label: (
+        <Link
+          href="/dashboard/advisor"
+          className={`font-dm_sans text-sm ${
+            pathname === "/dashboard/advisor"
+              ? "!text-[#010309] text-xl"
+              : "!text-[#808080] text-sm"
+          }`}
+        >
+          Advisors
+        </Link>
+      ),
+    },
+    // {
+    //   key: "career",
+    //   icon: (
+    //     <PiSuitcaseSimple
+    //       className={`${
+    //         pathname.includes("career") ? "!text-[#010309]" : "!text-[#808080]"
+    //       }`}
+    //       size={pathname.includes("career") ? "24px" : "18px"}
+    //     />
+    //   ),
+    //   label: (
+    //     <span
+    //       className={`font-dm_sans ${
+    //         pathname.includes("career")
+    //           ? "text-[#010309] text-xl"
+    //           : "!text-[#808080] text-sm"
+    //       }`}
+    //     >
+    //       Career
+    //     </span>
+    //   ),
+    //   children: [],
+    // },
     {
       key: "/dashboard/real-estate",
       icon: (
@@ -294,6 +352,7 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
   return (
     <Sider
       collapsible
+      trigger={null}
       collapsed={collapsed}
       onCollapse={setCollapsed}
       breakpoint="lg"
@@ -311,40 +370,41 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
       }}
     >
       <div className="h-16 m-4 text-center align-middle">
-        <Logo size={collapsed ? "small" : "medium"} path="/dashboard" />
+        <Logo
+          src={"/softCanadaMain.svg"}
+          size={collapsed ? "small" : "medium"}
+          path="/dashboard"
+        />
       </div>
       <Menu
         mode="inline"
         items={menuItems}
-        selectedKeys={[pathname]}
-        defaultOpenKeys={[pathname.split("/").slice(0, 3).join("/")]}
+        forceSubMenuRender
         className="space-y-5"
       />
-
-      {collapsed && (
-        <section className="w-full px-4 ml-2.5 mt-10">
-          <Image
-            width={120}
-            height={120}
-            alt="advisorImage"
-            src={"/images/advisorImage.svg"}
-            className={`w-[120px] h-[120px] ${
-              showAdvisorImage ? "opacity-100 block" : "opacity-0 hidden"
-            }`}
-          />
-          <Image
-            width={120}
-            height={120}
-            alt="realEstateImage"
-            src={"/images/realEstateImage.svg"}
-            className={`w-[120px] h-[120px] ${
-              showAdvisorImage ? "opacity-0 hidden" : "opacity-100 block"
-            }`}
-          />
-        </section>
-      )}
-
-      <Can I="read" a="publicContent" ability={userAbility}>
+      {/* <Can I="read" a="publicContent" ability={userAbility}>
+        {collapsed && (
+          <section className="w-full px-4 ml-2.5 mt-10">
+            <Image
+              width={120}
+              height={120}
+              alt="advisorImage"
+              src={"/images/advisorImage.svg"}
+              className={`w-[120px] h-[120px] ${
+                showAdvisorImage ? "opacity-100 block" : "opacity-0 hidden"
+              }`}
+            />
+            <Image
+              width={120}
+              height={120}
+              alt="realEstateImage"
+              src={"/images/realEstateImage.svg"}
+              className={`w-[120px] h-[120px] ${
+                showAdvisorImage ? "opacity-0 hidden" : "opacity-100 block"
+              }`}
+            />
+          </section>
+        )}
         <section
           className={`w-full max-w-[230px] h-[278px] ${
             collapsed ? "opacity-0" : "opacity-100"
@@ -422,7 +482,7 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
             </div>
           </section>
         </section>
-      </Can>
+      </Can> */}
     </Sider>
   );
 };

@@ -5,8 +5,6 @@ import React, {
   PropsWithChildren,
 } from "react";
 
-type AdvisorType = "Career" | "Immigration" | "Financial" | "Real-Estate";
-
 type DashboardContextType = {
   advisorType: string;
   setAdvisorType: React.Dispatch<React.SetStateAction<string>>;
@@ -27,7 +25,7 @@ export const useDashboard = () => {
 export const DashboardProvider: React.FC<PropsWithChildren<{}>> = ({
   children,
 }) => {
-  const [advisorType, setAdvisorType] = useState<string>("Career");
+  const [advisorType, setAdvisorType] = useState<string>("");
 
   return (
     <DashboardContext.Provider value={{ advisorType, setAdvisorType }}>

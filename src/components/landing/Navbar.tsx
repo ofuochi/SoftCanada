@@ -2,15 +2,14 @@
 
 import Logo from "@/components/Logo";
 import { DownOutlined, MenuOutlined } from "@ant-design/icons";
-import { useUser } from "@auth0/nextjs-auth0/client";
-import { Button, Drawer, Menu, Space } from "antd";
+import { useUser } from "@auth0/nextjs-auth0";
+import type { MenuProps } from "antd";
+import { Button, Drawer, Menu } from "antd";
 import classNames from "classnames";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { LOGIN_PATH } from "@/constants/paths";
-import type { MenuProps } from "antd";
-import { LuLayoutDashboard } from "react-icons/lu";
 import { ProfileAvatar } from "../ProfileAvatar";
 
 export default function Navbar() {
@@ -85,61 +84,6 @@ export default function Navbar() {
       ],
     },
     {
-      key: "resources",
-      label: (
-        <>
-          <span
-            className={`font-dm_sans ${
-              isNavbarDark ? "text-black md:!text-white" : "text-black"
-            }`}
-          >
-            Resources{" "}
-          </span>
-          <span className="hidden md:inline">
-            <DownOutlined
-              className={`${
-                isNavbarDark ? "text-black md:!text-white" : "!text-black"
-              }`}
-            />
-          </span>
-        </>
-      ),
-      children: [
-        {
-          key: "deals",
-          label: (
-            <Link href="/deals" className={`font-dm_sans`}>
-              Deals
-            </Link>
-          ),
-        },
-        {
-          key: "finance",
-          label: (
-            <Link href="/finance" className={`font-dm_sans`}>
-              Finance
-            </Link>
-          ),
-        },
-        {
-          key: "immigration",
-          label: (
-            <Link href="/immigration" className={`font-dm_sans`}>
-              Immigration
-            </Link>
-          ),
-        },
-        {
-          key: "grants",
-          label: (
-            <Link href="/grants" className={`font-dm_sans`}>
-              Grants & Studies
-            </Link>
-          ),
-        },
-      ],
-    },
-    {
       key: "mortgage",
       label: (
         <Link
@@ -152,20 +96,6 @@ export default function Navbar() {
         </Link>
       ),
     },
-    // {
-    //   key: "cv-builder",
-    //   label: (
-    //     <Link
-    //       href="/dashboard/career/resumes"
-    //       className={`font-dm_sans ${
-    //         isNavbarDark ? "text-black md:!text-white" : "!text-black"
-    //       }`}
-    //     >
-    //       CV Builder
-    //     </Link>
-    //   ),
-    // },
-
     {
       key: "contact",
       label: (
@@ -183,7 +113,20 @@ export default function Navbar() {
       key: "faq",
       label: (
         <Link
-          href="/posts"
+          href="/faqs"
+          className={`font-dm_sans ${
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+          }`}
+        >
+          FAQs
+        </Link>
+      ),
+    },
+    {
+      key: "blogs",
+      label: (
+        <Link
+          href="/blogs"
           className={`font-dm_sans ${
             isNavbarDark ? "text-black md:!text-white" : "!text-black"
           }`}
@@ -223,52 +166,48 @@ export default function Navbar() {
           navbarStyle
         )}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
+        <div className="mx-auto flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <Logo theme={isNavbarDark ? "light" : "dark"} />
+          <div className="flex items-center">
+            <Logo
+              src={"/softCanadaMain.svg"}
+              theme={isNavbarDark ? "light" : "dark"}
+            />
           </div>
 
           {/* Desktop Menu */}
           <div
-            className={classNames(
+            className={`${classNames(
               "hidden md:flex flex-grow items-center justify-center",
               "navbar-menu-container"
-            )}
+            )}`}
           >
             <Menu
               mode="horizontal"
               items={menuItems}
-              className="transparent-menu flex-wrap"
               theme={menuTheme}
               selectable={false}
+              forceSubMenuRender
+              className="transparent-menu"
             />
           </div>
 
           {/* Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
-              <Space size="middle">
-                <Link href="/dashboard">
-                  <Button
-                    size="small"
-                    icon={<LuLayoutDashboard />}
-                    title="Dashboard"
-                  />
-                </Link>
-                <ProfileAvatar />
-              </Space>
+              <ProfileAvatar theme={isNavbarDark ? "dark" : "light"} />
             ) : (
               <>
-                <Link href={`${LOGIN_PATH}`}>
-                  <Button className="font-semibold !border-none !font-dm_sans !bg-white !shadow-none">
+                <Link href={LOGIN_PATH}>
+                  <Button size="large" className="!font-semibold !font-dm_sans">
                     Sign In
                   </Button>
                 </Link>
-                <Link href={`${LOGIN_PATH}`}>
+                <Link href={`${LOGIN_PATH}?screen_hint=signup`}>
                   <Button
+                    size="large"
                     type="primary"
-                    className="font-bold !border-none !font-dm_sans !shadow-none"
+                    className="!font-semibold !border-none !font-dm_sans !shadow-none"
                     danger={isNavbarDark}
                   >
                     Register Now!
@@ -286,7 +225,7 @@ export default function Navbar() {
                 <MenuOutlined
                   className={classNames(
                     "text-xl",
-                    isNavbarDark ? "text-white" : "text-black"
+                    isNavbarDark ? "!text-white" : "text-black"
                   )}
                 />
               }
@@ -311,15 +250,28 @@ export default function Navbar() {
             selectable={false}
           />
           <div className="flex flex-col items-start p-4 gap-2.5">
-            <Button className="w-full !shadow-none !border-black !font-dm_sans !py-5">
-              Sign In
-            </Button>
-            <Button
-              className="w-full !shadow-none !font-dm_sans !py-5"
-              type="primary"
-            >
-              Register Now!
-            </Button>
+            {user ? (
+              <ProfileAvatar theme={isNavbarDark ? "dark" : "light"} />
+            ) : (
+              <>
+                <Link href={LOGIN_PATH} className="block w-full">
+                  <Button className="w-full !shadow-none !border-black !font-dm_sans !py-5">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link
+                  href={`${LOGIN_PATH}?screen_hint=signup`}
+                  className="block w-full"
+                >
+                  <Button
+                    className="w-full !shadow-none !font-dm_sans !py-5"
+                    type="primary"
+                  >
+                    Register Now!
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </Drawer>
       </nav>

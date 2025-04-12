@@ -18,7 +18,6 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
         {basics?.label && (
           <span className="!font-dm_sans block text-lg">{basics.label}</span>
         )}
-
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-2.5 mt-2.5">
           {basics?.location && (
             <div className="flex items-center gap-0.5">
@@ -78,7 +77,6 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
             </span>
           )}
         </section>
-
         {basics?.summary && (
           <section className="mt-8">
             <h3 className="text-2xl text-white font-medium font-dm_sans my-1 text-center bg-black rounded flex justify-center items-center py-0.5">
@@ -116,9 +114,11 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
       <section className="flex flex-col gap-6 font-dm_sans">
         {/* PROFESSIONAL EXPERIENCE */}
         <section>
-          <h3 className="text-2xl text-white font-medium font-dm_sans my-1 text-center bg-black rounded flex justify-center items-center py-0.5">
-            Professional Experience
-          </h3>
+          {work.length > 0 && (
+            <h3 className="text-2xl text-white font-medium font-dm_sans my-1 text-center bg-black rounded flex justify-center items-center py-0.5">
+              Professional Experience
+            </h3>
+          )}
           <div className="mt-3">
             {work.map((job, i) => (
               <div key={i} className="">
@@ -174,9 +174,11 @@ const ClassicTemplate: React.FC<{ data: ResumeType }> = ({ data }) => {
 
         {/* EDUCATION */}
         <section>
-          <h3 className="text-2xl text-white font-medium font-dm_sans my-1 text-center bg-black rounded flex justify-center items-center py-0.5">
-            Education
-          </h3>
+          {education.length > 0 && (
+            <h3 className="text-2xl text-white font-medium font-dm_sans my-1 text-center bg-black rounded flex justify-center items-center py-0.5">
+              Education
+            </h3>
+          )}
           <div className="mt-2.5">
             {education.map((edu, index) => (
               <div key={index} className="">

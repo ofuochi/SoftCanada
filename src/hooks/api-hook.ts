@@ -2,11 +2,14 @@
 
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 import { useState } from "react";
-import { useSession } from "@/contexts/SessionContext";
 import { ApiError, useErrorContext } from "@/contexts/ErrorContext";
+import { getAccessToken } from "@auth0/nextjs-auth0";
 
 // Base URL for all API requests
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || process.env.API_BASE_URL || "https://softcanada-api-cqarcuhpc9chc5cp.canadacentral-01.azurewebsites.net"; // FIXME: Update with your API URL
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  process.env.API_BASE_URL ||
+  "https://softcanada-api-cqarcuhpc9chc5cp.canadacentral-01.azurewebsites.net"; // FIXME: Update with your API URL
 
 type RequestType<TData> = {
   method: "get" | "post" | "put" | "delete";
@@ -20,7 +23,6 @@ type RequestType<TData> = {
  * Handles auth headers, error propagation via ErrorContext, and in-progress state tracking.
  */
 export function useApiClient() {
-  const session = useSession();
   const { setApiError } = useErrorContext();
   const [inProgress, setInProgress] = useState(false); // Track request progress
 
@@ -32,10 +34,10 @@ export function useApiClient() {
     config,
   }: RequestType<TData>): Promise<TResult> => {
     setInProgress(true); // Set in-progress state to true
-
+    const accessToken = await getAccessToken();
     try {
-      const headers = session?.accessToken
-        ? { Authorization: `Bearer ${session.accessToken}` }
+      const headers = accessToken
+        ? { Authorization: `Bearer ${accessToken}` }
         : {};
 
       const response: AxiosResponse<TResult> = await axios({

@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type {NextConfig} from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -29,11 +29,10 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/admin",
-        destination: "/admin/index.html", 
+        destination: "/admin/index.html",
       },
     ];
-   }
-
+  }
 };
 
 export default nextConfig;

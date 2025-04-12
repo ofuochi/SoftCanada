@@ -35,7 +35,7 @@ const ListBookingHistory = forwardRef<ListBookingHistoryRef, Props>(
     }).toString();
 
     const { data, mutate, isLoading } = useSWR<PaginatedList<Booking>>(
-      `/api/career-advisors/bookings/user?${queryParams}`,
+      `/api/advisors/bookings/user?${queryParams}`,
       get
     );
 
@@ -131,26 +131,29 @@ const ListBookingHistory = forwardRef<ListBookingHistoryRef, Props>(
     };
 
     return (
-      <Table<Booking>
-        columns={columns}
-        loading={isLoading}
-        dataSource={data?.items}
-        onChange={handleTableChange}
-        pagination={{
-          current: currentPage,
-          pageSize: pageSize,
-          total: data?.totalRecords,
-          showSizeChanger: true,
-          showTotal: (total) => `Total ${total} item(s)`,
-          pageSizeOptions: [5, 10, 20, 50],
-          onChange: (page, size) => {
-            setCurrentPage(page);
-            setPageSize(size);
-          },
-        }}
-        rowKey="id"
-        scroll={{ x: true }}
-      />
+      <section className="w-full overflow-x-auto">
+        <Table<Booking>
+          columns={columns}
+          loading={isLoading}
+          dataSource={data?.items}
+          onChange={handleTableChange}
+          className="w-full max-xl:min-w-[1000px]"
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: data?.totalRecords,
+            showSizeChanger: true,
+            showTotal: (total) => `Total ${total} item(s)`,
+            pageSizeOptions: [5, 10, 20, 50],
+            onChange: (page, size) => {
+              setCurrentPage(page);
+              setPageSize(size);
+            },
+          }}
+          rowKey="id"
+          scroll={{ x: true }}
+        />
+      </section>
     );
   }
 );
@@ -158,3 +161,4 @@ const ListBookingHistory = forwardRef<ListBookingHistoryRef, Props>(
 ListBookingHistory.displayName = "ListBookingHistory";
 
 export default ListBookingHistory;
+

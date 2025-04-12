@@ -4,8 +4,8 @@ import { ProfileAvatar } from "@/components/ProfileAvatar";
 import { DashboardProvider } from "@/contexts/DashboardContext";
 import { ErrorProvider } from "@/contexts/ErrorContext";
 import { ResumeDownloadProvider } from "@/contexts/ResumeDownloadContext";
+import useMobile from "@/hooks/useMobile";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { Breadcrumb, Button, Layout, MenuProps } from "antd";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
@@ -16,8 +16,8 @@ import SideBar from "./SideBar";
 const { Header, Footer, Content } = Layout;
 
 export default function DashboardLayout({ children }: React.PropsWithChildren) {
+  const isMobile = useMobile();
   const [collapsed, setCollapsed] = useState(false);
-  const { user } = useUser();
 
   const pathname = usePathname();
 
@@ -26,7 +26,11 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
   ];
 
   const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
+    if (isMobile) {
+      setCollapsed(true);
+    } else {
+      setCollapsed((collapsed) => !collapsed);
+    }
   };
 
   // const notificationMenu: MenuProps = {
@@ -59,17 +63,21 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
                 background: "#fff",
                 padding: "0 16px",
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: isMobile ? "end" : "space-between",
                 alignItems: "center",
                 boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
               }}
             >
-              <Button
-                type="text"
-                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                onClick={toggleCollapsed}
-                style={{ fontSize: "16px" }}
-              />
+              {!isMobile && (
+                <Button
+                  type="text"
+                  icon={
+                    collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />
+                  }
+                  onClick={toggleCollapsed}
+                  style={{ fontSize: "16px" }}
+                />
+              )}
               <div className="flex items-center gap-8">
                 <ProfileAvatar />
               </div>

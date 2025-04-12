@@ -20,8 +20,8 @@ export const breadcrumbConfig: Record<string, BreadcrumbItemType[]> = {
   ],
   "/dashboard/career/career-advisor": [
     ...baseBreadcrumb,
-    { title: "Career" },
-    { title: "Career Advisors" },
+    { title: "Advisor" },
+    { title: "Advisors" },
   ],
 };
 
