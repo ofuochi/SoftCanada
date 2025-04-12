@@ -14,7 +14,7 @@ export const BlogPost: React.FC<TinaCrmQuery<BlogsQuery>> = (props) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12">
-      <article className="max-w-3xl mx-auto px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 lg:px-8">
+      <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <Link
             href="/blogs"

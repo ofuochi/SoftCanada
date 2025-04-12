@@ -376,12 +376,11 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
           path="/dashboard"
         />
       </div>
-      <CustomMenu
+      <Menu
         mode="inline"
         items={menuItems}
         forceSubMenuRender
         className="space-y-5"
-        selectedKeys={[pathname]}
       />
       {/* <Can I="read" a="publicContent" ability={userAbility}>
         {collapsed && (
@@ -489,4 +488,3 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
 };
 
 export default SideBar;
-

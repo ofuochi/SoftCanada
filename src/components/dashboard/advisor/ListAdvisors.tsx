@@ -63,19 +63,7 @@ export default function ListAdvisors({
       hasMore={hasMore}
       loader={<div className="text-center p-4">Loading more advisors...</div>}
       endMessage={
-        <div className="w-fit h-fit mx-auto">
-          {isLoading && (
-            <Spin
-              className="mx-auto"
-              indicator={
-                <LoadingOutlined
-                  style={{ fontSize: 48, color: "black" }}
-                  spin
-                />
-              }
-            />
-          )}
-        </div>
+        <div className="w-fit h-fit mx-auto">{isLoading && <Spin />}</div>
       }
       scrollableTarget="scrollableContainer"
     >
@@ -141,4 +129,3 @@ export default function ListAdvisors({
     </InfiniteScroll>
   );
 }
-

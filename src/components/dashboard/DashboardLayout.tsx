@@ -4,21 +4,19 @@ import { ProfileAvatar } from "@/components/ProfileAvatar";
 import { DashboardProvider } from "@/contexts/DashboardContext";
 import { ErrorProvider } from "@/contexts/ErrorContext";
 import { ResumeDownloadProvider } from "@/contexts/ResumeDownloadContext";
+import useMobile from "@/hooks/useMobile";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { useUser } from "@auth0/nextjs-auth0";
 import { Breadcrumb, Button, Layout, MenuProps } from "antd";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { SWRConfig } from "swr";
 import { breadcrumbConfig } from "./BreadcrumbConfig";
 import SideBar from "./SideBar";
-import useMobile from "@/hooks/useMobile";
 
 const { Header, Footer, Content } = Layout;
 
 export default function DashboardLayout({ children }: React.PropsWithChildren) {
   const isMobile = useMobile();
-  const { user } = useUser();
   const [collapsed, setCollapsed] = useState(false);
 
   const pathname = usePathname();
@@ -116,4 +114,3 @@ export default function DashboardLayout({ children }: React.PropsWithChildren) {
     </>
   );
 }
-

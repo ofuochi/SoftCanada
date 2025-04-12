@@ -166,9 +166,9 @@ export default function Navbar() {
           navbarStyle
         )}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="mx-auto flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center">
             <Logo
               src={"/softCanadaMain.svg"}
               theme={isNavbarDark ? "light" : "dark"}
@@ -177,10 +177,10 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div
-            className={classNames(
+            className={`${classNames(
               "hidden md:flex flex-grow items-center justify-center",
               "navbar-menu-container"
-            )}
+            )}`}
           >
             <Menu
               mode="horizontal"
@@ -188,7 +188,7 @@ export default function Navbar() {
               theme={menuTheme}
               selectable={false}
               forceSubMenuRender
-              className="transparent-menu flex-wrap"
+              className="transparent-menu"
             />
           </div>
 
@@ -199,14 +199,15 @@ export default function Navbar() {
             ) : (
               <>
                 <Link href={LOGIN_PATH}>
-                  <Button className="font-semibold !border-none !font-dm_sans !bg-white !shadow-none">
+                  <Button size="large" className="!font-semibold !font-dm_sans">
                     Sign In
                   </Button>
                 </Link>
                 <Link href={`${LOGIN_PATH}?screen_hint=signup`}>
                   <Button
+                    size="large"
                     type="primary"
-                    className="font-bold !border-none !font-dm_sans !shadow-none"
+                    className="!font-semibold !border-none !font-dm_sans !shadow-none"
                     danger={isNavbarDark}
                   >
                     Register Now!
@@ -277,4 +278,3 @@ export default function Navbar() {
     </>
   );
 }
-

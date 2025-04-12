@@ -13,25 +13,31 @@ export default async function Home() {
         switch (block.__typename) {
           case "LandingBlocksWelcomeHero":
             return (
-              <section key={i} className="mx-auto max-w-7xl">
+              <section key={i}>
                 <HeroSection {...block} cmsQuery={query} />
               </section>
             );
           case "LandingBlocksHomepageFeatureBlock":
             return (
-              <section key={i} className="mx-auto max-w-7xl">
+              <section
+                key={i}
+                className="px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20"
+              >
                 <FeaturesSection {...block} cmsQuery={query} />
               </section>
             );
           case "LandingBlocksHowItWorksBlock":
             return (
-              <section key={i} className="mx-auto max-w-7xl">
+              <section
+                key={i}
+                className="px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20"
+              >
                 <HowItWorksSection {...block} cmsQuery={query} />
               </section>
             );
           case "LandingBlocksCallToActionBlock":
             return (
-              <section key={i} className="mx-auto max-w-7xl">
+              <section key={i}>
                 <CallToActionSection {...block} cmsQuery={query} />
               </section>
             );
@@ -42,4 +48,3 @@ export default async function Home() {
     </>
   );
 }
-

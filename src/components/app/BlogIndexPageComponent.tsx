@@ -35,7 +35,7 @@ export const BlogIndexPageComponent = ({
 }: Props) => {
   const { data } = useTina<BlogsConnectionQuery>(cmsQuery);
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 pb-8">
+    <div className="max-w-6xl mx-auto px-4 pb-8">
       {/* Hero Section */}
       <div className="text-center mb-12">
         <h1 className="text-3xl sm:text-5xl font-bold leading-snug break-words">
@@ -168,4 +168,3 @@ export const BlogIndexPageComponent = ({
     </div>
   );
 };
-

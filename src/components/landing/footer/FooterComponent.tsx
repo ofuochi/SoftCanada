@@ -15,8 +15,8 @@ export const FooterComponent = (props: Props) => {
   const footerBlock = data?.footer || props;
 
   return (
-    <footer className="bg-white w-full py-10 max-w-7xl mx-auto">
-      <div className="flex px-4 sm:px-6 md:px-10 lg:px-14 xl:px-0 max-md:flex-col flex-wrap justify-between gap-8 md:items-start items-center text-center md:text-left">
+    <footer className="bg-white w-full py-10 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20">
+      <div className="flex max-md:flex-col flex-wrap justify-between gap-8 md:items-start items-center text-center md:text-left">
         {/* Logo Section */}
         <div
           className="flex flex-col items-center md:items-start"
@@ -83,4 +83,3 @@ export const FooterComponent = (props: Props) => {
     </footer>
   );
 };
-

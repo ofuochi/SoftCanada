@@ -5,18 +5,18 @@ import { FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 export default function ContactPage() {
   return (
     <>
-      <section className="mt-10 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 max-w-7xl mx-auto">
+      <section className="mt-10 px-4 md:px-16">
         <div className="text-center">
-          <h1 className="text-3xl md:text-3xl lg:text-4xl font-bold">
+          <h3 className="text-3xl md:text-3xl lg:text-4xl font-bold">
             Contact
-          </h1>
+          </h3>
           <p className="text-sm md:text-base text-center mb-10 mt-5 text-gray-500">
             We are here to help, let us know how we can assist you.
           </p>
         </div>
       </section>
 
-      <section className="bg-gray-900 text-gray-300 mt-32 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20 py-12 mb-10 dark">
+      <section className="bg-gray-900 text-gray-300 mt-32 -mx-28 px-36 py-12 mb-10 dark">
         <div className="container mx-auto flex flex-col md:flex-row gap-8 items-start">
           {/* Contact Info */}
           <div className="md:w-1/3 space-y-16 place-self-center">
@@ -89,4 +89,3 @@ export default function ContactPage() {
     </>
   );
 }
-
