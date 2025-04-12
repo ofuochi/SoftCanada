@@ -2,17 +2,17 @@ import PropertyForm from "@/components/dashboard/advisor/add-property";
 import auth0 from "@/lib/auth0";
 import { Button, Result } from "antd";
 
-export default async function PropertyPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const isEditMode = !!params.id;
+type Props = {
+  params: Promise<{ id: string }>;
+};
+export default async function PropertyPage(props: Props) {
+  const { id } = await props.params;
+  const isEditMode = !!id;
   let propertyData = null;
 
   if (isEditMode) {
     try {
-      propertyData = await fetchPropertyById(params.id);
+      propertyData = await fetchPropertyById(id);
 
       if (!propertyData) {
         return (
@@ -23,7 +23,7 @@ export default async function PropertyPage({
             extra={
               <Button
                 loading={!!propertyData}
-                onClick={() => fetchPropertyById(params.id)}
+                onClick={() => fetchPropertyById(id)}
                 type="primary"
               >
                 Refresh
@@ -41,7 +41,7 @@ export default async function PropertyPage({
           extra={
             <Button
               loading={!!propertyData}
-              onClick={() => fetchPropertyById(params.id)}
+              onClick={() => fetchPropertyById(id)}
               type="primary"
             >
               Refresh
