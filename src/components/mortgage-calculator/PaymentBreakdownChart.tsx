@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Card, Typography } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
+import { Typography } from "antd";
 import { Pie } from "@ant-design/charts";
 
 const { Title, Text } = Typography;
@@ -10,7 +10,6 @@ type MortgagePaymentChartProps = {
   paymentAmount: number;
   paymentFrequency: string;
   title?: string;
-  style?: React.CSSProperties;
 };
 
 type ChartDataItem = {
@@ -29,7 +28,6 @@ const MortgagePaymentChart: React.FC<MortgagePaymentChartProps> = ({
   paymentAmount,
   paymentFrequency,
   title,
-  style = {},
 }) => {
   // Use payment frequency for the title if no custom title is provided
   const chartTitle = title || `${paymentFrequency} Payment Breakdown`;
@@ -39,42 +37,21 @@ const MortgagePaymentChart: React.FC<MortgagePaymentChartProps> = ({
     return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const [chartData, setChartData] = useState<ChartDataItem[]>([
-    { type: "Principal", value: 0 },
-    { type: "Interest", value: 0 },
-  ]);
-
-  // Update chart data when props change
-  useEffect(() => {
-    // Ensure values are numbers and not zero
-    const principalValue = Number(principal.toFixed(2));
-    const interestValue = Number(interest.toFixed(2));
-
-    // Only set data if we have valid values
-    if (principalValue > 0 || interestValue > 0) {
-      setChartData([
-        { type: "Principal", value: principalValue },
-        { type: "Interest", value: interestValue },
-      ]);
-    }
-  }, [principal, interest]);
-
   // Data for pie chart
-  const pieData: ChartDataItem[] = chartData;
+  const pieData: ChartDataItem[] = useMemo(
+    () => [
+      { type: "Principal", value: Number(principal.toFixed(2)) },
+      { type: "Interest", value: Number(interest.toFixed(2)) },
+    ],
+    [principal, interest]
+  );
 
   // Pie chart configuration
   const pieConfig = {
     data: pieData,
     angleField: "value",
     colorField: "type",
-    // radius: 1,
     innerRadius: 0.6,
-    // label: {
-    //   text: "value",
-    //   style: {
-    //     fontWeight: "bold",
-    //   },
-    // },
     legend: {
       color: {
         title: false,
@@ -107,7 +84,7 @@ const MortgagePaymentChart: React.FC<MortgagePaymentChartProps> = ({
       {
         type: "text",
         style: {
-          text: `$${paymentAmount.toFixed(2)} /mo`,
+          text: `$${paymentAmount.toFixed(2)}`,
           x: "50%",
           y: "50%",
           textAlign: "center",
@@ -119,29 +96,31 @@ const MortgagePaymentChart: React.FC<MortgagePaymentChartProps> = ({
   };
 
   return (
-    <Card style={{ ...style }}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Title level={3}>{chartTitle}</Title>
-        <div style={{ width: "100%", height: "400px" }}>
-          <Pie {...pieConfig} />
-        </div>
-        <div style={{ marginTop: "20px" }}>
-          <Text strong>Principal: ${formatCurrency(principal)}</Text>
-          <br />
-          <Text strong>Interest: ${formatCurrency(interest)}</Text>
-          <br />
-          <Text strong>
-            Total {paymentFrequency} Payment: ${formatCurrency(paymentAmount)}
-          </Text>
-        </div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Title level={3}>{chartTitle}</Title>
+      <div style={{ width: "100%", height: "400px" }}>
+        <Pie className={"w-full"} {...pieConfig} />
       </div>
-    </Card>
+      <div className="md:mt-5">
+        <Text className="!font-poppins !text-base !font-semibold">
+          Principal: ${formatCurrency(principal)}
+        </Text>
+        <br />
+        <Text className="!font-poppins !text-base !font-semibold">
+          Interest: ${formatCurrency(interest)}
+        </Text>
+        <br />
+        <Text className="!font-poppins !text-base !font-semibold">
+          Total {paymentFrequency} Payment: ${formatCurrency(paymentAmount)}
+        </Text>
+      </div>
+    </div>
   );
 };
 

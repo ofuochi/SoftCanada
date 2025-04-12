@@ -28,7 +28,7 @@ export default async function BlogIndexPage({ searchParams }: Props) {
   }, Object.fromEntries(BlogCategories.map((cat) => [cat, 0])) as Record<string, number>);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 max-w-7xl mx-auto">
       <BlogIndexPageComponent
         categories={BlogCategories}
         categoryCounts={categoryCounts}
@@ -39,3 +39,4 @@ export default async function BlogIndexPage({ searchParams }: Props) {
     </div>
   );
 }
+

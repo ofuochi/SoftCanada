@@ -15,14 +15,14 @@ export const FooterComponent = (props: Props) => {
   const footerBlock = data?.footer || props;
 
   return (
-    <footer className="bg-white w-full py-10 px-4 sm:px-6 md:px-10 lg:px-14 xl:px-20">
-      <div className="flex max-md:flex-col flex-wrap justify-between gap-8 md:items-start items-center text-center md:text-left">
+    <footer className="bg-white w-full py-10 max-w-7xl mx-auto">
+      <div className="flex px-4 sm:px-6 md:px-10 lg:px-14 xl:px-0 max-md:flex-col flex-wrap justify-between gap-8 md:items-start items-center text-center md:text-left">
         {/* Logo Section */}
         <div
           className="flex flex-col items-center md:items-start"
           data-tina-field={tinaField(footerBlock, "logo")}
         >
-          <Logo size="large" src={footerBlock?.logo} />
+          <Logo size="large" src={"/softCanadaLogoIcon.svg"} />
         </div>
 
         {/* Dynamic Sections */}
@@ -56,7 +56,7 @@ export const FooterComponent = (props: Props) => {
                 {section.description && (
                   <p className="mb-4">{section.description}</p>
                 )}
-                <div className="flex space-x-4 text-lg text-gray-600">
+                <div className="flex justify-center md:justify-start space-x-4 text-lg text-gray-600">
                   {footerBlock.socials?.map((social, socialIndex) => (
                     <Link
                       key={socialIndex}
@@ -83,3 +83,4 @@ export const FooterComponent = (props: Props) => {
     </footer>
   );
 };
+

@@ -1,23 +1,30 @@
 "use client";
 
-import { PaginatedList } from "@/app/types/paginatedResponse";
 import { PropertyListing } from "@/app/types/property-listing";
 import { useApiClient } from "@/hooks/api-hook";
 import { formatCAD } from "@/utils/currency";
-import { DeleteOutlined, EllipsisOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+} from "@ant-design/icons";
 import {
   Avatar,
   Dropdown,
+  Empty,
   MenuProps,
+  message,
+  Popconfirm,
+  PopconfirmProps,
   Table,
   TableProps,
-  Tag,
   Typography,
 } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import utc from "dayjs/plugin/utc";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import useSWR from "swr";
 
@@ -33,10 +40,12 @@ type Props = {};
 
 const PropertyListings = forwardRef<PropertyListingsRef, Props>(
   (props, ref) => {
+    const router = useRouter();
+    const [messageApi, contextHolder] = message.useMessage();
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(5);
     const [sortOrder, setSortOrder] = useState("dsc");
-    const { get } = useApiClient();
+    const { get, del } = useApiClient();
 
     // const queryParams = new URLSearchParams({
     //   pageNumber: currentPage.toString(),
@@ -66,14 +75,22 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
         key: "advisor",
         render: (_, record) => (
           <div className="flex items-center gap-3">
-            <div className="w-[76px] h-[53px] overflow-clip">
-              <Image
-                width={73}
-                height={53}
-                className="object-cover rounded-sm"
-                alt="property-image"
-                src={record.imagesUrls[0]}
-              />
+            <div className="w-[76px] h-[60px] overflow-clip !rounded-sm flex justify-center items-center">
+              {record.imagesUrls[0].includes("http") ? (
+                <Image
+                  width={73}
+                  height={53}
+                  className="object-cover !rounded-sm"
+                  alt="property-image"
+                  src={record?.imagesUrls[0]}
+                />
+              ) : (
+                <Empty
+                  description="No img"
+                  className="!rounded-sm"
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                />
+              )}
             </div>
             <Text>{record.name}</Text>
           </div>
@@ -106,7 +123,6 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
       {
         title: "Created Date",
         dataIndex: "createdAt",
-        sorter: true,
         key: "startDate",
         render: (_, { createdAt }) => {
           return (
@@ -123,18 +139,57 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
         dataIndex: "actions",
         key: "actions",
         render: (_, record) => {
+          const confirm: PopconfirmProps["onConfirm"] = () => {
+            handleDelete();
+          };
+
+          const handleDelete = async () => {
+            try {
+              const response = await del(
+                `/api/RealEstate/properties/${record.id}`
+              );
+              messageApi.success(`Property Deleted successfully`);
+              mutate();
+            } catch (error: any) {
+              messageApi.error(error || `Error deleting property`);
+            }
+          };
+
           const items: MenuProps["items"] = [
             {
               label: (
-                <div className="flex items-center gap-2">
-                  <DeleteOutlined className="text-black" />
+                <div
+                  onClick={() => router.push(`properties/${record.id}`)}
+                  className="flex items-center gap-2"
+                >
+                  <EditOutlined className="text-black" />
                   <span className="text-[#4F4F4F] font-lato text-sm">
                     {" "}
-                    Delete{" "}
+                    Edit
                   </span>
                 </div>
               ),
               key: "0",
+            },
+            {
+              label: (
+                <Popconfirm
+                  title="Delete property"
+                  description="Are you sure to delete this property"
+                  onConfirm={confirm}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <div className="flex items-center gap-2">
+                    <DeleteOutlined className="text-black" />
+                    <span className="text-[#4F4F4F] font-lato text-sm">
+                      {" "}
+                      Delete{" "}
+                    </span>
+                  </div>
+                </Popconfirm>
+              ),
+              key: "1",
             },
           ];
 
@@ -178,26 +233,30 @@ const PropertyListings = forwardRef<PropertyListingsRef, Props>(
     };
 
     return (
-      <Table<PropertyListing>
-        columns={columns}
-        loading={isLoading}
-        dataSource={data}
-        onChange={handleTableChange}
-        pagination={{
-          current: currentPage,
-          pageSize: pageSize,
-          total: data?.length,
-          showSizeChanger: true,
-          showTotal: (total) => `Total ${total} item(s)`,
-          pageSizeOptions: [5, 10, 20, 50],
-          onChange: (page, size) => {
-            setCurrentPage(page);
-            setPageSize(size);
-          },
-        }}
-        rowKey="id"
-        scroll={{ x: true }}
-      />
+      <section className="w-full overflow-x-auto">
+        {contextHolder}
+        <Table<PropertyListing>
+          columns={columns}
+          loading={isLoading}
+          dataSource={data}
+          className="w-full max-xl:min-w-[1000px]"
+          onChange={handleTableChange}
+          pagination={{
+            current: currentPage,
+            pageSize: pageSize,
+            total: data?.length,
+            showSizeChanger: true,
+            showTotal: (total) => `Total ${total} item(s)`,
+            pageSizeOptions: [5, 10, 20, 50],
+            onChange: (page, size) => {
+              setCurrentPage(page);
+              setPageSize(size);
+            },
+          }}
+          rowKey="id"
+          scroll={{ x: true }}
+        />
+      </section>
     );
   }
 );

@@ -52,7 +52,7 @@ export default function FeaturesSection(props: Props) {
           {/* Jobs Card */}
           <div className="bg-gray-50 px-4 sm:px-8 md:px-14 w-full pt-12 flex flex-col flex-1">
             <div>
-              <div data-tina-field={tinaField(content, "jobFeature.heading")}>
+              <div data-tina-field={tinaField(content, "jobFeature")}>
                 <TinaMarkdown
                   content={content.jobFeature?.heading}
                   components={{
@@ -74,7 +74,7 @@ export default function FeaturesSection(props: Props) {
               <Button
                 type="default"
                 onClick={() => push(content.jobFeature!.buttonLink!)}
-                data-tina-field={tinaField(content, "jobFeature.buttonText")}
+                data-tina-field={tinaField(content, "jobFeature")}
                 className="mt-5 shadow-none !font-dm_sans border !border-black"
               >
                 {content.jobFeature?.buttonText}
@@ -82,7 +82,7 @@ export default function FeaturesSection(props: Props) {
             </div>
             <Image
               src={content.jobFeature!.image!}
-              data-tina-field={tinaField(content, "jobFeature.image")}
+              data-tina-field={tinaField(content, "jobFeature")}
               alt="career feature"
               width={10}
               height={10}
@@ -97,19 +97,14 @@ export default function FeaturesSection(props: Props) {
                 content.realEstateFeature?.image ||
                 "/images/landing/real_estate_feature.jpg"
               }
-              data-tina-field={tinaField(content, "realEstateFeature.image")}
+              data-tina-field={tinaField(content, "realEstateFeature")}
               alt="rental listing feature"
               width={10}
               height={10}
               className="w-full flex-shrink-0"
             />
             <div className="px-4 sm:px-8 md:px-14 mt-auto">
-              <div
-                data-tina-field={tinaField(
-                  content,
-                  "realEstateFeature.heading"
-                )}
-              >
+              <div data-tina-field={tinaField(content, "realEstateFeature")}>
                 <TinaMarkdown
                   content={content.realEstateFeature?.heading}
                   components={{
@@ -131,10 +126,7 @@ export default function FeaturesSection(props: Props) {
               <Button
                 type="default"
                 onClick={() => push(content.realEstateFeature!.buttonLink!)}
-                data-tina-field={tinaField(
-                  content,
-                  "realEstateFeature.buttonText"
-                )}
+                data-tina-field={tinaField(content, "realEstateFeature")}
                 className="mt-5 shadow-none !font-dm_sans border !border-black"
               >
                 {content.realEstateFeature?.buttonText}
@@ -154,16 +146,14 @@ export default function FeaturesSection(props: Props) {
                 content.financeFeature?.image ||
                 "/images/landing/finance_feature.jpg"
               }
-              data-tina-field={tinaField(content, "financeFeature.image")}
+              data-tina-field={tinaField(content, "financeFeature")}
               alt="finance feature"
               width={10}
               height={10}
               className="w-full px-4 sm:px-8 md:px-14 flex-shrink-0"
             />
             <div className="px-4 sm:px-8 md:px-14">
-              <div
-                data-tina-field={tinaField(content, "financeFeature.heading")}
-              >
+              <div data-tina-field={tinaField(content, "financeFeature")}>
                 <TinaMarkdown
                   content={content.financeFeature?.heading}
                   components={{
@@ -185,10 +175,7 @@ export default function FeaturesSection(props: Props) {
               <div className="flex">
                 <Button
                   type="default"
-                  data-tina-field={tinaField(
-                    content,
-                    "financeFeature.buttonText"
-                  )}
+                  data-tina-field={tinaField(content, "financeFeature")}
                   onClick={() => push(content.financeFeature!.buttonLink!)}
                   className="mt-5 shadow-none !font-dm_sans border !border-black"
                 >
@@ -203,12 +190,7 @@ export default function FeaturesSection(props: Props) {
             {/* Immigration News Card */}
             <div className="bg-gray-50 pt-10 flex flex-col flex-1">
               <div className="px-4 sm:px-8 md:px-14 flex-1">
-                <div
-                  data-tina-field={tinaField(
-                    content,
-                    "immigrationFeature.heading"
-                  )}
-                >
+                <div data-tina-field={tinaField(content, "immigrationFeature")}>
                   <TinaMarkdown
                     content={content.immigrationFeature?.heading}
                     components={{
@@ -229,10 +211,7 @@ export default function FeaturesSection(props: Props) {
                 </div>
                 <Button
                   type="default"
-                  data-tina-field={tinaField(
-                    content,
-                    "immigrationFeature.buttonText"
-                  )}
+                  data-tina-field={tinaField(content, "immigrationFeature")}
                   onClick={() => push(content.immigrationFeature!.buttonLink!)}
                   className="mt-5 shadow-none !font-dm_sans border !border-black"
                 >
@@ -241,7 +220,7 @@ export default function FeaturesSection(props: Props) {
               </div>
               <div
                 className="flex-1 relative"
-                data-tina-field={tinaField(content, "immigrationFeature.image")}
+                data-tina-field={tinaField(content, "immigrationFeature")}
               >
                 <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-transparent z-10"></div>
                 <Image
@@ -264,7 +243,7 @@ export default function FeaturesSection(props: Props) {
                   content.grantsFeature?.image ||
                   "/images/landing/grant_feature.jpg"
                 }
-                data-tina-field={tinaField(content, "grantsFeature.image")}
+                data-tina-field={tinaField(content, "grantsFeature")}
                 alt="grant feature"
                 height={200}
                 width={400}
@@ -272,9 +251,7 @@ export default function FeaturesSection(props: Props) {
               />
               {/* Text Content on the Right */}
               <div className="flex-1 px-4 sm:px-8 md:px-14 mt-5 pb-5">
-                <div
-                  data-tina-field={tinaField(content, "grantsFeature.heading")}
-                >
+                <div data-tina-field={tinaField(content, "grantsFeature")}>
                   <TinaMarkdown
                     content={content.grantsFeature?.heading}
                     components={{
@@ -296,10 +273,7 @@ export default function FeaturesSection(props: Props) {
                 <div className="flex">
                   <Button
                     onClick={() => push(content.grantsFeature!.buttonLink!)}
-                    data-tina-field={tinaField(
-                      content,
-                      "grantsFeature.buttonText"
-                    )}
+                    data-tina-field={tinaField(content, "grantsFeature")}
                     type="default"
                     className="mt-5 shadow-none !font-dm_sans border !border-black"
                   >
@@ -314,3 +288,4 @@ export default function FeaturesSection(props: Props) {
     </>
   );
 }
+

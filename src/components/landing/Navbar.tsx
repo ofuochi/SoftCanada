@@ -169,7 +169,10 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <Logo theme={isNavbarDark ? "light" : "dark"} />
+            <Logo
+              src={"/softCanadaMain.svg"}
+              theme={isNavbarDark ? "light" : "dark"}
+            />
           </div>
 
           {/* Desktop Menu */}
@@ -182,9 +185,10 @@ export default function Navbar() {
             <Menu
               mode="horizontal"
               items={menuItems}
-              className="transparent-menu flex-wrap"
               theme={menuTheme}
               selectable={false}
+              forceSubMenuRender
+              className="transparent-menu flex-wrap"
             />
           </div>
 
@@ -220,7 +224,7 @@ export default function Navbar() {
                 <MenuOutlined
                   className={classNames(
                     "text-xl",
-                    isNavbarDark ? "text-white" : "text-black"
+                    isNavbarDark ? "!text-white" : "text-black"
                   )}
                 />
               }
@@ -273,3 +277,4 @@ export default function Navbar() {
     </>
   );
 }
+

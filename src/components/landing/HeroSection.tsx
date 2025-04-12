@@ -26,7 +26,7 @@ const HeroSection: React.FC<Props> = (props) => {
 
   return (
     <section
-      className="relative w-full mx-auto mt-8 sm:mt-12 rounded-xl overflow-hidden shadow-lg bg-white"
+      className="relative w-full max-w-7xl mx-auto mt-8 sm:mt-12 rounded-xl overflow-hidden shadow-lg bg-white"
       style={{ height: "80vh" }}
       id="hero-section"
     >
@@ -72,3 +72,4 @@ const HeroSection: React.FC<Props> = (props) => {
 };
 
 export default HeroSection;
+

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getRoles } from "@/lib/abilities";
-import AdvisorApplication from "@/components/dashboard/advisor/AdvisorApplication";
 import auth0 from "@/lib/auth0";
+import AdvisorApplication from "@/components/dashboard/advisor/advisor-application";
 
 export default async function AdvisorApplicationWrapper() {
   const session = await auth0.getSession();
