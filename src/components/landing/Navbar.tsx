@@ -169,7 +169,10 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <Logo theme={isNavbarDark ? "light" : "dark"} />
+            <Logo
+              src={"/softCanadaMain.svg"}
+              theme={isNavbarDark ? "light" : "dark"}
+            />
           </div>
 
           {/* Desktop Menu */}

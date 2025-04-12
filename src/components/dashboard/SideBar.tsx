@@ -105,9 +105,7 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
   const router = useRouter();
   const pathname = usePathname();
   const { setAdvisorType } = useDashboard();
-  const [openKeys, setOpenKeys] = useState<string[]>([
-    pathname.split("/").slice(0, 3).join("/"),
-  ]);
+
   const [advisorIndex, setAdvisorIndex] = useState(0);
   const [showAdvisorImage, setShowAdvisorImage] = useState(true);
   const [userAbility, setUserAbility] = useState(defineAbilityFor());
@@ -372,7 +370,11 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
       }}
     >
       <div className="h-16 m-4 text-center align-middle">
-        <Logo size={collapsed ? "small" : "medium"} path="/dashboard" />
+        <Logo
+          src={"/softCanadaMain.svg"}
+          size={collapsed ? "small" : "medium"}
+          path="/dashboard"
+        />
       </div>
       <CustomMenu
         mode="inline"
@@ -380,8 +382,6 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
         forceSubMenuRender
         className="space-y-5"
         selectedKeys={[pathname]}
-        // openKeys={openKeys}
-        onOpenChange={(keys) => setOpenKeys(keys)}
       />
       {/* <Can I="read" a="publicContent" ability={userAbility}>
         {collapsed && (

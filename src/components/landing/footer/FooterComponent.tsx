@@ -22,7 +22,7 @@ export const FooterComponent = (props: Props) => {
           className="flex flex-col items-center md:items-start"
           data-tina-field={tinaField(footerBlock, "logo")}
         >
-          <Logo size="large" src={footerBlock?.logo} />
+          <Logo size="large" src={"/softCanadaLogoIcon.svg"} />
         </div>
 
         {/* Dynamic Sections */}
