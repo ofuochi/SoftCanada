@@ -1,21 +1,15 @@
-import { redirect } from "next/navigation";
+import AdvisorApplication from "@/components/dashboard/advisor/advisor-application";
 import { getRoles } from "@/lib/abilities";
 import auth0 from "@/lib/auth0";
-import AdvisorApplication from "@/components/dashboard/advisor/advisor-application";
+import { redirect } from "next/navigation";
 
 export default async function AdvisorApplicationWrapper() {
   const session = await auth0.getSession();
-  const user = session?.user;
+  const user = session!.user;
 
-  if (!user) {
-    redirect("/api/auth/login");
-  }
   const userRoles = getRoles(user);
 
-  if (userRoles.length > 0) {
-    redirect("/dashboard");
-  }
+  if (userRoles.length > 0) return redirect("/dashboard");
 
   return <AdvisorApplication />;
 }
-

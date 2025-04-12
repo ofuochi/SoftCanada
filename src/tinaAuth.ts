@@ -25,8 +25,8 @@ export class TinaAuth extends AbstractAuthProvider {
     if (!session) throw new Error("No session found");
 
     return {
-      id_token: session.idToken || "",
-      access_token: session.accessToken || "",
+      id_token: session || "",
+      access_token: session || "",
       refresh_token: session.refreshToken || "",
     };
   }
