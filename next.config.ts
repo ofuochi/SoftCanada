@@ -1,4 +1,4 @@
-import type {NextConfig} from "next";
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "s.gravatar.com",
+      },
+      {
+        protocol: "https",
+        hostname: "assets.tina.io",
       },
       {
         protocol: "https",
@@ -32,7 +36,7 @@ const nextConfig: NextConfig = {
         destination: "/admin/index.html",
       },
     ];
-  }
+  },
 };
 
 export default nextConfig;
