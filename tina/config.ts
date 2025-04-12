@@ -20,11 +20,8 @@ const token =
 export default defineConfig({
   branch,
   authProvider: new TinaAuth(),
-  // Get this from tina.io
   clientId,
-  // Get this from tina.io
   token,
-
   build: {
     outputFolder: "admin",
     publicFolder: "public",
@@ -35,7 +32,6 @@ export default defineConfig({
       publicFolder: "public",
     },
   },
-  // See docs on content modeling for more info on how to setup new content models: https://tina.io/docs/schema/
   schema: {
     collections: [BlogPostCollection, LandingCollection, FooterCollection],
   },
