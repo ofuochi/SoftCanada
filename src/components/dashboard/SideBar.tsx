@@ -130,29 +130,29 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
   };
 
   const menuItems: MenuProps["items"] = [
-    {
-      key: "/dashboard",
-      icon: (
-        <MdDashboard
-          className={`${
-            pathname === "/dashboard" ? "!text-[#010309]" : "!text-[#808080]"
-          }`}
-          size={pathname === "/dashboard" ? "24px" : "18px"}
-        />
-      ),
-      label: (
-        <Link
-          href="/dashboard"
-          className={`font-dm_sans ${
-            pathname === "/dashboard"
-              ? "!text-[#010309] text-xl"
-              : "!text-[#808080] text-sm"
-          }`}
-        >
-          Dashboard
-        </Link>
-      ),
-    },
+    // {
+    //   key: "/dashboard",
+    //   icon: (
+    //     <MdDashboard
+    //       className={`${
+    //         pathname === "/dashboard" ? "!text-[#010309]" : "!text-[#808080]"
+    //       }`}
+    //       size={pathname === "/dashboard" ? "24px" : "18px"}
+    //     />
+    //   ),
+    //   label: (
+    //     <Link
+    //       href="/dashboard"
+    //       className={`font-dm_sans ${
+    //         pathname === "/dashboard"
+    //           ? "!text-[#010309] text-xl"
+    //           : "!text-[#808080] text-sm"
+    //       }`}
+    //     >
+    //       Dashboard
+    //     </Link>
+    //   ),
+    // },
     {
       key: "/dashboard/resumes",
       icon: (
@@ -372,8 +372,8 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
       <div className="h-16 m-4 text-center align-middle">
         <Logo
           src={"/softCanadaMain.svg"}
-          size={collapsed ? "small" : "medium"}
-          path="/dashboard"
+          size={collapsed ? "medium" : "large"}
+          path="/"
         />
       </div>
       <Menu
@@ -488,3 +488,4 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
 };
 
 export default SideBar;
+

@@ -12,7 +12,7 @@ export default new Auth0Client({
         new URL(`/error?error=${error.message}`, process.env.APP_BASE_URL)
       );
     }
-    const returnTo = context.returnTo || "/dashboard";
+    const returnTo = context.returnTo || "/dashboard/advisor";
     return NextResponse.redirect(new URL(returnTo, process.env.APP_BASE_URL));
   },
   authorizationParameters: {
@@ -24,3 +24,4 @@ export default new Auth0Client({
     absoluteDuration: 60 * 60 * 24 * 7, // 7 days
   },
 });
+

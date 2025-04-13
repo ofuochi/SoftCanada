@@ -245,7 +245,7 @@ const MotivationSection = () => (
           autoSize={{
             minRows: 8,
           }}
-          placeholder="Why do you want to become a Career Advisor?"
+          placeholder="Why do you want to become an Advisor?"
         />
       </Form.Item>
     </div>
