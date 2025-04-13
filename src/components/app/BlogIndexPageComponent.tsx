@@ -6,7 +6,7 @@ import {
   Card,
   Col,
   Divider,
-  Image,
+  Image as AntImage,
   List,
   Row,
   Space,
@@ -14,6 +14,7 @@ import {
   Typography,
 } from "antd";
 import { ChevronLeft } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useTina } from "tinacms/dist/react";
 const { Title, Paragraph, Text } = Typography;
@@ -25,6 +26,23 @@ type Props = {
   cmsQuery?: any;
   selectedCategory?: string;
 };
+const colors = [
+  "#D4CEF7",
+  "#D1FD9B",
+  "#e4e4e4",
+  "#cddef7",
+  "#f7eecd",
+  "#f7d4cd",
+];
+
+const images = [
+  "finance_2.svg",
+  "immigration.png",
+  "buyHouse.svg",
+  "deals_3.svg",
+  "career_1.svg",
+  "lifestyle.svg",
+];
 
 export const BlogIndexPageComponent = ({
   cmsQuery,
@@ -65,16 +83,40 @@ export const BlogIndexPageComponent = ({
           {/* Top Categories */}
           <h2 className="text-2xl font-semibold mb-6">Top categories</h2>
           <Row gutter={[16, 16]} className="mb-12">
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <Col xs={24} sm={12} md={8} key={category}>
                 <Link href={`/blogs?category=${category}`} className="block">
-                  <Card hoverable>
-                    <Text strong className="text-lg block mb-2">
-                      {category}
-                    </Text>
-                    <Text type="secondary" className="text-gray-500">
-                      {categoryCounts[category]} articles
-                    </Text>
+                  <Card
+                    className="!h-[140px] !p-0"
+                    style={{
+                      backgroundColor: `${colors[index]}`,
+                      padding: "0px",
+                    }}
+                    hoverable
+                  >
+                    <div className="flex items-center gap-7 !h-full">
+                      <div className="w-[160px]  overflow-clip !h-[90px]">
+                        <Image
+                          alt="img"
+                          src={`/${images[index]}`}
+                          width={120}
+                          height={70}
+                          className="object-cover"
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-2">
+                        <Text strong className="text-lg block !font-lato">
+                          {category}
+                        </Text>
+                        <Text
+                          type="secondary"
+                          className="text-gray-500 !font-lato"
+                        >
+                          {categoryCounts[category]} articles
+                        </Text>
+                      </div>
+                    </div>
                   </Card>
                 </Link>
               </Col>
@@ -127,7 +169,7 @@ export const BlogIndexPageComponent = ({
               ]}
               extra={
                 post?.thumbnail && (
-                  <Image
+                  <AntImage
                     preview={false}
                     src={post.thumbnail}
                     alt={post.title}
@@ -168,3 +210,4 @@ export const BlogIndexPageComponent = ({
     </div>
   );
 };
+
