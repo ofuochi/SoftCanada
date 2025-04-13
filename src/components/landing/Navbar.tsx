@@ -113,6 +113,19 @@ export default function Navbar() {
       ),
     },
     {
+      key: "blogs",
+      label: (
+        <Link
+          href="/blogs"
+          className={`font-dm_sans ${
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+          }`}
+        >
+          Blogs
+        </Link>
+      ),
+    },
+    {
       key: "contact",
       label: (
         <Link
@@ -135,19 +148,6 @@ export default function Navbar() {
           }`}
         >
           FAQs
-        </Link>
-      ),
-    },
-    {
-      key: "blogs",
-      label: (
-        <Link
-          href="/blogs"
-          className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
-          }`}
-        >
-          Blogs
         </Link>
       ),
     },
