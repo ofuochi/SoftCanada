@@ -18,6 +18,7 @@ const token =
   process.env.TINA_TOKEN || "4697295d0eaf11cc5d48f92c3844e9af0f439f2e";
 
 export default defineConfig({
+  contentApiUrlOverride: "/api/tina/gql",
   branch,
   authProvider: new TinaAuth(),
   clientId,

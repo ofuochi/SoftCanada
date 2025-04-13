@@ -1,11 +1,11 @@
 import { BlogPost } from "@/components/landing/BlogPost";
-import client from "@/tina/__generated__/client";
+import client from "@/tina/__generated__/databaseClient";
 
 export async function generateStaticParams() {
   const pages = await client.queries.blogsConnection();
-
   return (
     pages.data?.blogsConnection?.edges?.map((edge) => {
+      console.log(edge);
       const filename = edge?.node?._sys.breadcrumbs;
       return { filename };
     }) ?? []
