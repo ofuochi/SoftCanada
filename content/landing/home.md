@@ -6,8 +6,8 @@ blocks:
 
 
       Explore tools, resources, and expert guidance to help you succeed in your
-      new Canadian journey.
-    buttonText: Get Started
+      Canadian journey.
+    buttonText: Get Started Now
     buttonLink: /auth/login
     backgroundImage: /images/landing/hero_section_bg.jpg
     _template: welcomeHero
