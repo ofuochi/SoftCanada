@@ -87,7 +87,7 @@ export default function Navbar() {
       ],
     },
     {
-      key: "mortgage",
+      key: "resumes",
       label: (
         <Link
           href="/dashboard/resumes"

@@ -10,7 +10,7 @@ export default async function RealEstatePage() {
     result.data.blogsConnection.edges?.map((edge) => edge?.node) || [];
 
   const query = await client.queries.landing({
-    relativePath: "real-estate.md",
+    relativePath: "career.md",
   });
   return (
     <section className="">
@@ -31,15 +31,12 @@ export default async function RealEstatePage() {
       <section className="my-[120px]">
         <section className="mb-[50px]">
           <SectionHeading
-            topText="Blog Section"
-            heading="Guides & Tips"
+            topText="Guides & Tips"
+            heading="Career Tips"
             description="Explore key factors to consider when selecting your next property."
           />
         </section>
-        <CategoryBlogList
-          category="Real Estate"
-          blogPosts={allBlogs as Blogs[]}
-        />
+        <CategoryBlogList category="Careers" blogPosts={allBlogs as Blogs[]} />
       </section>
     </section>
   );

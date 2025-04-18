@@ -3,7 +3,6 @@ import CallToActionSection from "@/components/landing/home/CallToActionSection";
 import FeaturesSection from "@/components/landing/home/FeaturesSection";
 import HowItWorksSection from "@/components/landing/home/HowItWorksSection";
 import client from "@/tina/__generated__/client";
-import Image from "next/image";
 
 export default async function Home() {
   const query = await client.queries.landing({ relativePath: "home.md" });
