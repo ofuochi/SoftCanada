@@ -36,7 +36,7 @@ export default async function RealEstatePage() {
             description="Explore key factors to consider when selecting your next property."
           />
         </section>
-        <CategoryBlogList category="Careers" blogPosts={allBlogs as Blogs[]} />
+        <CategoryBlogList category="" blogPosts={allBlogs as Blogs[]} />
       </section>
     </section>
   );
