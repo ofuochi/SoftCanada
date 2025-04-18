@@ -4,6 +4,10 @@ import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
 import Image from "next/image";
+import chooseDestination from "../../../../public/images/landing/chooseDestination.png";
+import gatherDocuments from "../../../../public/images/landing/gatherDocuments.png";
+import dreamRental from "../../../../public/images/landing/dreamRental.png";
+import moveIn from "../../../../public/images/landing/moveIn.png";
 
 export default async function ImmigrationPage() {
   const result = await client.queries.blogsConnection();
@@ -29,7 +33,7 @@ export default async function ImmigrationPage() {
         }
       })}
 
-      <section>
+      <section className="w-full max-w-[700px] mx-auto my-[100px]">
         <SectionHeading
           topText="How it Works"
           heading="Your Journey to a New Home Made Simple"
@@ -37,34 +41,120 @@ export default async function ImmigrationPage() {
         />
       </section>
 
-      <section className="flex justify-between items-center gap-5">
-        <section className="w-full max-w-[360px]">
-          <div className="">
-            <h4 className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
-              {" "}
-              Choose Your Destination{" "}
-            </h4>
-            <p className="text-black font-poppins text-xl">
-              {" "}
-              Decide where in Canada you'd like to begin your journey. Whether
-              it's a bustling city or a serene town, we'll help you explore
-              rental options tailored to your needs.{" "}
-            </p>
-          </div>
+      <section className="space-y-[90px]">
+        <section className=" flex flex-col md:flex-row justify-between items-center gap-5 w-full max-w-[1200px] mx-auto px-5">
+          <section className="w-full max-w-[360px] space-y-6">
+            <div className="space-y-3">
+              <h4 className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
+                {" "}
+                Choose Your Destination{" "}
+              </h4>
+              <p className="text-black font-poppins text-xl">
+                {" "}
+                Decide where in Canada you'd like to begin your journey. Whether
+                it's a bustling city or a serene town, we'll help you explore
+                rental options tailored to your needs.{" "}
+              </p>
+            </div>
 
-          <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[172px]">
-            Explore Cities Now!
-          </button>
+            <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[200px] flex items-center justify-center">
+              Explore Cities Now!
+            </button>
+          </section>
+
+          <div className="w-full max-w-[500px] h-[500px]">
+            <Image
+              width={500}
+              height={500}
+              src={chooseDestination}
+              alt="chooseDestination"
+            />
+          </div>
         </section>
 
-        <div className="w-full max-w-[500px] h-[500px]">
-          <Image
-            width={500}
-            height={500}
-            src={"./landing/chooseDestination.png"}
-            alt="chooseDestination"
-          />
-        </div>
+        <section className=" flex flex-col md:flex-row justify-between items-center gap-5 w-full max-w-[1200px] mx-auto px-5">
+          <div className="w-full max-w-[500px] h-[500px]">
+            <Image
+              width={500}
+              height={500}
+              src={gatherDocuments}
+              alt="gatherDocuments"
+            />
+          </div>
+
+          <section className="w-full max-w-[360px] space-y-6">
+            <div className="space-y-3">
+              <h4 className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
+                Gather Required Documents
+              </h4>
+              <p className="text-black font-poppins text-xl">
+                Ensure you have all necessary paperwork, such as identification,
+                proof of income, and references, to streamline your rental
+                application process.
+              </p>
+            </div>
+
+            <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[200px] flex items-center justify-center">
+              View Checklist
+            </button>
+          </section>
+        </section>
+
+        <section className=" flex flex-col md:flex-row justify-between items-center gap-5 w-full max-w-[1200px] mx-auto px-5">
+          <section className="w-full max-w-[360px] space-y-6">
+            <div className="space-y-3">
+              <h4 className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
+                Apply for Your Dream Rental
+              </h4>
+              <p className="text-black font-poppins text-xl">
+                Submit your rental application with ease. Our platform provides
+                a secure way to connect with landlords and finalize your new
+                home.
+              </p>
+            </div>
+
+            <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[200px] flex items-center justify-center">
+              Start Your Application
+            </button>
+          </section>
+
+          <div className="w-full max-w-[500px] h-[500px]">
+            <Image
+              width={500}
+              height={500}
+              src={dreamRental}
+              alt="dreamRental"
+            />
+          </div>
+        </section>
+
+        <section className=" flex flex-col md:flex-row justify-between items-center gap-5 w-full max-w-[1200px] mx-auto px-5">
+          <div className="w-full max-w-[500px] h-[500px]">
+            <Image
+              width={500}
+              height={500}
+              src={dreamRental}
+              alt="dreamRental"
+            />
+          </div>
+
+          <section className="w-full max-w-[360px] space-y-6">
+            <div className="space-y-3">
+              <h4 className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
+                Move In and Settle Down
+              </h4>
+              <p className="text-black font-poppins text-xl">
+                Congratulations! You're now ready to settle into your new home.
+                Explore neighborhood guides and resources to make your
+                transition smooth.
+              </p>
+            </div>
+
+            <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[200px] flex items-center justify-center">
+              Access Move-In Tips
+            </button>
+          </section>
+        </section>
       </section>
 
       <section className="my-[120px]">

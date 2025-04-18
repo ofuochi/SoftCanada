@@ -22,7 +22,7 @@ blocks:
 
         Build your Canadian CV, prepare for interviews, and access career advice
         tailored to the Canadian job market
-      buttonText: Lean More
+      buttonText: Learn More
       buttonLink: /career
       image: /images/landing/career_feature.svg
     realEstateFeature:
