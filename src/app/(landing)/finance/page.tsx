@@ -40,7 +40,7 @@ export default async function FinancePage() {
         </section>
 
         <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-          <section className="space-y-[30px]">
+          <section className="">
             <div className="w-full h-[364px] rounded-3xl">
               <Image
                 width={483}
