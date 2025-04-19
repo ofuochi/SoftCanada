@@ -88,6 +88,8 @@ export function useAdvisorApplicationForm() {
   const { getFieldsError } = form;
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
 
+  console.log(getFieldsError());
+
   // Allowed image types and max size
   const allowedTypes = [
     "image/jpeg",
@@ -139,7 +141,7 @@ export function useAdvisorApplicationForm() {
 
       // Reset form and notify user
       resetForm();
-      router.push("/dashboard");
+      router.push("/dashboard/advisor");
       messageApi.success("Application submitted successfully");
     } catch (error) {
       messageApi.error(error as string);
@@ -187,8 +189,10 @@ export function useAdvisorApplicationForm() {
   };
 
   useEffect(() => {
-    const handleKeyDown = () => {
-      form.submit();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        form.submit();
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);

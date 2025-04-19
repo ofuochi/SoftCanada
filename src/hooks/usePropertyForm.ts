@@ -174,8 +174,10 @@ export const usePropertyForm = (propertyData?: PropertyData) => {
   }, [propertyData, form, setFieldValue]);
 
   useEffect(() => {
-    const handleKeyDown = () => {
-      form.submit();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        form.submit();
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);

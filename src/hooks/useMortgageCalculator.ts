@@ -194,8 +194,10 @@ export const useMortgageCalculator = () => {
   };
 
   useEffect(() => {
-    const handleKeyDown = () => {
-      form.submit();
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        form.submit();
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);

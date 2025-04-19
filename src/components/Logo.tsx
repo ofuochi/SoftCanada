@@ -19,7 +19,7 @@ export default function Logo({
   const sizeClasses = classNames({
     "h-12 w-12": size === "small",
     "h-16 w-16": size === "medium",
-    "h-24 w-24": size === "large",
+    "h-20 w-22": size === "large",
   });
 
   return (
@@ -35,3 +35,4 @@ export default function Logo({
     </Link>
   );
 }
+

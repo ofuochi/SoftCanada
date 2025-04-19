@@ -9,7 +9,8 @@ export default async function AdvisorApplicationWrapper() {
 
   const userRoles = getRoles(user);
 
-  if (userRoles.length > 0) return redirect("/dashboard");
+  if (userRoles.length > 0) return redirect("/dashboard/advisor");
 
   return <AdvisorApplication />;
 }
+

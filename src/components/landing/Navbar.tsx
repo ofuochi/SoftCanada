@@ -68,7 +68,7 @@ export default function Navbar() {
         {
           key: "career",
           label: (
-            <Link href="/dashboard/career/jobs" className={`font-dm_sans`}>
+            <Link href="/dashboard/advisor" className={`font-dm_sans`}>
               Career
             </Link>
           ),
@@ -76,12 +76,28 @@ export default function Navbar() {
         {
           key: "real-estate",
           label: (
-            <Link href="/real-estate" className={`font-dm_sans`}>
+            <Link
+              href="/dashboard/real-estate/properties"
+              className={`font-dm_sans`}
+            >
               Real Estate
             </Link>
           ),
         },
       ],
+    },
+    {
+      key: "cv-builder",
+      label: (
+        <Link
+          href="/dashboard/resumes"
+          className={`font-dm_sans ${
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+          }`}
+        >
+          CV Builder
+        </Link>
+      ),
     },
     {
       key: "mortgage",
@@ -93,6 +109,19 @@ export default function Navbar() {
           }`}
         >
           Mortgage Calculator
+        </Link>
+      ),
+    },
+    {
+      key: "blogs",
+      label: (
+        <Link
+          href="/blogs"
+          className={`font-dm_sans ${
+            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+          }`}
+        >
+          Blogs
         </Link>
       ),
     },
@@ -119,19 +148,6 @@ export default function Navbar() {
           }`}
         >
           FAQs
-        </Link>
-      ),
-    },
-    {
-      key: "blogs",
-      label: (
-        <Link
-          href="/blogs"
-          className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
-          }`}
-        >
-          Blogs
         </Link>
       ),
     },
@@ -170,6 +186,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center">
             <Logo
+              size="large"
               src={"/softCanadaMain.svg"}
               theme={isNavbarDark ? "light" : "dark"}
             />
