@@ -54,6 +54,8 @@ jobs:
           secrets: |
             SOFTCAN_GITHUB_PAT=${{ secrets.SOFTCAN_GITHUB_PAT }}
             COSMOS_KEY=${{ secrets.COSMOS_KEY }}
+            AZURE_STORAGE_CONTAINER_NAME=${{ secrets.AZURE_STORAGE_CONTAINER_NAME }}
+            AZURE_STORAGE_CONNECTION_STRING=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
           build-args: |
             SOFTCAN_GITHUB_OWNER=${{ vars.SOFTCAN_GITHUB_OWNER }}
             SOFTCAN_GITHUB_REPO=${{ vars.SOFTCAN_GITHUB_REPO }}
