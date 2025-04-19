@@ -54,6 +54,7 @@ blocks:
         understand the Canadian banking system to help you attain your
         financial goals.
       buttonText: Learn More
+      buttonLink: /finance
       image: /images/landing/finance_feature.svg
     grantsFeature:
       heading: |

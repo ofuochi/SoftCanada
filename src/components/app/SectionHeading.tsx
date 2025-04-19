@@ -13,7 +13,7 @@ export const SectionHeading = ({
   description,
 }: SectionHeadingProps) => {
   return (
-    <section className={`space-y-6 text-center`}>
+    <section className={`space-y-6 text-center w-full max-w-[880px] mx-auto`}>
       <p className="text-[#4F4F4F] font-lato text-xl md:text-2xl">{topText}</p>
       <h2 className="text-2xl font-semibold mb-6 font-lato text-[36px] md:text-[42px] lg:text-[48px] leading-[120%]">
         {heading}
