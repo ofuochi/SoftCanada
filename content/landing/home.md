@@ -7,8 +7,8 @@ blocks:
 
       Explore tools, resources, and expert guidance to help you succeed in your
       Canadian journey.
-    buttonText: Get Started
-    buttonLink: /dashboard
+    buttonText: Get Started Now
+    buttonLink: /auth/login
     backgroundImage: /images/landing/hero_section_bg.jpg
     _template: welcomeHero
   - sectionTitle: |
@@ -117,4 +117,3 @@ blocks:
     bgImage: /images/landing/cta_section_bg.jpg
     _template: callToActionBlock
 ---
-
