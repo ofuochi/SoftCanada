@@ -1,13 +1,11 @@
-import { createMediaDeliveryHandlers } from "next-tinacms-azure/dist/delivery-handlers";
 import auth0 from "@/lib/auth0";
-import { createMediaHandlers } from "next-tinacms-azure/dist/handlers";
-import { NextRequest, NextResponse } from "next/server";
 import {
+  BlobSASPermissions,
   BlobServiceClient,
   generateBlobSASQueryParameters,
   StorageSharedKeyCredential,
-  BlobSASPermissions,
 } from "@azure/storage-blob";
+import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
 
 const SUPPORTED_IMAGE_TYPES = [
