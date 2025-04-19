@@ -1,18 +1,18 @@
 import HeroSection from "@/components/landing/HeroSection";
 import budgetTools from "../../../../public/images/landing/budgetTools.png";
 import investmentTips from "../../../../public/images/landing/investementTips.png";
-import client from "@/tina/__generated__/client";
+import { dbConnection } from "@/lib/db-conn";
 import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
 import Image from "next/image";
 
 export default async function FinancePage() {
-  const result = await client.queries.blogsConnection();
+  const result = await dbConnection.queries.blogsConnection();
   const allBlogs =
     result.data.blogsConnection.edges?.map((edge) => edge?.node) || [];
 
-  const query = await client.queries.landing({
+  const query = await dbConnection.queries.landing({
     relativePath: "finance.md",
   });
   return (
@@ -134,4 +134,3 @@ export default async function FinancePage() {
     </section>
   );
 }
-

@@ -1,15 +1,15 @@
 import HeroSection from "@/components/landing/HeroSection";
-import client from "@/tina/__generated__/client";
 import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
+import { dbConnection } from "@/lib/db-conn";
 
 export default async function RealEstatePage() {
-  const result = await client.queries.blogsConnection();
+  const result = await dbConnection.queries.blogsConnection();
   const allBlogs =
     result.data.blogsConnection.edges?.map((edge) => edge?.node) || [];
 
-  const query = await client.queries.landing({
+  const query = await dbConnection.queries.landing({
     relativePath: "career.md",
   });
   return (
@@ -41,4 +41,3 @@ export default async function RealEstatePage() {
     </section>
   );
 }
-
