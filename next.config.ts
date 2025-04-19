@@ -35,6 +35,7 @@ const nextConfig: NextConfig = {
         source: "/admin",
         destination: "/admin/index.html",
       },
+      { source: "/media/:path*", destination: "/api/media/:path*" },
     ];
   },
 };

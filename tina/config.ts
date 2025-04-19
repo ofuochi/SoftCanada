@@ -5,7 +5,7 @@ import { defineConfig } from "tinacms";
 import { FooterCollection } from "./collections/FooterCollection";
 
 export default defineConfig({
-  contentApiUrlOverride: "/api/tina/gql",
+  contentApiUrlOverride: "/api/gql",
   authProvider: new TinaAuth(),
   build: {
     outputFolder: "admin",
@@ -13,8 +13,8 @@ export default defineConfig({
   },
   media: {
     loadCustomStore: async () => {
-      const pack = await import("next-tinacms-azure");
-      return pack.TinaCloudAzureMediaStore;
+      const { AzureMediaStore } = await import("@/lib/media-store");
+      return AzureMediaStore;
     },
   },
   schema: {
