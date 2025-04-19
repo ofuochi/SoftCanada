@@ -87,7 +87,7 @@ export default function Navbar() {
       ],
     },
     {
-      key: "mortgage",
+      key: "cv-builder",
       label: (
         <Link
           href="/dashboard/resumes"
@@ -295,4 +295,3 @@ export default function Navbar() {
     </>
   );
 }
-
