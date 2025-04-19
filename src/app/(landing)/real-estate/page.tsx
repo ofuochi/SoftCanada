@@ -1,185 +1,227 @@
-"use client";
-
 import HeroSection from "@/components/landing/HeroSection";
-import { EnvironmentOutlined, HomeOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Row, Typography, Image as AntdImage } from "antd";
+import featuredProperty from "../../../../public/images/landing/featuredProperty.png";
+import bed from "../../../../public/images/icons/bed.svg";
+import location from "../../../../public/images/icons/location.svg";
+import arrowWithCircle from "../../../../public/images/icons/arrowWithCircle.svg";
+import client from "@/tina/__generated__/client";
+import { CategoryBlogList } from "@/components/app/CategoryBlogList";
+import { Blogs } from "@/tina/__generated__/types";
+import { SectionHeading } from "@/components/app/SectionHeading";
 import Image from "next/image";
 
-const ArrowIcon = () => (
-  <Image
-    src="/images/icons/45deg_arrow.svg"
-    alt="Arrow Icon"
-    width={24}
-    height={24}
-  />
-);
+export default async function RealEstatePage() {
+  const result = await client.queries.blogsConnection();
+  const allBlogs =
+    result.data.blogsConnection.edges?.map((edge) => edge?.node) || [];
 
-const listings = [
-  {
-    title: "Maple Haven Apartments",
-    location: "Toronto, ON",
-    price: "$1,800/month",
-    bedrooms: "1 bedroom",
-    images: [
-      "https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp",
-    ],
-  },
-  {
-    title: "The Aurora Lofts",
-    location: "Calgary, AB",
-    price: "$1,400/month",
-    bedrooms: "1 bedroom",
-    images: [
-      "https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp",
-    ],
-  },
-  {
-    title: "Pacific Breeze Residences",
-    location: "Vancouver, BC",
-    price: "$2,000/month",
-    bedrooms: "1 bedroom",
-    images: [
-      "https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp",
-    ],
-  },
-  {
-    title: "Prairie Sunrise Apartments",
-    location: "Winnipeg, MB",
-    price: "$1,100/month",
-    bedrooms: "2 bedroom",
-    images: [
-      "https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp",
-    ],
-  },
-  {
-    title: "Northern Lights Flats",
-    location: "Edmonton, AB",
-    price: "$1,250/month",
-    bedrooms: "1 bedroom",
-    images: [
-      "https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp",
-    ],
-  },
-  {
-    title: "The St. Lawrence Suites",
-    location: "Montreal, QC",
-    price: "$1,300/month",
-    bedrooms: "Studio",
-    images: [
-      "https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp",
-    ],
-  },
-  {
-    title: "Riverfront Heights",
-    location: "Ottawa, ON",
-    price: "$1,600/month",
-    bedrooms: "2 bedroom",
-    images: [
-      "https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp",
-    ],
-  },
-  {
-    title: "Wellesley St East Parliament",
-    location: "Toronto, ON",
-    price: "$1,800/month",
-    bedrooms: "1 bedroom",
-    images: [
-      "https://gw.alipayobjects.com/zos/antfincdn/LlvErxo8H9/photo-1503185912284-5271ff81b9a8.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/cV16ZqzMjW/photo-1473091540282-9b846e7965e3.webp",
-      "https://gw.alipayobjects.com/zos/antfincdn/x43I27A55%26/photo-1438109491414-7198515b166b.webp",
-    ],
-  },
-];
-
-const { Text, Title } = Typography;
-
-export default function RealEstatePage() {
+  const query = await client.queries.landing({
+    relativePath: "real-estate.md",
+  });
   return (
-    <>
-      <HeroSection
-        backgroundImage="/images/landing/real_estate_hero_section.jpg"
-        message="Find the Perfect Space Tailored to Your Needs."
-        buttonText="Explore Listings"
-        buttonLink="/listings"
-      />
+    <section className="">
+      {query?.data?.landing?.blocks?.map((block, i) => {
+        if (!block) return <></>;
+        switch (block.__typename) {
+          case "LandingBlocksWelcomeHero":
+            return (
+              <section key={i}>
+                <HeroSection {...block} cmsQuery={query} />
+              </section>
+            );
+          default:
+            return <></>;
+        }
+      })}
 
-      <section className="mt-10 px-4 md:px-16 max-w-7xl mx-auto">
-        <div className="text-center">
-          <p className="text-sm md:text-base text-gray-600 mb-5">
-            Featured Listings
+      <section className="my-[120px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 w-full max-w-[1400px] px-5">
+        <section className="border-[0.3px] border-[#4F4F4F] rounded-lg py-5 px-3 space-y-5">
+          <div className="w-full max-w-[305px] h-[203px] overflow-clip">
+            <Image
+              width={305}
+              height={203}
+              src={featuredProperty}
+              alt="featuredProperty"
+            />
+          </div>
+          <p className="text-[#010B18] font-lato font-semibold text-2xl">
+            {" "}
+            Maple Haven Apartments{" "}
           </p>
-          <h3 className="text-2xl md:text-3xl lg:text-4xl font-semibold mb-8">
-            Find Your Dream Home
-          </h3>
-        </div>
-        <Row gutter={[16, 16]} justify="center">
-          {listings.map((listing, index) => (
-            <Col key={index} xs={24} sm={12} md={8} lg={6}>
-              <Card
-                hoverable={false}
-                cover={
-                  <AntdImage.PreviewGroup>
-                    {listing.images.map((imageSrc, idx) => (
-                      <AntdImage
-                        key={idx}
-                        src={imageSrc}
-                        alt={`${listing.title} image ${idx + 1}`}
-                        style={{
-                          borderRadius: idx === 0 ? "8px 8px 0 0" : 0,
-                          objectFit: "cover",
-                          width: "100%",
-                          height: 180,
-                          display: idx === 0 ? "block" : "none",
-                        }}
-                      />
-                    ))}
-                  </AntdImage.PreviewGroup>
-                }
-                className="shadow-md rounded-xl"
-              >
-                <Title level={5}>{listing.title}</Title>
-                <div className="flex items-center text-gray-600 text-sm mb-2">
-                  <Text>
-                    <EnvironmentOutlined style={{ marginRight: "8px" }} />
-                    {listing.location}
-                  </Text>
-                </div>
-                <div className="flex items-center text-gray-600 text-sm mb-4">
-                  <Text>
-                    <HomeOutlined style={{ marginRight: "8px" }} />
-                    {listing.bedrooms}
-                  </Text>
-                </div>
-                <div className="flex justify-between items-center">
-                  <Text className="text-lg font-semibold">{listing.price}</Text>
-                  <Button
-                    shape="circle"
-                    icon={<ArrowIcon />}
-                    size="large"
-                    color="danger"
-                    variant="filled"
-                  />
-                </div>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+          <div className="flex items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2.5">
+              <Image width={24} height={24} src={location} alt="location" />
+              <span className="font-poppins text-lg text-[#808080]">
+                {" "}
+                Toronto, ON{" "}
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <Image width={24} height={24} src={bed} alt="bed" />
+              <span className="font-poppins text-lg text-[#808080]">
+                {" "}
+                1 bedroom{" "}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-2.5">
+            <span className="font-poppins text-[#010309] font-semibold text-2xl">
+              {" "}
+              $1,800/month{" "}
+            </span>
+            <Image
+              width={62}
+              height={62}
+              src={arrowWithCircle}
+              alt="arrowWithCircle"
+            />
+          </div>
+        </section>
+        <section className="border-[0.3px] border-[#4F4F4F] rounded-lg py-5 px-3 space-y-5">
+          <div className="w-full max-w-[305px] h-[203px] overflow-clip">
+            <Image
+              width={305}
+              height={203}
+              src={featuredProperty}
+              alt="featuredProperty"
+            />
+          </div>
+          <p className="text-[#010B18] font-lato font-semibold text-2xl">
+            {" "}
+            Maple Haven Apartments{" "}
+          </p>
+          <div className="flex items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2.5">
+              <Image width={24} height={24} src={location} alt="location" />
+              <span className="font-poppins text-lg text-[#808080]">
+                {" "}
+                Toronto, ON{" "}
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <Image width={24} height={24} src={bed} alt="bed" />
+              <span className="font-poppins text-lg text-[#808080]">
+                {" "}
+                1 bedroom{" "}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-2.5">
+            <span className="font-poppins text-[#010309] font-semibold text-2xl">
+              {" "}
+              $1,800/month{" "}
+            </span>
+            <Image
+              width={62}
+              height={62}
+              src={arrowWithCircle}
+              alt="arrowWithCircle"
+            />
+          </div>
+        </section>
+        <section className="border-[0.3px] border-[#4F4F4F] rounded-lg py-5 px-3 space-y-5">
+          <div className="w-full max-w-[305px] h-[203px] overflow-clip">
+            <Image
+              width={305}
+              height={203}
+              src={featuredProperty}
+              alt="featuredProperty"
+            />
+          </div>
+          <p className="text-[#010B18] font-lato font-semibold text-2xl">
+            {" "}
+            Maple Haven Apartments{" "}
+          </p>
+          <div className="flex items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2.5">
+              <Image width={24} height={24} src={location} alt="location" />
+              <span className="font-poppins text-lg text-[#808080]">
+                {" "}
+                Toronto, ON{" "}
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <Image width={24} height={24} src={bed} alt="bed" />
+              <span className="font-poppins text-lg text-[#808080]">
+                {" "}
+                1 bedroom{" "}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-2.5">
+            <span className="font-poppins text-[#010309] font-semibold text-2xl">
+              {" "}
+              $1,800/month{" "}
+            </span>
+            <Image
+              width={62}
+              height={62}
+              src={arrowWithCircle}
+              alt="arrowWithCircle"
+            />
+          </div>
+        </section>
+        <section className="border-[0.3px] border-[#4F4F4F] rounded-lg py-5 px-3 space-y-5">
+          <div className="w-full max-w-[305px] h-[203px] overflow-clip">
+            <Image
+              width={305}
+              height={203}
+              src={featuredProperty}
+              alt="featuredProperty"
+            />
+          </div>
+          <p className="text-[#010B18] font-lato font-semibold text-2xl">
+            {" "}
+            Maple Haven Apartments{" "}
+          </p>
+          <div className="flex items-center justify-between gap-2.5">
+            <div className="flex items-center gap-2.5">
+              <Image width={24} height={24} src={location} alt="location" />
+              <span className="font-poppins text-lg text-[#808080]">
+                {" "}
+                Toronto, ON{" "}
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5">
+              <Image width={24} height={24} src={bed} alt="bed" />
+              <span className="font-poppins text-lg text-[#808080]">
+                {" "}
+                1 bedroom{" "}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between gap-2.5">
+            <span className="font-poppins text-[#010309] font-semibold text-2xl">
+              {" "}
+              $1,800/month{" "}
+            </span>
+            <Image
+              width={62}
+              height={62}
+              src={arrowWithCircle}
+              alt="arrowWithCircle"
+            />
+          </div>
+        </section>
       </section>
-    </>
+
+      <section className="my-[120px]">
+        <section className="mb-[50px]">
+          <SectionHeading
+            topText="Blog Section"
+            heading="Guides & Tips"
+            description="Explore key factors to consider when selecting your next property."
+          />
+        </section>
+        <CategoryBlogList
+          category="Real Estate"
+          blogPosts={allBlogs as Blogs[]}
+        />
+      </section>
+    </section>
   );
 }
 

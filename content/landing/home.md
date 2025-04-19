@@ -8,7 +8,7 @@ blocks:
       Explore tools, resources, and expert guidance to help you succeed in your
       Canadian journey.
     buttonText: Get Started
-    buttonLink: /auth/login
+    buttonLink: /dashboard
     backgroundImage: /images/landing/hero_section_bg.jpg
     _template: welcomeHero
   - sectionTitle: |
@@ -22,7 +22,8 @@ blocks:
 
         Build your Canadian CV, prepare for interviews, and access career advice
         tailored to the Canadian job market
-      buttonText: Lean More
+      buttonText: Learn More
+      buttonLink: /career
       image: /images/landing/career_feature.svg
     realEstateFeature:
       heading: >
@@ -32,6 +33,7 @@ blocks:
         Explore properties, calculate mortgages, and find the perfect place to
         call home in Canada.
       buttonText: Learn More
+      buttonLink: /real-estate
       image: /images/landing/rental_listing_feature.svg
     immigrationFeature:
       heading: >
@@ -42,6 +44,7 @@ blocks:
         and comprehensive pathways to a Canadian permanent residency or
         citizenship.
       buttonText: Learn More
+      buttonLink: /immigration
       image: /images/landing/immigration_news_feature.jpg
     financeFeature:
       heading: |
@@ -51,6 +54,7 @@ blocks:
         understand the Canadian banking system to help you attain your
         financial goals.
       buttonText: Learn More
+      buttonLink: /finance
       image: /images/landing/finance_feature.svg
     grantsFeature:
       heading: |
@@ -60,6 +64,7 @@ blocks:
         Canada, learn about grants, and find networking events to help
         you connect with other entrepreneurs.
       buttonText: Learn More
+      buttonLink: /grants
       image: /images/landing/grant_feature.jpg
     _template: homepageFeatureBlock
   - heading: >
@@ -70,7 +75,7 @@ blocks:
       your guide through the complex maze of opportunity — we make your
       transition effortless and exciting.
     step1:
-      - title: 'Lift Off: Sign Up'
+      - title: "Lift Off: Sign Up"
         description: >-
           Begin your adventure by signing up for a SoftCanada account.
           Registration takes just a moment, but it opens the doors to all of our
