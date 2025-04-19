@@ -1,6 +1,6 @@
 # Step 1: Use Node.js 20 base image
 FROM node:20-alpine AS base
-RUN npm install -g npm@11.0.0
+RUN npm install -g npm@11.3.0
 
 # Set working directory
 WORKDIR /app

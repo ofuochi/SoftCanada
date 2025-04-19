@@ -16,6 +16,7 @@ import {
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useTina } from "tinacms/dist/react";
 const { Title, Paragraph, Text } = Typography;
 
@@ -52,6 +53,10 @@ export const BlogIndexPageComponent = ({
   selectedCategory,
 }: Props) => {
   const { data } = useTina<BlogsConnectionQuery>(cmsQuery);
+
+  useEffect(() => {
+    console.log(categories);
+  }, []);
   return (
     <div className="max-w-6xl mx-auto px-4 pb-8">
       {/* Hero Section */}
