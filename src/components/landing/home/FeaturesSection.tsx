@@ -160,7 +160,7 @@ export default function FeaturesSection(props: Props) {
               height={10}
               className="w-full px-4 sm:px-8 md:px-14 flex-shrink-0"
             />
-            <div className="px-4 sm:px-8 md:px-14">
+            <div className="px-4 sm:px-8 md:px-14 pt-5">
               <div
                 data-tina-field={tinaField(content.financeFeature, "heading")}
               >

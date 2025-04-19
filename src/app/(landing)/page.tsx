@@ -3,7 +3,6 @@ import CallToActionSection from "@/components/landing/home/CallToActionSection";
 import FeaturesSection from "@/components/landing/home/FeaturesSection";
 import HowItWorksSection from "@/components/landing/home/HowItWorksSection";
 import { dbConnection } from "@/lib/db-conn";
-import Image from "next/image";
 
 export default async function Home() {
   const query = await dbConnection.queries.landing({ relativePath: "home.md" });
@@ -14,7 +13,7 @@ export default async function Home() {
         switch (block.__typename) {
           case "LandingBlocksWelcomeHero":
             return (
-              <section key={i}>
+              <section key={i} className="-mt-16">
                 <HeroSection {...block} cmsQuery={query} />
               </section>
             );
@@ -49,4 +48,3 @@ export default async function Home() {
     </>
   );
 }
-

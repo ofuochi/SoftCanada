@@ -13,7 +13,7 @@ export default async function RealEstatePage() {
     relativePath: "career.md",
   });
   return (
-    <section className="">
+    <section className="-mt-16">
       {query?.data?.landing?.blocks?.map((block, i) => {
         if (!block) return <></>;
         switch (block.__typename) {
