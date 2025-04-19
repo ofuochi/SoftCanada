@@ -1,9 +1,21 @@
+# syntax=docker/dockerfile:1.4
+
 # Step 1: Use Node.js 20 base image
-FROM node:20-alpine AS base
+FROM node:23-alpine3.20 AS base
 RUN npm install -g npm@11.3.0
 
 # Set working directory
 WORKDIR /app
+
+ARG SOFTCAN_GITHUB_OWNER
+ARG SOFTCAN_GITHUB_REPO
+ARG SOFTCAN_GITHUB_BRANCH
+ARG COSMOS_ENDPOINT
+
+ENV SOFTCAN_GITHUB_OWNER=$SOFTCAN_GITHUB_OWNER \
+  SOFTCAN_GITHUB_REPO=$SOFTCAN_GITHUB_REPO \
+  SOFTCAN_GITHUB_BRANCH=$SOFTCAN_GITHUB_BRANCH \
+  COSMOS_ENDPOINT=$COSMOS_ENDPOINT
 
 # Copy package files (corrected file pattern)
 COPY package.json package-lock*.json ./
@@ -15,11 +27,15 @@ RUN --mount=type=cache,target=/root/.npm \
 # Copy the rest of the application files
 COPY . .
 
-# Build the application
-RUN npm run build -- --no-lint
+# Set secrets and build the application
+RUN --mount=type=secret,id=SOFTCAN_GITHUB_PAT \
+  --mount=type=secret,id=COSMOS_KEY \
+  export SOFTCAN_GITHUB_PAT=$(cat /run/secrets/SOFTCAN_GITHUB_PAT) && \
+  export COSMOS_KEY=$(cat /run/secrets/COSMOS_KEY) && \
+  npm run build -- --no-lint
 
 # Step 2: Serve the application
-FROM node:20-alpine AS runner
+FROM node:23-alpine3.20 AS runner
 
 # Set environment variables for production
 ENV NODE_ENV=production

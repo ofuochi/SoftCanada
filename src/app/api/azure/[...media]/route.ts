@@ -1,21 +1,21 @@
-import auth0 from "@/lib/auth0";
+import { NextRequest, NextResponse } from "next/server";
 import { createMediaHandlers } from "next-tinacms-azure/dist/handlers";
-import { NextRequest } from "next/server";
+import auth0 from "@/lib/auth0";
 
-const { POST, GET, DELETE } = createMediaHandlers({
+const handlers = createMediaHandlers({
   connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING!,
   containerName: process.env.AZURE_STORAGE_CONTAINER_NAME!,
-  authorized: async (_: NextRequest) => {
-    try {
-      if (process.env.NODE_ENV === "development") return true;
-      const session = await auth0.getSession();
-
-      return !!session;
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
+  authorized: async (req: NextRequest) => {
+    if (process.env.NODE_ENV === "development") return true;
+    const session = await auth0.getSession(req);
+    return !!session;
   },
 });
 
-export { DELETE, GET, POST };
+type RouteParams = { params: Promise<{ media: string[] }> };
+
+export const POST = handlers.POST;
+export const GET = handlers.GET;
+export const DELETE = (req: NextRequest, context: RouteParams) => {
+  return handlers.DELETE!(req, context as any);
+};

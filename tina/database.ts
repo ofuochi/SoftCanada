@@ -5,10 +5,10 @@ import { GitHubProvider } from "tinacms-gitprovider-github";
 // Manage this flag in your CI/CD pipeline and make sure it is set to false in production
 const isLocal = process.env.TINA_PUBLIC_IS_LOCAL === "true";
 
-const token = process.env.GITHUB_PERSONAL_ACCESS_TOKEN!;
-const owner = process.env.GITHUB_OWNER!;
-const repo = process.env.GITHUB_REPO!;
-const branch = process.env.GITHUB_BRANCH || "main";
+const token = process.env.SOFTCAN_GITHUB_PAT!;
+const owner = process.env.SOFTCAN_GITHUB_OWNER!;
+const repo = process.env.SOFTCAN_GITHUB_REPO!;
+const branch = process.env.SOFTCAN_GITHUB_BRANCH || "main";
 
 const gitProvider = new GitHubProvider({
   branch,
