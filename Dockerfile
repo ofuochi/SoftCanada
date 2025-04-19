@@ -30,6 +30,8 @@ COPY . .
 # Set secrets and build the application
 RUN --mount=type=secret,id=SOFTCAN_GITHUB_PAT \
   --mount=type=secret,id=COSMOS_KEY \
+  --mount=type=secret,id=AZURE_STORAGE_CONNECTION_STRING \
+  --mount=type=secret,id=AZURE_STORAGE_CONTAINER_NAME \
   export SOFTCAN_GITHUB_PAT=$(cat /run/secrets/SOFTCAN_GITHUB_PAT) && \
   export COSMOS_KEY=$(cat /run/secrets/COSMOS_KEY) && \
   npm run build -- --no-lint
