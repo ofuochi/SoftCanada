@@ -1,5 +1,6 @@
 import HeroSection from "@/components/landing/HeroSection";
 import budgetTools from "../../../../public/images/landing/budgetTools.png";
+import investmentTips from "../../../../public/images/landing/investementTips.png";
 import client from "@/tina/__generated__/client";
 import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs } from "@/tina/__generated__/types";
@@ -40,13 +41,14 @@ export default async function FinancePage() {
         </section>
 
         <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-          <section className="">
-            <div className="w-full h-[364px] rounded-3xl">
+          <section className="space-y-[30px]">
+            <div className="w-full h-fit rounded-3xl">
               <Image
                 width={483}
                 height={364}
                 alt="budgetTools"
                 src={budgetTools}
+                className="object-cover"
               />
             </div>
             <section className="space-y-6">
@@ -66,12 +68,13 @@ export default async function FinancePage() {
           </section>
 
           <section className="space-y-[30px]">
-            <div className="w-full h-[364px] rounded-3xl">
+            <div className="w-full h-fit rounded-3xl">
               <Image
                 width={483}
                 height={364}
-                alt="budgetTools"
-                src={budgetTools}
+                alt="investmentTips"
+                src={investmentTips}
+                className="object-cover"
               />
             </div>
             <section className="space-y-6">
@@ -91,12 +94,13 @@ export default async function FinancePage() {
           </section>
 
           <section className="space-y-[30px]">
-            <div className="w-full h-[364px] rounded-3xl">
+            <div className="w-full h-fit rounded-3xl">
               <Image
                 width={483}
                 height={364}
                 alt="budgetTools"
                 src={budgetTools}
+                className="object-cover"
               />
             </div>
             <section className="space-y-6">
