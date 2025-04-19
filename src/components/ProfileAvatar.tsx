@@ -27,7 +27,7 @@ export const ProfileAvatar: React.FC<Props> = ({
       {
         key: "0",
         label: (
-          <Link href="/dashboard" className="!font-dm_sans">
+          <Link href="/resumes" className="!font-dm_sans">
             <Space>
               <LuLayoutDashboard /> Dashboard
             </Space>

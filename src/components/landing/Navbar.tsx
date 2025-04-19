@@ -48,44 +48,69 @@ export default function Navbar() {
   }, []);
 
   const menuItems: MenuProps["items"] = [
+    // {
+    //   key: "services",
+    //   label: (
+    //     <>
+    //       <span
+    //         className={`font-dm_sans ${
+    //           isAtTop && !isMobileMenuOpen
+    //             ? "!text-white"
+    //             : isNavbarDark
+    //             ? "text-black md:!text-white"
+    //             : "!text-black"
+    //         }`}
+    //       >
+    //         Services{" "}
+    //       </span>
+    //       <span className="hidden md:inline">
+    //         <DownOutlined
+    //           className={`${
+    //             isAtTop && !isMobileMenuOpen
+    //               ? "!text-white"
+    //               : isNavbarDark
+    //               ? "text-black md:!text-white"
+    //               : "!text-black"
+    //           }`}
+    //         />
+    //       </span>
+    //     </>
+    //   ),
+    //   children: [
+    //     {
+    //       key: "advisory",
+    //       label: (
+    //         <Link href="/dashboard/resumes" className={`font-dm_sans`}>
+    //           Career
+    //         </Link>
+    //       ),
+    //     },
+    //     {
+    //       key: "advisories",
+    //       label: (
+    //         <Link href="/dashboard/advisor" className={`font-dm_sans`}>
+    //           Advisories
+    //         </Link>
+    //       ),
+    //     },
+    //   ],
+    // },
     {
-      key: "services",
+      key: "advisory",
       label: (
-        <>
-          <span
-            className={`font-dm_sans ${
-              isAtTop && !isMobileMenuOpen
-                ? "!text-white"
-                : isNavbarDark
-                ? "text-black md:!text-white"
-                : "!text-black"
-            }`}
-          >
-            Services{" "}
-          </span>
-          <span className="hidden md:inline">
-            <DownOutlined
-              className={`${
-                isAtTop && !isMobileMenuOpen
-                  ? "!text-white"
-                  : isNavbarDark
-                  ? "text-black md:!text-white"
-                  : "!text-black"
-              }`}
-            />
-          </span>
-        </>
+        <Link
+          href="/dashboard/advisor"
+          className={`font-dm_sans ${
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
+          }`}
+        >
+          Advisory
+        </Link>
       ),
-      children: [
-        {
-          key: "career",
-          label: (
-            <Link href="/dashboard/advisor" className={`font-dm_sans`}>
-              Career
-            </Link>
-          ),
-        },
-      ],
     },
     {
       key: "cv-builder",
@@ -159,7 +184,7 @@ export default function Navbar() {
       key: "faq",
       label: (
         <Link
-          href="/faqs"
+          href="/"
           className={`font-dm_sans ${
             isAtTop && !isMobileMenuOpen
               ? "!text-white"
