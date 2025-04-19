@@ -64,6 +64,7 @@ blocks:
         Canada, learn about grants, and find networking events to help
         you connect with other entrepreneurs.
       buttonText: Learn More
+      buttonLink: /grants
       image: /images/landing/grant_feature.jpg
     _template: homepageFeatureBlock
   - heading: >
