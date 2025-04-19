@@ -87,7 +87,7 @@ export default function Navbar() {
       ],
     },
     {
-      key: "resumes",
+      key: "cv-builder",
       label: (
         <Link
           href="/dashboard/resumes"

@@ -1,5 +1,5 @@
 import { BlogIndexPageComponent } from "@/components/app/BlogIndexPageComponent";
-import client from "@/tina/__generated__/client";
+import { dbConnection } from "@/lib/db-conn";
 import { Blogs } from "@/tina/__generated__/types";
 import { BlogCategories } from "@/tina/collections/BlogPostCollection";
 
@@ -8,9 +8,10 @@ type Props = {
 };
 export default async function BlogIndexPage({ searchParams }: Props) {
   // Fetch all blog posts
-  const result = await client.queries.blogsConnection();
+  const result = await dbConnection.queries.blogsConnection();
+
   const allBlogs =
-    result.data.blogsConnection.edges?.map((edge) => edge?.node) || [];
+    result.data?.blogsConnection?.edges?.map((edge) => edge?.node) || [];
 
   // Get selected category from URL query params
   const selectedCategory = (await searchParams).category;
