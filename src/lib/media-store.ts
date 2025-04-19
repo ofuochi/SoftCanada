@@ -1,5 +1,5 @@
 import { TinaCloudAzureMediaStore } from "next-tinacms-azure";
-import type { Media, MediaListOptions, MediaList } from "tinacms";
+import type { MediaListOptions } from "tinacms";
 
 export class AzureMediaStore extends TinaCloudAzureMediaStore {
   buildQuery(options: MediaListOptions): string {

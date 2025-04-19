@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     console.error("GraphQL handler error:", err);
     return NextResponse.json(
       { message: err.message || "Internal Error" },
-      { status: 500 }
+      { status: 200 }
     );
   }
 }

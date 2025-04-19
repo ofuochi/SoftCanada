@@ -1,8 +1,8 @@
 import auth0 from "@/lib/auth0";
 import { createMediaHandlers } from "next-tinacms-azure/dist/handlers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
-const config = {
+const { POST, GET, DELETE } = createMediaHandlers({
   connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING!,
   containerName: process.env.AZURE_STORAGE_CONTAINER_NAME!,
   authorized: async (_: NextRequest) => {
@@ -16,10 +16,6 @@ const config = {
       return false;
     }
   },
-};
-
-const handlers = createMediaHandlers(config);
-
-const { POST, GET, DELETE } = handlers;
+});
 
 export { DELETE, GET, POST };
