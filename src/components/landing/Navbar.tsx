@@ -73,17 +73,17 @@ export default function Navbar() {
             </Link>
           ),
         },
-        {
-          key: "real-estate",
-          label: (
-            <Link
-              href="/dashboard/real-estate/properties"
-              className={`font-dm_sans`}
-            >
-              Real Estate
-            </Link>
-          ),
-        },
+        // {
+        //   key: "real-estate",
+        //   label: (
+        //     <Link
+        //       href="/dashboard/real-estate/properties"
+        //       className={`font-dm_sans`}
+        //     >
+        //       Real Estate
+        //     </Link>
+        //   ),
+        // },
       ],
     },
     {
@@ -295,4 +295,3 @@ export default function Navbar() {
     </>
   );
 }
-

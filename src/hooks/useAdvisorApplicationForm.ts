@@ -88,8 +88,6 @@ export function useAdvisorApplicationForm() {
   const { getFieldsError } = form;
   const [imageUrl, setImageUrl] = useState<string | undefined>(undefined);
 
-  console.log(getFieldsError());
-
   // Allowed image types and max size
   const allowedTypes = [
     "image/jpeg",
@@ -216,4 +214,3 @@ export function useAdvisorApplicationForm() {
     handleBeforeUpload,
   };
 }
-
