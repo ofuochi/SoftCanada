@@ -7,7 +7,6 @@ import Image from "next/image";
 import chooseDestination from "../../../../public/images/landing/chooseDestination.png";
 import gatherDocuments from "../../../../public/images/landing/gatherDocuments.png";
 import dreamRental from "../../../../public/images/landing/dreamRental.png";
-import moveIn from "../../../../public/images/landing/moveIn.png";
 
 export default async function ImmigrationPage() {
   const result = await dbConnection.queries.blogsConnection();
@@ -18,7 +17,7 @@ export default async function ImmigrationPage() {
     relativePath: "immigration.md",
   });
   return (
-    <section className="">
+    <section className="-mt-16">
       {query?.data?.landing?.blocks?.map((block, i) => {
         if (!block) return <></>;
         switch (block.__typename) {

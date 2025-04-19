@@ -15,6 +15,7 @@ import { ProfileAvatar } from "../ProfileAvatar";
 export default function Navbar() {
   const [navbarStyle, setNavbarStyle] = useState("bg-transparent");
   const [isNavbarDark, setIsNavbarDark] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useUser();
 
@@ -25,15 +26,18 @@ export default function Navbar() {
         document.querySelector(".dark")?.clientHeight ||
         0;
 
-      if (window.scrollY > heroSectionHeight) {
-        setNavbarStyle("bg-gray-900 shadow-lg");
-        setIsNavbarDark(true);
-      } else if (window.scrollY > 0) {
-        setNavbarStyle("bg-white bg-opacity-70 backdrop-blur-md");
-        setIsNavbarDark(false);
-      } else {
+      if (window.scrollY === 0) {
         setNavbarStyle("bg-transparent");
         setIsNavbarDark(false);
+        setIsAtTop(true);
+      } else if (window.scrollY > heroSectionHeight) {
+        setNavbarStyle("bg-gray-900 shadow-lg");
+        setIsNavbarDark(true);
+        setIsAtTop(false);
+      } else {
+        setNavbarStyle("bg-white bg-opacity-70 backdrop-blur-md");
+        setIsNavbarDark(false);
+        setIsAtTop(false);
       }
     };
 
@@ -50,7 +54,11 @@ export default function Navbar() {
         <>
           <span
             className={`font-dm_sans ${
-              isNavbarDark ? "text-black md:!text-white" : "!text-black"
+              isAtTop && !isMobileMenuOpen
+                ? "!text-white"
+                : isNavbarDark
+                ? "text-black md:!text-white"
+                : "!text-black"
             }`}
           >
             Services{" "}
@@ -58,7 +66,11 @@ export default function Navbar() {
           <span className="hidden md:inline">
             <DownOutlined
               className={`${
-                isNavbarDark ? "text-black md:!text-white" : "!text-black"
+                isAtTop && !isMobileMenuOpen
+                  ? "!text-white"
+                  : isNavbarDark
+                  ? "text-black md:!text-white"
+                  : "!text-black"
               }`}
             />
           </span>
@@ -73,17 +85,6 @@ export default function Navbar() {
             </Link>
           ),
         },
-        // {
-        //   key: "real-estate",
-        //   label: (
-        //     <Link
-        //       href="/dashboard/real-estate/properties"
-        //       className={`font-dm_sans`}
-        //     >
-        //       Real Estate
-        //     </Link>
-        //   ),
-        // },
       ],
     },
     {
@@ -92,7 +93,11 @@ export default function Navbar() {
         <Link
           href="/dashboard/resumes"
           className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
           }`}
         >
           CV Builder
@@ -105,7 +110,11 @@ export default function Navbar() {
         <Link
           href="/mortgage-calculator"
           className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
           }`}
         >
           Mortgage Calculator
@@ -118,7 +127,11 @@ export default function Navbar() {
         <Link
           href="/blogs"
           className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
           }`}
         >
           Blogs
@@ -131,7 +144,11 @@ export default function Navbar() {
         <Link
           href="/contact"
           className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
           }`}
         >
           Contact
@@ -144,7 +161,11 @@ export default function Navbar() {
         <Link
           href="/faqs"
           className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
           }`}
         >
           FAQs
@@ -212,7 +233,9 @@ export default function Navbar() {
           {/* Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
-              <ProfileAvatar theme={isNavbarDark ? "dark" : "light"} />
+              <ProfileAvatar
+                theme={isNavbarDark || isAtTop ? "dark" : "light"}
+              />
             ) : (
               <>
                 <Link href={LOGIN_PATH}>
@@ -242,7 +265,7 @@ export default function Navbar() {
                 <MenuOutlined
                   className={classNames(
                     "text-xl",
-                    isNavbarDark ? "!text-white" : "text-black"
+                    isAtTop || isNavbarDark ? "!text-white" : "text-black"
                   )}
                 />
               }
