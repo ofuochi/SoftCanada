@@ -9,4 +9,4 @@ excerpt: How to secure your finances in Canada
 thumbnail: /images/landing/finance_feature.svg
 ---
 
-# Finance 101![](/media/\advisor3.jpg)
+# Finance 101![](</media/\black elon.jpg>)
