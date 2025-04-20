@@ -16,184 +16,165 @@ const SUPPORTED_IMAGE_TYPES = [
   "image/tiff",
 ];
 
-// export const { GET } = createMediaDeliveryHandlers({
-//   connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING!,
-//   containerName: process.env.AZURE_STORAGE_CONTAINER_NAME!,
-//   authorized: async () => true, // public delivery
-// });
-
 type RouteParams = { params: Promise<{ path: string[] }> };
-const config = {
-  connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING!,
-  containerName: process.env.AZURE_STORAGE_CONTAINER_NAME!,
-  authorized: async (_: NextRequest) => {
-    try {
-      if (process.env.NODE_ENV === "development") return true;
-      const session = await auth0.getSession();
 
-      return !!session;
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
-  },
-};
-
-// const handlers = createMediaHandlers(config);
+// Validate environment variables early
+function validateConfig() {
+  if (!process.env.AZURE_STORAGE_CONNECTION_STRING) {
+    throw new Error("AZURE_STORAGE_CONNECTION_STRING is not defined");
+  }
+  if (!process.env.AZURE_STORAGE_CONTAINER_NAME) {
+    throw new Error("AZURE_STORAGE_CONTAINER_NAME is not defined");
+  }
+}
 
 export async function GET(req: NextRequest, context: RouteParams) {
   try {
-    // Extract the account name and key from the connection string manually
-    const accountNameMatch = /AccountName=([^;]+)/.exec(
-      config.connectionString
-    );
-    const accountKeyMatch = /AccountKey=([^;]+)/.exec(config.connectionString);
+    validateConfig();
 
-    if (!accountNameMatch || !accountKeyMatch) {
-      throw new Error(
-        "Invalid connection string: Missing AccountName or AccountKey."
+    // Handle authorization first
+    const isAuthorized = await config.authorized(req);
+    if (!isAuthorized) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Azure connection setup
+    const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING!;
+    const accountNameMatch = connectionString.match(/AccountName=([^;]+)/);
+    const accountKeyMatch = connectionString.match(/AccountKey=([^;]+)/);
+
+    if (!accountNameMatch?.[1] || !accountKeyMatch?.[1]) {
+      return NextResponse.json(
+        { error: "Invalid Azure Storage configuration" },
+        { status: 500 }
       );
     }
 
-    const accountName = accountNameMatch[1];
-    const accountKey = accountKeyMatch[1];
-
-    // Create shared key credentials
     const sharedKeyCredential = new StorageSharedKeyCredential(
-      accountName,
-      accountKey
+      accountNameMatch[1],
+      accountKeyMatch[1]
     );
 
-    const client = BlobServiceClient.fromConnectionString(
-      config.connectionString
+    const client = BlobServiceClient.fromConnectionString(connectionString);
+    const containerClient = client.getContainerClient(
+      process.env.AZURE_STORAGE_CONTAINER_NAME!
     );
-    const containerClient = client.getContainerClient(config.containerName);
+
+    // Get blob path
     const rawPath = (await context.params).path;
-    const blobName =
-      rawPath.length === 1 ? `/${rawPath[0]}` : rawPath.join("/");
+    const blobName = rawPath.join("/");
 
-    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+    if (!blobName) {
+      return NextResponse.json({ error: "Missing blob path" }, { status: 400 });
+    }
 
-    // Define SAS token options
-    const expiresOn = new Date();
-    expiresOn.setMinutes(expiresOn.getMinutes() + 1); // Token valid for 1 minute
-
+    // Generate SAS token
     const sasToken = generateBlobSASQueryParameters(
       {
-        containerName: config.containerName, // The container name
-        blobName, // The blob name
-        permissions: BlobSASPermissions.parse("r"), // Read permission
-        expiresOn, // Expiration time
+        containerName: process.env.AZURE_STORAGE_CONTAINER_NAME!,
+        blobName,
+        permissions: BlobSASPermissions.parse("r"),
+        expiresOn: new Date(Date.now() + 60 * 1000), // 1 minute expiration
       },
       sharedKeyCredential
     ).toString();
 
-    const response = await fetch(`${blockBlobClient.url}?${sasToken}`);
-    if (!response.ok) {
-      return new NextResponse(
-        `Failed to fetch original image: ${response.status} ${response.statusText}`,
-        { status: response.status }
+    // Fetch blob from Azure
+    const blobClient = containerClient.getBlockBlobClient(blobName);
+    const azureResponse = await fetch(`${blobClient.url}?${sasToken}`);
+
+    if (!azureResponse.ok) {
+      return NextResponse.json(
+        {
+          error: "Failed to fetch file from Azure",
+          status: azureResponse.status,
+        },
+        { status: azureResponse.status }
       );
     }
 
-    const contentType = response.headers.get("content-type");
-    const isImage = SUPPORTED_IMAGE_TYPES.includes(contentType || "");
-
-    if (!isImage) {
-      // For non-image files, return the file as-is
-      const fileBuffer = await response.arrayBuffer();
-      const headers = new Headers(response.headers);
-      headers.set("cache-control", "public, max-age=31536000, immutable");
-      return new NextResponse(fileBuffer, {
-        status: response.status,
-        statusText: response.statusText,
-        headers,
+    // Handle non-image files
+    const contentType =
+      azureResponse.headers.get("content-type") || "application/octet-stream";
+    if (!SUPPORTED_IMAGE_TYPES.includes(contentType)) {
+      return new NextResponse(await azureResponse.blob(), {
+        status: 200,
+        headers: {
+          "content-type": contentType,
+          "cache-control": "public, max-age=31536000, immutable",
+        },
       });
     }
 
-    // For images, proceed with optimization
-    const buffer = await response.arrayBuffer();
-
+    // Process image
+    const imageBuffer = await azureResponse.arrayBuffer();
     const url = new URL(req.url);
-    const width = url.searchParams.get("w");
-    const height = url.searchParams.get("h");
-    const quality = Number(url.searchParams.get("q") || "80");
-    const format = url.searchParams.get("fmt") || "auto";
 
-    // Input validation
-    if (width && Number.isNaN(Number(width))) {
-      return new NextResponse("Invalid width parameter", { status: 400 });
-    }
-    if (height && Number.isNaN(Number(height))) {
-      return new NextResponse("Invalid height parameter", { status: 400 });
-    }
-    if (Number.isNaN(quality) || quality < 1 || quality > 100) {
-      return new NextResponse("Invalid quality parameter", { status: 400 });
-    }
+    // Validate and parse parameters
+    const width = parseInt(url.searchParams.get("w") || "");
+    const height = parseInt(url.searchParams.get("h") || "");
+    const quality = Math.min(
+      Math.max(parseInt(url.searchParams.get("q") || "80"), 1),
+      100
+    );
 
-    let processedImage = sharp(buffer);
+    const format =
+      url.searchParams.get("fmt") ||
+      (req.headers.get("accept")?.includes("image/webp")
+        ? "webp"
+        : req.headers.get("accept")?.includes("image/avif")
+        ? "avif"
+        : "jpeg");
 
-    if (width || height) {
-      processedImage = processedImage.resize({
-        width: width ? Number(width) : undefined,
-        height: height ? Number(height) : undefined,
-        fit: "inside",
-        withoutEnlargement: true,
-      });
-    }
-
-    let outputFormat: keyof sharp.FormatEnum = "jpeg";
-    let outputContentType = "image/jpeg";
-
-    if (
-      format === "webp" ||
-      (format === "auto" && req.headers.get("accept")?.includes("image/webp"))
-    ) {
-      outputFormat = "webp";
-      outputContentType = "image/webp";
-    } else if (
-      format === "avif" ||
-      (format === "auto" && req.headers.get("accept")?.includes("image/avif"))
-    ) {
-      outputFormat = "avif";
-      outputContentType = "image/avif";
-    }
-
+    // Process image with Sharp
     try {
-      processedImage = processedImage[outputFormat]({ quality });
+      const processedImage = sharp(imageBuffer)
+        .resize({
+          width: Number.isNaN(width) ? undefined : width,
+          height: Number.isNaN(height) ? undefined : height,
+          fit: "inside",
+          withoutEnlargement: true,
+        })
+        .toFormat(format as keyof sharp.FormatEnum, { quality });
+
       const processedBuffer = await processedImage.toBuffer();
 
-      const headers = new Headers(response.headers);
-      headers.set("content-type", outputContentType);
-      headers.set("content-length", processedBuffer.length.toString());
-      headers.set("cache-control", "public, max-age=31536000, immutable");
-
       return new NextResponse(processedBuffer, {
-        status: response.status,
-        statusText: response.statusText,
-        headers,
+        status: 200,
+        headers: {
+          "content-type": `image/${format}`,
+          "cache-control": "public, max-age=31536000, immutable",
+        },
       });
     } catch (sharpError) {
-      console.error("Error processing image with sharp:", sharpError);
-
-      // Fallback to original image if optimization fails
-      console.warn("Falling back to original image");
-      const originalBuffer = Buffer.from(buffer);
-      const headers = new Headers(response.headers);
-      headers.set("content-type", contentType || "application/octet-stream");
-      headers.set("content-length", originalBuffer.length.toString());
-      headers.set("cache-control", "public, max-age=3600"); // Shorter cache time for unoptimized images
-
-      return new NextResponse(originalBuffer, {
-        status: response.status,
-        statusText: response.statusText,
-        headers,
+      console.error("Image processing error:", sharpError);
+      return new NextResponse(imageBuffer, {
+        status: 200,
+        headers: {
+          "content-type": contentType,
+          "cache-control": "public, max-age=3600",
+        },
       });
     }
   } catch (error) {
-    console.error("Unexpected error in image processing:", error);
-    return new NextResponse("Unexpected error in image processing", {
-      status: 500,
-    });
+    console.error("API Error:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
+
+// Authorization config
+const config = {
+  authorized: async (req: NextRequest) => {
+    try {
+      if (process.env.NODE_ENV === "development") return true;
+      const session = await auth0.getSession(req);
+      return !!session?.user;
+    } catch (error) {
+      console.error("Authorization error:", error);
+      return false;
+    }
+  },
+};
