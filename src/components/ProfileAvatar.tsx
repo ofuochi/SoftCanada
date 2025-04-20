@@ -64,7 +64,7 @@ export const ProfileAvatar: React.FC<Props> = ({
           src={user?.picture}
           alt={user?.name || "User"}
         />
-        <div className="text-sm">
+        <div className="text-sm text-nowrap">
           <Text
             className={`block capitalize ${
               theme === "dark" ? "!text-white" : ""

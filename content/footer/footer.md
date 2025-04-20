@@ -33,9 +33,9 @@ sections:
       - label: New Link
         url: 'https://example.com'
 socials:
-  - icon: /images/icons/facebook.svg
-    link: 'https://fb.com'
   - icon: /images/icons/instagram.svg
     link: 'https://instagram.com'
+  - icon: /images/icons/facebook.svg
+    link: 'https://fb.com'
 ---
 

@@ -20,7 +20,10 @@ export const CategoryBlogList = ({
   return (
     <section className="gap-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full max-w-[1400px] mx-auto px-5">
       {filteredPosts.map((post, index) => (
-        <section className="w-full py-5 px-4 bg-[#F5F5F5] rounded-lg space-y-6">
+        <section
+          className="w-full py-5 px-4 bg-[#F5F5F5] rounded-lg space-y-6"
+          key={post.id}
+        >
           {post.thumbnail && (
             <div className="w-full max-w-[418px] h-[298px] overflow-clip">
               <Image
@@ -52,4 +55,3 @@ export const CategoryBlogList = ({
     </section>
   );
 };
-
