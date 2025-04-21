@@ -15,7 +15,7 @@ const CustomBackendAuth = (): BackendAuthProvider => ({
   isAuthorized: async (req: IncomingMessage, _: ServerResponse) => {
     // const token = req.headers.authorization;
     // validate the token here
-    const session = await auth0.getSession(req);
+    const session = await auth0.getSession();
     if (!session)
       return {
         isAuthorized: false,
@@ -35,3 +35,4 @@ const handler = TinaNodeBackend({
 });
 
 export default (req: NextApiRequest, res: NextApiResponse) => handler(req, res);
+

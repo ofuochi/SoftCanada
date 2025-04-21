@@ -7,7 +7,7 @@ const handlers = createMediaHandlers({
   containerName: process.env.AZURE_STORAGE_CONTAINER_NAME!,
   authorized: async (req: NextRequest) => {
     if (process.env.NODE_ENV === "development") return true;
-    const session = await auth0.getSession(req);
+    const session = await auth0.getSession();
     return !!session;
   },
 });

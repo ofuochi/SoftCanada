@@ -170,7 +170,7 @@ const config = {
   authorized: async (req: NextRequest) => {
     try {
       if (process.env.NODE_ENV === "development") return true;
-      const session = await auth0.getSession(req);
+      const session = await auth0.getSession();
       return !!session?.user;
     } catch (error) {
       console.error("Authorization error:", error);
