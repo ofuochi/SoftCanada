@@ -10,4 +10,4 @@ thumbnail: /images/landing/landing_hero2.jpeg
 
 # Catchy Fashion Styles
 
-![](/media/root\ahmen.jpg)
+![](/media/root/advisor.jpg)
