@@ -15,7 +15,23 @@ const handlers = createMediaHandlers({
 type RouteParams = { params: Promise<{ media: string[] }> };
 
 export const POST = handlers.POST;
-export const GET = handlers.GET;
+export const GET = async (req: NextRequest) => {
+  try {
+    return await handlers.GET(req);
+  } catch (error: any) {
+    console.error("Error in GET handler:", error);
+    return NextResponse.json(
+      {
+        error: {
+          message: error?.message || "Unknown error",
+          name: error?.name,
+          stack: error?.stack,
+        },
+      },
+      { status: 500 }
+    );
+  }
+};
 export const DELETE = (req: NextRequest, context: RouteParams) => {
-  return handlers.DELETE!(req, context as any);
+  return handlers.DELETE(req, context as any);
 };
