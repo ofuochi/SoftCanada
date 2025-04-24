@@ -1,6 +1,11 @@
+"use client";
+
+import SampleModal from "@/components/modals/SampleModal";
 import Link from "next/link";
+import { useState } from "react";
 
 const FaqContactUs = () => {
+  const [showModal, setShowModal] = useState(false);
   return (
     <section
       className="w-full relative h-[484px] bg-cover max-md:bg-center bg-no-repeat px-5"
@@ -17,13 +22,15 @@ const FaqContactUs = () => {
           Take the first step toward all the answers you need.
         </p>
 
-        <Link
-          href={"#"}
-          className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
+        <p
+          // href={"#"}
+          onClick={() => setShowModal(true)}
+          className="bg-red-600 hover:bg-red-500 rounded-md text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
         >
           Contact Us
-        </Link>
+        </p>
       </section>
+      <SampleModal isModalOpen={showModal} setIsModalOpen={setShowModal} />
     </section>
   );
 };
