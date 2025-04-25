@@ -28,8 +28,7 @@ const HeroSection: React.FC<Props> = (props) => {
 
   return (
     <section
-      className="relative w-full mx-auto overflow-hidden shadow-lg bg-white"
-      style={{ height: "80vh" }}
+      className="relative w-full mx-auto overflow-hidden shadow-lg bg-white h-svh"
       id="hero-section"
     >
       <div
@@ -58,22 +57,17 @@ const HeroSection: React.FC<Props> = (props) => {
             />
           </div>
 
-          <div className="mt-8">
-            {/* <Link
-              href={buttonLink}
-              data-tina-field={tinaField(heroBlock, "buttonText")}
-              className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
-            >
-              {buttonText}
-            </Link> */}
-            <span
-              onClick={() => setShowModal(true)}
-              data-tina-field={tinaField(heroBlock, "buttonText")}
-              className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
-            >
-              {buttonText}
-            </span>
-          </div>
+          {buttonText && (
+            <div className="mt-8">
+              <Link
+                href={buttonLink}
+                data-tina-field={tinaField(heroBlock, "buttonText")}
+                className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
+              >
+                {buttonText}
+              </Link>
+            </div>
+          )}
         </div>
       </div>
       <SampleModal isModalOpen={showModal} setIsModalOpen={setShowModal} />

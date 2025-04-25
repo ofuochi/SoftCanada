@@ -220,100 +220,100 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
     //   ),
     //   children: [],
     // },
-    {
-      key: "/dashboard/real-estate",
-      icon: (
-        <HomeOutlined
-          className={`${
-            pathname.includes("estate") ? "!text-[#010309]" : "!text-[#808080]"
-          }`}
-          size={pathname.includes("estate") ? 24 : 18}
-        />
-      ),
-      label: (
-        <span
-          className={`font-dm_sans ${
-            pathname.includes("estate")
-              ? "text-[#010309] text-xl"
-              : "!text-[#808080] text-sm"
-          }`}
-        >
-          Real Estate
-        </span>
-      ),
-      children: [
-        {
-          key: "/dashboard/real-estate/properties",
-          label: (
-            <Link
-              href="/dashboard/real-estate/properties"
-              className={`font-dm_sans text-sm ${
-                pathname === "/dashboard/real-estate/properties"
-                  ? "!text-[#010309]"
-                  : "!text-[#808080]"
-              }`}
-            >
-              Properties
-            </Link>
-          ),
-        },
-        {
-          key: "/dashboard/real-estate/agents",
-          label: (
-            <Link
-              href="/dashboard/real-estate/agents"
-              className={`font-dm_sans text-sm ${
-                pathname === "/dashboard/real-estate/agents"
-                  ? "!text-[#010309]"
-                  : "!text-[#808080]"
-              }`}
-            >
-              Agents
-            </Link>
-          ),
-        },
-        {
-          key: "/dashboard/real-estate/transactions",
-          label: (
-            <Link
-              href="/dashboard/real-estate/transactions"
-              className={`font-dm_sans text-sm ${
-                pathname === "/dashboard/real-estate/transactions"
-                  ? "!text-[#010309]"
-                  : "!text-[#808080]"
-              }`}
-            >
-              Transactions
-            </Link>
-          ),
-        },
-      ],
-    },
-    {
-      key: "/dashboard/calendar",
-      icon: (
-        <CalendarOutlined
-          className={`${
-            pathname === "/dashboard/calendar"
-              ? "!text-[#010309]"
-              : "!text-[#808080]"
-          }`}
-          size={pathname === "/dashboard/calendar" ? 24 : 18}
-        />
-      ),
-      label: (
-        <Link
-          href="/dashboard/calendar"
-          className={`font-dm_sans text-sm ${
-            pathname === "/dashboard/calendar"
-              ? "!text-[#010309] text-xl"
-              : "!text-[#808080] text-sm"
-          }`}
-        >
-          Calendar
-        </Link>
-      ),
-    },
+    // {
+    //   key: "/dashboard/real-estate",
+    //   icon: (
+    //     <HomeOutlined
+    //       className={`${
+    //         pathname.includes("estate") ? "!text-[#010309]" : "!text-[#808080]"
+    //       }`}
+    //       size={pathname.includes("estate") ? 24 : 18}
+    //     />
+    //   ),
+    //   label: (
+    //     <span
+    //       className={`font-dm_sans ${
+    //         pathname.includes("estate")
+    //           ? "text-[#010309] text-xl"
+    //           : "!text-[#808080] text-sm"
+    //       }`}
+    //     >
+    //       Real Estate
+    //     </span>
+    //   ),
+    //   children: [
+    //     {
+    //       key: "/dashboard/real-estate/properties",
+    //       label: (
+    //         <Link
+    //           href="/dashboard/real-estate/properties"
+    //           className={`font-dm_sans text-sm ${
+    //             pathname === "/dashboard/real-estate/properties"
+    //               ? "!text-[#010309]"
+    //               : "!text-[#808080]"
+    //           }`}
+    //         >
+    //           Properties
+    //         </Link>
+    //       ),
+    //     },
+    //     {
+    //       key: "/dashboard/real-estate/agents",
+    //       label: (
+    //         <Link
+    //           href="/dashboard/real-estate/agents"
+    //           className={`font-dm_sans text-sm ${
+    //             pathname === "/dashboard/real-estate/agents"
+    //               ? "!text-[#010309]"
+    //               : "!text-[#808080]"
+    //           }`}
+    //         >
+    //           Agents
+    //         </Link>
+    //       ),
+    //     },
+    //     {
+    //       key: "/dashboard/real-estate/transactions",
+    //       label: (
+    //         <Link
+    //           href="/dashboard/real-estate/transactions"
+    //           className={`font-dm_sans text-sm ${
+    //             pathname === "/dashboard/real-estate/transactions"
+    //               ? "!text-[#010309]"
+    //               : "!text-[#808080]"
+    //           }`}
+    //         >
+    //           Transactions
+    //         </Link>
+    //       ),
+    //     },
+    //   ],
+    // },
+    // {
+    //   key: "/dashboard/calendar",
+    //   icon: (
+    //     <CalendarOutlined
+    //       className={`${
+    //         pathname === "/dashboard/calendar"
+    //           ? "!text-[#010309]"
+    //           : "!text-[#808080]"
+    //       }`}
+    //       size={pathname === "/dashboard/calendar" ? 24 : 18}
+    //     />
+    //   ),
+    //   label: (
+    //     <Link
+    //       href="/dashboard/calendar"
+    //       className={`font-dm_sans text-sm ${
+    //         pathname === "/dashboard/calendar"
+    //           ? "!text-[#010309] text-xl"
+    //           : "!text-[#808080] text-sm"
+    //       }`}
+    //     >
+    //       Calendar
+    //     </Link>
+    //   ),
+    // },
     {
       key: "/dashboard/settings",
       icon: (
@@ -488,4 +488,3 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
 };
 
 export default SideBar;
-

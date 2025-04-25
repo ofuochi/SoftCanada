@@ -1,5 +1,6 @@
 import { BlogIndexPageComponent } from "@/components/app/BlogIndexPageComponent";
-import client from "@/tina/__generated__/client";
+import HeroSection from "@/components/landing/HeroSection";
+import { dbConnection } from "@/lib/db-conn";
 import { Blogs } from "@/tina/__generated__/types";
 import { BlogCategories } from "@/tina/collections/BlogPostCollection";
 
@@ -8,9 +9,10 @@ type Props = {
 };
 export default async function BlogIndexPage({ searchParams }: Props) {
   // Fetch all blog posts
-  const result = await client.queries.blogsConnection();
+  const result = await dbConnection.queries.blogsConnection();
+
   const allBlogs =
-    result.data.blogsConnection.edges?.map((edge) => edge?.node) || [];
+    result.data?.blogsConnection?.edges?.map((edge) => edge?.node) || [];
 
   // Get selected category from URL query params
   const selectedCategory = (await searchParams).category;
@@ -28,15 +30,23 @@ export default async function BlogIndexPage({ searchParams }: Props) {
   }, Object.fromEntries(BlogCategories.map((cat) => [cat, 0])) as Record<string, number>);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 mx-auto">
-      <BlogIndexPageComponent
-        categories={BlogCategories}
-        categoryCounts={categoryCounts}
-        blogPosts={filteredBlogs as Blogs[]}
-        cmsQuery={result}
-        selectedCategory={selectedCategory}
+    <div className="-mt-16">
+      <HeroSection
+        backgroundImage="/images/landing/blog.jpg"
+        buttonLink=""
+        buttonText=""
+        message="Message"
+        cmsQuery={{}}
       />
+      <section className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 mx-auto">
+        <BlogIndexPageComponent
+          categories={BlogCategories}
+          categoryCounts={categoryCounts}
+          blogPosts={filteredBlogs as Blogs[]}
+          cmsQuery={result}
+          selectedCategory={selectedCategory}
+        />
+      </section>
     </div>
   );
 }
-

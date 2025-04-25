@@ -11,10 +11,12 @@ import { useEffect, useState } from "react";
 
 import { LOGIN_PATH } from "@/constants/paths";
 import { ProfileAvatar } from "../ProfileAvatar";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [navbarStyle, setNavbarStyle] = useState("bg-transparent");
   const [isNavbarDark, setIsNavbarDark] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useUser();
 
@@ -25,15 +27,18 @@ export default function Navbar() {
         document.querySelector(".dark")?.clientHeight ||
         0;
 
-      if (window.scrollY > heroSectionHeight) {
-        setNavbarStyle("bg-gray-900 shadow-lg");
-        setIsNavbarDark(true);
-      } else if (window.scrollY > 0) {
-        setNavbarStyle("bg-white bg-opacity-70 backdrop-blur-md");
-        setIsNavbarDark(false);
-      } else {
+      if (window.scrollY === 0) {
         setNavbarStyle("bg-transparent");
         setIsNavbarDark(false);
+        setIsAtTop(true);
+      } else if (window.scrollY > heroSectionHeight) {
+        setNavbarStyle("bg-gray-900 shadow-lg");
+        setIsNavbarDark(true);
+        setIsAtTop(false);
+      } else {
+        setNavbarStyle("bg-white bg-opacity-70 backdrop-blur-md");
+        setIsNavbarDark(false);
+        setIsAtTop(false);
       }
     };
 
@@ -44,81 +49,132 @@ export default function Navbar() {
   }, []);
 
   const menuItems: MenuProps["items"] = [
+    // {
+    //   key: "services",
+    //   label: (
+    //     <>
+    //       <span
+    //         className={`font-dm_sans ${
+    //           isAtTop && !isMobileMenuOpen
+    //             ? "!text-white"
+    //             : isNavbarDark
+    //             ? "text-black md:!text-white"
+    //             : "!text-black"
+    //         }`}
+    //       >
+    //         Services{" "}
+    //       </span>
+    //       <span className="hidden md:inline">
+    //         <DownOutlined
+    //           className={`${
+    //             isAtTop && !isMobileMenuOpen
+    //               ? "!text-white"
+    //               : isNavbarDark
+    //               ? "text-black md:!text-white"
+    //               : "!text-black"
+    //           }`}
+    //         />
+    //       </span>
+    //     </>
+    //   ),
+    //   children: [
+    //     {
+    //       key: "advisory",
+    //       label: (
+    //         <Link href="/dashboard/resumes" className={`font-dm_sans`}>
+    //           Career
+    //         </Link>
+    //       ),
+    //     },
+    //     {
+    //       key: "advisories",
+    //       label: (
+    //         <Link href="/dashboard/advisor" className={`font-dm_sans`}>
+    //           Advisories
+    //         </Link>
+    //       ),
+    //     },
+    //   ],
+    // },
     {
-      key: "services",
-      label: (
-        <>
-          <span
-            className={`font-dm_sans ${
-              isNavbarDark ? "text-black md:!text-white" : "!text-black"
-            }`}
-          >
-            Services{" "}
-          </span>
-          <span className="hidden md:inline">
-            <DownOutlined
-              className={`${
-                isNavbarDark ? "text-black md:!text-white" : "!text-black"
-              }`}
-            />
-          </span>
-        </>
-      ),
-      children: [
-        {
-          key: "career",
-          label: (
-            <Link href="/dashboard/advisor" className={`font-dm_sans`}>
-              Career
-            </Link>
-          ),
-        },
-        {
-          key: "real-estate",
-          label: (
-            <Link
-              href="/dashboard/real-estate/properties"
-              className={`font-dm_sans`}
-            >
-              Real Estate
-            </Link>
-          ),
-        },
-      ],
-    },
-    {
-      key: "resumes",
+      key: "career",
       label: (
         <Link
-          href="/dashboard/resumes"
+          href="/career"
           className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
           }`}
         >
-          CV Builder
+          Career
         </Link>
       ),
     },
     {
-      key: "mortgage",
+      key: "/immigration",
       label: (
         <Link
-          href="/mortgage-calculator"
+          href="/immigration"
           className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
           }`}
         >
-          Mortgage Calculator
+          Immigration
         </Link>
       ),
     },
     {
-      key: "blogs",
+      key: "/finance",
+      label: (
+        <Link
+          href="/finance"
+          className={`font-dm_sans ${
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
+          }`}
+        >
+          Finance
+        </Link>
+      ),
+    },
+    {
+      key: "/grants",
+      label: (
+        <Link
+          href="/grants"
+          className={`font-dm_sans ${
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
+          }`}
+        >
+          Study
+        </Link>
+      ),
+    },
+    {
+      key: "/blogs",
       label: (
         <Link
           href="/blogs"
           className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
           }`}
         >
           Blogs
@@ -126,12 +182,16 @@ export default function Navbar() {
       ),
     },
     {
-      key: "contact",
+      key: "/contact",
       label: (
         <Link
           href="/contact"
           className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
           }`}
         >
           Contact
@@ -139,12 +199,16 @@ export default function Navbar() {
       ),
     },
     {
-      key: "faq",
+      key: "/faq",
       label: (
         <Link
-          href="/faqs"
+          href="/faq"
           className={`font-dm_sans ${
-            isNavbarDark ? "text-black md:!text-white" : "!text-black"
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
           }`}
         >
           FAQs
@@ -158,7 +222,17 @@ export default function Navbar() {
   };
 
   const menuTheme = isNavbarDark ? "dark" : "light";
-
+  const pathname = usePathname();
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  useEffect(() => {
+    const basePath = `/${pathname.split("/")[1]}`;
+    const activeKey = menuItems.find(
+      (item) => item?.key?.toString() === basePath
+    )?.key;
+    if (activeKey !== undefined)
+      setSelectedKeys(activeKey ? [activeKey.toString()] : []);
+    if (pathname === "/") setSelectedKeys([]);
+  }, [pathname]);
   return (
     <>
       <style>
@@ -203,8 +277,10 @@ export default function Navbar() {
               mode="horizontal"
               items={menuItems}
               theme={menuTheme}
-              selectable={false}
+              selectedKeys={selectedKeys}
+              onSelect={({ selectedKeys }) => setSelectedKeys(selectedKeys)}
               forceSubMenuRender
+              selectable
               className="transparent-menu"
             />
           </div>
@@ -212,7 +288,9 @@ export default function Navbar() {
           {/* Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
-              <ProfileAvatar theme={isNavbarDark ? "dark" : "light"} />
+              <ProfileAvatar
+                theme={isNavbarDark || isAtTop ? "dark" : "light"}
+              />
             ) : (
               <>
                 <Link href={LOGIN_PATH}>
@@ -242,7 +320,7 @@ export default function Navbar() {
                 <MenuOutlined
                   className={classNames(
                     "text-xl",
-                    isNavbarDark ? "!text-white" : "text-black"
+                    isAtTop || isNavbarDark ? "!text-white" : "text-black"
                   )}
                 />
               }
@@ -295,4 +373,3 @@ export default function Navbar() {
     </>
   );
 }
-

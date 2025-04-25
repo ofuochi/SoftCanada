@@ -7,8 +7,8 @@ blocks:
 
       Explore tools, resources, and expert guidance to help you succeed in your
       Canadian journey.
-    buttonText: Get Started
-    buttonLink: /dashboard
+    buttonText: Get Started Now
+    buttonLink: /auth/login
     backgroundImage: /images/landing/hero_section_bg.jpg
     _template: welcomeHero
   - sectionTitle: |
@@ -75,7 +75,7 @@ blocks:
       your guide through the complex maze of opportunity — we make your
       transition effortless and exciting.
     step1:
-      - title: "Lift Off: Sign Up"
+      - title: 'Lift Off: Sign Up'
         description: >-
           Begin your adventure by signing up for a SoftCanada account.
           Registration takes just a moment, but it opens the doors to all of our
