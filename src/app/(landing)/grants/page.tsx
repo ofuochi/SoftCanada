@@ -5,7 +5,7 @@ import irelandSchorlarship from "../../../../public/images/landing/irelandSchola
 import cheveningSchorlarships from "../../../../public/images/landing/cheveningScholarships.png";
 import { dbConnection } from "@/lib/db-conn";
 import { CategoryBlogList } from "@/components/app/CategoryBlogList";
-import { Blogs } from "@/tina/__generated__/types";
+import { Blogs, LandingBlocksWelcomeHero } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
 import Image from "next/image";
 
@@ -18,19 +18,16 @@ export default async function GrantsPage() {
     relativePath: "grants.md",
   });
   return (
-    <section className="-mt-16">
+    <div className="-mt-16">
       {query?.data?.landing?.blocks?.map((block, i) => {
         if (!block) return <></>;
-        switch (block.__typename) {
-          case "LandingBlocksWelcomeHero":
-            return (
-              <section key={i}>
-                <HeroSection {...block} cmsQuery={query} />
-              </section>
-            );
-          default:
-            return <></>;
-        }
+        return (
+          <HeroSection
+            {...(block as LandingBlocksWelcomeHero)}
+            cmsQuery={query}
+            key={i}
+          />
+        );
       })}
 
       <section className="">
@@ -170,6 +167,6 @@ export default async function GrantsPage() {
         </section>
         <CategoryBlogList category="" blogPosts={allBlogs as Blogs[]} />
       </section>
-    </section>
+    </div>
   );
 }

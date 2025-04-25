@@ -1,10 +1,18 @@
+import HeroSection from "@/components/landing/HeroSection";
 import { Button } from "antd";
 import React from "react";
 import { FaEnvelope, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 
 export default function ContactPage() {
   return (
-    <>
+    <div className="-mt-16">
+      <HeroSection
+        backgroundImage="/images/landing/contact.jpg"
+        buttonLink=""
+        buttonText=""
+        message="Message"
+        cmsQuery={{}}
+      />
       <section className="mt-10 px-4 md:px-16">
         <div className="text-center">
           <h3 className="text-3xl md:text-3xl lg:text-4xl font-bold">
@@ -86,6 +94,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
