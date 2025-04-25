@@ -199,10 +199,10 @@ export default function Navbar() {
       ),
     },
     {
-      key: "/faq",
+      key: "/faqs",
       label: (
         <Link
-          href="/faq"
+          href="/faqs"
           className={`font-dm_sans ${
             isAtTop && !isMobileMenuOpen
               ? "!text-white"
@@ -373,3 +373,4 @@ export default function Navbar() {
     </>
   );
 }
+
