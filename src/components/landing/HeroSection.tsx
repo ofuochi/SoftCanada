@@ -6,16 +6,17 @@ import {
   LandingBlocksWelcomeHero,
   LandingQuery,
 } from "@/tina/__generated__/types";
-import Link from "next/link";
 import React, { useState } from "react";
 import SampleModal from "../modals/SampleModal";
+import { useRouter } from "next/navigation";
 
 type Props = LandingBlocksWelcomeHero & {
   cmsQuery?: any;
+  handleClick?: () => void;
 };
 
 const HeroSection: React.FC<Props> = (props) => {
-  const [showModal, setShowModal] = useState(false);
+  const router = useRouter();
   // Re-hydrate Tina content on client (only in edit mode)
   const { data } = useTina<LandingQuery>(props.cmsQuery);
 
@@ -25,6 +26,14 @@ const HeroSection: React.FC<Props> = (props) => {
 
   const { backgroundImage, message, buttonLink, buttonText } =
     heroBlock ?? props;
+
+  const handleButtonClick = (buttonLink: string) => () => {
+    if (props.handleClick) {
+      props.handleClick();
+    } else {
+      router.push(buttonLink);
+    }
+  };
 
   return (
     <section
@@ -67,7 +76,7 @@ const HeroSection: React.FC<Props> = (props) => {
               {buttonText}
             </Link> */}
             <span
-              onClick={() => setShowModal(true)}
+              onClick={handleButtonClick(buttonLink)}
               data-tina-field={tinaField(heroBlock, "buttonText")}
               className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
             >
@@ -76,7 +85,7 @@ const HeroSection: React.FC<Props> = (props) => {
           </div>
         </div>
       </div>
-      <SampleModal isModalOpen={showModal} setIsModalOpen={setShowModal} />
+      {/* <SampleModal isModalOpen={showModal} setIsModalOpen={setShowModal} /> */}
     </section>
   );
 };
