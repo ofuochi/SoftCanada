@@ -55,15 +55,17 @@ const HeroSection: React.FC<Props> = (props) => {
             />
           </div>
 
-          <div className="mt-8">
-            <Link
-              href={buttonLink}
-              data-tina-field={tinaField(heroBlock, "buttonText")}
-              className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
-            >
-              {buttonText}
-            </Link>
-          </div>
+          {buttonText && (
+            <div className="mt-8">
+              <Link
+                href={buttonLink}
+                data-tina-field={tinaField(heroBlock, "buttonText")}
+                className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
+              >
+                {buttonText}
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </section>
