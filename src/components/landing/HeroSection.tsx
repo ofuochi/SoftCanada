@@ -15,7 +15,7 @@ type Props = LandingBlocksWelcomeHero & {
 
 const HeroSection: React.FC<Props> = (props) => {
   // Re-hydrate Tina content on client (only in edit mode)
-  const { data } = useTina<LandingQuery>(props.cmsQuery);
+  const { data } = useTina<LandingQuery>(props.cmsQuery || {});
 
   const heroBlock = data?.landing?.blocks?.find(
     (b) => b?.__typename === "LandingBlocksWelcomeHero"
