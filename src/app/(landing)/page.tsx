@@ -2,10 +2,10 @@ import HeroSection from "@/components/landing/HeroSection";
 import CallToActionSection from "@/components/landing/home/CallToActionSection";
 import FeaturesSection from "@/components/landing/home/FeaturesSection";
 import HowItWorksSection from "@/components/landing/home/HowItWorksSection";
-import client from "@/tina/__generated__/client";
+import { dbConnection } from "@/lib/db-conn";
 
 export default async function Home() {
-  const query = await client.queries.landing({ relativePath: "home.md" });
+  const query = await dbConnection.queries.landing({ relativePath: "home.md" });
   return (
     <>
       {query?.data?.landing?.blocks?.map((block, i) => {
@@ -13,7 +13,7 @@ export default async function Home() {
         switch (block.__typename) {
           case "LandingBlocksWelcomeHero":
             return (
-              <section key={i}>
+              <section key={i} className="-mt-16">
                 <HeroSection {...block} cmsQuery={query} />
               </section>
             );
@@ -48,4 +48,3 @@ export default async function Home() {
     </>
   );
 }
-

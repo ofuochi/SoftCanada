@@ -1,10 +1,10 @@
-import client from "@/tina/__generated__/client";
+import { dbConnection } from "@/lib/db-conn";
 import { FooterComponent } from "./FooterComponent";
 
 export default async function Footer() {
   let query;
   try {
-    query = await client.queries.footer({
+    query = await dbConnection.queries.footer({
       relativePath: "footer.md",
     });
   } catch (err) {

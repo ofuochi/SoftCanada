@@ -3,7 +3,7 @@ import featuredProperty from "../../../../public/images/landing/featuredProperty
 import bed from "../../../../public/images/icons/bed.svg";
 import location from "../../../../public/images/icons/location.svg";
 import arrowWithCircle from "../../../../public/images/icons/arrowWithCircle.svg";
-import client from "@/tina/__generated__/client";
+import { dbConnection } from "@/lib/db-conn";
 import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
@@ -11,15 +11,15 @@ import Image from "next/image";
 import RealEstateHero from "@/components/landing/real-estate/RealEstateHero";
 
 export default async function RealEstatePage() {
-  const result = await client.queries.blogsConnection();
+  const result = await dbConnection.queries.blogsConnection();
   const allBlogs =
     result.data.blogsConnection.edges?.map((edge) => edge?.node) || [];
 
-  const query = await client.queries.landing({
+  const query = await dbConnection.queries.landing({
     relativePath: "real-estate.md",
   });
   return (
-    <section className="">
+    <section className="-mt-16">
       {query?.data?.landing?.blocks?.map((block, i) => {
         if (!block) return <></>;
         switch (block.__typename) {
@@ -225,4 +225,3 @@ export default async function RealEstatePage() {
     </section>
   );
 }
-

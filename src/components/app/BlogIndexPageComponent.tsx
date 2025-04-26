@@ -2,11 +2,11 @@
 
 import { Blogs, BlogsConnectionQuery } from "@/tina/__generated__/types";
 import {
+  Image as AntImage,
   Avatar,
   Card,
   Col,
   Divider,
-  Image as AntImage,
   List,
   Row,
   Space,
@@ -16,7 +16,6 @@ import {
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
 import { useTina } from "tinacms/dist/react";
 const { Title, Paragraph, Text } = Typography;
 
@@ -54,9 +53,6 @@ export const BlogIndexPageComponent = ({
 }: Props) => {
   const { data } = useTina<BlogsConnectionQuery>(cmsQuery);
 
-  useEffect(() => {
-    console.log(categories);
-  }, []);
   return (
     <div className="max-w-6xl mx-auto px-4 pb-8">
       {/* Hero Section */}
@@ -215,4 +211,3 @@ export const BlogIndexPageComponent = ({
     </div>
   );
 };
-

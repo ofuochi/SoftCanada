@@ -37,8 +37,7 @@ const HeroSection: React.FC<Props> = (props) => {
 
   return (
     <section
-      className="relative w-full mx-auto overflow-hidden shadow-lg bg-white"
-      style={{ height: "80vh" }}
+      className="relative w-full mx-auto overflow-hidden shadow-lg bg-white h-svh"
       id="hero-section"
     >
       <div

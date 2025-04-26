@@ -1,32 +1,36 @@
-import {LOGOUT_PATH} from "@/constants/paths";
-import {getRoleDescription} from "@/lib/abilities";
-import {DownOutlined, UserOutlined} from "@ant-design/icons";
-import {useUser} from "@auth0/nextjs-auth0";
-import {Avatar, Dropdown, MenuProps, Space, Typography} from "antd";
-import type {AvatarSize} from "antd/es/avatar/AvatarContext";
+import { LOGOUT_PATH } from "@/constants/paths";
+import { getRoleDescription } from "@/lib/abilities";
+import { DownOutlined, UserOutlined } from "@ant-design/icons";
+import { useUser } from "@auth0/nextjs-auth0";
+import { Avatar, Dropdown, MenuProps, Space, Typography } from "antd";
+import type { AvatarSize } from "antd/es/avatar/AvatarContext";
 import Link from "next/link";
 import React from "react";
-import {LuLayoutDashboard} from "react-icons/lu";
+import { LuLayoutDashboard } from "react-icons/lu";
 
-const {Text} = Typography;
+const { Text } = Typography;
 
 type Props = {
   size?: AvatarSize;
   theme?: "light" | "dark";
 };
-export const ProfileAvatar: React.FC<Props> = ({size = "large", theme = "light"}) => {
-  const {user} = useUser();
+export const ProfileAvatar: React.FC<Props> = ({
+  size = "large",
+  theme = "light",
+}) => {
+  const { user } = useUser();
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
+
   const profileMenu: MenuProps = {
     items: [
       {
         key: "0",
         label: (
-          <Link href="/dashboard" className="!font-dm_sans">
-            <Space><LuLayoutDashboard/> Dashboard</Space>
+          <Link href="/resumes" className="!font-dm_sans">
+            <Space>
+              <LuLayoutDashboard /> Dashboard
+            </Space>
           </Link>
         ),
       },
@@ -38,8 +42,8 @@ export const ProfileAvatar: React.FC<Props> = ({size = "large", theme = "light"}
           </Link>
         ),
       },
-      {key: "2", label: <span className="!font-dm_sans">Settings</span>},
-      {key: "divider", type: "divider"},
+      { key: "2", label: <span className="!font-dm_sans">Settings</span> },
+      { key: "divider", type: "divider" },
       {
         key: "3",
         label: (
@@ -56,20 +60,32 @@ export const ProfileAvatar: React.FC<Props> = ({size = "large", theme = "light"}
       <Space className="cursor-pointer px-3">
         <Avatar
           size={size}
-          icon={<UserOutlined/>}
+          icon={<UserOutlined />}
           src={user?.picture}
           alt={user?.name || "User"}
         />
-        <div className="text-sm">
-          <Text className={`block capitalize ${theme === "dark" ? "!text-white" : ""}`} color="white"
-          >{user?.nickname}</Text>
-          <Text type="secondary" className={`block !text-xs ${theme === "dark" ? "!text-gray-100" : ""}`}>
+        <div className="text-sm text-nowrap">
+          <Text
+            className={`block capitalize ${
+              theme === "dark" ? "!text-white" : ""
+            }`}
+            color="white"
+          >
+            {user?.given_name || user?.nickname}
+          </Text>
+          <Text
+            type="secondary"
+            className={`block !text-xs ${
+              theme === "dark" ? "!text-gray-100" : ""
+            }`}
+          >
             {getRoleDescription(user)}
           </Text>
         </div>
-        <DownOutlined className={`text-sm ${theme === "dark" ? "!text-white" : ""}`}/>
+        <DownOutlined
+          className={`text-sm ${theme === "dark" ? "!text-white" : ""}`}
+        />
       </Space>
     </Dropdown>
   );
 };
-

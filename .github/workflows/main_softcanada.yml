@@ -51,6 +51,14 @@ jobs:
           file: ./Dockerfile
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
+          secrets: |
+            SOFTCAN_GITHUB_PAT=${{ secrets.SOFTCAN_GITHUB_PAT }}
+            COSMOS_KEY=${{ secrets.COSMOS_KEY }}
+          build-args: |
+            SOFTCAN_GITHUB_OWNER=${{ vars.SOFTCAN_GITHUB_OWNER }}
+            SOFTCAN_GITHUB_REPO=${{ vars.SOFTCAN_GITHUB_REPO }}
+            SOFTCAN_GITHUB_BRANCH=${{ vars.SOFTCAN_GITHUB_BRANCH }}
+            COSMOS_ENDPOINT=${{ vars.COSMOS_ENDPOINT }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -68,4 +76,3 @@ jobs:
           slot-name: "production"
           publish-profile: ${{ secrets.AzureAppService_PublishProfile_8b3e7d51ff7d46bc8a220a8774acea88 }}
           images: "softcanada.azurecr.io/softcanada/nextjs-app:${{ github.sha }}"
-
