@@ -8,6 +8,7 @@ import chooseDestination from "../../../../public/images/landing/chooseDestinati
 import gatherDocuments from "../../../../public/images/landing/gatherDocuments.png";
 import dreamRental from "../../../../public/images/landing/dreamRental.png";
 import moveIn from "../../../../public/images/landing/moveIn.png";
+import ImmigrationHero from "@/components/landing/immigration/ImmigrationHero";
 
 export default async function ImmigrationPage() {
   const result = await client.queries.blogsConnection();
@@ -25,7 +26,7 @@ export default async function ImmigrationPage() {
           case "LandingBlocksWelcomeHero":
             return (
               <section key={i}>
-                <HeroSection {...block} cmsQuery={query} />
+                <ImmigrationHero {...block} />
               </section>
             );
           default:

@@ -6,6 +6,7 @@ import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
 import Image from "next/image";
+import FinanceHero from "@/components/landing/finance/FinanceHero";
 
 export default async function FinancePage() {
   const result = await client.queries.blogsConnection();
@@ -23,7 +24,7 @@ export default async function FinancePage() {
           case "LandingBlocksWelcomeHero":
             return (
               <section key={i}>
-                <HeroSection {...block} cmsQuery={query} />
+                <FinanceHero {...block} />
               </section>
             );
           default:

@@ -8,6 +8,7 @@ import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
 import Image from "next/image";
+import GrantsHero from "@/components/landing/grants/GrantsHero";
 
 export default async function GrantsPage() {
   const result = await client.queries.blogsConnection();
@@ -25,7 +26,7 @@ export default async function GrantsPage() {
           case "LandingBlocksWelcomeHero":
             return (
               <section key={i}>
-                <HeroSection {...block} cmsQuery={query} />
+                <GrantsHero {...block} />
               </section>
             );
           default:

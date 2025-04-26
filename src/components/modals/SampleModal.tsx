@@ -22,8 +22,8 @@ const SampleModal: React.FC<SampleModalProps> = ({
 
   return (
     <Modal
-      title="Heading"
       centered
+      title="Heading"
       open={isModalOpen}
       onOk={handleModalOpen}
       onCancel={handleModalClose}
@@ -63,7 +63,7 @@ const SampleModal: React.FC<SampleModalProps> = ({
           </Form.Item>
           <Form.Item>
             <Button className="!bg-[#010B18] !border !border-[#010B18] !w-[167px] !h-[44px] rounded-[6px] !text-white !font-poppins">
-              Add Expertise
+              Submit
             </Button>
           </Form.Item>
         </section>
