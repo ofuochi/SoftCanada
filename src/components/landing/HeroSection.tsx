@@ -6,14 +6,17 @@ import {
   LandingBlocksWelcomeHero,
   LandingQuery,
 } from "@/tina/__generated__/types";
-import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import SampleModal from "../modals/SampleModal";
+import { useRouter } from "next/navigation";
 
 type Props = LandingBlocksWelcomeHero & {
   cmsQuery?: any;
+  handleClick?: () => void;
 };
 
 const HeroSection: React.FC<Props> = (props) => {
+  const router = useRouter();
   // Re-hydrate Tina content on client (only in edit mode)
   const { data } = useTina<LandingQuery>(props.cmsQuery || {});
 
@@ -23,6 +26,14 @@ const HeroSection: React.FC<Props> = (props) => {
 
   const { backgroundImage, message, buttonLink, buttonText } =
     heroBlock ?? props;
+
+  const handleButtonClick = (buttonLink: string) => () => {
+    if (props.handleClick) {
+      props.handleClick();
+    } else if (buttonLink) {
+      router.push(buttonLink);
+    }
+  };
 
   return (
     <section
@@ -55,21 +66,28 @@ const HeroSection: React.FC<Props> = (props) => {
             />
           </div>
 
-          {buttonText && (
-            <div className="mt-8">
-              <Link
-                href={buttonLink}
-                data-tina-field={tinaField(heroBlock, "buttonText")}
-                className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
-              >
-                {buttonText}
-              </Link>
-            </div>
-          )}
+          <div className="mt-8">
+            {/* <Link
+              href={buttonLink}
+              data-tina-field={tinaField(heroBlock, "buttonText")}
+              className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
+            >
+              {buttonText}
+            </Link> */}
+            <span
+              onClick={handleButtonClick(buttonLink)}
+              data-tina-field={tinaField(heroBlock, "buttonText")}
+              className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
+            >
+              {buttonText}
+            </span>
+          </div>
         </div>
       </div>
+      {/* <SampleModal isModalOpen={showModal} setIsModalOpen={setShowModal} /> */}
     </section>
   );
 };
 
 export default HeroSection;
+
