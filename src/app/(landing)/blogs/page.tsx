@@ -29,20 +29,27 @@ export default async function BlogIndexPage({ searchParams }: Props) {
     return acc;
   }, Object.fromEntries(BlogCategories.map((cat) => [cat, 0])) as Record<string, number>);
 
+  const query = await dbConnection.queries.blogPage({
+    relativePath: "blogPage.md",
+  });
+
   return (
     <div className="-mt-16">
       <HeroSection
-        backgroundImage="/images/landing/blog.jpg"
+        backgroundImage={
+          query?.data?.blogPage.backgroundImage || "/images/landing/blog.jpg"
+        }
         buttonLink=""
         buttonText=""
-        message="Message"
+        message={query?.data?.blogPage.message}
+        cmsQuery={query}
       />
       <section className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 mx-auto">
         <BlogIndexPageComponent
           categories={BlogCategories}
           categoryCounts={categoryCounts}
           blogPosts={filteredBlogs as Blogs[]}
-          cmsQuery={result}
+          cmsQuery={query}
           selectedCategory={selectedCategory}
         />
       </section>

@@ -1,13 +1,21 @@
 "use client";
 
-import { Blogs, BlogsConnectionQuery } from "@/tina/__generated__/types";
+import {
+  BlogPage,
+  BlogPageConnectionQuery,
+  BlogPageQuery,
+  Blogs,
+  BlogsConnectionQuery,
+} from "@/tina/__generated__/types";
 import {
   Image as AntImage,
   Avatar,
+  Button,
   Card,
   Col,
   Divider,
   List,
+  Result,
   Row,
   Space,
   Tag,
@@ -16,7 +24,8 @@ import {
 import { ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useTina } from "tinacms/dist/react";
+import { tinaField, useTina } from "tinacms/dist/react";
+import { TinaMarkdown } from "tinacms/dist/rich-text";
 const { Title, Paragraph, Text } = Typography;
 
 type Props = {
@@ -51,19 +60,27 @@ export const BlogIndexPageComponent = ({
   categoryCounts,
   selectedCategory,
 }: Props) => {
-  const { data } = useTina<BlogsConnectionQuery>(cmsQuery);
+  const { data } = useTina<BlogPageQuery>(cmsQuery);
+  const content = data?.blogPage;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 pb-8">
-      {/* Hero Section */}
-      <div className="text-center mb-12">
-        <h1 className="text-3xl sm:text-5xl font-bold leading-snug break-words">
-          Blogs
-        </h1>
-        <p className="text-lg mt-4 break-words">
-          Explore expert advice, success stories, and practical tips across
-          career, finance, real estate, and immigration.
-        </p>
+    <div className="max-w-6xl mx-auto px-4">
+      <div
+        className="text-center mb-12"
+        data-tina-field={tinaField(content, "blogHeading")}
+      >
+        <TinaMarkdown
+          content={content?.blogHeading}
+          components={{
+            h1: (p: any) => (
+              <h1
+                className="text-3xl sm:text-5xl font-bold leading-snug break-words"
+                {...p}
+              />
+            ),
+            p: (p: any) => <p className="text-lg mt-4 break-words" {...p} />,
+          }}
+        />
       </div>
 
       {selectedCategory ? (
@@ -82,7 +99,12 @@ export const BlogIndexPageComponent = ({
       ) : (
         <>
           {/* Top Categories */}
-          <h2 className="text-2xl font-semibold mb-6">Top categories</h2>
+          <h2
+            className="text-2xl font-semibold mb-6"
+            data-tina-field={tinaField(content, "categoryTitle")}
+          >
+            {content.categoryTitle}
+          </h2>
           <Row gutter={[16, 16]} className="mb-12">
             {categories.map((category, index) => (
               <Col xs={24} sm={12} md={8} key={category}>
@@ -96,7 +118,7 @@ export const BlogIndexPageComponent = ({
                     hoverable
                   >
                     <div className="flex items-center gap-7 !h-full">
-                      <div className="w-[160px]  overflow-clip !h-[90px]">
+                      <div className="w-[160px] overflow-clip !h-[90px]">
                         <Image
                           alt="img"
                           src={`/${images[index]}`}
@@ -123,8 +145,12 @@ export const BlogIndexPageComponent = ({
               </Col>
             ))}
           </Row>
-          <Divider />
-          <h2 className="text-2xl font-semibold mb-6">Recent Articles</h2>
+          {blogPosts.length > 0 && (
+            <>
+              <Divider />
+              <h2 className="text-2xl font-semibold mb-6">Recent Articles</h2>
+            </>
+          )}
         </>
       )}
 
@@ -132,12 +158,28 @@ export const BlogIndexPageComponent = ({
       <List
         itemLayout="vertical"
         size="large"
+        className="mb-8"
         pagination={{
           pageSize: 5,
           showSizeChanger: false,
           hideOnSinglePage: true,
         }}
         dataSource={blogPosts}
+        locale={{
+          emptyText: (
+            <Result
+              title="No articles available"
+              subTitle="Come back later for more articles."
+              extra={
+                <Link href="/">
+                  <Button type="primary" key="console">
+                    Back to Home
+                  </Button>
+                </Link>
+              }
+            />
+          ),
+        }}
         renderItem={(post) => (
           <Link
             href={`/blogs/${post._sys.breadcrumbs.join("/")}`}

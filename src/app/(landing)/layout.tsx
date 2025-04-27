@@ -10,6 +10,7 @@ import { Metadata } from "next";
 import localFont from "next/font/local";
 import React from "react";
 import { Auth0Provider } from "@auth0/nextjs-auth0";
+import { ErrorProvider } from "@/contexts/ErrorContext";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -43,7 +44,7 @@ export default async function LandingLayout({
               <>
                 <Navbar />
                 <main className="relative min-h-screen bg-white pt-16 font-dm_sans">
-                  {children}
+                  <ErrorProvider>{children}</ErrorProvider>
                 </main>
                 <Footer />
               </>

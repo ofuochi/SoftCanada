@@ -8,6 +8,7 @@ import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
 import Image from "next/image";
+import RealEstateHero from "@/components/landing/real-estate/RealEstateHero";
 
 export default async function RealEstatePage() {
   const result = await dbConnection.queries.blogsConnection();
@@ -25,7 +26,7 @@ export default async function RealEstatePage() {
           case "LandingBlocksWelcomeHero":
             return (
               <section key={i}>
-                <HeroSection {...block} cmsQuery={query} />
+                <RealEstateHero {...block} />
               </section>
             );
           default:

@@ -4,9 +4,7 @@ import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
 import Image from "next/image";
-import chooseDestination from "../../../../public/images/landing/chooseDestination.png";
-import gatherDocuments from "../../../../public/images/landing/gatherDocuments.png";
-import dreamRental from "../../../../public/images/landing/dreamRental.png";
+import ImmigrationHero from "@/components/landing/immigration/ImmigrationHero";
 
 export default async function ImmigrationPage() {
   const result = await dbConnection.queries.blogsConnection();
@@ -24,7 +22,7 @@ export default async function ImmigrationPage() {
           case "LandingBlocksWelcomeHero":
             return (
               <section key={i}>
-                <HeroSection {...block} cmsQuery={query} />
+                <ImmigrationHero {...block} />
               </section>
             );
           default:
@@ -65,7 +63,7 @@ export default async function ImmigrationPage() {
             <Image
               width={500}
               height={500}
-              src={chooseDestination}
+              src="/images/landing/chooseDestination.png"
               alt="chooseDestination"
             />
           </div>
@@ -76,7 +74,7 @@ export default async function ImmigrationPage() {
             <Image
               width={500}
               height={500}
-              src={gatherDocuments}
+              src="/images/landing/gatherDocuments.png"
               alt="gatherDocuments"
             />
           </div>
@@ -121,7 +119,7 @@ export default async function ImmigrationPage() {
             <Image
               width={500}
               height={500}
-              src={dreamRental}
+              src="/images/landing/dreamRental.png"
               alt="dreamRental"
             />
           </div>
@@ -132,7 +130,7 @@ export default async function ImmigrationPage() {
             <Image
               width={500}
               height={500}
-              src={dreamRental}
+              src="/images/landing/dreamRental.png"
               alt="dreamRental"
             />
           </div>
@@ -168,3 +166,4 @@ export default async function ImmigrationPage() {
     </section>
   );
 }
+

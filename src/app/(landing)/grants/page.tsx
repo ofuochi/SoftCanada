@@ -8,6 +8,7 @@ import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs, LandingBlocksWelcomeHero } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
 import Image from "next/image";
+import GrantsHero from "@/components/landing/grants/GrantsHero";
 
 export default async function GrantsPage() {
   const result = await dbConnection.queries.blogsConnection();
@@ -21,13 +22,16 @@ export default async function GrantsPage() {
     <div className="-mt-16">
       {query?.data?.landing?.blocks?.map((block, i) => {
         if (!block) return <></>;
-        return (
-          <HeroSection
-            {...(block as LandingBlocksWelcomeHero)}
-            cmsQuery={query}
-            key={i}
-          />
-        );
+        switch (block.__typename) {
+          case "LandingBlocksWelcomeHero":
+            return (
+              <section key={i}>
+                <GrantsHero {...block} />
+              </section>
+            );
+          default:
+            return <></>;
+        }
       })}
 
       <section className="">
@@ -170,3 +174,4 @@ export default async function GrantsPage() {
     </div>
   );
 }
+

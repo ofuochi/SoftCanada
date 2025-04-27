@@ -1,10 +1,10 @@
-import HeroSection from "@/components/landing/HeroSection";
+import CareerHero from "@/components/landing/career/CareerHero";
 import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
 import { dbConnection } from "@/lib/db-conn";
 
-export default async function RealEstatePage() {
+export default async function CareerLandingPage() {
   const result = await dbConnection.queries.blogsConnection();
   const allBlogs =
     result.data.blogsConnection.edges?.map((edge) => edge?.node) || [];
@@ -12,6 +12,7 @@ export default async function RealEstatePage() {
   const query = await dbConnection.queries.landing({
     relativePath: "career.md",
   });
+
   return (
     <section className="-mt-16">
       {query?.data?.landing?.blocks?.map((block, i) => {
@@ -20,7 +21,7 @@ export default async function RealEstatePage() {
           case "LandingBlocksWelcomeHero":
             return (
               <section key={i}>
-                <HeroSection {...block} cmsQuery={query} />
+                <CareerHero {...block} />
               </section>
             );
           default:
@@ -41,3 +42,4 @@ export default async function RealEstatePage() {
     </section>
   );
 }
+
