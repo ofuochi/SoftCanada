@@ -4,7 +4,7 @@ import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
 import { dbConnection } from "@/lib/db-conn";
 
-export default async function RealEstatePage() {
+export default async function CareerLandingPage() {
   const result = await dbConnection.queries.blogsConnection();
   const allBlogs =
     result.data.blogsConnection.edges?.map((edge) => edge?.node) || [];

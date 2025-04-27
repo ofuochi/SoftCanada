@@ -1,6 +1,6 @@
 "use client";
 
-import SampleModal from "@/components/modals/SampleModal";
+import ContactModal from "@/components/modals/ContactModal";
 import { useState } from "react";
 import HeroSection from "../HeroSection";
 import { LandingBlocksWelcomeHero } from "@/tina/__generated__/types";
@@ -12,10 +12,14 @@ const CareerHero: React.FC<Props> = (props) => {
 
   const handleClick = () => setShowModal(true);
   return (
-    <>
+    <section>
       <HeroSection {...props} handleClick={handleClick} />
-      <SampleModal isModalOpen={showModal} setIsModalOpen={setShowModal} />
-    </>
+      <ContactModal
+        isModalOpen={showModal}
+        setIsModalOpen={setShowModal}
+        formType="career"
+      />
+    </section>
   );
 };
 

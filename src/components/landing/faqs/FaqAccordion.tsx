@@ -1,7 +1,10 @@
 import { PlusCircleFilled } from "@ant-design/icons";
-import { Collapse, CollapseProps } from "antd";
+import { Collapse, CollapseProps, theme } from "antd";
+import { CSSProperties } from "react";
 
-const items: CollapseProps["items"] = [
+const getItems: (panelStyle: CSSProperties) => CollapseProps["items"] = (
+  panelStyle
+) => [
   {
     key: "1",
     label:
@@ -13,6 +16,7 @@ const items: CollapseProps["items"] = [
         combine practical help with warmth, aesthetics, and belonging.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "2",
@@ -23,6 +27,7 @@ const items: CollapseProps["items"] = [
         through tailored services, community building, and trusted guidance.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "3",
@@ -34,6 +39,7 @@ const items: CollapseProps["items"] = [
         help, connection, and a sense of home.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "4",
@@ -45,6 +51,7 @@ const items: CollapseProps["items"] = [
         residency track, or just arrived, we're here to walk with you.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "5",
@@ -55,6 +62,7 @@ const items: CollapseProps["items"] = [
         advisor sessions, attend events, and explore resources.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "6",
@@ -65,6 +73,7 @@ const items: CollapseProps["items"] = [
         book a free discovery session with a Soft Advisor.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "7",
@@ -76,6 +85,7 @@ const items: CollapseProps["items"] = [
         your needs.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "8",
@@ -87,6 +97,7 @@ const items: CollapseProps["items"] = [
         housing support, and wellness referrals.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "9",
@@ -97,6 +108,7 @@ const items: CollapseProps["items"] = [
         advisor sets their rate, and you'll see pricing before booking.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "10",
@@ -107,6 +119,7 @@ const items: CollapseProps["items"] = [
         application and job search strategies tailored for newcomers.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "11",
@@ -118,6 +131,7 @@ const items: CollapseProps["items"] = [
         support.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "12",
@@ -129,6 +143,7 @@ const items: CollapseProps["items"] = [
         and more.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "13",
@@ -139,6 +154,7 @@ const items: CollapseProps["items"] = [
         and wellness circles to help you build real connections.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "14",
@@ -149,6 +165,7 @@ const items: CollapseProps["items"] = [
         in-person, many services are available online — no matter where you are.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "15",
@@ -159,6 +176,7 @@ const items: CollapseProps["items"] = [
         with people who want to give back or mentor others.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "16",
@@ -169,6 +187,7 @@ const items: CollapseProps["items"] = [
         experts who want to share their wisdom and be paid for their time.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "17",
@@ -179,6 +198,7 @@ const items: CollapseProps["items"] = [
         experience. This ensures high-quality support and professional service.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "18",
@@ -189,6 +209,7 @@ const items: CollapseProps["items"] = [
         users. You're welcome to be both.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "19",
@@ -199,6 +220,7 @@ const items: CollapseProps["items"] = [
         personal information without your consent.
       </p>
     ),
+    style: panelStyle,
   },
   {
     key: "20",
@@ -209,21 +231,62 @@ const items: CollapseProps["items"] = [
         you ever feel stuck, our team is just a message away.
       </p>
     ),
+    style: panelStyle,
   },
 ];
-const FaqAccordion = () => {
+const FaqAccordion: React.FC<{ searchTerm?: string }> = ({ searchTerm }) => {
+  const { token } = theme.useToken();
+  const panelStyle: React.CSSProperties = {
+    marginBottom: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
+    background: token.colorFillAlter,
+    borderRadius: token.borderRadiusLG,
+    border: "none",
+  };
+
+  const allItems = getItems(panelStyle)!;
+
+  const filteredItems = allItems.filter((item) => {
+    if (!searchTerm) return true;
+    const searchLower = searchTerm.toLowerCase();
+    const labelMatch = (item?.label as string)
+      ?.toLowerCase()
+      ?.includes(searchLower);
+    const childrenText = item?.children?.toString() || "";
+    const childrenString = typeof childrenText === "string" ? childrenText : "";
+    const childrenMatch = childrenString.toLowerCase().includes(searchLower);
+    return labelMatch || childrenMatch;
+  });
+
   return (
     <Collapse
       accordion
-      items={items}
-      className="mt-[73px] !gap-10"
+      bordered={false}
+      items={filteredItems}
+      className="mt-[73px]"
       expandIconPosition="end"
-      expandIcon={({ isActive }) => (
-        <PlusCircleFilled rotate={isActive ? 90 : 0} />
-      )}
+      style={{ background: token.colorBgContainer }}
+      expandIcon={({ isActive }) =>
+        isActive ? (
+          <PlusCircleFilled
+            style={{
+              color: token.colorTextHeading,
+              fontSize: 20,
+              transform: "rotate(45deg)",
+            }}
+          />
+        ) : (
+          <PlusCircleFilled
+            style={{
+              color: token.colorTextHeading,
+              fontSize: 20,
+            }}
+          />
+        )
+      }
     />
   );
 };
 
 export default FaqAccordion;
-

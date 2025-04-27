@@ -1,14 +1,13 @@
 ﻿"use client";
 
-import { tinaField, useTina } from "tinacms/dist/react";
-import { TinaMarkdown } from "tinacms/dist/rich-text";
 import {
   LandingBlocksWelcomeHero,
   LandingQuery,
 } from "@/tina/__generated__/types";
-import React, { useState } from "react";
-import SampleModal from "../modals/SampleModal";
 import { useRouter } from "next/navigation";
+import React from "react";
+import { tinaField, useTina } from "tinacms/dist/react";
+import { TinaMarkdown } from "tinacms/dist/rich-text";
 
 type Props = LandingBlocksWelcomeHero & {
   cmsQuery?: any;
@@ -19,13 +18,12 @@ const HeroSection: React.FC<Props> = (props) => {
   const router = useRouter();
   // Re-hydrate Tina content on client (only in edit mode)
   const { data } = useTina<LandingQuery>(props.cmsQuery || {});
+  const heroBlock =
+    data?.landing?.blocks?.find(
+      (b) => b?.__typename === "LandingBlocksWelcomeHero"
+    ) || props;
 
-  const heroBlock = data?.landing?.blocks?.find(
-    (b) => b?.__typename === "LandingBlocksWelcomeHero"
-  );
-
-  const { backgroundImage, message, buttonLink, buttonText } =
-    heroBlock ?? props;
+  const { backgroundImage, message, buttonLink, buttonText } = heroBlock;
 
   const handleButtonClick = (buttonLink: string) => () => {
     if (props.handleClick) {
@@ -66,28 +64,21 @@ const HeroSection: React.FC<Props> = (props) => {
             />
           </div>
 
-          <div className="mt-8">
-            {/* <Link
-              href={buttonLink}
-              data-tina-field={tinaField(heroBlock, "buttonText")}
-              className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
-            >
-              {buttonText}
-            </Link> */}
-            <span
-              onClick={handleButtonClick(buttonLink)}
-              data-tina-field={tinaField(heroBlock, "buttonText")}
-              className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
-            >
-              {buttonText}
-            </span>
-          </div>
+          {buttonText && (
+            <div className="mt-8">
+              <span
+                onClick={handleButtonClick(buttonLink)}
+                data-tina-field={tinaField(heroBlock, "buttonText")}
+                className="bg-red-600 hover:bg-red-500 text-nowrap text-white font-semibold px-10 py-3 shadow-md cursor-pointer"
+              >
+                {buttonText}
+              </span>
+            </div>
+          )}
         </div>
       </div>
-      {/* <SampleModal isModalOpen={showModal} setIsModalOpen={setShowModal} /> */}
     </section>
   );
 };
 
 export default HeroSection;
-

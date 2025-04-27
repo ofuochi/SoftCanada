@@ -3,6 +3,7 @@ import { LandingCollection } from "@/tina/collections/LandingCollection";
 import { TinaAuth } from "@/tinaAuth";
 import { defineConfig } from "tinacms";
 import { FooterCollection } from "./collections/FooterCollection";
+import { BlogPageCollection } from "./collections/BlogPageCollection";
 
 export default defineConfig({
   contentApiUrlOverride: "/api/gql",
@@ -18,6 +19,12 @@ export default defineConfig({
     },
   },
   schema: {
-    collections: [BlogPostCollection, LandingCollection, FooterCollection],
+    collections: [
+      BlogPostCollection,
+      LandingCollection,
+      FooterCollection,
+      BlogPageCollection,
+    ],
   },
 });
+

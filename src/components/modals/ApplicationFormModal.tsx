@@ -10,8 +10,12 @@ import {
   Typography,
   Row,
   Col,
+  message,
+  Spin,
+  Flex,
 } from "antd";
 import moment from "moment";
+import { useApiClient } from "@/hooks/api-hook";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -264,7 +268,7 @@ const getCourseOptions = (province?: ProvinceType): string[] => {
 
 // Form section components
 const PersonalInfoSection: React.FC = () => (
-  <div className="form-section">
+  <div className="form-section py-5">
     <Title className="!font-poppins" level={5}>
       Personal Information
     </Title>
@@ -536,7 +540,7 @@ const CourseSection: React.FC<CourseSectionProps> = ({
           <Col span={24}>
             <Form.Item
               name="selectedCourses"
-              label="If 'Yes', which of these courses are you interested in taking?"
+              label="Which of these courses are you interested in taking?"
               rules={[
                 {
                   required: true,
@@ -588,7 +592,10 @@ const ApplicationFormModal: React.FC<ModalProps> = ({
   setIsModalOpen,
 }) => {
   const [form] = Form.useForm<FormValues>();
+  const { post } = useApiClient();
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<FormValues>({});
+  const [messageApi, contextHolder] = message.useMessage();
 
   // Watch for changes in specific form fields to control conditional rendering
   const maritalStatus = Form.useWatch("maritalStatus", form);
@@ -648,73 +655,101 @@ const ApplicationFormModal: React.FC<ModalProps> = ({
     }
   };
 
-  const handleSubmit = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        console.log("Form submitted:", values);
-        setIsModalOpen(false); // Close modal on successful submission
-      })
-      .catch((errorInfo) => {
-        console.log("Validation failed:", errorInfo);
-      });
+  const handleSubmit = async () => {
+    try {
+      const formValues = await form.validateFields();
+
+      // Map values to API endpoint structure
+      const mappedData = {
+        interestId: Date.now().toString(), // Convert to string
+        firstName: formValues.fullName?.split(" ")[0] || "",
+        lastName: formValues.fullName?.split(" ").slice(1).join(" ") || "",
+        email: formValues.email || "",
+        mobile: formValues.phoneNumber || "",
+        isCitizen: formValues.isCanadianResident === "Yes",
+        hasGrantLoanInterest: formValues.interestedInGrant === "Yes",
+        maritalStatus: formValues.maritalStatus || "",
+        isSpouseInterestInFunding: formValues.spouseInterested || "",
+        spouseName: formValues.spouseFullName || "",
+        spouseEmail: formValues.spouseEmail || "",
+        spouseMobile: formValues.spousePhoneNumber || "",
+        liveInCanada: formValues.isInCanada === "Yes",
+        province: formValues.province || "",
+        dateOfArrival: formValues.arrivalDate?.toISOString() || "",
+        isTakingACourse: formValues.interestedInCourse === "Yes",
+        courses: formValues.selectedCourses || [],
+        preferredStartDate: "", // Not in form
+        studyLevel: "", // Not in form
+        comment: formValues.comments || "", // Map comments field
+      };
+
+      setSubmitting(true);
+      await post("/api/form/study-interest", mappedData);
+
+      messageApi.success("Form submitted successfully!");
+      setIsModalOpen(false);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleModalClose = () => setIsModalOpen(false);
 
   return (
-    <Modal
-      title="Accessing Funds in Canada"
-      open={isModalOpen}
-      onCancel={handleModalClose}
-      width={800}
-      footer={[
-        <Button key="back" onClick={handleModalClose}>
-          Cancel
-        </Button>,
-        <Button key="submit" type="primary" onClick={handleSubmit}>
-          Submit
-        </Button>,
-      ]}
-    >
-      <Form
-        form={form}
-        layout="vertical"
-        onValuesChange={handleValuesChange}
-        initialValues={{
-          isCanadianResident: undefined,
-          interestedInGrant: undefined,
-          maritalStatus: undefined,
-          isInCanada: undefined,
-          province: undefined,
-          interestedInCourse: undefined,
-        }}
+    <>
+      {contextHolder}
+      <Modal
+        open={isModalOpen}
+        onCancel={handleModalClose}
+        width={800}
+        keyboard={!submitting}
+        maskClosable={!submitting}
+        closable={!submitting}
+        footer={[
+          <Button key="back" onClick={handleModalClose} disabled={submitting}>
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            className="!mr-10 !mb-8"
+            onClick={handleSubmit}
+            loading={submitting}
+          >
+            Submit
+          </Button>,
+        ]}
       >
-        <PersonalInfoSection />
-        <ResidencySection />
-        <SpouseSection shouldShow={isMarried} />
-        <LocationSection />
-        <CourseSection shouldShow={showCourseSelection} province={province} />
-        <CommentsSection />
-      </Form>
-    </Modal>
-  );
-};
-
-// Usage example component - this is a wrapper to demonstrate how to use the modal
-const ApplicationFormWrapper: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  return (
-    <div>
-      <Button type="primary" onClick={() => setIsModalOpen(true)}>
-        Open Application Form
-      </Button>
-      <ApplicationFormModal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-      />
-    </div>
+        <Flex gap="middle" vertical>
+          <Spin size="large" tip="Submitting..." spinning={submitting}>
+            <Form
+              form={form}
+              layout="vertical"
+              className="!px-10"
+              onValuesChange={handleValuesChange}
+              initialValues={{
+                isCanadianResident: undefined,
+                interestedInGrant: undefined,
+                maritalStatus: undefined,
+                isInCanada: undefined,
+                province: undefined,
+                interestedInCourse: undefined,
+              }}
+            >
+              <PersonalInfoSection />
+              <ResidencySection />
+              <SpouseSection shouldShow={isMarried} />
+              <LocationSection />
+              <CourseSection
+                shouldShow={showCourseSelection}
+                province={province}
+              />
+              <CommentsSection />
+            </Form>
+          </Spin>
+        </Flex>
+      </Modal>
+    </>
   );
 };
 

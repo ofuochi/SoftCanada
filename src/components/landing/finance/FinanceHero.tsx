@@ -1,6 +1,6 @@
 "use client";
 
-import SampleModal from "@/components/modals/SampleModal";
+import ContactModal from "@/components/modals/ContactModal";
 import { useState } from "react";
 import HeroSection from "../HeroSection";
 import { LandingBlocksWelcomeHero } from "@/tina/__generated__/types";
@@ -14,10 +14,13 @@ const FinanceHero: React.FC<Props> = (props) => {
   return (
     <>
       <HeroSection {...props} handleClick={handleClick} />
-      <SampleModal isModalOpen={showModal} setIsModalOpen={setShowModal} />
+      <ContactModal
+        isModalOpen={showModal}
+        setIsModalOpen={setShowModal}
+        formType="finance"
+      />
     </>
   );
 };
 
 export default FinanceHero;
-

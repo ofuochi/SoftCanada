@@ -1,9 +1,9 @@
 "use client";
 
+import ApplicationFormModal from "@/components/modals/ApplicationFormModal";
+import { LandingBlocksWelcomeHero } from "@/tina/__generated__/types";
 import { useState } from "react";
 import HeroSection from "../HeroSection";
-import { LandingBlocksWelcomeHero } from "@/tina/__generated__/types";
-import ApplicationFormModal from "@/components/modals/ApplicationFormModal";
 
 type Props = LandingBlocksWelcomeHero;
 
@@ -23,4 +23,3 @@ const GrantsHero: React.FC<Props> = (props) => {
 };
 
 export default GrantsHero;
-
