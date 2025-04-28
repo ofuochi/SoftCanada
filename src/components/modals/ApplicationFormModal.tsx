@@ -571,14 +571,14 @@ const CourseSection: React.FC<CourseSectionProps> = ({
 const CommentsSection: React.FC = () => (
   <div className="form-section">
     <Title className="!font-poppins" level={5}>
-      Additional Comments
+      Additional Messages
     </Title>
     <Row gutter={24}>
       <Col span={24}>
-        <Form.Item name="comments" label="Comments">
+        <Form.Item name="comments" label="Messages">
           <TextArea
             rows={4}
-            placeholder="Please provide any additional comments or questions"
+            placeholder="Please provide any additional messages or questions"
           />
         </Form.Item>
       </Col>
@@ -754,3 +754,4 @@ const ApplicationFormModal: React.FC<ModalProps> = ({
 };
 
 export default ApplicationFormModal;
+
