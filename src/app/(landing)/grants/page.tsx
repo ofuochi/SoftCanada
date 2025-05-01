@@ -34,7 +34,7 @@ export default async function GrantsPage() {
         }
       })}
 
-      <section className="">
+      {/* <section className="">
         <h2 className="text-center text-2xl text-black font-semibold my-16 font-lato text-[36px] md:text-[42px] lg:text-[48px] leading-[120%]">
           Popular Grants
         </h2>
@@ -72,7 +72,7 @@ export default async function GrantsPage() {
             </section>
           </section>
         </section>
-      </section>
+      </section> */}
 
       <section className="w-full mx-auto max-w-[1400px] px-5">
         <section className="mt-[100px] mb-10">
@@ -169,7 +169,7 @@ export default async function GrantsPage() {
             description="Maximize your study efforts with our expert advice."
           />
         </section>
-        <CategoryBlogList category="" blogPosts={allBlogs as Blogs[]} />
+        <CategoryBlogList category="study" blogPosts={allBlogs as Blogs[]} />
       </section>
     </div>
   );
