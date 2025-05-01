@@ -178,7 +178,7 @@ const ContactModal: React.FC<ContactModalProps> = ({
           {/* Comments */}
           <Form.Item
             name="comment"
-            label="Comments"
+            label="Message"
             rules={[{ required: true, message: "Please enter your comments" }]}
           >
             <TextArea
