@@ -37,7 +37,7 @@ export default async function CareerLandingPage() {
             description="Explore key factors to consider when selecting your next property."
           />
         </section>
-        <CategoryBlogList category="" blogPosts={allBlogs as Blogs[]} />
+        <CategoryBlogList category="Career" blogPosts={allBlogs as Blogs[]} />
       </section>
     </section>
   );
