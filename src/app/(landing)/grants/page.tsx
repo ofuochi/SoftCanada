@@ -169,7 +169,7 @@ export default async function GrantsPage() {
             description="Maximize your study efforts with our expert advice."
           />
         </section>
-        <CategoryBlogList category="" blogPosts={allBlogs as Blogs[]} />
+        <CategoryBlogList category="study" blogPosts={allBlogs as Blogs[]} />
       </section>
     </div>
   );

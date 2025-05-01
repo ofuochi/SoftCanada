@@ -268,7 +268,7 @@ const getCourseOptions = (province?: ProvinceType): string[] => {
 
 // Form section components
 const PersonalInfoSection: React.FC = () => (
-  <div className="form-section py-5">
+  <div className="py-5">
     <Title className="!font-poppins" level={5}>
       Personal Information
     </Title>
@@ -322,7 +322,7 @@ const PersonalInfoSection: React.FC = () => (
 );
 
 const ResidencySection: React.FC = () => (
-  <div className="form-section">
+  <div className=" ">
     <Title className="!font-poppins" level={5}>
       Residency Information
     </Title>
@@ -379,7 +379,7 @@ const SpouseSection: React.FC<SpouseSectionProps> = ({ shouldShow }) => {
   if (!shouldShow) return null;
 
   return (
-    <div className="form-section">
+    <div className=" ">
       <Title className="!font-poppins" level={5}>
         Spouse Information
       </Title>
@@ -456,7 +456,7 @@ const SpouseSection: React.FC<SpouseSectionProps> = ({ shouldShow }) => {
 };
 
 const LocationSection: React.FC = () => (
-  <div className="form-section">
+  <div className=" ">
     <Title className="!font-poppins" level={5}>
       Location Information
     </Title>
@@ -518,7 +518,7 @@ const CourseSection: React.FC<CourseSectionProps> = ({
   const courseOptions = getCourseOptions(province);
 
   return (
-    <div className="form-section">
+    <div className=" ">
       <Title className="!font-poppins" level={5}>
         Course Information
       </Title>
@@ -569,7 +569,7 @@ const CourseSection: React.FC<CourseSectionProps> = ({
 };
 
 const CommentsSection: React.FC = () => (
-  <div className="form-section">
+  <div className=" ">
     <Title className="!font-poppins" level={5}>
       Additional Messages
     </Title>

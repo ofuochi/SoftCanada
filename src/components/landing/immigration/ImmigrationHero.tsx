@@ -4,6 +4,7 @@ import ContactModal from "@/components/modals/ContactModal";
 import { useState } from "react";
 import HeroSection from "../HeroSection";
 import { LandingBlocksWelcomeHero } from "@/tina/__generated__/types";
+import ImmigrationFormModal from "@/components/modals/ImmigrationFormModal";
 
 type Props = LandingBlocksWelcomeHero;
 
@@ -14,13 +15,13 @@ const ImmigrationHero: React.FC<Props> = (props) => {
   return (
     <>
       <HeroSection {...props} handleClick={handleClick} />
-      <ContactModal
+      <ImmigrationFormModal
         isModalOpen={showModal}
         setIsModalOpen={setShowModal}
-        formType="immigration"
       />
     </>
   );
 };
 
 export default ImmigrationHero;
+
