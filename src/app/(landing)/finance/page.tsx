@@ -134,7 +134,7 @@ export default async function FinancePage() {
             description="Explore key factors to consider when funding your next rental."
           />
         </section>
-        <CategoryBlogList category="" blogPosts={allBlogs as Blogs[]} />
+        <CategoryBlogList category="Finance" blogPosts={allBlogs as Blogs[]} />
       </section>
     </section>
   );
