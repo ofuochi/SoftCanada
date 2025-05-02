@@ -56,3 +56,4 @@ export default async function BlogIndexPage({ searchParams }: Props) {
     </div>
   );
 }
+
