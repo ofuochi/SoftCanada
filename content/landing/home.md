@@ -20,11 +20,12 @@ blocks:
         ### Jobs and Careers Advice
 
 
-        Build your Canadian CV, prepare for interviews, and access career advice
-        tailored to the Canadian job market
+        Build your Canadian CV, ace interviews, and tap into local insights that
+        help you stand out in the job market.
       buttonText: Learn More
       buttonLink: /career
-      image: /images/landing/career_feature.svg
+      image: >-
+        /media/blog-media/colleagues-discussing-business-strategy-in-coworki-2025-02-12-04-27-27-utc.jpg
     realEstateFeature:
       heading: >
         ### Real Estate & Housing
