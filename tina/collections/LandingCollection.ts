@@ -1,7 +1,7 @@
 ﻿import { Collection } from "tinacms";
-import { IconPicker } from "../../src/components/IconPicker";
 
 import * as Icons from "react-icons/fa";
+import { IconPicker } from "@/components/IconPicker";
 
 export const LandingCollection: Collection = {
   name: "landing",
