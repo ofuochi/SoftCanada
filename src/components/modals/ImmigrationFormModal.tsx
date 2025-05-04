@@ -556,7 +556,7 @@ const ImmigrationFormModal: React.FC<ModalProps> = ({
       };
 
       setSubmitting(true);
-      await post("/api/Form/immigration-interest", mappedData);
+      await post("/api/Form/immigration-interest", mappedData, undefined, true);
 
       messageApi.success("Form submitted successfully!");
       setIsModalOpen(false);
@@ -625,4 +625,3 @@ const ImmigrationFormModal: React.FC<ModalProps> = ({
 };
 
 export default ImmigrationFormModal;
-

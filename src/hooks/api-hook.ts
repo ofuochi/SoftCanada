@@ -16,6 +16,7 @@ type RequestType<TData> = {
   url: string;
   data?: TData;
   config?: AxiosRequestConfig;
+  isAnonymous?: boolean; // Flag to indicate if the request is anonymous
 };
 
 /**
@@ -32,14 +33,19 @@ export function useApiClient() {
     url,
     data,
     config,
+    isAnonymous = false,
   }: RequestType<TData>): Promise<TResult> => {
     setInProgress(true); // Set in-progress state to true
-    const accessToken = await getAccessToken();
-    try {
-      const headers = accessToken
-        ? { Authorization: `Bearer ${accessToken}` }
-        : {};
+    let headers = {};
+    if (!isAnonymous) {
+      // Add authorization header if not anonymous
+      const accessToken = await getAccessToken();
+      if (accessToken) {
+        headers = { Authorization: `Bearer ${accessToken}` };
+      }
+    }
 
+    try {
       const response: AxiosResponse<TResult> = await axios({
         method,
         url: `${BASE_URL}${url}`,
@@ -78,8 +84,10 @@ export function useApiClient() {
   const post = <TResult, TData = unknown>(
     url: string,
     data?: TData,
-    config?: AxiosRequestConfig
-  ) => request<TResult, TData>({ method: "post", url, data, config });
+    config?: AxiosRequestConfig,
+    isAnonymous: boolean = false
+  ) =>
+    request<TResult, TData>({ method: "post", url, data, config, isAnonymous });
 
   const put = <TData = unknown>(
     url: string,

@@ -42,7 +42,7 @@ export class TinaAuth extends AbstractAuthProvider {
   async authorize(): Promise<boolean> {
     try {
       const response = await fetch("/auth/profile");
-      if (!response.ok) throw new Error("Failed to fetch profile");
+      if (!response.ok) return false;
 
       const user = await response.json();
       if (!user) return false;
@@ -58,3 +58,4 @@ export class TinaAuth extends AbstractAuthProvider {
     return Auth0Provider as FC;
   }
 }
+

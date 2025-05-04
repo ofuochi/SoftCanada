@@ -62,7 +62,7 @@ const ContactModal: React.FC<ContactModalProps> = ({
   const handleSubmit = async (values: ContactFormType) => {
     setSubmitting(true);
     try {
-      await post("/api/Form/submitOtherCategories", values);
+      await post("/api/Form/submitOtherCategories", values, undefined, true);
       setIsModalOpen(false);
       form.resetFields();
       form.setFieldsValue({ formType });
