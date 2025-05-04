@@ -28,13 +28,13 @@ blocks:
         /media/blog-media/colleagues-discussing-business-strategy-in-coworki-2025-02-12-04-27-27-utc.jpg
     realEstateFeature:
       heading: >
-        ### Real Estate & Housing
+        ### Study Grants
 
 
-        Explore properties, calculate mortgages, and find the perfect place to
-        call home in Canada.
+        Simplify your settlement in Canada by securing comprehensive financial
+        support for your education and living expenses. 
       buttonText: Learn More
-      buttonLink: /real-estate
+      buttonLink: /study
       image: /images/landing/rental_listing_feature.svg
     immigrationFeature:
       heading: >
