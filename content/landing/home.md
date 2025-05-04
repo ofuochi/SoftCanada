@@ -58,12 +58,12 @@ blocks:
       buttonLink: /finance
       image: /images/landing/finance_feature.svg
     grantsFeature:
-      heading: |
-        ### Grants
+      heading: >
+        ### Real Estate
 
-        Explore opportunities for starting your own business in
-        Canada, learn about grants, and find networking events to help
-        you connect with other entrepreneurs.
+
+        From rental tips to trusted tools, we help you make sense of Canada’s
+        housing landscape—so your first place feels like home, not just a space.
       buttonText: Learn More
       buttonLink: /grants
       image: /images/landing/grant_feature.jpg
