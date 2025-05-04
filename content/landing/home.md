@@ -65,7 +65,7 @@ blocks:
         From rental tips to trusted tools, we help you make sense of Canada’s
         housing landscape—so your first place feels like home, not just a space.
       buttonText: Learn More
-      buttonLink: /grants
+      buttonLink: /realestate
       image: /images/landing/grant_feature.jpg
     _template: homepageFeatureBlock
   - heading: >
