@@ -4,6 +4,7 @@ import { TinaAuth } from "@/tinaAuth";
 import { defineConfig } from "tinacms";
 import { FooterCollection } from "./collections/FooterCollection";
 import { BlogPageCollection } from "./collections/BlogPageCollection";
+import { ContactCollection } from "./collections/ContactCollection";
 
 export default defineConfig({
   contentApiUrlOverride: "/api/gql",
@@ -24,7 +25,7 @@ export default defineConfig({
       LandingCollection,
       FooterCollection,
       BlogPageCollection,
+      ContactCollection,
     ],
   },
 });
-
