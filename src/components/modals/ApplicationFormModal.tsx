@@ -684,7 +684,7 @@ const ApplicationFormModal: React.FC<ModalProps> = ({
       };
 
       setSubmitting(true);
-      await post("/api/form/study-interest", mappedData);
+      await post("/api/form/study-interest", mappedData, undefined, true);
 
       messageApi.success("Form submitted successfully!");
       setIsModalOpen(false);
@@ -754,4 +754,3 @@ const ApplicationFormModal: React.FC<ModalProps> = ({
 };
 
 export default ApplicationFormModal;
-

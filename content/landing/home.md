@@ -20,20 +20,21 @@ blocks:
         ### Jobs and Careers Advice
 
 
-        Build your Canadian CV, prepare for interviews, and access career advice
-        tailored to the Canadian job market
+        Build your Canadian CV, ace interviews, and tap into local insights that
+        help you stand out in the job market.
       buttonText: Learn More
       buttonLink: /career
-      image: /images/landing/career_feature.svg
+      image: >-
+        /media/blog-media/colleagues-discussing-business-strategy-in-coworki-2025-02-12-04-27-27-utc.jpg
     realEstateFeature:
       heading: >
-        ### Real Estate & Housing
+        ### Study Grants
 
 
-        Explore properties, calculate mortgages, and find the perfect place to
-        call home in Canada.
+        Simplify your settlement in Canada by securing comprehensive financial
+        support for your education and living expenses. 
       buttonText: Learn More
-      buttonLink: /real-estate
+      buttonLink: /study
       image: /images/landing/rental_listing_feature.svg
     immigrationFeature:
       heading: >
@@ -57,14 +58,14 @@ blocks:
       buttonLink: /finance
       image: /images/landing/finance_feature.svg
     grantsFeature:
-      heading: |
-        ### Grants
+      heading: >
+        ### Real Estate
 
-        Explore opportunities for starting your own business in
-        Canada, learn about grants, and find networking events to help
-        you connect with other entrepreneurs.
+
+        From rental tips to trusted tools, we help you make sense of Canada’s
+        housing landscape—so your first place feels like home, not just a space.
       buttonText: Learn More
-      buttonLink: /grants
+      buttonLink: /realestate
       image: /images/landing/grant_feature.jpg
     _template: homepageFeatureBlock
   - heading: >
