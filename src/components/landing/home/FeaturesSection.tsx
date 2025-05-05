@@ -84,8 +84,8 @@ export default function FeaturesSection(props: Props) {
               src={content.jobFeature!.image!}
               data-tina-field={tinaField(content.jobFeature, "image")}
               alt="career feature"
-              width={10}
-              height={10}
+              width={500}
+              height={500}
               className="w-full mt-14 flex-shrink-0"
             />
           </div>
@@ -99,8 +99,8 @@ export default function FeaturesSection(props: Props) {
               }
               data-tina-field={tinaField(content.realEstateFeature, "image")}
               alt="rental listing feature"
-              width={10}
-              height={10}
+              width={500}
+              height={500}
               className="w-full flex-shrink-0"
             />
             <div className="px-4 sm:px-8 md:px-14 mt-auto">
@@ -156,8 +156,8 @@ export default function FeaturesSection(props: Props) {
               }
               data-tina-field={tinaField(content.financeFeature, "image")}
               alt="finance feature"
-              width={10}
-              height={10}
+              width={500}
+              height={500}
               className="w-full px-4 sm:px-8 md:px-14 flex-shrink-0"
             />
             <div className="px-4 sm:px-8 md:px-14 pt-5">
