@@ -27,10 +27,8 @@ export const ProfileAvatar: React.FC<Props> = ({
       {
         key: "0",
         label: (
-          <Link href="/resumes" className="!font-dm_sans">
-            <Space>
-              <LuLayoutDashboard /> Dashboard
-            </Space>
+          <Link href="/dashboard/resumes" className="!font-dm_sans">
+            <Space>Resume</Space>
           </Link>
         ),
       },
@@ -89,3 +87,4 @@ export const ProfileAvatar: React.FC<Props> = ({
     </Dropdown>
   );
 };
+
