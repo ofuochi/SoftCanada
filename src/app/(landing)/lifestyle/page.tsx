@@ -1,16 +1,16 @@
-import CareerHero from "@/components/landing/career/CareerHero";
+import { dbConnection } from "@/lib/db-conn";
 import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
-import { dbConnection } from "@/lib/db-conn";
+import LifestyleHero from "@/components/landing/lifestyle/LifestyleHero";
 
-export default async function CareerLandingPage() {
+export default async function LifestylePage() {
   const result = await dbConnection.queries.blogsConnection();
   const allBlogs =
     result.data.blogsConnection.edges?.map((edge) => edge?.node) || [];
 
   const query = await dbConnection.queries.landing({
-    relativePath: "career.md",
+    relativePath: "lifestyle.md",
   });
 
   return (
@@ -21,7 +21,7 @@ export default async function CareerLandingPage() {
           case "LandingBlocksWelcomeHero":
             return (
               <section key={i}>
-                <CareerHero {...block} />
+                <LifestyleHero {...block} />
               </section>
             );
           default:
@@ -32,12 +32,15 @@ export default async function CareerLandingPage() {
       <section className="my-[120px]">
         <section className="mb-[50px]">
           <SectionHeading
-            topText="Guides & Tips"
-            heading="Career Tips"
-            description="Explore key factors to consider when selecting your next property."
+            topText="Blog Section"
+            heading="Guides & Tips"
+            description="Discover mindful approaches to create a balanced and fulfilling everyday life."
           />
         </section>
-        <CategoryBlogList category="Careers" blogPosts={allBlogs as Blogs[]} />
+        <CategoryBlogList
+          category="Lifestyle"
+          blogPosts={allBlogs as Blogs[]}
+        />
       </section>
     </section>
   );

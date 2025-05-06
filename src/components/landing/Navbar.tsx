@@ -151,7 +151,7 @@ export default function Navbar() {
       key: "/grants",
       label: (
         <Link
-          href="/grants"
+          href="/study"
           className={`font-dm_sans ${
             isAtTop && !isMobileMenuOpen
               ? "!text-white"
@@ -161,6 +161,24 @@ export default function Navbar() {
           }`}
         >
           Study
+        </Link>
+      ),
+    },
+
+    {
+      key: "/lifestyle",
+      label: (
+        <Link
+          href="/lifestyle"
+          className={`font-dm_sans ${
+            isAtTop && !isMobileMenuOpen
+              ? "!text-white"
+              : isNavbarDark
+              ? "text-black md:!text-white"
+              : "!text-black"
+          }`}
+        >
+          Lifestyle
         </Link>
       ),
     },
