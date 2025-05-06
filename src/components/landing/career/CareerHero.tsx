@@ -13,7 +13,7 @@ const CareerHero: React.FC<Props> = (props) => {
   const handleClick = () => setShowModal(true);
   return (
     <section>
-      <HeroSection {...props} handleClick={handleClick} />
+      <HeroSection {...props} handleCallToActionClick={handleClick} />
       <ContactModal
         isModalOpen={showModal}
         setIsModalOpen={setShowModal}
@@ -24,3 +24,4 @@ const CareerHero: React.FC<Props> = (props) => {
 };
 
 export default CareerHero;
+

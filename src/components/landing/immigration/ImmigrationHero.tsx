@@ -14,7 +14,7 @@ const ImmigrationHero: React.FC<Props> = (props) => {
   const handleClick = () => setShowModal(true);
   return (
     <>
-      <HeroSection {...props} handleClick={handleClick} />
+      <HeroSection {...props} handleCallToActionClick={handleClick} />
       <ImmigrationFormModal
         isModalOpen={showModal}
         setIsModalOpen={setShowModal}

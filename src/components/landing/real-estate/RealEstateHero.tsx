@@ -13,7 +13,7 @@ const RealEstateHero: React.FC<Props> = (props) => {
   const handleClick = () => setShowModal(true);
   return (
     <>
-      <HeroSection {...props} handleClick={handleClick} />
+      <HeroSection {...props} handleCallToActionClick={handleClick} />
       <ContactModal
         isModalOpen={showModal}
         setIsModalOpen={setShowModal}
@@ -24,3 +24,4 @@ const RealEstateHero: React.FC<Props> = (props) => {
 };
 
 export default RealEstateHero;
+
