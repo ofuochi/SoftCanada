@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  BlogPage,
-  BlogPageConnectionQuery,
-  BlogPageQuery,
-  Blogs,
-  BlogsConnectionQuery,
-} from "@/tina/__generated__/types";
+import { BlogPageQuery, Blogs } from "@/tina/__generated__/types";
 import {
   Image as AntImage,
   Avatar,
@@ -47,7 +41,7 @@ const colors = [
 const images = [
   "finance_2.svg",
   "immigration.png",
-  "buyHouse.svg",
+  "study.svg",
   "deals_3.svg",
   "career_1.svg",
   "lifestyle.svg",
@@ -253,3 +247,4 @@ export const BlogIndexPageComponent = ({
     </div>
   );
 };
+
