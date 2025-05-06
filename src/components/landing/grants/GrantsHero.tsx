@@ -13,7 +13,7 @@ const GrantsHero: React.FC<Props> = (props) => {
   const handleClick = () => setShowModal(true);
   return (
     <>
-      <HeroSection {...props} handleClick={handleClick} />
+      <HeroSection {...props} handleCallToActionClick={handleClick} />
       <ApplicationFormModal
         isModalOpen={showModal}
         setIsModalOpen={setShowModal}
@@ -23,3 +23,4 @@ const GrantsHero: React.FC<Props> = (props) => {
 };
 
 export default GrantsHero;
+

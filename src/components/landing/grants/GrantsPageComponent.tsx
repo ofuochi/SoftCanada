@@ -125,7 +125,7 @@ export const GrantsPageComponent: React.FC<Props> = ({ blogs }) => {
             description="Maximize your study efforts with our expert advice."
           />
         </section>
-        <CategoryBlogList category="study" blogPosts={blogs} />
+        <CategoryBlogList category="Study" blogPosts={blogs} />
       </section>
       <ApplicationFormModal
         isModalOpen={showApplicationForm}
@@ -134,3 +134,4 @@ export const GrantsPageComponent: React.FC<Props> = ({ blogs }) => {
     </>
   );
 };
+

@@ -71,58 +71,6 @@ export default async function FinancePage() {
               </Link>
             </section>
           </section>
-
-          {/* <section className="space-y-[30px]">
-            <div className="w-full h-fit rounded-3xl">
-              <Image
-                width={483}
-                height={364}
-                alt="investmentTips"
-                src={investmentTips}
-                className="object-cover"
-              />
-            </div>
-            <section className="space-y-6">
-              <div className="space-y-3">
-                <p className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
-                  Investment Tips
-                </p>
-                <p className="text-black text-xl">
-                  {" "}
-                  Discover the basics of growing your savings.
-                </p>
-              </div>
-              <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[200px] flex items-center justify-center">
-                Explore
-              </button>
-            </section>
-          </section> */}
-
-          {/* <section className="space-y-[30px]">
-            <div className="w-full h-fit rounded-3xl">
-              <Image
-                width={483}
-                height={364}
-                alt="budgetTools"
-                src={budgetTools}
-                className="object-cover"
-              />
-            </div>
-            <section className="space-y-6">
-              <div className="space-y-3">
-                <p className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
-                  Financial resources
-                </p>
-                <p className="text-black text-xl">
-                  {" "}
-                  Explore guides to managing your money better.
-                </p>
-              </div>
-              <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[200px] flex items-center justify-center">
-                Explore
-              </button>
-            </section>
-          </section> */}
         </section>
       </section>
 

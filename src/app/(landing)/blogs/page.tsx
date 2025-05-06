@@ -33,6 +33,8 @@ export default async function BlogIndexPage({ searchParams }: Props) {
     relativePath: "blogPage.md",
   });
 
+  console.log(BlogCategories, "all blog categories");
+
   return (
     <div className="-mt-16">
       <HeroSection
@@ -56,3 +58,4 @@ export default async function BlogIndexPage({ searchParams }: Props) {
     </div>
   );
 }
+

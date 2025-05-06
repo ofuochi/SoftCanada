@@ -11,7 +11,7 @@ import { TinaMarkdown } from "tinacms/dist/rich-text";
 
 type Props = LandingBlocksWelcomeHero & {
   cmsQuery?: any;
-  handleClick?: () => void;
+  handleCallToActionClick?: () => void;
 };
 
 const HeroSection: React.FC<Props> = (props) => {
@@ -26,8 +26,8 @@ const HeroSection: React.FC<Props> = (props) => {
   const { backgroundImage, message, buttonLink, buttonText } = heroBlock;
 
   const handleButtonClick = (buttonLink: string) => () => {
-    if (props.handleClick) {
-      props.handleClick();
+    if (props.handleCallToActionClick) {
+      props.handleCallToActionClick();
     } else if (buttonLink) {
       router.push(buttonLink);
     }
@@ -82,3 +82,4 @@ const HeroSection: React.FC<Props> = (props) => {
 };
 
 export default HeroSection;
+

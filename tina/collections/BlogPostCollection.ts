@@ -3,7 +3,7 @@
 export const BlogCategories: readonly string[] = [
   "Finance",
   "Immigration",
-  "Real Estate",
+  "Study",
   "Deals",
   "Careers",
   "Lifestyle",
