@@ -40,7 +40,7 @@ export const ProfileAvatar: React.FC<Props> = ({
           </Link>
         ),
       },
-      { key: "2", label: <span className="!font-dm_sans">Settings</span> },
+      // { key: "2", label: <span className="!font-dm_sans">Settings</span> },
       { key: "divider", type: "divider" },
       {
         key: "3",
