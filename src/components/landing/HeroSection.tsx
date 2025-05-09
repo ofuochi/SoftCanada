@@ -64,7 +64,7 @@ const HeroSection: React.FC<Props> = (props) => {
             />
           </div>
 
-          {buttonText && (
+          {buttonText && buttonText !== "Get Started Now" && (
             <div className="mt-8">
               <span
                 onClick={handleButtonClick(buttonLink)}
