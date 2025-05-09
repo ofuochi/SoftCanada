@@ -175,28 +175,28 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
         </Link>
       ),
     },
-    {
-      key: "/dashboard/advisor",
-      icon: (
-        <UserPen
-          color={`${pathname === "/dashboard/advisor" ? "#010309" : "#808080"}`}
-          strokeWidth={1}
-          size={pathname === "/dashboard/advisor" ? 28 : 24}
-        />
-      ),
-      label: (
-        <Link
-          href="/dashboard/advisor"
-          className={`font-dm_sans text-sm ${
-            pathname === "/dashboard/advisor"
-              ? "!text-[#010309] text-xl"
-              : "!text-[#808080] text-sm"
-          }`}
-        >
-          Advisors
-        </Link>
-      ),
-    },
+    // {
+    //   key: "/dashboard/advisor",
+    //   icon: (
+    //     <UserPen
+    //       color={`${pathname === "/dashboard/advisor" ? "#010309" : "#808080"}`}
+    //       strokeWidth={1}
+    //       size={pathname === "/dashboard/advisor" ? 28 : 24}
+    //     />
+    //   ),
+    //   label: (
+    //     <Link
+    //       href="/dashboard/advisor"
+    //       className={`font-dm_sans text-sm ${
+    //         pathname === "/dashboard/advisor"
+    //           ? "!text-[#010309] text-xl"
+    //           : "!text-[#808080] text-sm"
+    //       }`}
+    //     >
+    //       Advisors
+    //     </Link>
+    //   ),
+    // },
     // {
     //   key: "career",
     //   icon: (
@@ -488,3 +488,4 @@ const SideBar: React.FC<SideBarProps> = ({ collapsed, setCollapsed }) => {
 };
 
 export default SideBar;
+

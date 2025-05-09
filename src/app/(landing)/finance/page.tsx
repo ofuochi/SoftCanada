@@ -1,5 +1,4 @@
-import budgetTools from "../../../../public/images/landing/budgetTools.png";
-import investmentTips from "../../../../public/images/landing/investementTips.png";
+import mortgageCalculator from "../../../../public/images/landing/mortgageCalculator.jpg";
 import { dbConnection } from "@/lib/db-conn";
 import { CategoryBlogList } from "@/components/app/CategoryBlogList";
 import { Blogs } from "@/tina/__generated__/types";
@@ -48,15 +47,15 @@ export default async function FinancePage() {
               <Image
                 width={483}
                 height={364}
-                alt="budgetTools"
-                src={budgetTools}
+                alt="mortgageCalculator"
+                src={mortgageCalculator}
                 className="object-cover"
               />
             </div>
             <section className="space-y-6">
               <div className="space-y-3">
                 <p className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
-                  Budget Tools
+                  Mortgage Calculator
                 </p>
                 <p className="text-black text-xl">
                   {" "}

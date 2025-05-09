@@ -10,6 +10,10 @@ export default async function Home() {
     <>
       {query?.data?.landing?.blocks?.map((block, i) => {
         if (!block) return <></>;
+
+        if (block.__typename === "LandingBlocksWelcomeHero")
+          block.buttonText = "";
+
         switch (block.__typename) {
           case "LandingBlocksWelcomeHero":
             return (
