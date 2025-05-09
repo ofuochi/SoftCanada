@@ -64,7 +64,7 @@ const HeroSection: React.FC<Props> = (props) => {
             />
           </div>
 
-          {buttonText && buttonText !== "Get Started Now" && (
+          {buttonText && (
             <div className="mt-8">
               <span
                 onClick={handleButtonClick(buttonLink)}
@@ -82,4 +82,3 @@ const HeroSection: React.FC<Props> = (props) => {
 };
 
 export default HeroSection;
-
