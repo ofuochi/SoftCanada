@@ -56,7 +56,7 @@ blocks:
         financial goals.
       buttonText: Learn More
       buttonLink: /finance
-      image: /images/landing/finance_feature.svg
+      image: /media/blog-media/pexels-tima-miroshnichenko-5199164.jpg
     grantsFeature:
       heading: >
         ### Study Grants
