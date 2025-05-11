@@ -115,7 +115,7 @@ blocks:
       resources you need.
     buttonText: Join Today!
     buttonLink: /auth/login
-    bgImage: /images/landing/cta_section_bg.jpg
+    bgImage: /media/blog-media/blackfilm.png
     _template: callToActionBlock
 ---
 
