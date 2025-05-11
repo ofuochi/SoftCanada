@@ -35,7 +35,8 @@ blocks:
         that enrich your daily life and help you thrive in your new environment.
       buttonText: Learn More
       buttonLink: /lifestyle
-      image: /images/landing/lifestyleListingFeature.jpg
+      image: >-
+        /media/blog-media/canada-winner-and-black-woman-athlete-with-flag-f-2025-04-06-02-27-07-utc.jpg
     immigrationFeature:
       heading: >
         ### Immigration News & Pathways
