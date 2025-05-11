@@ -116,7 +116,8 @@ blocks:
       resources you need.
     buttonText: Join Today!
     buttonLink: /auth/login
-    bgImage: /media/blog-media/blackfilm.png
+    bgImage: >-
+      /media/blog-media/group-of-multigenerational-friends-smiling-in-fron-2025-02-21-13-22-14-utc.jpg
     _template: callToActionBlock
 ---
 
