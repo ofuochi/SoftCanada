@@ -27,7 +27,7 @@ const BlogCard = ({ post }: { post: Blogs }) => {
           />
         </div>
       )}
-      <h6 className="text-[#010B18] font-lato line-clamp-3 font-bold text-[28px]">
+      <h6 className="text-[#010B18] font-lato line-clamp-4 font-bold text-[28px]">
         {post?.title}
       </h6>
       <p className="text-[#808080] text-[22px] font-poppins line-clamp-2">
