@@ -93,10 +93,10 @@ export const ContactPageComponent: React.FC<Props> = ({ cmsQuery }) => {
         </div>
       </section>
 
-      <section className="bg-gray-900 text-gray-300 mt-32 -mx-28 px-36 py-12 mb-10 dark">
-        <div className="container mx-auto flex flex-col md:flex-row gap-8 items-start">
+      <section className="bg-gray-900 text-gray-300 mt-32 px-5 md:px-36 py-12 mb-10 dark w-full">
+        <div className="w-full flex flex-col md:flex-row gap-8 items-start">
           {/* Contact Info */}
-          <div className="md:w-1/3 space-y-16 place-self-center">
+          <div className="w-full md:w-1/3 space-y-16 place-self-center">
             {data.contact?.address && (
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 flex justify-center items-center bg-gray-700 rounded-full">
@@ -136,7 +136,7 @@ export const ContactPageComponent: React.FC<Props> = ({ cmsQuery }) => {
           <div className="hidden md:block w-px bg-gray-700"></div>
 
           {/* Contact Form */}
-          <div className="md:w-2/3 w-full">
+          <div className="w-full md:w-2/3">
             <Form
               size="large"
               initialValues={{ formType, liveInCanada: undefined }}
@@ -264,3 +264,4 @@ export const ContactPageComponent: React.FC<Props> = ({ cmsQuery }) => {
     </>
   );
 };
+

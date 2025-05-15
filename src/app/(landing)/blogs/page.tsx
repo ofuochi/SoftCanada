@@ -7,6 +7,7 @@ import { BlogCategories } from "@/tina/collections/BlogPostCollection";
 type Props = {
   searchParams: Promise<{ category?: string }>;
 };
+
 export default async function BlogIndexPage({ searchParams }: Props) {
   // Fetch all blog posts
   const result = await dbConnection.queries.blogsConnection();
@@ -32,8 +33,6 @@ export default async function BlogIndexPage({ searchParams }: Props) {
   const query = await dbConnection.queries.blogPage({
     relativePath: "blogPage.md",
   });
-
-  console.log(BlogCategories, "all blog categories");
 
   return (
     <div className="-mt-16">
