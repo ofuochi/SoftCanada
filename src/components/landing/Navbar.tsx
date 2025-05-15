@@ -1,7 +1,7 @@
 "use client";
 
 import Logo from "@/components/Logo";
-import { DownOutlined, MenuOutlined } from "@ant-design/icons";
+import { MenuOutlined } from "@ant-design/icons";
 import { useUser } from "@auth0/nextjs-auth0";
 import type { MenuProps } from "antd";
 import { Button, Drawer, Menu } from "antd";
@@ -239,6 +239,10 @@ export default function Navbar() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const handleNavigate = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   const menuTheme = isNavbarDark ? "dark" : "light";
   const pathname = usePathname();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
@@ -251,6 +255,7 @@ export default function Navbar() {
       setSelectedKeys(activeKey ? [activeKey.toString()] : []);
     if (pathname === "/") setSelectedKeys([]);
   }, [pathname]);
+
   return (
     <>
       <style>
@@ -263,7 +268,10 @@ export default function Navbar() {
 
           .navbar-menu-container .ant-menu {
             justify-content: center;
-            width: 100%;
+          }
+
+          .ant-menu {
+             width: 100%;
           }
         `}
       </style>
@@ -287,7 +295,7 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div
             className={`${classNames(
-              "hidden md:flex flex-grow items-center justify-center",
+              "hidden md:flex flex-1 items-center justify-center",
               "navbar-menu-container"
             )}`}
           >
@@ -299,7 +307,7 @@ export default function Navbar() {
               onSelect={({ selectedKeys }) => setSelectedKeys(selectedKeys)}
               forceSubMenuRender
               selectable
-              className="transparent-menu"
+              className="transparent-menu !flex-1"
             />
           </div>
 
@@ -352,6 +360,7 @@ export default function Navbar() {
           title="Menu"
           placement="right"
           closable={true}
+          onClick={handleNavigate}
           onClose={toggleMobileMenu}
           open={isMobileMenuOpen}
           styles={{ body: { padding: 0 } }}
