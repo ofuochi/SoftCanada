@@ -27,15 +27,15 @@ const BlogCard = ({ post }: { post: Blogs }) => {
           />
         </div>
       )}
-      <h6 className="text-[#010B18] font-lato line-clamp-4 font-bold text-[28px]">
+      <h6 className="text-[#010B18] font-poppins line-clamp-2 font-bold text-2xl">
         {post?.title}
       </h6>
-      <p className="text-[#808080] text-[22px] font-poppins line-clamp-2">
+      <p className="text-[#808080] text-base font-poppins line-clamp-2">
         {post?.excerpt}
       </p>
       <Link
         href={`/blogs/${post._sys.breadcrumbs.join("/")}`}
-        className="bg-[#FF0000] block font-poppins font-semibold text-white hover:text-white text-center w-full max-w-[184px] h-[49px] py-3 px-2.5 rounded-md"
+        className="bg-[#FF0000] flex items-center justify-center text-[15px] font-poppins font-semibold text-white hover:text-white text-center w-full max-w-[184px] h-[49px] py-3 px-2.5 rounded-md"
       >
         Discover More
       </Link>
