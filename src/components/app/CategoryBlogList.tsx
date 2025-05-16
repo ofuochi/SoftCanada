@@ -15,7 +15,7 @@ type CategoryBlogListProps = {
 // Separate BlogCard component
 const BlogCard = ({ post }: { post: Blogs }) => {
   return (
-    <section className="w-full py-5 px-4 min-h-[550px] bg-[#F5F5F5] rounded-lg space-y-6">
+    <section className="w-full py-5 px-4 bg-[#F5F5F5] rounded-lg space-y-6">
       {post.thumbnail && (
         <div className="w-full max-w-[418px] h-[298px] overflow-clip">
           <Image
