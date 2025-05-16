@@ -6,6 +6,8 @@ const handlers = createMediaHandlers({
   connectionString: process.env.AZURE_STORAGE_CONNECTION_STRING!,
   containerName: process.env.AZURE_STORAGE_CONTAINER_NAME!,
   authorized: async (req: NextRequest) => {
+    // Allow public GET (read) access, require auth for others
+    if (req.method === "GET") return true;
     if (process.env.NODE_ENV === "development") return true;
     const session = await auth0.getSession();
     return !!session;
@@ -19,7 +21,6 @@ export const GET = async (req: NextRequest) => {
   try {
     return await handlers.GET(req);
   } catch (error: any) {
-    console.error("Error in GET handler:", error);
     return NextResponse.json(
       {
         error: {
