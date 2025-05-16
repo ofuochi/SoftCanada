@@ -32,12 +32,6 @@ export async function GET(req: NextRequest, context: RouteParams) {
   try {
     validateConfig();
 
-    // Handle authorization first
-    const isAuthorized = await config.authorized(req);
-    if (!isAuthorized) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     // Azure connection setup
     const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING!;
     const accountNameMatch = connectionString.match(/AccountName=([^;]+)/);
