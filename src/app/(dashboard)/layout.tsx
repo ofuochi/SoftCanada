@@ -4,6 +4,7 @@ import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import auth0 from "@/lib/auth0";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Auth0Provider } from "@auth0/nextjs-auth0";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -35,8 +36,8 @@ export default async function LandingLayout({
             <DashboardLayout>{children}</DashboardLayout>
           </AntdRegistry>
         </Auth0Provider>
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!} />
       </body>
     </html>
   );
 }
-

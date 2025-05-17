@@ -19,6 +19,7 @@
     "@casl/ability": "^6.7.3",
     "@casl/react": "^5.0.0",
     "@hookform/resolvers": "^3.10.0",
+    "@next/third-parties": "^15.3.2",
     "@tailwindcss/typography": "^0.5.16",
     "abstract-level": "^1.0.4",
     "antd": "^5.24.6",

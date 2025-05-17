@@ -1,4 +1,5 @@
-﻿import classNames from "classnames";
+﻿import { logPageView } from "@/utils/analytics";
+import classNames from "classnames";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -23,7 +24,7 @@ export default function Logo({
   });
 
   return (
-    <Link href={path} aria-label="Home">
+    <Link href={path} aria-label="Home" onClick={() => logPageView("/")}>
       <Image
         src={src!}
         alt={`${theme} theme logo`}
@@ -35,4 +36,3 @@ export default function Logo({
     </Link>
   );
 }
-
