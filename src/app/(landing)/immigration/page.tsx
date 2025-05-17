@@ -5,6 +5,7 @@ import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
 import Image from "next/image";
 import ImmigrationHero from "@/components/landing/immigration/ImmigrationHero";
+import GetGuidance from "@/components/immigration/GetGuidance";
 
 export default async function ImmigrationPage() {
   const result = await dbConnection.queries.blogsConnection();
@@ -34,7 +35,7 @@ export default async function ImmigrationPage() {
         <SectionHeading
           topText="How it Works"
           heading="Your Journey to a New Home Made Simple"
-          description="Relocating can be overwhelming, but we're here to make it effortless. Follow our easy 4-step process to find and secure the perfect rental home in Canada. From choosing your destination to moving in, we'll guide you every step of the way"
+          description="Relocating to a new country can feel overwhelming — but it doesn't have to be. Follow our easy 4-step guide to navigate your immigration journey in Canada. From gathering the right documents to finding community support, we're here to walk with you, every step of the way."
         />
       </section>
 
@@ -42,9 +43,12 @@ export default async function ImmigrationPage() {
         <section className=" flex flex-col md:flex-row justify-between items-center gap-5 w-full max-w-[1200px] mx-auto px-5">
           <section className="w-full max-w-[360px] space-y-6">
             <div className="space-y-3">
+              <p className="text-[#4F4F4F] font-lato text-xl md:text-2xl">
+                Choose Your Destination
+              </p>
               <h4 className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
                 {" "}
-                Choose Your Destination{" "}
+                Decide Where to Begin
               </h4>
               <p className="text-black font-poppins text-xl">
                 {" "}
@@ -54,9 +58,9 @@ export default async function ImmigrationPage() {
               </p>
             </div>
 
-            <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[200px] flex items-center justify-center">
+            {/* <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[200px] flex items-center justify-center">
               Explore Cities Now!
-            </button>
+            </button> */}
           </section>
 
           <div className="w-full max-w-[500px] h-[500px]">
@@ -81,13 +85,18 @@ export default async function ImmigrationPage() {
 
           <section className="w-full max-w-[360px] space-y-6">
             <div className="space-y-3">
-              <h4 className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
+              <p className="text-[#4F4F4F] font-lato text-xl md:text-2xl">
                 Gather Required Documents
+              </p>
+              <h4 className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
+                Prepare What You Need
               </h4>
               <p className="text-black font-poppins text-xl">
-                Ensure you have all necessary paperwork, such as identification,
-                proof of income, and references, to streamline your rental
-                application process.
+                Ensure you have all necessary immigration paperwork ready —
+                including identification, proof of funds, academic records, or
+                work experience documentation. Use our checklist to stay
+                organized and increase your chances of a smooth application
+                process.
               </p>
             </div>
 
@@ -98,22 +107,7 @@ export default async function ImmigrationPage() {
         </section>
 
         <section className=" flex flex-col md:flex-row justify-between items-center gap-5 w-full max-w-[1200px] mx-auto px-5">
-          <section className="w-full max-w-[360px] space-y-6">
-            <div className="space-y-3">
-              <h4 className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
-                Apply for Your Dream Rental
-              </h4>
-              <p className="text-black font-poppins text-xl">
-                Submit your rental application with ease. Our platform provides
-                a secure way to connect with landlords and finalize your new
-                home.
-              </p>
-            </div>
-
-            <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[200px] flex items-center justify-center">
-              Start Your Application
-            </button>
-          </section>
+          <GetGuidance />
 
           <div className="w-full max-w-[500px] h-[500px]">
             <Image
@@ -141,14 +135,16 @@ export default async function ImmigrationPage() {
                 Move In and Settle Down
               </h4>
               <p className="text-black font-poppins text-xl">
-                Congratulations! You're now ready to settle into your new home.
-                Explore neighborhood guides and resources to make your
-                transition smooth.
+                Welcome to Canada You've made it — now it's time to feel at
+                home. Explore our curated tips on settling into Canadian life,
+                including finding a doctor, understanding public transportation,
+                registering for healthcare, and connecting with local
+                communities.
               </p>
             </div>
 
             <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[200px] flex items-center justify-center">
-              Access Move-In Tips
+              Access Tips
             </button>
           </section>
         </section>

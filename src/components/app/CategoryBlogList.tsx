@@ -17,10 +17,10 @@ const BlogCard = ({ post }: { post: Blogs }) => {
   return (
     <section className="w-full py-5 px-4 bg-[#F5F5F5] rounded-lg space-y-6">
       {post.thumbnail && (
-        <div className="w-full max-w-[418px] h-[298px] overflow-clip">
+        <div className="w-full max-w-[418px] h-[220px] overflow-clip">
           <Image
             width={418}
-            height={298}
+            height={220}
             src={post.thumbnail}
             alt={post?.title}
             className="object-cover rounded-lg"
