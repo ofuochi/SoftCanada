@@ -19,6 +19,7 @@ import {
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import moment from "moment";
 import { useApiClient } from "@/hooks/api-hook";
+import { logEvent } from "@/utils/analytics";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -533,7 +534,17 @@ const ImmigrationFormModal: React.FC<ModalProps> = ({
     setFormValues(allValues);
   };
 
+  if (isModalOpen)
+    logEvent("click", {
+      event_category: "immigration_modal",
+      event_label: "CTA clicked",
+    });
+
   const handleSubmit = async () => {
+    logEvent("submit", {
+      event_category: "immigration_modal",
+      event_label: "Form submitted",
+    });
     try {
       const formValues = await form.validateFields();
 
@@ -625,3 +636,4 @@ const ImmigrationFormModal: React.FC<ModalProps> = ({
 };
 
 export default ImmigrationFormModal;
+

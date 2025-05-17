@@ -13,6 +13,7 @@ import {
 import { Dispatch, SetStateAction } from "react";
 import TextArea from "antd/es/input/TextArea";
 import { useApiClient } from "@/hooks/api-hook";
+import { logEvent } from "@/utils/analytics";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -59,7 +60,18 @@ const ContactModal: React.FC<ContactModalProps> = ({
   const [messageApi, contextHolder] = message.useMessage();
   const [submitting, setSubmitting] = useState(false);
 
+  if (isModalOpen) {
+    logEvent("click", {
+      event_category: "contact_modal",
+      event_label: "CTA clicked",
+    });
+  }
+
   const handleSubmit = async (values: ContactFormType) => {
+    logEvent("submit", {
+      event_category: "contact_modal",
+      event_label: "Form submitted",
+    });
     setSubmitting(true);
     try {
       await post("/api/Form/submitOtherCategories", values, undefined, true);

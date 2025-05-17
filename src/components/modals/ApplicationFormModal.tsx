@@ -16,6 +16,7 @@ import {
 } from "antd";
 import moment from "moment";
 import { useApiClient } from "@/hooks/api-hook";
+import { logEvent } from "@/utils/analytics";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -655,7 +656,18 @@ const ApplicationFormModal: React.FC<ModalProps> = ({
     }
   };
 
+  if (isModalOpen) {
+    logEvent("click", {
+      event_category: "application_modal",
+      event_label: "CTA clicked",
+    });
+  }
+
   const handleSubmit = async () => {
+    logEvent("submit", {
+      event_category: "application_modal",
+      event_label: "Form submitted",
+    });
     try {
       const formValues = await form.validateFields();
 
@@ -754,3 +766,4 @@ const ApplicationFormModal: React.FC<ModalProps> = ({
 };
 
 export default ApplicationFormModal;
+

@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { LOGIN_PATH } from "@/constants/paths";
 import { ProfileAvatar } from "../ProfileAvatar";
 import { usePathname } from "next/navigation";
+import { logPageView } from "@/utils/analytics";
 
 export default function Navbar() {
   const [navbarStyle, setNavbarStyle] = useState("bg-transparent");
@@ -19,6 +20,7 @@ export default function Navbar() {
   const [isAtTop, setIsAtTop] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useUser();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +30,11 @@ export default function Navbar() {
         0;
 
       if (window.scrollY === 0) {
+        if (pathname.startsWith("/blogs/")) {
+          setNavbarStyle("bg-gray-900 shadow-lg");
+          setIsNavbarDark(true);
+          return;
+        }
         setNavbarStyle("bg-transparent");
         setIsNavbarDark(false);
         setIsAtTop(true);
@@ -46,61 +53,16 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname]);
 
+  const logPageViewEvent = (path: string) => () => logPageView(path);
   const menuItems: MenuProps["items"] = [
-    // {
-    //   key: "services",
-    //   label: (
-    //     <>
-    //       <span
-    //         className={`font-dm_sans ${
-    //           isAtTop && !isMobileMenuOpen
-    //             ? "!text-white"
-    //             : isNavbarDark
-    //             ? "text-black md:!text-white"
-    //             : "!text-black"
-    //         }`}
-    //       >
-    //         Services{" "}
-    //       </span>
-    //       <span className="hidden md:inline">
-    //         <DownOutlined
-    //           className={`${
-    //             isAtTop && !isMobileMenuOpen
-    //               ? "!text-white"
-    //               : isNavbarDark
-    //               ? "text-black md:!text-white"
-    //               : "!text-black"
-    //           }`}
-    //         />
-    //       </span>
-    //     </>
-    //   ),
-    //   children: [
-    //     {
-    //       key: "advisory",
-    //       label: (
-    //         <Link href="/dashboard/resumes" className={`font-dm_sans`}>
-    //           Career
-    //         </Link>
-    //       ),
-    //     },
-    //     {
-    //       key: "advisories",
-    //       label: (
-    //         <Link href="/dashboard/advisor" className={`font-dm_sans`}>
-    //           Advisories
-    //         </Link>
-    //       ),
-    //     },
-    //   ],
-    // },
     {
       key: "career",
       label: (
         <Link
           href="/career"
+          onClick={logPageViewEvent("/career")}
           className={`font-dm_sans ${
             isAtTop && !isMobileMenuOpen
               ? "!text-white"
@@ -118,6 +80,7 @@ export default function Navbar() {
       label: (
         <Link
           href="/immigration"
+          onClick={logPageViewEvent("/immigration")}
           className={`font-dm_sans ${
             isAtTop && !isMobileMenuOpen
               ? "!text-white"
@@ -135,6 +98,7 @@ export default function Navbar() {
       label: (
         <Link
           href="/finance"
+          onClick={logPageViewEvent("/finance")}
           className={`font-dm_sans ${
             isAtTop && !isMobileMenuOpen
               ? "!text-white"
@@ -152,6 +116,7 @@ export default function Navbar() {
       label: (
         <Link
           href="/study"
+          onClick={logPageViewEvent("/study")}
           className={`font-dm_sans ${
             isAtTop && !isMobileMenuOpen
               ? "!text-white"
@@ -170,6 +135,7 @@ export default function Navbar() {
       label: (
         <Link
           href="/lifestyle"
+          onClick={logPageViewEvent("/lifestyle")}
           className={`font-dm_sans ${
             isAtTop && !isMobileMenuOpen
               ? "!text-white"
@@ -187,6 +153,7 @@ export default function Navbar() {
       label: (
         <Link
           href="/blogs"
+          onClick={logPageViewEvent("/blogs")}
           className={`font-dm_sans ${
             isAtTop && !isMobileMenuOpen
               ? "!text-white"
@@ -204,6 +171,7 @@ export default function Navbar() {
       label: (
         <Link
           href="/contact"
+          onClick={logPageViewEvent("/contact")}
           className={`font-dm_sans ${
             isAtTop && !isMobileMenuOpen
               ? "!text-white"
@@ -221,6 +189,7 @@ export default function Navbar() {
       label: (
         <Link
           href="/faqs"
+          onClick={logPageViewEvent("/faqs")}
           className={`font-dm_sans ${
             isAtTop && !isMobileMenuOpen
               ? "!text-white"
@@ -244,7 +213,6 @@ export default function Navbar() {
   };
 
   const menuTheme = isNavbarDark ? "dark" : "light";
-  const pathname = usePathname();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   useEffect(() => {
     const basePath = `/${pathname.split("/")[1]}`;
@@ -400,4 +368,3 @@ export default function Navbar() {
     </>
   );
 }
-

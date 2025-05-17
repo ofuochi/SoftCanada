@@ -11,6 +11,7 @@ import localFont from "next/font/local";
 import React from "react";
 import { Auth0Provider } from "@auth0/nextjs-auth0";
 import { ErrorProvider } from "@/contexts/ErrorContext";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -51,8 +52,8 @@ export default async function LandingLayout({
             </ConfigProvider>
           </AntdRegistry>
         </Auth0Provider>
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!} />
       </body>
     </html>
   );
 }
-
