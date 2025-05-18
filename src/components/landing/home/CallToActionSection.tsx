@@ -22,7 +22,7 @@ export default function CallToActionSection(props: Props) {
   const bgImage = content?.bgImage || "/images/landing/cta_section_bg.jpg";
   return (
     <section
-      className="relative h-[75vh] w-full bg-cover bg-center"
+      className="relative h-svh w-full bg-cover bg-center"
       data-tina-field={tinaField(content, "bgImage")}
       style={{ backgroundImage: `url(${bgImage})` }}
     >
