@@ -1,11 +1,12 @@
-import HeroSection from "@/components/landing/HeroSection";
-import { dbConnection } from "@/lib/db-conn";
 import { CategoryBlogList } from "@/components/app/CategoryBlogList";
-import { Blogs } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
-import Image from "next/image";
-import ImmigrationHero from "@/components/landing/immigration/ImmigrationHero";
 import GetGuidance from "@/components/immigration/GetGuidance";
+import ImmigrationHero from "@/components/landing/immigration/ImmigrationHero";
+import { dbConnection } from "@/lib/db-conn";
+import { Blogs } from "@/tina/__generated__/types";
+import { Button } from "antd";
+import Image from "next/image";
+import Link from "next/link";
 
 export default async function ImmigrationPage() {
   const result = await dbConnection.queries.blogsConnection();
@@ -84,7 +85,7 @@ export default async function ImmigrationPage() {
           </div>
 
           <section className="w-full max-w-[360px] space-y-6">
-            <div className="space-y-3">
+            <div className="space-y-3 mb-5">
               <p className="text-[#4F4F4F] font-lato text-xl md:text-2xl">
                 Gather Required Documents
               </p>
@@ -100,9 +101,11 @@ export default async function ImmigrationPage() {
               </p>
             </div>
 
-            <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[200px] flex items-center justify-center">
-              View Checklist
-            </button>
+            <Link href="/blogs?category=Immigration">
+              <Button size="large" className="!shadow-none !font-dm_sans">
+                View Checklist
+              </Button>
+            </Link>
           </section>
         </section>
 
@@ -143,9 +146,9 @@ export default async function ImmigrationPage() {
               </p>
             </div>
 
-            <button className="border-[0.3px] border-[#808080] py-3 px-2.5 rounded-[6px] h-[43px] w-full max-w-[200px] flex items-center justify-center">
+            <Button size="large" className="!shadow-none !font-dm_sans">
               Access Tips
-            </button>
+            </Button>
           </section>
         </section>
       </section>
@@ -162,4 +165,3 @@ export default async function ImmigrationPage() {
     </section>
   );
 }
-
