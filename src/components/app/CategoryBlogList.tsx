@@ -15,27 +15,24 @@ type CategoryBlogListProps = {
 // Separate BlogCard component
 const BlogCard = ({ post }: { post: Blogs }) => {
   return (
-    <section className="w-full py-5 px-4 bg-[#F5F5F5] rounded-lg space-y-6">
+    <section className="w-full py-5 px-4 min-h-[400px] bg-[#F5F5F5] rounded-lg space-y-6">
       {post.thumbnail && (
-        <div className="w-full max-w-[418px] h-[220px] overflow-clip">
+        <div className="w-full max-w-[418px] h-[200px] overflow-clip">
           <Image
             width={418}
-            height={220}
+            height={200}
             src={post.thumbnail}
             alt={post?.title}
             className="object-cover rounded-lg"
           />
         </div>
       )}
-      <h6 className="text-[#010B18] font-poppins line-clamp-2 font-bold text-2xl">
+      <h6 className="text-[#010B18] font-poppins line-clamp-3 font-bold text-base md:text-lg min-h-[80px]">
         {post?.title}
       </h6>
-      <p className="text-[#808080] text-base font-poppins line-clamp-2">
-        {post?.excerpt}
-      </p>
       <Link
         href={`/blogs/${post._sys.breadcrumbs.join("/")}`}
-        className="bg-[#FF0000] flex items-center justify-center text-[15px] font-poppins font-semibold text-white hover:text-white text-center w-full max-w-[184px] h-[49px] py-3 px-2.5 rounded-md"
+        className="bg-[#FF0000] flex items-center justify-center text-sm font-poppins font-semibold text-white hover:text-white text-center w-full max-w-[140px] h-[40px] py-2.5 px-2 rounded-md"
       >
         Discover More
       </Link>

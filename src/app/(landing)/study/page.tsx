@@ -15,6 +15,7 @@ export default async function GrantsPage() {
     <div className="-mt-16">
       {query?.data?.landing?.blocks?.map((block, i) => {
         if (!block) return <></>;
+
         switch (block.__typename) {
           case "LandingBlocksWelcomeHero":
             return (
