@@ -55,6 +55,10 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
+  const handleNavigate = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   const logPageViewEvent = (path: string) => () => logPageView(path);
   const menuItems: MenuProps["items"] = [
     {
@@ -208,10 +212,6 @@ export default function Navbar() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const handleNavigate = () => {
-    setIsMobileMenuOpen(false);
-  };
-
   const menuTheme = isNavbarDark ? "dark" : "light";
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
   useEffect(() => {
@@ -328,7 +328,6 @@ export default function Navbar() {
           title="Menu"
           placement="right"
           closable={true}
-          onClick={handleNavigate}
           onClose={toggleMobileMenu}
           open={isMobileMenuOpen}
           styles={{ body: { padding: 0 } }}
@@ -336,6 +335,7 @@ export default function Navbar() {
           <Menu
             mode="vertical"
             items={menuItems}
+            onClick={handleNavigate}
             theme="light"
             selectable={false}
           />
@@ -368,3 +368,4 @@ export default function Navbar() {
     </>
   );
 }
+
