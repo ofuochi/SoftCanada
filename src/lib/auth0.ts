@@ -20,7 +20,8 @@ export default new Auth0Client({
     audience: process.env.AUTH0_AUDIENCE,
   },
   session: {
-    inactivityDuration: 60 * 60 * 24, // 1 day
+    rolling: true, // Explicitly set rolling session
+    inactivityDuration: 60 * 60 * 24 * 3, // 3 days
     absoluteDuration: 60 * 60 * 24 * 7, // 7 days
   },
 });
