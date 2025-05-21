@@ -18,8 +18,8 @@ export const GrantsPageComponent: React.FC<Props> = ({ blogs }) => {
         <section className="mt-[100px] mb-10">
           <SectionHeading
             topText=""
-            heading="Scholarships Available"
-            description="Find fully funded scholarships for various programs."
+            heading="Grants Available"
+            description="Find fully funded grants for various programs."
           />
         </section>
 
@@ -29,7 +29,7 @@ export const GrantsPageComponent: React.FC<Props> = ({ blogs }) => {
               <Image
                 width={483}
                 height={300}
-                alt="cheveningSchorlarships"
+                alt="ontarioGrantImage"
                 src="/images/landing/ontario_uni.jpg"
                 className="object-cover"
               />
@@ -37,7 +37,7 @@ export const GrantsPageComponent: React.FC<Props> = ({ blogs }) => {
             <section className="space-y-3">
               <div className="">
                 <p className="text-black font-dm_sans font-semibold text-xl md:text-2xl">
-                  Ontario Graduate Scholarships
+                  Ontario Opportunities
                 </p>
               </div>
               <button
@@ -62,7 +62,7 @@ export const GrantsPageComponent: React.FC<Props> = ({ blogs }) => {
             <section className="space-y-3">
               <div className="">
                 <p className="text-black font-dm_sans font-semibold text-xl md:text-2xl">
-                  University of British Columbia
+                  British Columbia Opportunities
                 </p>
               </div>
               <button
@@ -79,7 +79,7 @@ export const GrantsPageComponent: React.FC<Props> = ({ blogs }) => {
               <Image
                 width={483}
                 height={300}
-                alt="irelandSchorlarship"
+                alt="otherProvincesGrantImage"
                 src="/images/landing/otherProvincesImg.jpg"
                 className="object-cover"
               />
