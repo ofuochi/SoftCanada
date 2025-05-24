@@ -59,6 +59,109 @@ export const LandingCollection: Collection = {
           ],
         },
         {
+          name: "featureSection",
+          label: "Feature Section",
+          fields: [
+            {
+              name: "title",
+              label: "Title",
+              type: "string",
+              required: true,
+            },
+            {
+              name: "text",
+              label: "Text",
+              type: "rich-text",
+              required: true,
+            },
+            {
+              name: "image",
+              label: "Image",
+              type: "image",
+            },
+            {
+              name: "imageAlt",
+              label: "Image Alt Text",
+              type: "string",
+            },
+            {
+              name: "buttonText",
+              label: "Button Text",
+              type: "string",
+            },
+            {
+              name: "buttonLink",
+              label: "Button Link",
+              type: "string",
+            },
+            {
+              name: "imagePosition",
+              label: "Image Position",
+              type: "string",
+              options: ["left", "right"],
+              ui: {
+                defaultValue: "left",
+              },
+            },
+          ],
+        },
+        {
+          name: "resourceCardsSection",
+          label: "Resource Cards Section",
+          fields: [
+            {
+              name: "heading",
+              label: "Heading",
+              type: "string",
+            },
+            {
+              name: "description",
+              label: "Description",
+              type: "rich-text",
+            },
+            {
+              name: "cards",
+              label: "Cards",
+              type: "object",
+              list: true,
+              fields: [
+                {
+                  name: "image",
+                  label: "Image",
+                  type: "image",
+                },
+                {
+                  name: "imageAlt",
+                  label: "Image Alt Text",
+                  type: "string",
+                },
+                {
+                  name: "title",
+                  label: "Title",
+                  type: "string",
+                  required: true,
+                },
+                {
+                  name: "text",
+                  label: "Text",
+                  type: "string",
+                  required: true,
+                },
+                {
+                  name: "buttonText",
+                  label: "Button Text",
+                  type: "string",
+                },
+                {
+                  name: "buttonLink",
+                  label: "Button Link",
+                  type: "string",
+                },
+              ],
+            },
+          ],
+        },
+        {
           name: "homepageFeatureBlock",
           label: "Features section",
           fields: [
