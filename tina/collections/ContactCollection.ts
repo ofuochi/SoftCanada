@@ -37,5 +37,10 @@ export const ContactCollection: Collection = {
       required: true,
       description: "The email address for contact.",
     },
+    {
+      type: "image",
+      name: "heroBackgroundImage",
+      label: "Hero Background Image",
+    },
   ],
 };

@@ -13,5 +13,6 @@ heading: >
   you as soon as possible
 phoneNumber: +1-456-777-8808
 email: hello@softcanada.com
+heroBackgroundImage: /images/landing/contact.jpg
 ---
 

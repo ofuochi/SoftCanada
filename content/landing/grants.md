@@ -12,7 +12,7 @@ blocks:
     _template: welcomeHero
   - title: Undergraduate Grant
     text: |
-      <p class="text-[#808080] font-poppins text-lg">Pursue your academic dreams with financial support tailored for undergraduate students. Apply for grants designed to cover tuition fees, books, and living expenses, helping you focus on what matters most—your education.</p>
+      Pursue your academic dreams with financial support tailored for undergraduate students. Apply for grants designed to cover tuition fees, books, and living expenses, helping you focus on what matters most—your education.
     image: /images/landing/undergraduateGrant.png
     imageAlt: Undergraduate Grant
     buttonText: Apply Now!

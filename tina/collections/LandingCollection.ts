@@ -42,13 +42,11 @@ export const LandingCollection: Collection = {
               name: "buttonText",
               label: "Button Text",
               type: "string",
-              required: true,
             },
             {
               name: "buttonLink",
               label: "Button Link",
               type: "string",
-              required: true,
             },
             {
               name: "backgroundImage",
@@ -112,7 +110,7 @@ export const LandingCollection: Collection = {
             {
               name: "heading",
               label: "Heading",
-              type: "string",
+              type: "rich-text",
             },
             {
               name: "description",
@@ -186,7 +184,6 @@ export const LandingCollection: Collection = {
                   name: "buttonText",
                   label: "Button Text",
                   type: "string",
-                  required: true,
                 },
                 {
                   name: "buttonLink",
@@ -517,13 +514,11 @@ export const LandingCollection: Collection = {
               name: "buttonText",
               label: "Button Text",
               type: "string",
-              required: true,
             },
             {
               name: "buttonLink",
               label: "Button Link",
               type: "string",
-              required: true,
             },
             {
               name: "bgImage",

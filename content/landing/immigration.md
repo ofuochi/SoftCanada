@@ -12,16 +12,18 @@ blocks:
     _template: welcomeHero
   - title: Decide Where to Begin
     text: |
-      <p class="text-[#4F4F4F] font-lato text-xl md:text-2xl">Choose Your Destination</p>
-      <p class="text-black font-poppins text-xl">Decide where in Canada you'd like to begin your journey. Whether it's a bustling city or a serene town, we'll help you explore rental options tailored to your needs.</p>
+      Choose Your Destination
+
+      Decide where in Canada you'd like to begin your journey. Whether it's a bustling city or a serene town, we'll help you explore rental options tailored to your needs.
     image: /images/landing/chooseDestination.png
     imageAlt: "Illustration of a map with location pins"
     imagePosition: right
     _template: featureSection
   - title: Prepare What You Need
     text: |
-      <p class="text-[#4F4F4F] font-lato text-xl md:text-2xl">Gather Required Documents</p>
-      <p class="text-black font-poppins text-xl">Ensure you have all necessary immigration paperwork ready — including identification, proof of funds, academic records, or work experience documentation. Use our checklist to stay organized and increase your chances of a smooth application process.</p>
+      Gather Required Documents
+
+      Ensure you have all necessary immigration paperwork ready — including identification, proof of funds, academic records, or work experience documentation. Use our checklist to stay organized and increase your chances of a smooth application process.
     image: /images/landing/gatherDocuments.png
     imageAlt: "Illustration of documents and a checklist"
     imagePosition: left
@@ -30,15 +32,16 @@ blocks:
     _template: featureSection
   - title: Find Your Dream Rental
     text: |
-      <p class="text-[#4F4F4F] font-lato text-xl md:text-2xl">Get Expert Guidance</p>
-      <p class="text-black font-poppins text-xl">Navigating the rental market in a new country can be challenging. Our experts provide personalized advice to help you find a home that fits your lifestyle and budget. Learn about tenant rights, lease agreements, and how to secure your ideal living space in Canada.</p>
+      Get Expert Guidance
+
+      Navigating the rental market in a new country can be challenging. Our experts provide personalized advice to help you find a home that fits your lifestyle and budget. Learn about tenant rights, lease agreements, and how to secure your ideal living space in Canada.
     image: /images/landing/dreamRental.png
     imageAlt: "Illustration of a house with a search icon"
     imagePosition: right
     _template: featureSection
   - title: Move In and Settle Down
     text: |
-      <p class="text-black font-poppins text-xl">Welcome to Canada! You've made it — now it's time to feel at home. Explore our curated tips on settling into Canadian life, including finding a doctor, understanding public transportation, registering for healthcare, and connecting with local communities.</p>
+      Welcome to Canada! You've made it — now it's time to feel at home. Explore our curated tips on settling into Canadian life, including finding a doctor, understanding public transportation, registering for healthcare, and connecting with local communities.
     image: /images/landing/dreamRental.png # Using dreamRental.png again as specified
     imageAlt: "Illustration of people moving into a new home"
     imagePosition: left
