@@ -5,79 +5,16 @@ import { Blogs, LandingBlocksFeatureSection } from "@/tina/__generated__/types";
 import { SectionHeading } from "@/components/app/SectionHeading";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "antd";
-import { TinaMarkdown } from "tinacms/dist/rich-text";
+import GrantsHero from "@/components/landing/grants/GrantsHero";
+import { GrantsPageComponent } from "@/components/landing/grants/GrantsPageComponent";
+import { dbConnection } from "@/lib/db-conn";
+import { Blogs, LandingBlocksFeatureSection } from "@/tina/__generated__/types";
+import { SectionHeading } from "@/components/app/SectionHeading";
+import FeatureSectionBlockClient from "@/components/app/FeatureSectionBlock"; // Import the new client component
 
-// Fallback image for the grant
+// Fallback image for the grant - can be passed to the client component
 const fallbackGrantImage = "/images/landing/undergraduateGrant.png";
 
-const FeatureSectionBlock = ({
-  block,
-}: {
-  block: LandingBlocksFeatureSection;
-}) => {
-  const imageSrc = block.image || fallbackGrantImage;
-  const imageAlt = block.imageAlt || block.title || "Feature image";
-  const imagePosition = block.imagePosition || "left"; // Default to left if not specified
-
-  const content = (
-    <section className="w-full max-w-[550px] space-y-6"> {/* Adjusted max-width for grant layout potentially */}
-      {block.buttonText && (
-         <button className="bg-[#FCFBE7] py-1.5 px-2.5 rounded-md mb-4"> {/* Styling from original commented code */}
-           {block.buttonText}
-         </button>
-      )}
-      <div className="space-y-3">
-        <h2 className="text-black font-dm_sans font-semibold text-2xl md:text-3xl lg:text-4xl"> {/* Adjusted heading size */}
-          {block.title}
-        </h2>
-        {block.text && <TinaMarkdown content={block.text} />}
-      </div>
-      {/* Original button was outside the main text div, if buttonLink is used by CMS, it would be here */}
-      {block.buttonText && block.buttonLink && block.buttonLink !== "#" && (
-         <Link href={block.buttonLink}>
-           <Button size="large" className="!shadow-none !font-dm_sans mt-4">
-             {block.buttonText} {/* Re-using buttonText if link exists and is not just # */}
-           </Button>
-         </Link>
-       )}
-    </section>
-  );
-
-  const imageElement = (
-    <div className="w-full max-w-[743px] h-auto md:h-[502px] rounded-xl overflow-clip"> {/* Adjusted for grant image aspect */}
-      <Image
-        width={743}
-        height={502}
-        src={imageSrc}
-        alt={imageAlt}
-        className="rounded-xl object-cover w-full h-full"
-      />
-    </div>
-  );
-
-  return (
-    <section className="py-[50px] md:py-[100px] bg-[#FFD7D752] px-5"> {/* Background from original commented code */}
-      <section
-        className={`w-full max-w-[1400px] gap-8 md:gap-16 mx-auto flex flex-col ${
-          imagePosition === "left" ? "md:flex-row" : "md:flex-row-reverse" // Standard image left/right logic
-        } items-center`}
-      >
-        {imagePosition === "left" ? (
-          <>
-            {imageElement}
-            {content}
-          </>
-        ) : (
-          <>
-            {content}
-            {imageElement}
-          </>
-        )}
-      </section>
-    </section>
-  );
-};
 
 export default async function GrantsPage() {
   const result = await dbConnection.queries.blogsConnection();
@@ -112,7 +49,14 @@ export default async function GrantsPage() {
           />
           <div className="space-y-10 md:space-y-16 mt-8 md:mt-12">
             {featureSectionBlocks.map((block, i) => (
-              <FeatureSectionBlock key={i} block={block} />
+              // Apply specific styling for this page's FeatureSectionBlock if needed,
+              // or pass props to the client component to handle variations.
+              // The bg-[#FFD7D752] and py-[50px/100px] was part of the old local component.
+              // This should ideally be handled by client component or a wrapper.
+              // For now, wrapping with a section to apply the background.
+              <section key={i} className="py-[50px] md:py-[100px] bg-[#FFD7D752] px-5">
+                <FeatureSectionBlockClient block={block} defaultImage={fallbackGrantImage} />
+              </section>
             ))}
           </div>
         </section>

@@ -1,3 +1,5 @@
+"use client";
+
 import { PlusCircleFilled } from "@ant-design/icons";
 import { Collapse, CollapseProps, theme } from "antd";
 import { CSSProperties, useMemo } from "react";

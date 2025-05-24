@@ -6,85 +6,20 @@ import GetGuidance from "@/components/immigration/GetGuidance";
 import ImmigrationHero from "@/components/landing/immigration/ImmigrationHero";
 import { dbConnection } from "@/lib/db-conn";
 import { Blogs, LandingBlocksFeatureSection } from "@/tina/__generated__/types";
-import { Button } from "antd";
-import Image from "next/image";
-import Link from "next/link";
-import { TinaMarkdown } from "tinacms/dist/rich-text";
+import GetGuidance from "@/components/immigration/GetGuidance";
+import ImmigrationHero from "@/components/landing/immigration/ImmigrationHero";
+import { dbConnection } from "@/lib/db-conn";
+import { Blogs, LandingBlocksFeatureSection } from "@/tina/__generated__/types";
+import FeatureSectionBlockClient from "@/components/app/FeatureSectionBlock"; // Import the new client component
 
-// Define fallback images
-const fallbackImages: Record<string, string> = {
+// Define fallback images - these might be better passed to the client component or handled there if generic
+const pageSpecificFallbackImages: Record<string, string> = {
   "Decide Where to Begin": "/images/landing/chooseDestination.png",
   "Prepare What You Need": "/images/landing/gatherDocuments.png",
   "Find Your Dream Rental": "/images/landing/dreamRental.png",
-  "Move In and Settle Down": "/images/landing/dreamRental.png", // This uses the same image as "Find Your Dream Rental"
+  "Move In and Settle Down": "/images/landing/dreamRental.png",
 };
 
-const FeatureSectionBlock = ({
-  block,
-}: {
-  block: LandingBlocksFeatureSection;
-}) => {
-  const imageSrc = block.image || fallbackImages[block.title || ""] || "/images/placeholder.png"; // Added a general placeholder
-  const imageAlt = block.imageAlt || block.title || "Feature image";
-  const imagePosition = block.imagePosition || "left";
-
-  const content = (
-    <section className="w-full max-w-[360px] space-y-6">
-      <div className="space-y-3">
-        {block.text ? (
-          <TinaMarkdown content={block.text} />
-        ) : (
-          <h4 className="text-black font-dm_sans font-semibold text-2xl md:text-3xl">
-            {block.title}
-          </h4>
-        )}
-      </div>
-      {block.buttonText && block.buttonLink && (
-        <Link href={block.buttonLink}>
-          <Button size="large" className="!shadow-none !font-dm_sans">
-            {block.buttonText}
-          </Button>
-        </Link>
-      )}
-    </section>
-  );
-
-  const imageElement = (
-    <div className="w-full max-w-[500px] h-[500px]">
-      <Image width={500} height={500} src={imageSrc} alt={imageAlt} />
-    </div>
-  );
-
-  // Special handling for the section that includes GetGuidance
-  if (block.title === "Find Your Dream Rental") {
-    return (
-      <section className="flex flex-col md:flex-row justify-between items-center gap-5 w-full max-w-[1200px] mx-auto px-5">
-        <GetGuidance />
-        {imageElement}
-      </section>
-    );
-  }
-
-  return (
-    <section
-      className={`flex flex-col md:flex-row justify-between items-center gap-5 w-full max-w-[1200px] mx-auto px-5 ${
-        imagePosition === "left" ? "md:flex-row-reverse" : ""
-      }`}
-    >
-      {imagePosition === "left" ? (
-        <>
-          {content}
-          {imageElement}
-        </>
-      ) : (
-        <>
-          {imageElement}
-          {content}
-        </>
-      )}
-    </section>
-  );
-};
 
 export default async function ImmigrationPage() {
   const result = await dbConnection.queries.blogsConnection();
@@ -120,8 +55,22 @@ export default async function ImmigrationPage() {
 
       <section className="space-y-[90px]">
         {featureSectionBlocks?.map((block, i) => {
-          if (!block) return <div key={i}></div>; // Should not happen with filter
-          return <FeatureSectionBlock key={i} block={block} />;
+          if (!block) return <div key={i}></div>;
+          // Special handling for the "Find Your Dream Rental" section remains in the server component
+          // as it involves server-side component GetGuidance
+          if (block.title === "Find Your Dream Rental") {
+            const imageSrc = block.image || pageSpecificFallbackImages[block.title || ""] || "/images/placeholder.png";
+            const imageAlt = block.imageAlt || block.title || "Feature image";
+            return (
+              <section key={i} className="flex flex-col md:flex-row justify-between items-center gap-5 w-full max-w-[1200px] mx-auto px-5">
+                <GetGuidance />
+                <div className="w-full max-w-[500px] h-[500px]">
+                  <Image width={500} height={500} src={imageSrc} alt={imageAlt} />
+                </div>
+              </section>
+            );
+          }
+          return <FeatureSectionBlockClient key={i} block={block} defaultImage={pageSpecificFallbackImages[block.title || ""]} />;
         })}
       </section>
 
