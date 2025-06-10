@@ -10,6 +10,8 @@ sections:
         url: /contact
       - label: Terms and Conditions
         url: /
+      - label: Privacy Policy
+        url: /privacy-policy
   - title: Services
     type: links
     description: ''
