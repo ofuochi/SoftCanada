@@ -11,7 +11,9 @@ const PrivacyHero: React.FC = () => {
     >
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url('/images/landing/hero_section_bg.jpg')` }}
+        style={{
+          backgroundImage: `url('/images/landing/privacy_hero_section_bg.jpg')`,
+        }}
       />
       <div className="absolute inset-0 bg-black bg-opacity-50" />
       <div className="relative flex flex-col justify-end items-start pb-10 h-full px-8 sm:px-16 text-white z-10">
