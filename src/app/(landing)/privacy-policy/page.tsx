@@ -1,16 +1,9 @@
-import HeroSection from "@/components/landing/HeroSection";
-
-const heroBlock = {
-  message: `# Our Commitment to Your Privacy\n\nWe value the trust you place in SoftCanada.`,
-  buttonText: "",
-  buttonLink: "",
-  backgroundImage: "/images/landing/hero_section_bg.jpg",
-};
+import PrivacyHero from "@/components/landing/privacy/PrivacyHero";
 
 export default function PrivacyPolicyPage() {
   return (
     <div className="-mt-16">
-      <HeroSection {...heroBlock} />
+      <PrivacyHero />
       <div className="max-w-3xl mx-auto px-5 py-12 space-y-8 text-gray-700">
         <h2 className="text-2xl font-semibold">1. Information We Collect</h2>
         <p>
