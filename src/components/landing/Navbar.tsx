@@ -219,9 +219,12 @@ export default function Navbar() {
     const activeKey = menuItems.find(
       (item) => item?.key?.toString() === basePath
     )?.key;
-    if (activeKey !== undefined)
+
+    if (activeKey !== undefined) {
       setSelectedKeys(activeKey ? [activeKey.toString()] : []);
-    if (pathname === "/") setSelectedKeys([]);
+    } else {
+      setSelectedKeys([]);
+    }
   }, [pathname]);
 
   return (
