@@ -222,8 +222,6 @@ export default function Navbar() {
 
     if (activeKey !== undefined) {
       setSelectedKeys(activeKey ? [activeKey.toString()] : []);
-    } else {
-      setSelectedKeys([]);
     }
   }, [pathname]);
 
