@@ -27,7 +27,7 @@ export class TinaAuth extends AbstractAuthProvider {
     return {
       id_token: session || "",
       access_token: session || "",
-      refresh_token: session.refreshToken || "",
+      refresh_token: session?.refreshToken || "",
     };
   }
 
