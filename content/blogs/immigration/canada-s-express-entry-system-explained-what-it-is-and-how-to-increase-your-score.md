@@ -19,7 +19,6 @@ Understanding Express Entry
 
 Canada’s Express Entry system is one of the most efficient and popular immigration routes for skilled workers hoping to become permanent residents. Managed by Immigration, Refugees and Citizenship Canada (IRCC), it uses a points-based Comprehensive Ranking System (CRS) to evaluate applicants based on age, education, language skills, work experience, and more. It is not a program itself but a management system for three core economic immigration streams: Federal Skilled Worker (FSW), Canadian Experience Class (CEC), and Federal Skilled Trades (FST). Candidates create an online profile, receive a CRS score, and if they rank high enough, they may receive an Invitation to Apply (ITA) for permanent residence. This guide explains how Express Entry works and outlines clear, practical ways to increase your score.
 
-
 What is Express Entry?
 
 Express Entry is Canada’s flagship application management system for skilled immigrants. It governs three main programs:
@@ -29,7 +28,6 @@ Express Entry is Canada’s flagship application management system for skilled i
 3. Federal Skilled Trades (FST): For applicants qualified in a skilled trade, often with a job offer or trade certification in Canada.
 
 Instead of waiting in line, applicants enter a pool and are ranked using the Comprehensive Ranking System (CRS). Top candidates receive ITAs during regular draws. The system is merit-based, dynamic, and transparent.
-
 
 How the Comprehensive Ranking System (CRS) Works
 
@@ -46,7 +44,6 @@ Key Factors That Affect Your Score:
 * Language Proficiency: Proficiency in English and/or French is heavily rewarded. Achieving CLB 9+ in IELTS or equivalent can unlock bonus points.
 * Additional Factors: Having a sibling in Canada, being bilingual, or receiving a provincial nomination can significantly improve your CRS score.
 
-
 What’s New in 2023–2025
 
 Category-Based Draws: Introduced in 2023, these allow IRCC to invite candidates based on occupation or language skills rather than CRS score alone. Categories include:
@@ -62,27 +59,25 @@ Job Offer Points Removed: As of March 2025, valid job offers no longer add CRS p
 
 Greater Emphasis on Canadian Experience: CEC candidates are seeing more frequent draws, with the government signalling continued preference for those with Canadian work backgrounds.
 
-
 How to Increase Your CRS Score
 
 Improve Language Scores:
- Language ability is one of the most impactful ways to raise your CRS score. Many candidates see substantial gains by preparing for and retaking IELTS/CELPIP or adding French proficiency. For example, achieving CLB 9 unlocks skill transferability bonus points.
+Language ability is one of the most impactful ways to raise your CRS score. Many candidates see substantial gains by preparing for and retaking IELTS/CELPIP or adding French proficiency. For example, achieving CLB 9 unlocks skill transferability bonus points.
 
 Gain More Work Experience:
- More skilled work years, especially in Canada, can increase your score. Canadian work experience often gives more weight than foreign experience, so continuing to work in a skilled role can pay off over time.
+More skilled work years, especially in Canada, can increase your score. Canadian work experience often gives more weight than foreign experience, so continuing to work in a skilled role can pay off over time.
 
 Boost Educational Credentials:
- Completing higher or additional education, including Canadian degrees or diplomas, adds points. Ensure all existing credentials are evaluated through an Educational Credential Assessment (ECA).
+Completing higher or additional education, including Canadian degrees or diplomas, adds points. Ensure all existing credentials are evaluated through an Educational Credential Assessment (ECA).
 
 Apply for a Provincial Nominee Program (PNP):
- A provincial nomination adds 600 points to your CRS score, nearly guaranteeing an ITA. Explore enhanced PNP streams aligned with Express Entry in Ontario, Alberta, and Nova Scotia.
+A provincial nomination adds 600 points to your CRS score, nearly guaranteeing an ITA. Explore enhanced PNP streams aligned with Express Entry in Ontario, Alberta, and Nova Scotia.
 
 Leverage Spousal Factors:
- If you have a spouse, consider who should be the principal applicant. The spouse’s language scores, education, and experience can also add points. Sometimes, temporarily listing a spouse as non-accompanying can increase the applicant’s score.
+If you have a spouse, consider who should be the principal applicant. The spouse’s language scores, education, and experience can also add points. Sometimes, temporarily listing a spouse as non-accompanying can increase the applicant’s score.
 
 Stay Informed and Keep Your Profile Updated:
- Please update your Express Entry profile with any changes: new education, updated language scores, additional work experience, or a change in marital status. Regular updates keep your profile competitive.
-
+Please update your Express Entry profile with any changes: new education, updated language scores, additional work experience, or a change in marital status. Regular updates keep your profile competitive.
 
 Lived Insight: The Story of Sam and Priya
 
@@ -100,4 +95,4 @@ And of course, our Soft Canada Advisors are always ready to help. If you’d lik
 
 Express Entry is more than a process – it’s a path to a new life. With the proper knowledge and strategy, you can improve your score, navigate the changes, and secure your permanent residency. Canada isn’t just looking for numbers. It’s looking for people ready to contribute, belong, and build.
 
-Wherever you are in your journey—whether you're just starting, waiting for an ITA, or building your profile step by step—we’re here for you. With information, encouragement, and lived experience, Soft Canada proudly walks this road with you.
+Wherever you are in your journey —whether you're just starting, waiting for an ITA, or building your profile step by step—we’re here for you. With information, encouragement, and lived experience, Soft Canada proudly walks this road with you.
