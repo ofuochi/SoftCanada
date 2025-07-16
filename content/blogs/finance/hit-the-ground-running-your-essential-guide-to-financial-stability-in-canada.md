@@ -17,4 +17,4 @@ Inside, you’ll find step-by-step advice on budgeting, banking, credit, and acc
 
 Ready to take control of your finances and set yourself up for success? 
 
-**GET EBOOK**
+**[GET EBOOK](https://5njm0j.share-na3.hsforms.com/2Q_NdzV0FSs6nEwWGYIdkgA)**
