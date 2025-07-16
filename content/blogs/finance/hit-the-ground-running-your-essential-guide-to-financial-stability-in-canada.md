@@ -17,6 +17,7 @@ Inside, you’ll find step-by-step advice on budgeting, banking, credit, and acc
 
 Ready to take control of your finances and set yourself up for success? Just fill out the form below to get your free copy instantly.
 
-\<script src="https\://js-na3.hsforms.net/forms/embed/341877043.js" defer>\</script>
-
-\<div class="hs-form-frame" data-region="na3" data-form-id="43f35dcd-5d05-4ace-a713-058660876480" data-portal-id="341877043">\</div>
+```javascript
+undefined < script src = "https://js-na3.hsforms.net/forms/embed/341877043.js" defer ></script >
+  <div class="hs-form-frame" data-region="na3" data-form-id="43f35dcd-5d05-4ace-a713-058660876480" data-portal-id="341877043"></div>
+```
