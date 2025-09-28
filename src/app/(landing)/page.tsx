@@ -3,8 +3,10 @@ import CallToActionSection from "@/components/landing/home/CallToActionSection";
 import FeaturesSection from "@/components/landing/home/FeaturesSection";
 import HowItWorksSection from "@/components/landing/home/HowItWorksSection";
 import { dbConnection } from "@/lib/db-conn";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
+  return redirect("/lifestyle");
   const query = await dbConnection.queries.landing({ relativePath: "home.md" });
   return (
     <>
