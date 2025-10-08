@@ -24,7 +24,6 @@ On October 1st, 2025, the City of Brampton pulsed with rhythm, pride, and colour
 ![](/media/blog-media/sca1.JPG)
 Hosted in partnership with the City of Brampton and supported by the Government of Canada, the evening honoured Nigeria’s independence from colonial rule in 1960, while celebrating the immense contributions of Nigerians who now call Canada home. The air shimmered with the energy of celebration, a fusion of green and white, laughter and language, memory and modernity.
 
-
 Every October 1st, Nigerians around the world reflect on their nation’s journey, from the hopes of 1960 to the realities of today’s global diaspora. For Nigerian-Canadians, that reflection carries a deeper resonance. Living far from home, yet carrying its heartbeat within them, they continue to nurture the spirit of unity that defines the Nigerian story. In Brampton, that spirit came alive in vivid form — agbadas and geles catching the light, beads glinting in the air, fabrics whispering stories of ancestry and pride. The evening’s program blended music, dance, and reflection, reminding everyone that though Nigeria’s borders may lie across the Atlantic, its soul endures wherever Nigerians gather to say, “We are one.”
 
 ![](/media/blog-media/sca5.JPG)
@@ -40,10 +39,9 @@ Culture, after all, is more than nostalgia — it is power. It builds bridges, i
 As green and white balloons floated above City Hall that night, they carried more than symbols — they held the dreams of a people who continue to rise, rebuild, and represent. Nigeria’s story, from independence to influence, lives on, and in Canada, it is just beginning.
 
 ```html
-<div style="margin: 2rem 0; text-align: center;">
+<div align="center">
   <iframe width="720" height="405" src="https://www.youtube.com/embed/1yBcyvZFIfM"
-    title="Nigeria Independence Day Celebration in Brampton 2025" frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    title="Nigeria Independence Day Celebration in Brampton 2025" frameborder="0" allowfullscreen>
   </iframe>
 </div>
 ```
