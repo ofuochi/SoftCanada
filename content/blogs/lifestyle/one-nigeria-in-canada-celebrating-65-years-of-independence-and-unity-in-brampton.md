@@ -37,21 +37,3 @@ The One Nigeria celebration was rich with symbolism. A giant map of Nigeria fram
 Culture, after all, is more than nostalgia — it is power. It builds bridges, it tells stories, it keeps people alive wherever they go. Canada now hosts one of the fastest-growing Nigerian populations outside Africa, a community whose ambition transcends geography. From Brampton to Calgary, from Lagos to Toronto, Nigerians are redefining what it means to belong — creating businesses, art, and movements that connect both continents.
 
 As green and white balloons floated above City Hall that night, they carried more than symbols — they held the dreams of a people who continue to rise, rebuild, and represent. Nigeria’s story, from independence to influence, lives on, and in Canada, it is just beginning.
-
-`<div align="center">`
-
-`  <iframe width="720" height="405"`
-
-`    src="https://www.youtube.com/embed/1yBcyvZFIfM"`
-
-`    title="Nigeria Independence Day Celebration in Brampton 2025"`
-
-`    frameborder="0"`
-
-`    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"`
-
-`    allowfullscreen>`
-
-`  </iframe>`
-
-`</div>`
