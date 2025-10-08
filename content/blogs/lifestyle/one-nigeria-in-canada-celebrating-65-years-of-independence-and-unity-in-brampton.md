@@ -41,7 +41,8 @@ As green and white balloons floated above City Hall that night, they carried mor
 ```html
 <div align="center">
   <iframe width="720" height="405" src="https://www.youtube.com/embed/1yBcyvZFIfM"
-    title="Nigeria Independence Day Celebration in Brampton 2025" frameborder="0" allowfullscreen>
+    title="Nigeria Independence Day Celebration in Brampton 2025" frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
   </iframe>
 </div>
 ```
