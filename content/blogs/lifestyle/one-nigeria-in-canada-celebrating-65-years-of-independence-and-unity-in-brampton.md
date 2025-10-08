@@ -38,11 +38,20 @@ Culture, after all, is more than nostalgia — it is power. It builds bridges, i
 
 As green and white balloons floated above City Hall that night, they carried more than symbols — they held the dreams of a people who continue to rise, rebuild, and represent. Nigeria’s story, from independence to influence, lives on, and in Canada, it is just beginning.
 
-```html
-<div align="center">
-  <iframe width="720" height="405" src="https://www.youtube.com/embed/1yBcyvZFIfM"
-    title="Nigeria Independence Day Celebration in Brampton 2025" frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-  </iframe>
-</div>
-```
+`<div align="center">`
+
+`  <iframe width="720" height="405"`
+
+`    src="https://www.youtube.com/embed/1yBcyvZFIfM"`
+
+`    title="Nigeria Independence Day Celebration in Brampton 2025"`
+
+`    frameborder="0"`
+
+`    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"`
+
+`    allowfullscreen>`
+
+`  </iframe>`
+
+`</div>`
