@@ -35,7 +35,7 @@ Canadians are known for being polite. “Sorry” is often used, not always as a
 
 What we’ve learned: These words aren’t just niceties — they’re part of a broader culture of consideration.
 
-Soft Tip: When in doubt, say it kindly: “Excuse me,” “Would you mind...,” or “Thanks so much.” These phrases open doors, both literally and socially.
+Soft Tip: When in doubt, say it kindly: “Excuse me...,” “Would you mind...,” or “Thanks so much.” These phrases open doors, both literally and socially.
 
 2\. Personal Space Is Quietly Protected
 
